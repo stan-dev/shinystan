@@ -142,9 +142,9 @@ shinyUI(
                                  tags$style(type="text/css", "#n_eff_warnings_title, #rhat_warnings_title, #mcse_over_sd_warnings_title {font-size: 13px;}"),
                                  br(),
                                  fluidRow(
-                                   column(4, textOutput("n_eff_warnings")),
-                                   column(4, textOutput("mcse_over_sd_warnings")),
-                                   column(4, textOutput("rhat_warnings"))
+                                   column(4, div(style = "color: #428bca;", textOutput("n_eff_warnings"))),
+                                   column(4, div(style = "color: #428bca;", textOutput("mcse_over_sd_warnings"))),
+                                   column(4, div(style = "color: #428bca;", textOutput("rhat_warnings")))
                                  ),
                                  tags$style(type="text/css", "#n_eff_warnings, #rhat_warnings, #mcse_over_sd_warnings {font-size: 12px;}"),
                                  conditionalPanel(condition = "input.warnings_options == true",
