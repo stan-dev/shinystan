@@ -1,0 +1,35 @@
+Package: shinyStan
+Title: shinyStan: Explore your MCMC
+Version: 1.0.0
+Authors@R: as.person(c(
+    "Jonah Gabry <jgabry@gmail.com> [aut, cre]",
+    "Michael Andreae [aut]",
+    "Yuanjun Gao [ctb]",
+    "Dongying Song [ctb]"
+  ))
+Maintainer: Jonah Gabry <jgabry@gmail.com>
+Description: GUI for exploring MCMC output.
+URL: https://github.com/jgabry, http://mc-stan.org
+BugReports: https://github.com/jgabry
+Depends: 
+    R (>= 3.1.1),
+    ggplot2,
+    methods,
+    shiny (>= 0.11.1),
+    shinyBS (>= 0.50)
+License: GPL (>=3)
+LazyData: true
+Suggests: 
+    rstan,
+    rstanDemo,
+    coda,
+    knitr
+Imports: 
+    dygraphs (>= 0.4.1),
+    gtools,
+    plyr,
+    reshape2,
+    threejs,
+    xtable,
+    xts
+VignetteBuilder: knitr

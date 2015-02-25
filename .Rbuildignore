@@ -1,0 +1,5 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+LICENSE
+^\.travis\.yml$
+^install_shinystan.R

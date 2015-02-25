@@ -1,0 +1,141 @@
+---
+title: "shinyStan Basics"
+author: "Jonah Gabry"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: true    
+vignette: >
+  %\VignetteIndexEntry{shinyStan Basics}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+---
+
+# Using **shinyStan** with different types of objects
+
+## `stanfit` objects
+
+If your stan code is in the file `my_stan_code.stan` and you have your data in a `list` called `my_stan_data` in your global environment then you might do something like this to fit your model using RStan:
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(eval=FALSE, warning=FALSE)
+```
+
+```{r, rstan}
+library(shinyStan)
+library(rstan)
+my_stanfit <- stan(file = "my_stan_code.stan", 
+                   data = my_stan_data)
+```
+
+Using **shinyStan** with `my_stanfit` is as easy as
+```{r, rstan_shinystan}
+launch_shinystan(my_stanfit)
+```
+
+and **shinyStan** will launch. 
+
+
+## `mcmc.list` objects
+
+If you have an `mcmc.list` object called `my_mcmc` then you can use the `as.shinystan` function to convert `my_mcmc` into a `shinystan` object that can then be used with `launch_shinystan`: 
+
+```{r, mcmclist1}
+my_shinystan <- as.shinystan(my_mcmc)
+launch_shinystan(my_shinystan)
+```
+
+If, for example, the first 100 iterations in each chain in `my_mcmc` are burnin/warmup iterations, you should add the `burnin` argument when you call `as.shinystan`:
+
+```{r, mcmclist2}
+my_shinystan <- as.shinystan(my_mcmc, burnin = 100)
+```
+
+You can also give **shinyStan** a name for your model using the `model_name` argument:
+
+```{r, mcmclist3}
+my_shinystan <- as.shinystan(my_mcmc, burnin = 100, model_name = "Example model")
+```
+
+If you specify `model_name` then **shinyStan** will display the name of your model at the top of each tab.  
+
+
+## other types of objects
+
+### 3-D array
+
+To convert a 3-D array to a `shinystan` object make sure that the 3 dimensions of the array correspond to the *number of iterations* **x** *number of chains*  **x** *number of parameters*. You can then `as.shinystan` exactly how it's used in the examples for `mcmc.list` objects above (but you don't need to convert your array to an `mcmc.list`).
+
+### List of matrices
+
+If you have separate chains that are each a matrix (with iterations as rows and parameters as columns) you can combine them in a list to pass to `as.shinystan`
+```{r, chainlist1}
+# Generate some fake data
+chain1 <- cbind(beta1 = rnorm(100), beta2 = rnorm(100), sigma = rexp(100))
+chain2 <- cbind(beta1 = rnorm(100), beta2 = rnorm(100), sigma = rexp(100))
+
+my_shinystan <- as.shinystan(X = list(chain1, chain2))
+launch_shinystan(my_shinystan)
+```
+
+
+******
+
+# Other functions in the **shinyStan** package
+
+## Generating new quantities
+
+You can a new parameter as a function of one or two existing parameters to your `shinystan` object by using the `generate_quantity` function. For example, assume `X` is a `shinystan` object and two of the parameters are ```alpha``` and ```beta```. We could add a parameter ```gamma``` that is the inverse logit of ```beta``` using the code
+
+```{r, generate1}
+inv_logit <- function(x) 1/(exp(-x) + 1)
+X <- generate_quantity(sso = X, fun = inv_logit,
+                       param1 = "beta", new_name = "gamma")
+```
+
+The argument `sso` is the `shinystan` object, `fun` is the function we want to use, `param1` is the name of the parameter to apply the function to, and `new_name` is the name to give the new parameter. 
+
+Adding a parameter as a function of two parameters just requires specifying the `param2` argument and providing a function of two variables. For example, we can add a parameter ```delta``` to `X` that is the squared difference of ```alpha``` and ```beta``` like this
+
+```{r, generate2}
+X <- generate_quantity(sso = X, fun = function(x,y) (x-y)^2,
+                       param1 = "alpha", param2 = "beta", 
+                       new_name = "delta")
+```
+
+
+## Storing your model code in a `shinystan` object
+
+For models fit using [**RStan**](http://mc-stan.org) the model code will automatically be stored in the `model_code` slot of your `shinystan` object. When **shinyStan** is open you can view your model code in the *Model Code* tab. 
+
+If you did not use the **RStan** package to fit your model then you can add your model code by using the `include_model_code` function. For example, you may have used Bugs or JAGS or some other software and want to add the following code
+
+```
+  for (i in 1:length(Y)) {
+     Y[i] ~ dpois(lambda[i])
+     log(lambda[i]) <- inprod(X[i,], theta[])
+   }
+   for (j in 1:J) {
+     theta[j] ~ dt(0.0, 1.0, 1.0)
+   }
+ }
+```
+
+to your `shinystan` object. To add that code you can simply include it as the `code` argument to the `include_model_code` function 
+```{r, code1}
+my_code <- "
+ model {
+  for (i in 1:length(Y)) {
+     Y[i] ~ dpois(lambda[i])
+     log(lambda[i]) <- inprod(X[i,], theta[])
+   }
+   for (j in 1:J) {
+     theta[j] ~ dt(0.0, 1.0, 1.0)
+   }
+ }
+"
+
+# Add the code to a shinystan object X
+X <- include_model_code(X, my_code)
+launch_shinystan(X) # code is visible in the Model Code tab
+```
