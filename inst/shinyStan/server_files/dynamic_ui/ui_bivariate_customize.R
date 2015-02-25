@@ -1,7 +1,7 @@
 output$ui_bivariate_customize <- renderUI({
   my_ellipse_lev <- "None"
   my_pt_alpha <- 0.10
-  my_pt_size     <- 3
+  my_pt_size     <- 3.5
   my_pt_shape    <- 10
   my_pt_color    <- "firebrick"
   my_ellipse_color    <- "black"
