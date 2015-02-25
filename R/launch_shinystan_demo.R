@@ -49,7 +49,7 @@ launch_shinystan_demo <- function(...) {
       stanfit <- rstanDemo::stan_demo(...)
     } else {
       has_rstan <- requireNamespace("rstan", quietly = TRUE)
-      if(!has_rstan) stop("You need to have the RStan package installed to use this option.")
+      if(!has_rstan) stop("You need to have the RStan package installed to use this option. Try runnning the default shinyStan demo instead.")
       stanfit <- rstan::stan_demo(...)
     }
 
