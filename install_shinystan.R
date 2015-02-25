@@ -35,7 +35,7 @@ install_shinystan <- function() {
   install.packages(c("htmlwidgets", "maps"), dependencies = TRUE)
   devtools::install_github("ebailey78/shinyBS", ref = "shinyBS3", dependencies = TRUE)
   devtools::install_github("bwlewis/rthreejs", dependencies = TRUE)
-  devtools::install_github("shinyStan/shinyStan", build_vignettes = TRUE)
+  devtools::install_github("stan-dev/shinyStan", build_vignettes = TRUE)
   
   message("\n All set. \n You might need to restart R before using shinyStan. \n")
   return(invisible(NULL))
