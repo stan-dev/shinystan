@@ -15,3 +15,4 @@ shinyStan provides immediate, informative, customizable visual and numerical sum
 ### Making saving and sharing more convenient 
 shinyStan allows you to store the basic components of an entire project (code, posterior samples, graphs, tables, notes) in a single object. Users can also export graphics into their R sessions as ggplot2 objects for further customization and easy integration in reports or post-processing for publication.
 
+![shinystan](https://cloud.githubusercontent.com/assets/7796803/6375377/a740c96c-bce4-11e4-82ef-4318a47a1116.png)
