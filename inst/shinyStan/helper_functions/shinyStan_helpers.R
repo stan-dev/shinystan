@@ -689,9 +689,9 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
 }
 
 # n_eff_warnings -----------------------------------------------------------
-.n_eff_warnings <- function(summary, N_total = length(samps_post_warmup[,,1])) {
+.n_eff_warnings <- function(summary, threshold = 10, N_total = length(samps_post_warmup[,,1])) {
   n_eff <- summary[,"n_eff"]
-  warn_params <- names(which(n_eff/N_total < 0.1))
+  warn_params <- names(which(n_eff/N_total < threshold/100 ))
   ll <- length(warn_params)
   if (ll == 0) {
     return("None")
@@ -700,9 +700,9 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
 }
 
 # rhat_warnings -----------------------------------------------------------
-.rhat_warnings <- function(summary) {
+.rhat_warnings <- function(summary, threshold = 1.10) {
   rhat <- summary[,"Rhat"]
-  warn_params_1 <- names(which(rhat > 1.10))
+  warn_params_1 <- names(which(rhat > threshold))
   ll <- length(warn_params_1)
   if (ll == 0) {
     return("None")
@@ -711,9 +711,9 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
 }
 
 # mcse_over_sd_warnings -----------------------------------------------------------
-.mcse_over_sd_warnings <- function(summary) {
+.mcse_over_sd_warnings <- function(summary, threshold = 10) {
   dat <- summary[,c("se_mean", "sd")]
-  warn_params <- names(which(dat[,1] > 0.1 * dat[,2]))
+  warn_params <- names(which(dat[,1] > (threshold/100) * dat[,2]))
 
   ll <- length(warn_params)
   if (ll == 0) {

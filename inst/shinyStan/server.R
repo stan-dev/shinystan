@@ -155,27 +155,27 @@ shinyServer(function(input, output, session) {
   })
   #### TEXT: n_eff warnings ####
   output$n_eff_warnings_title <- renderText({
-    "The following parameters have an effective sample size less than 10% of the total number of samples: "
+    paste0("The following parameters have an effective sample size less than ", input$n_eff_threshold,"% of the total number of samples: ")
   })
   #### TEXT: rhat warnings ####
   output$rhat_warnings_title <- renderText({
-    "The following parameters have an Rhat value above 1.1: "
+    paste0("The following parameters have an Rhat value above ", input$rhat_threshold,": ")
   })
   #### TEXT: mcmc se to posterior sd warnings ####
   output$mcse_over_sd_warnings_title <- renderText({
-    "The following parameters have a Monte Carlo standard error greater than 10% of the posterior standard deviation:"
+    paste0("The following parameters have a Monte Carlo standard error greater than ", input$mcse_threshold ,"% of the posterior standard deviation:")
   })
   #### TEXT: n_eff warnings ####
   output$n_eff_warnings <- renderText({
-    paste(.n_eff_warnings(fit_summary), collapse = "\n")
+    paste(.n_eff_warnings(fit_summary, threshold = input$n_eff_threshold), collapse = "\n")
   })
   #### TEXT: rhat warnings ####
   output$rhat_warnings <- renderText({
-    paste(.rhat_warnings(fit_summary), collapse = "\n")
+    paste(.rhat_warnings(fit_summary, threshold = input$rhat_threshold), collapse = "\n")
   })
   #### TEXT: mcmc se to posterior sd warnings ####
   output$mcse_over_sd_warnings <- renderText({
-    paste(.mcse_over_sd_warnings(fit_summary), collapse = "\n")
+    paste(.mcse_over_sd_warnings(fit_summary, threshold = input$mcse_threshold), collapse = "\n")
   })
   #### PLOT: autocorrelation ####
   output$autocorr_plot_out <- renderPlot({

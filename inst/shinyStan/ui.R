@@ -116,9 +116,13 @@ shinyUI(
                         ),
                         #### Rhat, ESS, MCSE, diagnostics ####
                         tabPanel("\\((\\hat{R}, n_{eff}, \\text{se}_{mean}) \\text{ diagnostics} \\)", icon = icon("bar-chart-o", "fa-2x"),
-                                 #                                  bsButton("btn_open_glossary_copy", "Open glossary", style = "link"),
-                                 actionLink("btn_open_glossary_copy", "Open glossary", icon = icon("book", lib = "glyphicon")),
-                                 uiOutput("glossary_modal_copy"),
+                                 fluidRow(
+                                   column(6, 
+                                          actionLink("btn_open_glossary_copy", "Open glossary", icon = icon("book", lib = "glyphicon")),
+                                          uiOutput("glossary_modal_copy")
+                                          ),
+                                   column(6, tags$div(class = "pull-right",style = "line-height: 150%;", checkboxInput("warnings_options", label = span(style = "font-size: 12px;","Show/hide customization panel"), value = TRUE)))
+                                   ),
                                  fluidRow(
                                    column(4, h4("\\(n_{eff} / N\\)", align = "center")),
                                    column(4, h4("\\(\\text{se}_{mean} / sd\\)", align = "center")),
@@ -142,7 +146,9 @@ shinyUI(
                                    column(4, textOutput("mcse_over_sd_warnings")),
                                    column(4, textOutput("rhat_warnings"))
                                  ),
-                                 tags$style(type="text/css", "#n_eff_warnings, #rhat_warnings, #mcse_over_sd_warnings {font-size: 12px;}")
+                                 tags$style(type="text/css", "#n_eff_warnings, #rhat_warnings, #mcse_over_sd_warnings {font-size: 12px;}"),
+                                 conditionalPanel(condition = "input.warnings_options == true",
+                                                  uiOutput("ui_warnings_customize"))
                         ),
                         #### autocorrelation plot ####
                         tabPanel("Autocorrelation", icon = icon("bar-chart-o", "fa-2x"),

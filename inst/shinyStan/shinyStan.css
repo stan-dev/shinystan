@@ -7,9 +7,11 @@
 
 } 
 
+#n_eff_threshold, #rhat_threshold, #mcse_threshold .irs-min, .irs-max {
+  color: white ;
+}
 
-
-#controls_autocorr, #controls_multi_trace, #controls_multiparam {
+#controls_autocorr, #controls_multi_trace, #controls_multiparam, #controls_warnings {
   /* Appearance */
   color: white;
   cursor: move;
@@ -17,7 +19,7 @@
   opacity: 0.1;
   transition: opacity 500ms 1s;
 }
-#controls_autocorr:hover, #controls_multi_trace:hover, #controls_multiparam:hover {
+#controls_autocorr:hover, #controls_multi_trace:hover, #controls_multiparam:hover, #controls_warnings:hover {
   /* Fade in while hovering */
   opacity: 0.85;
   transition-delay: 0;
