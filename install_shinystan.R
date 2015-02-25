@@ -7,7 +7,7 @@
 # 4) library(shinyStan) 
 
 # If installation fails you can open an issue on github
-# (https://github.com/shinyStan/shinyStan/issues) 
+# (https://github.com/stan-dev/shinystan/issues) 
 # or ask for help at the Stan users google group 
 # (https://groups.google.com/forum/#!forum/stan-users)
 #######################################################
