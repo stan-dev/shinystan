@@ -184,7 +184,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
   if(palette == "Brewer (spectral)") clrs <- scale_color_brewer(palette = "Spectral")
   if(palette == "Rainbow") clrs <- scale_colour_manual(values = rainbow(nclrs))
 
-  theme_elements <- axis_color + fat_axis + no_lgnd
+  theme_elements <- axis_color + fat_axis + no_lgnd + axis_labs
   if (style == "line") theme_elements <- theme_elements + h_lines
   graph <- ggplot(dat, aes(x = iterations, y = value, color = chains))
   graph <- graph + xy_labs + clrs + theme_classic() %+replace% theme_elements # (fat_axis + h_lines + no_lgnd)
