@@ -21,7 +21,6 @@ License: GPL (>=3)
 LazyData: true
 Suggests: 
     rstan,
-    rstanDemo,
     coda,
     knitr
 Imports: 
