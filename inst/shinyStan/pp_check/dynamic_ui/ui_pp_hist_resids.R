@@ -7,9 +7,9 @@ output$ui_pp_hist_resids <- renderUI({
                       br(),
                       withMathJax("2) Given \\(\\beta^\\star, \\sigma^\\star \\) draw a vector \\(y^{rep} \\) from the posterior predictive distribution"), 
                       br(),
-                      withMathJax("3) Plot histogram of the vector \\(residuals = y - y^{rep}\\)"),
+                      withMathJax("3) Plot histogram of the vector \\(r = y - y^{rep}\\)"),
                       br(),
-                      withMathJax("4) Add density curve for normal distribution with mean \\(\\mu = \\text{mean}(residuals)\\) and standard deviation \\( \\sigma = \\text{sd}(residuals)\\) ")
+                      withMathJax("4) Add density curve for normal distribution with mean \\(\\mu = \\text{mean}(r)\\) and standard deviation \\( \\sigma = \\text{sd}(r)\\) ")
       )
     ),
     tags$style(type = "text/css", "#make_plot3 .panel-body{background-color: white;}"),
