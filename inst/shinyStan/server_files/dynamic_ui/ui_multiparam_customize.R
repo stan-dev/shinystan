@@ -52,6 +52,11 @@ output$ui_multiparam_customize <- renderUI({
                                                  selectInput("param_plot_est_color", h6("Point est. color"), choices = colors(), selected = my_est_color, selectize = TRUE)),
                                 conditionalPanel(condition = "input.param_plot_color_by_rhat == true",
                                                  selectInput("param_plot_rhat_palette", h6("Rhat palette"), choices = c("Blues", "Grays", "Greens", "Oranges", "Purples", "Reds"), selected = my_rhat_palette, selectize=TRUE))
+                ),
+                bsCollapsePanel(title = "Sorting", id = "multiparam_options_sorting",
+                                # checkboxInput("param_plot_sort_j", label = "Sort j", value = FALSE),
+                                radioButtons("param_plot_sort_j", label = "Sort parameters in select list by", choices = c(Row = TRUE, Column = FALSE), selected = TRUE, inline = TRUE),
+                                span(style = "font-size: 12px;","If applicable, sort with x[1,2] before x[2,1] or vice-versa")
                 )
               ),
               hr(),
