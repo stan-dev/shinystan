@@ -25,6 +25,7 @@ Suggests:
     knitr
 Imports: 
     dygraphs (>= 0.4.1),
+    gridExtra,
     gtools,
     plyr,
     reshape2,

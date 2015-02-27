@@ -24,6 +24,9 @@ shinyStan:::Librarian(pkgs)
 # load the helper functions
 source("helper_functions/shinyStan_helpers.R", local = TRUE)
 
+# load pp_check plot_names and plot_descriptions
+source("pp_check/plot_names_descriptions.R", local = TRUE)
+
 # give shinystan_object shorter name
 object <- shinystan_object
 show_model_name <- h4(style = "padding: 0px 0px 10px 10px; color: #428bca;", paste("Model name:", object@model_name))
@@ -244,6 +247,42 @@ shinyUI(
                                    
                       )
              ),
+             #### TAB: PPcheck ####
+             tabPanel(title = "PPcheck",
+                      h1(style = "color: #5b391e", "Graphical posterior predictive checks"),
+                      hr(),
+                      navlistPanel(widths = c(4,8), well = FALSE,  
+                                   "Data options",
+                                   tabPanel("Select data",
+                                            uiOutput("ui_pp_data")
+                                   ),
+                                   "Plots",
+                                   tabPanel("Histograms of observed data and replications",
+                                            uiOutput("ui_pp_hists_rep_vs_obs")
+                                            ),
+                                   tabPanel("Density estimates of observed data and replications",
+                                            uiOutput("ui_pp_dens_rep_vs_obs")
+                                   ),
+                                   tabPanel("Scatterplot of observations vs average replicated value",
+                                            uiOutput("ui_pp_y_vs_avg_rep")
+                                            ),
+                                   tabPanel("Histogram of residuals",
+                                            uiOutput("ui_pp_hist_resids")
+                                            ),
+                                   tabPanel("Scatterplot of average simulated value vs average residual",
+                                            uiOutput("ui_pp_avg_rep_vs_avg_resid_rep")
+                                   ),
+                                   tabPanel("Distributions of test statistics",
+                                            uiOutput("ui_pp_hists_test_statistics")
+                                   ),
+                                   "About",
+                                   tabPanel("About graphical posterior predictive checking",
+                                            uiOutput("ui_pp_about")
+                                   )
+                                   
+                      )
+                      ),
+             
              #### MENU: More ####
              navbarMenu(title = "More",
                         

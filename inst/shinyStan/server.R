@@ -22,6 +22,9 @@ shinyStan:::Librarian(pkgs)
 # load the helper functions
 source("helper_functions/shinyStan_helpers.R", local=TRUE)
 
+# load pp_check plot_names and plot_descriptions
+source("pp_check/plot_names_descriptions.R", local = TRUE)
+
 # extract the content of the shinystan_object slots
 source("server_files/utilities/extract_shinystan_object.R", local=TRUE)
 
@@ -41,10 +44,14 @@ shinyServer(function(input, output, session) {
   utility_files <- list.files(path = "server_files/utilities", full.names = TRUE)
   ui_files <- list.files(path = "server_files/dynamic_ui", full.names = TRUE)
   help_files <- list.files(path = "server_files/help_and_glossary", full.names = TRUE)
-
-  for (f in c(ui_files, utility_files, output_files, help_files)) {
+  pp_check_ui_files <- list.files(path = "pp_check/dynamic_ui", full.names = TRUE)
+  pp_check_output_files <- list.files(path = "pp_check/outputs", full.names = TRUE)
+  for (f in c(ui_files, utility_files, output_files, help_files, 
+              pp_check_ui_files, pp_check_output_files)) {
     source(f, local = TRUE)
   }
+  source("pp_check/shinyStan_pp_helpers.R", local=TRUE)
+  
 
   #### tooltips & popovers ####  
   tooltip_ids <- c("download_multiview", "dynamic_trace_stack", "download_all_summary", "tex_options")
@@ -279,13 +286,6 @@ shinyServer(function(input, output, session) {
   )
 
   #### TEXT: User's model notes ####
-#   observe({
-#     input$save_user_model_info
-#     isolate({
-#       if (input$user_model_info != "")
-#         shinystan_object@user_model_info <<- input$user_model_info
-#     })
-#   })
   observeEvent(input$save_user_model_info, handlerExpr = {
     if (input$user_model_info != "")
       shinystan_object@user_model_info <<- input$user_model_info
@@ -295,6 +295,45 @@ shinyServer(function(input, output, session) {
     if (input$save_user_model_info != 0) {
       print(paste("Saved:  ", format(Sys.time(), "%a %b %d %Y %X")))
     }
+  })
+
+
+  #### PLOT: pp hists_rep_vs_obs####
+  output$pp_hists_rep_vs_obs_out <- renderPlot({
+    x <- suppressMessages(pp_hists_rep_vs_obs())
+    print(x)
+  })
+  #### PLOT: pp dens_rep_vs_obs####
+  output$pp_dens_rep_vs_obs_out <- renderPlot({
+    x <- suppressMessages(pp_dens_rep_vs_obs())
+    print(x)
+  })
+  #### PLOTS: pp hists_test_statistics####
+  output$pp_hists_test_statistics_mean_out <- renderPlot({
+    x <- suppressMessages(pp_hists_test_statistics_mean())
+    suppressMessages(suppressWarnings(print(x)))
+  })
+  output$pp_hists_test_statistics_sd_out <- renderPlot({
+    x <- suppressMessages(pp_hists_test_statistics_sd())
+    suppressMessages(suppressWarnings(print(x)))
+  })
+  output$pp_hists_test_statistics_min_out <- renderPlot({
+    x <- suppressMessages(pp_hists_test_statistics_min())
+    suppressMessages(suppressWarnings(print(x)))
+  })
+  output$pp_hists_test_statistics_max_out <- renderPlot({
+    x <- suppressMessages(pp_hists_test_statistics_max())
+    suppressMessages(suppressWarnings(print(x)))
+  })
+  output$pp_hist_resids_out <- renderPlot({
+    x <- suppressMessages(pp_hist_resids())
+    suppressMessages(suppressWarnings(print(x)))
+  })
+  output$pp_avg_rep_vs_avg_resid_rep_out <- renderPlot({
+    pp_avg_rep_vs_avg_resid_rep()
+  })
+  output$pp_y_vs_avg_rep_out <- renderPlot({
+    pp_y_vs_avg_rep()
   })
 
 
