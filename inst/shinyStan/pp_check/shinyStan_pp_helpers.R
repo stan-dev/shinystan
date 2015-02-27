@@ -60,8 +60,9 @@ sample_id_for_resids <- reactive({
                             color = I("white"), 
                             fill = I("#428bca")) + labs(y = "", x = "y")
     else g <- qplot(x = y_rep_samp[i-1, ], geom = "histogram", 
-                    color = I("white"), 
-                    fill = I("gray35")) + labs(y = "", x = rownames(y_rep_samp)[i-1])
+                 color = I("white"), 
+                 fill = I("gray35")) + labs(y = "", x = rownames(y_rep_samp)[i-1])
+    
     g + thm 
   })
   graphs
@@ -86,15 +87,19 @@ sample_id_for_resids <- reactive({
 }
 
 .pp_hists_test_statistics <- function(stat_y, stat_y_rep, which) {
-  graph <- qplot(x = stat_y_rep, color = I("gray65"), fill = I("gray35"))
-  graph <- graph + labs(y = "", x = paste0(which, "(y_rep)")) + theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs)
-  graph <- graph + geom_vline(xintercept = stat_y, color = "#428bca", size = 1.5)    
+  thm <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs)
+  graph <- ggplot(data.frame(x = stat_y_rep), aes(x = x)) +
+    stat_bin(aes(y=..count../sum(..count..)), color = "white", fill = "gray35") +
+    geom_vline(xintercept = stat_y, color = "#428bca", size = 1.5)    
+  graph <- graph + thm + labs(y = "", x = paste0(which, "(y_rep)")) 
   graph
 }
 
 .pp_hist_resids <- function(resids) {
   thm <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + no_lgnd)
-  graph <- qplot(x = resids, color = I("white"), fill = I("gray35")) 
+  graph <- ggplot(data.frame(x = resids), aes(x = x)) + 
+    stat_bin(aes(y=..count../sum(..count..)), color = "white", fill = "gray35") +
+    stat_function(fun=dnorm, args=list(mean=mean(resids), sd=sd(resids)), color = "#428bca")
   graph + thm + labs(y = "", x = names(resids))
 }
 
@@ -106,7 +111,7 @@ sample_id_for_resids <- reactive({
     geom_point(color = "gray35", size = 3.5, alpha = 0.33, shape = 19) + 
     xy_labs 
     
-  graph + xy_labs + thm
+  graph + xy_labs + thm 
 }
 
 

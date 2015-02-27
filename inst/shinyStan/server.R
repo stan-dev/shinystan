@@ -300,13 +300,13 @@ shinyServer(function(input, output, session) {
 
   #### PLOT: pp hists_rep_vs_obs####
   output$pp_hists_rep_vs_obs_out <- renderPlot({
-    x <- suppressMessages(pp_hists_rep_vs_obs())
-    print(x)
+    x <- suppressMessages(suppressWarnings(pp_hists_rep_vs_obs()))
+    suppressMessages(suppressWarnings(print(x)))
   })
   #### PLOT: pp dens_rep_vs_obs####
   output$pp_dens_rep_vs_obs_out <- renderPlot({
     x <- suppressMessages(pp_dens_rep_vs_obs())
-    print(x)
+    suppressMessages(suppressWarnings(print(x)))
   })
   #### PLOTS: pp hists_test_statistics####
   output$pp_hists_test_statistics_mean_out <- renderPlot({

@@ -249,10 +249,10 @@ shinyUI(
              ),
              #### TAB: PPcheck ####
              tabPanel(title = "PPcheck",
-                      h1(style = "color: #5b391e", "Graphical posterior predictive checks"),
+                      h1("Graphical posterior predictive checks"),
                       hr(),
-                      navlistPanel(widths = c(4,8), well = FALSE,  
-                                   "Data options",
+                      navlistPanel(id = "pp_navlist", widths = c(4,8), well = FALSE,  
+                                   "Data",
                                    tabPanel("Select data",
                                             uiOutput("ui_pp_data")
                                    ),
