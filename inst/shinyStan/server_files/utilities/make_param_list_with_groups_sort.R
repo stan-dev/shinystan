@@ -1,10 +1,7 @@
 # make_param_list_with_groups ------------------------------------------------------
 make_param_list_with_groups_sort <- reactive({
-#   if (is.null(input$multiparam_sort)) {
-#     return()
-#   }
-#   sort_j <- ifelse(input$multiparam_sort == "j", TRUE, FALSE)
-  sort_j <- FALSE
+  validate(need(!is.null(input$param_plot_sort_j), message = "Loading..."))
+  sort_j <- input$param_plot_sort_j
   choices <- list()
   ll <- length(object@param_dims)
   LL <- sapply(1:ll, function(i) length(object@param_dims[[i]]))
@@ -17,9 +14,8 @@ make_param_list_with_groups_sort <- reactive({
     }
     else {
       group <- object@param_groups[i]
-      temp <- paste0(group,"\\[")
+      temp <- paste0("^",group,"\\[")
       ch <- object@param_names[grep(temp, object@param_names)]
-
       # the next line avoids parameters whose names include the group name of a
       # different group of parameters being included in the latter group, e.g.
       # if we have b_bias[1], b_bias[2], bias[1], bias[2] then we want to avoid
@@ -27,8 +23,8 @@ make_param_list_with_groups_sort <- reactive({
       ch <- ch[which(substr(ch, 1, nchar(group)) == group)]
 
 
-      if (sort_j == TRUE & LL[i] > 1) {
-        # change sorting so to, e.g. "beta[1,1] beta[1,2] beta[2,1] beta[2,2]"
+      if (sort_j == TRUE & (LL[i] > 1)) {
+        # change sorting so e.g. "beta[1,1] beta[1,2] beta[2,1] beta[2,2]"
         # instead of "beta[1,1] beta[2,1] beta[1,2] beta[2,2]"
         ch <- gtools::mixedsort(ch)
       }
