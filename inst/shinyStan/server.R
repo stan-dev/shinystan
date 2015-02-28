@@ -77,8 +77,7 @@ shinyServer(function(input, output, session) {
     scrollY = 400,
     scrollX = TRUE,
     scrollCollapse = FALSE,
-    aoColumnDefs = list(list(sClass="alignRight", aTargets = "_all")),
-    columnDefs = list(list(width="100px", targets=list(0))),
+    columnDefs = list(list(targets = "_all", searchable = FALSE), list(width="85px", targets=list(0)), list(sClass="alignRight", targets ="_all")),
     initComplete = I( # change background color of table header
       'function(settings, json) {
       $(this.api().table().header()).css({"background-color": "#346fa1", "color": "#fff"});
