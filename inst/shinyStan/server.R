@@ -64,7 +64,6 @@ shinyServer(function(input, output, session) {
                title = popover_msgs[id])
   }
 
-
   #### DATATABLE: summary stats (all parameters) ####
   output$all_summary_out <- renderDataTable({
     summary_stats()
