@@ -77,6 +77,7 @@ shinyServer(function(input, output, session) {
     scrollY = 400,
     scrollX = TRUE,
     scrollCollapse = FALSE,
+    aoColumnDefs = list(list(sClass="alignRight", aTargets = "_all")),
     columnDefs = list(list(width="100px", targets=list(0))),
     initComplete = I( # change background color of table header
       'function(settings, json) {
@@ -114,6 +115,7 @@ shinyServer(function(input, output, session) {
     paging = FALSE,
     searching = FALSE,
     info = FALSE,
+    aoColumnDefs = list(list(sClass="alignRight", aTargets = "_all")),
     orderClasses = TRUE,
     initComplete = I( # change background color of table header
       'function(settings, json) {
