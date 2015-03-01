@@ -272,7 +272,10 @@ shinyUI(
                                    "About",
                                    tabPanel("About graphical posterior predictive checking",
                                             uiOutput("ui_pp_about")
-                                   )
+                                   ),
+                                   tabPanel("Tutorial",
+                                            includeMarkdown("pp_check_tutorial.md")
+                                            )
                                    
                       )
                       ),
