@@ -2,7 +2,8 @@ pp_dens_rep_vs_obs <- reactive({
   tests()
   y <- get(input$y_name)
   y_rep <- y_rep()
-  sample_ids <- sample_ids_for_dens()
+  # sample_ids <- sample_ids_for_dens()
+  sample_ids <- sample_ids_for_hist()
   y_rep_samp <- y_rep[sample_ids, ]
   
   max_y_rep_dens <- apply(y_rep, 1, function(x) density(x)$y)

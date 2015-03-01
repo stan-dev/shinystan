@@ -8,7 +8,8 @@ pp_hists_test_statistics_mean <- reactive({
   do.call(".pp_hists_test_statistics", args = list(
     stat_y = mean_y,
     stat_y_rep = mean_y_rep,
-    which = "mean"
+    which = "mean",
+    geom = input$pp_hists_test_statistics_type
     ))
 })
 
@@ -22,7 +23,8 @@ pp_hists_test_statistics_sd <- reactive({
   do.call(".pp_hists_test_statistics", args = list(
     stat_y = sd_y,
     stat_y_rep = sd_y_rep,
-    which = "sd"
+    which = "sd",
+    geom = input$pp_hists_test_statistics_type
   ))
 })
 
@@ -36,7 +38,8 @@ pp_hists_test_statistics_min <- reactive({
   do.call(".pp_hists_test_statistics", args = list(
     stat_y = min_y,
     stat_y_rep = min_y_rep,
-    which = "min"
+    which = "min",
+    geom = input$pp_hists_test_statistics_type
   ))
 })
 
@@ -50,6 +53,7 @@ pp_hists_test_statistics_max <- reactive({
   do.call(".pp_hists_test_statistics", args = list(
     stat_y = max_y,
     stat_y_rep = max_y_rep,
-    which = "max"
+    which = "max",
+    geom = input$pp_hists_test_statistics_type
   ))
 })
