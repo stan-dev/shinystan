@@ -274,7 +274,7 @@ shinyUI(
                                             uiOutput("ui_pp_about")
                                    ),
                                    tabPanel("Tutorial",
-                                            includeMarkdown("pp_check_tutorial.md")
+                                            includeMarkdown("pp_check/pp_check_tutorial.md")
                                             )
                                    
                       )
