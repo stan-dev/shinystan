@@ -263,18 +263,20 @@ shinyUI(
                                    tabPanel("Density estimates of observed data and replications",
                                             uiOutput("ui_pp_dens_rep_vs_obs")
                                    ),
+                                   tabPanel("Distributions of test statistics",
+                                            uiOutput("ui_pp_hists_test_statistics")
+                                   ),
                                    tabPanel("Scatterplot of observations vs average replicated value",
                                             uiOutput("ui_pp_y_vs_avg_rep")
-                                            ),
-                                   tabPanel("Histogram of residuals",
-                                            uiOutput("ui_pp_hist_resids")
                                             ),
                                    tabPanel("Scatterplot of average simulated value vs average residual",
                                             uiOutput("ui_pp_avg_rep_vs_avg_resid_rep")
                                    ),
-                                   tabPanel("Distributions of test statistics",
-                                            uiOutput("ui_pp_hists_test_statistics")
-                                   ),
+                                   tabPanel("Histogram of residuals",
+                                            uiOutput("ui_pp_hist_resids")
+                                            ),
+
+
                                    "About",
                                    tabPanel("About graphical posterior predictive checking",
                                             uiOutput("ui_pp_about")

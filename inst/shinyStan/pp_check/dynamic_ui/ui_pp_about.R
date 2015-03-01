@@ -1,6 +1,6 @@
 output$ui_pp_about <- renderUI({
            div(
-           h3(style = "color: #5b391e", "What is posterior predictive checking?"),
+           h3("What is posterior predictive checking?"),
            p(strong("The idea behind posterior predictive checking is simple:")),
            p(style = "text-indent: 10px", 
              em("If our model is a good fit then we should be able to use it to generate")), 
