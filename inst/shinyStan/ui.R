@@ -350,5 +350,6 @@ shinyUI(
              #### includeCSS ####
              includeCSS("shinyStan.css"),
              tags$style(type="text/css", "#multi_trace_plot_out.recalculating, #autocorr_plot_out.recalculating, #plot_param_vertical_out.recalculating { opacity: 1.0; }")
+
   ) # END navbarPage
 ) # END shinyUI
