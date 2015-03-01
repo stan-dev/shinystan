@@ -97,8 +97,8 @@ sample_id_for_resids <- reactive({
 .pp_hist_resids <- function(resids) {
   thm <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + no_lgnd)
   graph <- ggplot(data.frame(x = resids), aes(x = x)) + 
-    stat_bin(aes(y=..count../sum(..count..)), color = "gray35", fill = "black", alpha = 2/3) +
-    stat_function(fun=dnorm, args=list(mean=mean(resids), sd=sd(resids)), color = "#428bca", alpha = 2/3)
+    stat_bin(aes(y=..count../sum(..count..)), color = "gray35", fill = "black", alpha = 2/3) 
+    # stat_function(fun=dnorm, args=list(mean=mean(resids), sd=sd(resids)), color = "#428bca", alpha = 2/3)
   graph + thm + labs(y = "", x = names(resids))
 }
 
@@ -107,7 +107,7 @@ sample_id_for_resids <- reactive({
   xy_labs <- labs(x = "Average y_rep", y = "Average residual")
   thm <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_lgnd)
   graph <- ggplot(dat, aes(x, y)) + 
-    geom_point(color = "gray35", size = 3.75, shape = 19) + 
+    geom_point(color = "gray35", size = 2.75, shape = 19) + 
     xy_labs 
     
   graph + xy_labs + thm 
@@ -122,8 +122,8 @@ sample_id_for_resids <- reactive({
     geom_point(size = 3.75, alpha = 1, shape = 19) + 
     scale_color_gradient(low = "gray35", high = "gray85") +
     annotate("text", label = "The darker the point the closer \n it is to the line x = y",
-             x = min(y), y = 0.9*max(colMeans_y_rep), hjust = 0, 
-             color = "gray35", size = 4.5) +
+             x = min(y), y = 0.95*max(colMeans_y_rep), hjust = 0, 
+             color = "#428bca", size = 4.5, face = "bold") +
     xy_labs 
   
   graph + xy_labs + thm

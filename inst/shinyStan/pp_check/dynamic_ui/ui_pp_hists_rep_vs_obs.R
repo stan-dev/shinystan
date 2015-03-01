@@ -13,15 +13,15 @@ output$ui_pp_hists_rep_vs_obs <- renderUI({
 #     ),
 #     tags$style(type = "text/css", "#make_plot1 .panel-body{background-color: white;}"),
 fluidRow(
-  column(2, radioButtons("pp_hists_rep_vs_obs_type", label = "Plot type", choices = list(Histogram = "histogram", Density = "density"), inline = FALSE)),
-  column(2, 
+  # column(3, actionButton("resample_hist_go", label = "Show different replications", icon = icon("refresh"))),
+  column(4, radioButtons("pp_hists_rep_vs_obs_type", label = "Plot type", choices = list(Histogram = "histogram", Density = "density"), inline = TRUE)),
+  column(4, 
   conditionalPanel(condition = "input.pp_hists_rep_vs_obs_type == 'density'",
-                   checkboxInput("pp_hists_rep_vs_obs_overlay", "Overlay densities", value = FALSE)
-                   )),
-  column(4, actionButton("resample_hist_go", label = "Show different replications", icon = icon("refresh")))
+                   radioButtons("pp_hists_rep_vs_obs_overlay", "Densities", choices = list(Separate = FALSE, Overlay = TRUE), selected = FALSE, inline = TRUE)
+                   ))
 ),
     
-    plotOutput("pp_hists_rep_vs_obs_out")
-    
+    plotOutput("pp_hists_rep_vs_obs_out"),
+actionButton("resample_hist_go", label = "Show different replications", icon = icon("refresh"))
   )
 })
