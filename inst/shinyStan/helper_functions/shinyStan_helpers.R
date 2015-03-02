@@ -8,6 +8,7 @@
 axis_line_color <- "#346fa1"
 axis_color <- theme(axis.line = element_line(color = axis_line_color))
 axis_labs <- theme(axis.title = element_text(face = "bold", size = 13))
+title_txt <- theme(plot.title = element_text(face = "bold", size = 14))
 fat_axis <- theme(axis.line.x = element_line(size = 3, color = axis_line_color), 
                   axis.line.y = element_line(size = 0.5, color = axis_line_color))
 h_lines <- theme(panel.grid.major = element_line(size = 0.25, linetype = 3, color = "turquoise4"),
@@ -265,6 +266,8 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
 .param_hist <- function(param, dat, chain, binwd,
                         fill_color = "gray35", line_color = "gray35",
                         title = TRUE) {
+  
+  ttl <- "Histogram of Posterior Draws (post-warmup) \n"
   dat <- melt(dat)
 
   if (!("chains" %in% colnames(dat))) { # fixes for if there's only 1 chain:
@@ -286,9 +289,9 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
 
   graph <- graph +
     labs(x = param, y = "") +
-    theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs)
+    theme_classic() %+replace% (title_txt + axis_color + axis_labs + fat_axis + no_yaxs)
 
-  if (title == TRUE) graph <- graph + ggtitle("Histogram of Posterior Samples (post-warmup) \n")
+  if (title == TRUE) graph <- graph + ggtitle(ttl)
 
   graph
 }
@@ -303,6 +306,8 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
                         chain_split = FALSE,
                         title = TRUE) {
 
+  ttl <- "Kernel Density Estimate (post-warmup) \n"
+  
   dat <- melt(dat)
 
   if (!("chains" %in% colnames(dat))) { # fixes for if there's only 1 chain:
@@ -340,7 +345,8 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
       scale_color_discrete("") + scale_fill_discrete("") +
       labs(x = param, y = "") +
       x_scale + # y_scale +
-      theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs)
+      theme_classic() %+replace% (title_txt + axis_color + axis_labs + fat_axis + no_yaxs)
+    if (title == TRUE) graph <- graph + ggtitle(ttl)
     return(graph)
   }
 
@@ -349,9 +355,9 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
     labs(x = param, y = "") +
     x_scale + # y_scale +
     geom_ribbon(ymin = 0, fill = fclr, color = fclr) +
-    theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs)
+    theme_classic() %+replace% (title_txt + axis_color + axis_labs + fat_axis + no_yaxs)
 
-  if (title == TRUE) graph <- graph + ggtitle("Posterior Density (post-warmup) \n")
+  if (title == TRUE) graph <- graph + ggtitle(ttl)
 
   if (point_est != "None") {
     graph <- graph + annotate("segment",
@@ -368,8 +374,6 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
   }
   graph
 }
-
-
 
 
 
@@ -666,13 +670,13 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
     N <- length(samps[,,1])
     dat <- fit_summary[,"n_eff"]
     dat <- data.frame(parameter = names(dat), x = dat/N)
-    my_labs <- labs(y = "", x = "Effective samples / total samples")
+    my_labs <- labs(y = "", x = "Effective sample size / iterations")
   }
   if (which == "mcse") {
     dat <- fit_summary[, c("se_mean", "sd")]
     dat <- dat[,1] / dat[,2]
     dat <- data.frame(parameter = names(dat), x = dat)
-    my_labs <- labs(y = "", x = "Monte carlo SE / posterior SD")
+    my_labs <- labs(y = "", x = "Monte Carlo se / posterior sd")
   }
   graph <- qplot(x = x, data = dat, color = I("gray65"), fill = I("gray35"))
   graph <- graph + my_labs + theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs)
