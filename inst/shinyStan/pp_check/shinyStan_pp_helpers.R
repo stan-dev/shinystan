@@ -115,15 +115,25 @@ sample_id_for_resids <- reactive({
 }
 
 
-.pp_y_vs_avg_rep <- function(y, colMeans_y_rep){
+.pp_y_vs_avg_rep <- function(y, colMeans_y_rep, zoom_to_zero = FALSE){
   dat <- data.frame(x = y, y = colMeans_y_rep, z = abs(y-colMeans_y_rep))
   xy_labs <- labs(x = "y", y = "Average y_rep")
   thm <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis)
   graph <- ggplot(dat, aes(x, y)) + 
     geom_abline(intercept = 0, slope = 1, color = "#428bca", size = 0.75) +
     geom_point(color = "gray35", size = 2.75, alpha = 1, shape = 19) + 
-    xy_labs 
+    xy_labs +
+    thm
   
-  graph + xy_labs + thm
+  
+  if (zoom_to_zero) {
+    graph <- graph + 
+      geom_hline(yintercept = 0, size = 3, color = axis_line_color) + 
+      geom_vline(xintercept = 0, size = 0.5, color = axis_line_color) +
+      thm %+replace%
+      theme(axis.line = element_blank())
+  }
+  
+  graph 
 }
 
