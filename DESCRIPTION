@@ -27,6 +27,7 @@ Imports:
     dygraphs (>= 0.4.1),
     gridExtra,
     gtools,
+    markdown,
     plyr,
     reshape2,
     threejs,
