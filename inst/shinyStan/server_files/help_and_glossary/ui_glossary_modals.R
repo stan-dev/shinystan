@@ -7,18 +7,18 @@ make_glossary_modal_output <- function(id, trigger) {
   renderUI({
     bsModal(id, title = strong("shinyStan glossary"), trigger,
             withMathJax(),
-
+            
             navlistPanel(well = FALSE,
-
+                         
                          tabPanel("n_eff",
                                   withMathJax(),
                                   p(h4("Effective sample size"),"\\(n_{\\rm eff}\\)"),
                                   p(
                                     "\\(n_{\\rm eff}\\) is an estimate of the effective number of independent
 draws from the posterior distribution of the estimand of interest. Because the
-samples within a chain are not independent if there is autocorrelation, the
-number of effective samples will be smaller than the actual number of
-simulations."
+draws within a chain are not independent if there is autocorrelation, the
+effective sample size will be smaller than the actual number of
+iterations."
                                   ),
                                   p(
                                     "The estimation of effective sample size is described in detail in the 'Markov
@@ -56,18 +56,17 @@ and some of its limitations can be found in the 'Markov Chain Monte Carlo Sampli
                          tabPanel("se_mean",
                                   p(h4("Monte Carlo uncertainty"), "\\(se_{\\rm mean}\\)"),
                                   p(
-                                    "The standard error of the mean of the posterior samples (not to be confused
-with the standard deviation of the posterior samples) is the uncertainty
+                                    "The standard error of the mean of the posterior draws (not to be confused
+with the standard deviation of the posterior draws) is the uncertainty
 associated with the Monte Carlo approximation. This quantity approaches 0 as
-the number of samples goes to infinity, whereas the standard deviation of the
-posterior samples approaches the standard deviation of the posterior
-distribution."
+the sample size goes to infinity, whereas the standard deviation of the posterior
+draws approaches the standard deviation of the posterior distribution."
                                   )
                          )
             )
     )
   })
-
+  
 }
 
 # outputs -----------------------------------------------------------------
