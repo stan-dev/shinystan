@@ -666,13 +666,13 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
     N <- length(samps[,,1])
     dat <- fit_summary[,"n_eff"]
     dat <- data.frame(parameter = names(dat), x = dat/N)
-    my_labs <- labs(y = "", x = "Effective samples / total samples")
+    my_labs <- labs(y = "", x = "Effective sample size / iterations")
   }
   if (which == "mcse") {
     dat <- fit_summary[, c("se_mean", "sd")]
     dat <- dat[,1] / dat[,2]
     dat <- data.frame(parameter = names(dat), x = dat)
-    my_labs <- labs(y = "", x = "Monte carlo SE / posterior SD")
+    my_labs <- labs(y = "", x = "Monte Carlo se / posterior sd")
   }
   graph <- qplot(x = x, data = dat, color = I("gray65"), fill = I("gray35"))
   graph <- graph + my_labs + theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs)
