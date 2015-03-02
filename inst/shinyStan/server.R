@@ -325,6 +325,14 @@ shinyServer(function(input, output, session) {
     x <- suppressMessages(pp_hists_test_statistics_max())
     suppressMessages(suppressWarnings(print(x)))
   })
+#   output$pp_hists_test_statistics_custom1_out <- renderPlot({
+#     x <- suppressMessages(pp_hists_test_statistics_custom1())
+#     suppressMessages(suppressWarnings(print(x)))
+#   })
+#   output$pp_hists_test_statistics_custom2_out <- renderPlot({
+#     x <- suppressMessages(pp_hists_test_statistics_custom2())
+#     suppressMessages(suppressWarnings(print(x)))
+#   })
   output$pp_hist_resids_out <- renderPlot({
     x <- suppressMessages(pp_hist_resids())
     suppressMessages(suppressWarnings(print(x)))
