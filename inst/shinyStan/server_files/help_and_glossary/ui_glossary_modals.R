@@ -17,7 +17,7 @@ make_glossary_modal_output <- function(id, trigger) {
                                     "\\(n_{\\rm eff}\\) is an estimate of the effective number of independent
 draws from the posterior distribution of the estimand of interest. Because the
 draws within a chain are not independent if there is autocorrelation, the
-effective sample size will be smaller than the actual number of
+effective sample size will be smaller than the total number of
 iterations."
                                   ),
                                   p(
