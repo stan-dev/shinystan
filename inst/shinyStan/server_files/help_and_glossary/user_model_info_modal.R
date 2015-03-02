@@ -17,7 +17,7 @@ the beta distribution in terms of the mean and sample size,' etc."),
             "or highlight aspects of the model you want feedback on"
           ),
           tags$blockquote(style = "font-size: 14px;", 
-                          "e.g. 'It looks like the ratio of effective sample size to total sample size is very low for a lot of the parameters. 
+                          "e.g. 'It looks like the ratio of the effective sample size to the total number of iterations is very low for a lot of the parameters. 
 Is there a different parameterization that might help?"
           )
           )
