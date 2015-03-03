@@ -126,7 +126,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
   if (length(dim(out)) > 1) { # i.e. multiple chains
     out <- rbind("All chains" = colMeans(out), out)
     colnames(out) <- gsub("__","",colnames(out))
-    out <- apply(out, 2, round, digits)
+    out <- round(out, digits = digits)
     out <- cbind(Chain = rownames(out), out)
   } else {
     # if only 1 chain
@@ -490,11 +490,9 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
   if (length(as_group) == 0) {
     return(params)
   }
-
+  
   make_group <- function(group_name) {
-    temp <- paste0(group_name,"\\[")
-    group <- all_param_names[grep(temp, all_param_names)]
-    group <- group[which(substr(group, 1, nchar(group_name)) == group_name)]
+    all_param_names[grep(paste0("^",group_name,"\\["), all_param_names)]
   }
   single_params <- params[-as_group]
   grouped_params <- params[as_group]
@@ -503,7 +501,6 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
   updated_params <- c(single_params, unlist(groups))
   updated_params
 }
-
 
 # plot_param_vertical_gg --------------------------------------------------
 # main plot of multiple parameters
@@ -572,7 +569,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
 
   colnames(xy.df) <- c("params", "y", "ll", "l", "m", "h", "hh")
   if (point_est == "Mean") {
-    xy.df$m <- apply(samps.use, 2, mean)
+    xy.df$m <- unname(colMeans(samps.use))
   }
   p.base <- ggplot(xy.df, environment = .e)
   p.name <- scale_y_continuous(breaks = y, labels = params, limits = c(0.5, nParams + 1))

@@ -1,6 +1,6 @@
 # convert stanfit object to shinystan object
 
-stan2shinystan <- function(stanfit, notes) {
+stan2shinystan <- function(stanfit, model_name, notes) {
   # notes: text to add to user_model_info slot
 
   stopifnot(requireNamespace("rstan", quietly = TRUE))
@@ -11,18 +11,19 @@ stan2shinystan <- function(stanfit, notes) {
   }
 
   samps_all <- rstan::extract(stanfit, permuted = FALSE, inc_warmup = TRUE)
-  param_names <- dimnames(samps_all)[[3]]
-  param_dims <- get_stanfit_param_dims(stanfit, param_names)
-
+  param_names <- dimnames(samps_all)[[3]] # stanfit@sim$fnames_oi
+  param_dims <- stanfit@sim$dims_oi
   stan_algorithm <- stanfit@stan_args[[1]]$algorithm
   if (!(stan_algorithm %in% c("NUTS", "HMC"))) {
     warning("Most features of shinyStan are only available for models using
             algorithm NUTS or algorithm HMC.")
   }
 
+  mname <- if (!missing(model_name)) model_name else stanfit@model_name
+
   slots <- list()
   slots$Class <- "shinystan"
-  slots$model_name <- stanfit@model_name
+  slots$model_name <- mname
   slots$param_names <- param_names
   slots$param_dims <- param_dims
   slots$param_groups <- names(param_dims)
