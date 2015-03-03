@@ -15,17 +15,19 @@ stan2shinystan <- function(stanfit, model_name, notes) {
   
   stan_algorithm <- if (from_cmdstan_csv) toupper(stan_args$engine) else stan_args$algorithm
   warmup <- if (from_cmdstan_csv) stanfit@sim$warmup2 else stanfit@sim$warmup
+  nWarmup <- if (from_cmdstan_csv) warmup else floor(warmup / stanfit@sim$thin)
   
   samps_all <- rstan::extract(stanfit, permuted = FALSE, inc_warmup = TRUE)
   param_names <- dimnames(samps_all)[[3]] # stanfit@sim$fnames_oi
   param_dims <- stanfit@sim$dims_oi
   
   if (!(stan_algorithm %in% c("NUTS", "HMC"))) {
-    warning("Most features of shinyStan are only available for models using
+    warning("Most shinyStan features are only available for models using
             algorithm NUTS or algorithm HMC.")
   }
   
   mname <- if (!missing(model_name)) model_name else stanfit@model_name
+  mcode <- rstan::get_stancode(stanfit)
   
   slots <- list()
   slots$Class <- "shinystan"
@@ -37,11 +39,11 @@ stan2shinystan <- function(stanfit, model_name, notes) {
   slots$summary <- rstan::summary(stanfit)$summary
   slots$sampler_params <- rstan::get_sampler_params(stanfit)
   slots$nChains <- ncol(stanfit)
-  slots$nIter <- nrow(samps_all) # total number of iterations (after thinning)
-  slots$nWarmup <- floor(warmup / stanfit@sim$thin)
-  if (!missing(notes)) slots$user_model_info <- notes
-  slots$model_code <- rstan::get_stancode(stanfit)
+  slots$nIter <- nrow(samps_all) 
+  slots$nWarmup <- nWarmup
   slots$stan_algorithm <- stan_algorithm
+  if (!missing(notes)) slots$user_model_info <- notes
+  if (length(mcode) > 0) slots$model_code <- mcode
   
   do.call("new", slots)
 }
