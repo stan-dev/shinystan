@@ -23,7 +23,7 @@ LazyData: true
 Suggests: 
     rstan,
     coda,
-    knitr
+    knitr (>= 1.9)
 Imports: 
     dygraphs (>= 0.4.1),
     gtools,
