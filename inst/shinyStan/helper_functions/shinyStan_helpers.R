@@ -126,7 +126,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
   if (length(dim(out)) > 1) { # i.e. multiple chains
     out <- rbind("All chains" = colMeans(out), out)
     colnames(out) <- gsub("__","",colnames(out))
-    out <- round(out, digits = digits)
+    out <- formatC(round(out, digits), format='f', digits=digits)
     out <- cbind(Chain = rownames(out), out)
   } else {
     # if only 1 chain
