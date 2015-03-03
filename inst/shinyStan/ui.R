@@ -17,7 +17,7 @@
 
 
 pkgs <- c("shiny", "shinyBS", "ggplot2", "gtools", "plyr", "reshape2", "dygraphs", "xts", "threejs", "xtable")
-shinyStan:::Librarian(pkgs)
+invisible(lapply(X = pkgs, FUN = require, character.only = TRUE))
 
 # suggested additional packages: rstan, coda
 
@@ -181,7 +181,7 @@ shinyUI(
              #### TAB: Explore Parameters ####
              tabPanel(title = "Explore", icon = icon("eye-open", lib = "glyphicon"),
                       fluidRow(
-                        column(3, selectizeInput(inputId = "param", label = h4("Select parameter"), choices = .make_param_list(object), multiple = FALSE)),
+                        column(3, selectizeInput(inputId = "param", label = h4("Select parameter"), choices = .make_param_list(object), selected = .make_param_list(object)[1], multiple = FALSE)),
                         # summary stats
                         column(7, offset = 1, dataTableOutput("parameter_summary_out"))
                       ),
@@ -226,11 +226,7 @@ shinyUI(
                                    #### trivariate plot #####
                                    tabPanel("Dynamic 3D scatterplot", # icon = icon("spinner", "fa-spin"),
                                             uiOutput("ui_triviariate_customize"),
-                                            fluidRow(
-                                              column(3, selectizeInput("trivariate_param_x", label = h5(style = "color: #428bca;", "x-axis"), choices = .make_param_list(object), multiple = FALSE)),
-                                              column(3, selectizeInput("trivariate_param_y", label = h5(style = "color: #428bca;", "y-axis"), choices = .make_param_list(object), multiple = FALSE)),
-                                              column(3, selectizeInput("trivariate_param_z", label = h5(style = "color: #428bca;", "z-axis"), choices = rev(.make_param_list(object)), multiple = FALSE))
-                                            ),
+                                            uiOutput("ui_trivariate_selectize"),
                                             br(),
                                             threejs::scatterplotThreeOutput("trivariate_plot_out"),
                                             br()
@@ -238,7 +234,7 @@ shinyUI(
                                    #### bivariate plot #####
                                    tabPanel("Bivariate",
                                             uiOutput("ui_bivariate_customize"),
-                                            selectizeInput("bivariate_param_y", label = h5(style = "color: #428bca;", "y-axis"), choices = rev(.make_param_list(object)), multiple = FALSE),
+                                            selectizeInput("bivariate_param_y", label = h5(style = "color: #428bca;", "y-axis"), choices = rev(.make_param_list(object)), selected = rev(.make_param_list(object))[1], multiple = FALSE),
                                             plotOutput("bivariate_plot_out")
                                    )
                                    

@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 pkgs <- c("shiny", "shinyBS")
-shinyStan:::Librarian(pkgs)
+invisible(lapply(X = pkgs, FUN = require, character.only = TRUE))
 
 # options(shiny.trace=TRUE)
 # load the helper functions
