@@ -492,9 +492,10 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
   }
 
   make_group <- function(group_name) {
-    temp <- paste0(group_name,"\\[")
-    group <- all_param_names[grep(temp, all_param_names)]
-    group <- group[which(substr(group, 1, nchar(group_name)) == group_name)]
+#     temp <- paste0(group_name,"\\[")
+#     group <- all_param_names[grep(temp, all_param_names)]
+#     group <- group[which(substr(group, 1, nchar(group_name)) == group_name)]
+    all_param_names[grep(paste0("^",group_name,"\\["), all_param_names)]
   }
   single_params <- params[-as_group]
   grouped_params <- params[as_group]
@@ -562,7 +563,6 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
                  0.5 + show.level / 2)
   samps.quantile <- t(apply(samps.use, 2, quantile, probs = probs.use))
   y <- as.numeric(seq(nParams, 1, by = -1))
-
   xlim.use <- c(min(samps.quantile[,1]), max(samps.quantile[,5]))
   xrange <- diff(xlim.use)
   xlim.use[1] <- xlim.use[1] - 0.05 * xrange
@@ -790,7 +790,9 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
                             ellipse_lev = "None",
                             ellipse_lty      = 1,
                             ellipse_lwd      = 1,
-                            ellipse_alpha    = 1
+                            ellipse_alpha    = 1,
+                            lines = TRUE,
+                            points = TRUE
 ){
 
   shape_translator <- function(x) {
@@ -804,9 +806,13 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
   samps_use <- array(samps[,,params], c(nIter, nParams))
   colnames(samps_use) <- params
   dat <- data.frame(x = samps_use[,param], y = samps_use[,param2])
-  graph <- ggplot(dat, aes(x = x, y = y)) + labs(x = param, y = param2)
-
-  graph <- graph + geom_point(alpha = pt_alpha, size = pt_size, shape = shape_translator(pt_shape), color = pt_color)
+  graph <- ggplot(dat, aes(x = x, y = y, xend=c(tail(x, n=-1), NA), yend=c(tail(y, n=-1), NA))) + labs(x = param, y = param2)
+  if (lines) graph <- graph + geom_segment(alpha = 1, color = "gray85", arrow = grid::arrow(length=grid::unit(0.2,"cm"))) 
+  
+  
+  
+  
+  if (points) graph <- graph + geom_point(alpha = pt_alpha, size = pt_size, shape = shape_translator(pt_shape), color = pt_color)
   if (ellipse_lev != "None") {
     graph <- graph + stat_ellipse(level = as.numeric(ellipse_lev), color = ellipse_color, linetype = ellipse_lty, size = ellipse_lwd, alpha = ellipse_alpha)
   }
