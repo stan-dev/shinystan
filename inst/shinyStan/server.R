@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 pkgs <- c("shiny", "shinyBS")
-invisible(lapply(X = pkgs, FUN = require, character.only = TRUE))
+invisible(lapply(X = pkgs, FUN = library, character.only = TRUE))
 
 # options(shiny.trace=TRUE)
 # load the helper functions
@@ -27,42 +27,35 @@ source("server_files/utilities/extract_shinystan_object.R", local=TRUE)
 
 # Begin shinyServer -------------------------------------------------------
 # _________________________________________________________________________
-shinyServer(function(input, output, session) {
+function(input, output, session) {
 
   # Stop the app when button is clicked
   observe({
-    if(input$nav == "quit") {
-      stopApp()
-    }
+    if (input$nav == "quit") stopApp()
   })
 
   # load utility functions & all files for dynamic UIs
-  output_files <- list.files(path = "server_files/outputs", full.names = TRUE)
-  utility_files <- list.files(path = "server_files/utilities", full.names = TRUE)
-  ui_files <- list.files(path = "server_files/dynamic_ui", full.names = TRUE)
-  help_files <- list.files(path = "server_files/help_and_glossary", full.names = TRUE)
-
-  for (f in c(ui_files, utility_files, output_files, help_files)) {
-    source(f, local = TRUE)
-  }
+  paths <- paste0("server_files/", c("outputs", "utilities", "dynamic_ui", "help_and_glossary"))
+  files <- list.files(paths, full.names = TRUE)
+  for (f in files) source(f, local = TRUE)
 
   #### tooltips & popovers ####  
   tooltip_ids <- c("download_multiview", "dynamic_trace_stack", "download_all_summary", "tex_options")
   tooltip_msgs <- c("Will be a list object with one element per plot.", 
                     "If 'Stacked' is selected, the chains will be stacked on top of one another rather than drawing them independently. The first series specified in the input data will wind up on top of the chart and the last will be on bottom. Note that the y-axis values no longer correspond to the true values when this option is enabled.",
                     "Save as data.frame (.RData)", "Print latex table to R console")
+  popover_ids <- c(paste0("tex_", c("booktabs", "long")))
+  popover_msgs <- c("From print.xtable {xtable}: If TRUE, the toprule, midrule and bottomrule tags from the LaTex 'booktabs' package are used rather than hline for the horizontal line tags.",
+                    "For tables longer than a single page. If TRUE, will use LaTeX package 'longtable'.")
   for (id in seq_along(tooltip_ids)) {
     addTooltip(session, id = tooltip_ids[id], trigger = "hover", placement = "right",
                title = tooltip_msgs[id])
   }
-  
-  popover_ids <- c(paste0("tex_", c("booktabs", "long")))
-  popover_msgs <- c("From print.xtable {xtable}: If TRUE, the toprule, midrule and bottomrule tags from the LaTex 'booktabs' package are used rather than hline for the horizontal line tags.",
-                     "For tables longer than a single page. If TRUE, will use LaTeX package 'longtable'.")
   for (id in seq_along(popover_ids)) {
     addPopover(session, id = popover_ids[id], trigger = "hover", placement = "right",
                title = popover_msgs[id])
   }
+
 
   #### DATATABLE: summary stats (all parameters) ####
   output$all_summary_out <- renderDataTable({
@@ -97,11 +90,6 @@ shinyServer(function(input, output, session) {
     }
   )
   # latex the table
-  # Stop the app when button is clicked
-#   observe({
-#     latex <- input$tex_go
-#     if (latex > 0) summary_stats_latex()
-#   })
   observeEvent(input$tex_go, handlerExpr = {
     summary_stats_latex()
   })
@@ -174,7 +162,6 @@ shinyServer(function(input, output, session) {
   output$mcse_over_sd_warnings <- renderText({
     mcse_over_sd_warnings()
   })
-
   #### PLOT: autocorrelation ####
   output$autocorr_plot_out <- renderPlot({
     autocorr_plot()
@@ -200,7 +187,6 @@ shinyServer(function(input, output, session) {
       save(shinystan_multi_trace, file = file)
     }
   )
-
   #### TEXT: parameter name ####
   output$param_name <- renderText({
     input$param
@@ -210,6 +196,7 @@ shinyServer(function(input, output, session) {
     as.data.frame(round(parameter_summary(), 2))
   }, options = list(
     paging = FALSE, searching = FALSE, info = FALSE, ordering = FALSE,
+    columnDefs = list(list(sClass="alignRight", targets ="_all")),
     initComplete = I( # change background color of table header
       'function(settings, json) {
       $(this.api().table().header()).css({"background-color": "white", "color": "black"});
@@ -232,7 +219,6 @@ shinyServer(function(input, output, session) {
       save(shinystan_multiview, file = file)
     }
   )
-
   ### PLOT: histogram ####
   output$hist_plot_out <- renderPlot({
     x <- hist_plot()
@@ -277,15 +263,7 @@ shinyServer(function(input, output, session) {
       save(shinystan_bivariate, file = file)
     }
   )
-
   #### TEXT: User's model notes ####
-#   observe({
-#     input$save_user_model_info
-#     isolate({
-#       if (input$user_model_info != "")
-#         shinystan_object@user_model_info <<- input$user_model_info
-#     })
-#   })
   observeEvent(input$save_user_model_info, handlerExpr = {
     if (input$user_model_info != "")
       shinystan_object@user_model_info <<- input$user_model_info
@@ -298,4 +276,4 @@ shinyServer(function(input, output, session) {
   })
 
 
-}) # End shinyServer
+} # End
