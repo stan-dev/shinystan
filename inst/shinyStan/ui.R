@@ -284,7 +284,7 @@ shinyUI(
                         #### TAB: Help ####
                         tabPanel(title = "Help",
                                  br(),
-                                 a(style = "color: maroon; font-size: 15px;", "Click here to report a bug, request a new feature, or ask us a question.", href = "https://github.com/jgabry/shinyStan/issues"),
+                                 a(style = "color: maroon; font-size: 15px;", "Click here to report a bug, request a new feature, or ask us a question.", href = "https://github.com/stan-dev/shinystan/issues"),
                                  br(),br(),
                                  h3("shinyStan help"),
                                  p("More coming soon."),
