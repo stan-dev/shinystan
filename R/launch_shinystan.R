@@ -27,14 +27,10 @@
 #' }
 #'
 launch_shinystan <- function(object) {
+  message("\n Loading... \n For large models shinyStan may take a few moments to launch.")
 
   launch <- function(object) {
-    if (is.shinystan(object)) {
-      shinystan_object <<- object
-    }
-    if (!is.shinystan(object)) {
-      shinystan_object <<- stan2shinystan(object)
-    }
+    shinystan_object <<- if (is.shinystan(object)) object else stan2shinystan(object)
     shiny::runApp(system.file("shinyStan", package = "shinyStan"))
   }
 
@@ -48,14 +44,15 @@ launch_shinystan <- function(object) {
   name <- deparse(substitute(object))
   no_name <- substr(name, 1, 12) == "as.shinystan"
 
-  if (missing(object)) {
-    stop("Please specify a shinystan or stanfit object.")
-  }
+  if (missing(object)) stop("Please specify a shinystan or stanfit object.")
+
   if (!is_stan(object) & !is.shinystan(object)) {
     stop(paste(name, "is not a shinystan or stanfit object."))
   }
-  out_name <- ifelse(is_stan(object), paste0(name,"_shinystan"), name)
+
+  out_name <- if (is_stan(object)) paste0(name,"_shinystan") else name
   if (no_name) out_name <- "unnamed_shinystan"
+  
   on.exit(cleanup_shinystan(shinystan_object, out_name))
   launch(object)
 }
