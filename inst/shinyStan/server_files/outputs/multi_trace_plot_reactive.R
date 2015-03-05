@@ -21,7 +21,7 @@ multi_trace_plot <- reactive({
 
   validate(need(!is.null(input$multi_trace_rect), message = "Loading..."))
 
-  # zoom <- "On"
+  zoom <- "On"
   do.call(".param_trace_multi", args = list(
     params      = input$multi_trace_params,
     all_param_names = param_names,
@@ -34,7 +34,7 @@ multi_trace_plot <- reactive({
     rect_color  = "skyblue",
     rect_alpha  = input$multi_trace_rect_alpha,
     layout      = input$multi_trace_layout,
-    x1          = input$multi_xzoom[1],
-    x2          = input$multi_xzoom[2]
+    x1          = ifelse(zoom == "On", input$multi_xzoom[1], NA),
+    x2          = ifelse(zoom == "On", input$multi_xzoom[2], NA)
   ))
 })
