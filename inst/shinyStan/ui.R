@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# load packages
+
 pkgs <- c("shiny", "shinyBS", "ggplot2", "gtools", "plyr", "reshape2", "dygraphs", "xts", "threejs", "xtable")
 invisible(lapply(X = pkgs, FUN = library, character.only = TRUE))
 
@@ -29,11 +29,12 @@ show_model_name <- h4(style = "padding: 0px 0px 10px 10px; color: #428bca;", pas
 # Begin shinyUI -----------------------------------------------------------
 # _________________________________________________________________________
 
+
 navbarPage(title = strong(style = "color: #f9dd67;", "shinyStan"),
            windowTitle = "shinyStan", collapsible = FALSE, id = "nav",
            inverse = TRUE, header = show_model_name,
            
-           #### TAB: ESTIMATE ####
+           #### TAB: Estimates ####
            tabPanel(title = "Estimate", icon = icon("stats", lib = "glyphicon"),
                     withMathJax(),
                     
@@ -85,9 +86,9 @@ navbarPage(title = strong(style = "color: #f9dd67;", "shinyStan"),
                                )
                       )
                     ) # End tabsetPanel
-           ), # end Estimate
+           ), # End Estimates
            
-           #### TAB: DIAGNOSE ####
+           #### TAB: Convergence ####
            tabPanel(title = "Diagnose", icon = icon("medkit"),
                     tabsetPanel(
                       #### sampler parameters ####
@@ -171,9 +172,9 @@ navbarPage(title = strong(style = "color: #f9dd67;", "shinyStan"),
                                br()
                       )
                     ) # End tabsetPanel
-           ), # End Diagnose
+           ), # End Convergence
            
-           #### TAB: EXPLORE ####
+           #### TAB: Explore Parameters ####
            tabPanel(title = "Explore", icon = icon("eye-open", lib = "glyphicon"),
                     fluidRow(
                       column(3, selectizeInput(inputId = "param", label = h4("Select parameter"), choices = .make_param_list(object), selected = .make_param_list(object)[1], multiple = FALSE)),
@@ -250,63 +251,6 @@ navbarPage(title = strong(style = "color: #f9dd67;", "shinyStan"),
                                helpText("The text will be saved in the", code("user_model_info"),
                                         "slot of your", code("shinystan"), "object and displayed here
                                     each time you launch the app for this model.",
-<<<<<<< HEAD
-                                          bsButton("btn_user_model_info_why", label = "Read more about the 'Notes' tab", style = "link", size = "mini")
-                                 ),
-                                 h4("Notes"),
-                                 tags$textarea(id="user_model_info", rows=20, cols=60, object@user_model_info),
-                                 br(),
-                                 fluidRow(
-                                   column(3, actionButton("save_user_model_info", label = "Save notes", icon = icon("download"))),
-                                   column(8, offset = 1, textOutput("user_text_saved")),
-                                   tags$style(type = "text/css", "#user_text_saved {color: gray;}")
-                                 ),
-                                 hr(),
-                                 uiOutput("user_model_info_modal")
-                        ),  # END TAB: Notes
-                        #### TAB: About ####
-                        tabPanel(title = "About",
-                                 h4("shinyStan"),
-                                 htmlOutput("ui_credits"),
-                                 br(),
-                                 actionLink("citation_modal", "Citing shinyStan"),
-                                 uiOutput("ui_cite"),
-                                 br(),
-                                 h4("Stan & RStan"),
-                                 a("Stan Development Team", href="http://mc-stan.org/team.html"),
-                                 hr(),
-                                 uiOutput("ui_about")
-                        ), # END TAB: About
-                        #### TAB: Help ####
-                        tabPanel(title = "Help",
-                                 br(),
-                                 a(style = "color: maroon; font-size: 15px;", "Click here to report a bug, request a new feature, or ask us a question.", href = "https://github.com/stan-dev/shinystan/issues"),
-                                 br(),br(),
-                                 h3("shinyStan help"),
-                                 p("More coming soon."),
-                                 uiOutput("help_navlist"), # output navlist with help files
-                                 br(),
-                                 hr(),
-                                 h3("Stan help"),
-                                 a("Stan website", href = "http://mc-stan.org"),
-                                 br(),
-                                 a("Stan users google group", href = "https://groups.google.com/forum/#!forum/stan-users")
-                        ) # END Help
-             ), # END navbarMenu
-             #### QUIT ####
-             tabPanel(tags$div(style = "color: #f9dd67;", "Quit"), value = "quit",
-                      h1("Thanks for using shinyStan."),
-                      br(),br(),
-                      h5("It's safe to close this browser window.")
-             ),
-             
-             #### includeCSS ####
-             includeCSS("shinyStan.css"),
-             tags$style(type="text/css", "#multi_trace_plot_out.recalculating, #autocorr_plot_out.recalculating, #plot_param_vertical_out.recalculating { opacity: 1.0; }"),
-             tags$head(tags$style(".table .alignRight {text-align:right;}"))
-  ) # END navbarPage
-) # END shinyUI
-=======
                                         bsButton("btn_user_model_info_why", label = "Read more about the 'Notes' tab", style = "link", size = "mini")
                                ),
                                h4("Notes"),
@@ -336,7 +280,7 @@ navbarPage(title = strong(style = "color: #f9dd67;", "shinyStan"),
                       #### TAB: Help ####
                       tabPanel(title = "Help",
                                br(),
-                               a(style = "color: maroon; font-size: 15px;", "Click here to report a bug, request a new feature, or ask us a question.", href = "https://github.com/jgabry/shinyStan/issues"),
+                               a(style = "color: maroon; font-size: 15px;", "Click here to report a bug, request a new feature, or ask us a question.", href = "https://github.com/stan-dev/shinystan/issues"),
                                br(),br(),
                                h3("shinyStan help"),
                                p("More coming soon."),
@@ -360,8 +304,5 @@ navbarPage(title = strong(style = "color: #f9dd67;", "shinyStan"),
            includeCSS("shinyStan.css"),
            tags$style(type="text/css", "#multi_trace_plot_out.recalculating, #autocorr_plot_out.recalculating, #plot_param_vertical_out.recalculating { opacity: 1.0; }"),
            tags$head(tags$style(".table .alignRight {text-align:right;}"))
-           
-           
 ) # END navbarPage
 
->>>>>>> origin/develop

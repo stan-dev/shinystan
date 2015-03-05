@@ -28,17 +28,17 @@ source("server_files/utilities/extract_shinystan_object.R", local=TRUE)
 # Begin shinyServer -------------------------------------------------------
 # _________________________________________________________________________
 function(input, output, session) {
-
+  
   # Stop the app when button is clicked
   observe({
     if (input$nav == "quit") stopApp()
   })
-
+  
   # load utility functions & all files for dynamic UIs
   paths <- paste0("server_files/", c("outputs", "utilities", "dynamic_ui", "help_and_glossary"))
   files <- list.files(paths, full.names = TRUE)
   for (f in files) source(f, local = TRUE)
-
+  
   #### tooltips & popovers ####  
   tooltip_ids <- c("download_multiview", "dynamic_trace_stack", "download_all_summary", "tex_options")
   tooltip_msgs <- c("Will be a list object with one element per plot.", 
@@ -55,8 +55,8 @@ function(input, output, session) {
     addPopover(session, id = popover_ids[id], trigger = "hover", placement = "right",
                title = popover_msgs[id])
   }
-
-
+  
+  
   #### DATATABLE: summary stats (all parameters) ####
   output$all_summary_out <- renderDataTable({
     summary_stats()
@@ -274,6 +274,6 @@ function(input, output, session) {
       print(paste("Saved:  ", format(Sys.time(), "%a %b %d %Y %X")))
     }
   })
-
-
+  
+  
 } # End
