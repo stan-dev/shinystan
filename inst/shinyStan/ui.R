@@ -302,7 +302,7 @@ navbarPage(title = strong(style = "color: #f9dd67;", "shinyStan"),
            
            #### includeCSS ####
            includeCSS("shinyStan.css"),
-           tags$style(type="text/css", "#multi_trace_plot_out.recalculating, #autocorr_plot_out.recalculating, #plot_param_vertical_out.recalculating { opacity: 1.0; }"),
+           tags$style(type="text/css", "#autocorr_plot_out.recalculating, #plot_param_vertical_out.recalculating { opacity: 1.0; }"),
            tags$head(tags$style(".table .alignRight {text-align:right;}"))
 ) # END navbarPage
 
