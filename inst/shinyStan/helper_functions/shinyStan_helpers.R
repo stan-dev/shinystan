@@ -799,6 +799,18 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
     shape <- ifelse(x >= 6, x + 9, x)
     shape
   }
+  
+  alpha_calc_lines <- function(N) {
+    if (N < 50) return(0.5)
+    else if (N > 1000) return(0.15) 
+    else 1 - pnorm(N/750)
+  }
+  alpha_calc <- function(N) {
+    if (N <= 100) return(0.67)
+    else if (N <= 200) return(0.5)
+    else if (N >= 1000) return(0.15) 
+    else 1 - pnorm(N/1000)
+  }
 
   params <- c(param, param2)
   nParams <- 2
@@ -806,12 +818,9 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
   samps_use <- array(samps[,,params], c(nIter, nParams))
   colnames(samps_use) <- params
   dat <- data.frame(x = samps_use[,param], y = samps_use[,param2])
+  
   graph <- ggplot(dat, aes(x = x, y = y, xend=c(tail(x, n=-1), NA), yend=c(tail(y, n=-1), NA))) + labs(x = param, y = param2)
-  if (lines) graph <- graph + geom_segment(alpha = 1, color = "gray85", arrow = grid::arrow(length=grid::unit(0.2,"cm"))) 
-  
-  
-  
-  
+  if (lines) graph <- graph + geom_path(alpha = alpha_calc_lines(nrow(dat)), color = "gray")
   if (points) graph <- graph + geom_point(alpha = pt_alpha, size = pt_size, shape = shape_translator(pt_shape), color = pt_color)
   if (ellipse_lev != "None") {
     graph <- graph + stat_ellipse(level = as.numeric(ellipse_lev), color = ellipse_color, linetype = ellipse_lty, size = ellipse_lwd, alpha = ellipse_alpha)

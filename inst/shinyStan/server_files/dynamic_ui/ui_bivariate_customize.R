@@ -1,6 +1,5 @@
 output$ui_bivariate_customize <- renderUI({
   my_ellipse_lev <- "None"
-  my_pt_alpha <- 0.10
   my_pt_size     <- 3.5
   my_pt_shape    <- 10
   my_pt_color    <- "firebrick"
@@ -8,6 +7,15 @@ output$ui_bivariate_customize <- renderUI({
   my_ellipse_lty      <- 1
   my_ellipse_lwd      <- 1
   my_ellipse_alpha    <- 1
+  
+  alpha_calc_pt <- function(N) {
+    if (N <= 100) return(1)
+    else if (N <= 200) return(0.75)
+    else if (N >= 1500) return(0.15) 
+    else 1 - pnorm(N/1500)
+  }
+  
+  my_pt_alpha <- alpha_calc_pt(nIter)
 
 #   if (input$user_contour_customize == TRUE) {
 #     ok <- exists("shinystan_settings_contour")
@@ -52,6 +60,7 @@ bsCollapse(
                            )
                     )
                   ),
+                  checkboxInput("bivariate_lines", "Path lines", value = TRUE),
                   hr(),
                   downloadButton("download_bivariate", "Save as ggplot2 object")
   )
