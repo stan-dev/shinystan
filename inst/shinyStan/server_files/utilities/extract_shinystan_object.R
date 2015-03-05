@@ -10,4 +10,3 @@ samps_post_warmup <- samps_all[(warmup_val + 1):nIter,, ,drop = FALSE]
 fit_summary <- object@summary
 param_names <- object@param_names
 stan_algorithm <- object@stan_algorithm
-# dependence <- object@dependence

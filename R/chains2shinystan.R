@@ -28,8 +28,6 @@ chains2shinystan <- function(chain_list, ...) {
     nIter <- nIter[1]
   } else {
     if (nChain == 1) {
-#       message("NOTE: a few of shinyStan's features don't work if you only have one chain.
-#               Please consider running multiple chains.")
       nIter <- nrow(chain_list[[1]])
       param_names <- colnames(chain_list[[1]])
     } else {
