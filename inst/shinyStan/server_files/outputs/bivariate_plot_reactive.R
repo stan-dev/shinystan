@@ -24,6 +24,7 @@ bivariate_plot <- reactive({
     ellipse_lwd      = input$bivariate_ellipse_lwd,
     ellipse_alpha    = input$bivariate_ellipse_alpha,
     lines            = input$bivariate_lines,
+    lines_color      = input$bivariate_lines_color,
     lines_alpha      = input$bivariate_lines_alpha
   ))
 })
