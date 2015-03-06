@@ -40,7 +40,7 @@ output$ui_bivariate_customize <- renderUI({
   #     my_ellipsealpha    <- ops$ellipsealpha
   #   }
   
-  bsCollapse(
+  bsCollapse(id = "bivariate_collapse_all",
     bsCollapsePanel(title = "View Options", id = "bivariate_collapse",
                     bsCollapse(
                       bsCollapsePanel(title = span(style = "color:#428bca;","Points"), id = "bivariate_points_collapse",
