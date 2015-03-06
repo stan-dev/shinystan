@@ -792,6 +792,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
                             ellipse_lwd      = 1,
                             ellipse_alpha    = 1,
                             lines = TRUE,
+                            lines_alpha,
                             points = TRUE
 ){
 
@@ -820,7 +821,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
   dat <- data.frame(x = samps_use[,param], y = samps_use[,param2])
   
   graph <- ggplot(dat, aes(x = x, y = y, xend=c(tail(x, n=-1), NA), yend=c(tail(y, n=-1), NA))) + labs(x = param, y = param2)
-  if (lines) graph <- graph + geom_path(alpha = alpha_calc_lines(nrow(dat)), color = "gray")
+  if (lines) graph <- graph + geom_path(alpha = lines_alpha, color = "gray")
   if (points) graph <- graph + geom_point(alpha = pt_alpha, size = pt_size, shape = shape_translator(pt_shape), color = pt_color)
   if (ellipse_lev != "None") {
     graph <- graph + stat_ellipse(level = as.numeric(ellipse_lev), color = ellipse_color, linetype = ellipse_lty, size = ellipse_lwd, alpha = ellipse_alpha)

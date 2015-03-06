@@ -23,6 +23,7 @@ bivariate_plot <- reactive({
     ellipse_lty      = input$bivariate_ellipse_lty,
     ellipse_lwd      = input$bivariate_ellipse_lwd,
     ellipse_alpha    = input$bivariate_ellipse_alpha,
-    lines            = input$bivariate_lines 
+    lines            = input$bivariate_lines,
+    lines_alpha      = input$bivariate_lines_alpha
   ))
 })

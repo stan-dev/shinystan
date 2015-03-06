@@ -14,6 +14,11 @@ output$ui_bivariate_customize <- renderUI({
     else if (N >= 1500) return(0.15) 
     else 1 - pnorm(N/1500)
   }
+  alpha_calc_lines <- function(N) {
+    if (N < 50) return(0.5)
+    else if (N > 1000) return(0.15) 
+    else 1 - pnorm(N/750)
+  }
   
   my_pt_alpha <- alpha_calc_pt(nIter)
 
@@ -60,7 +65,13 @@ bsCollapse(
                            )
                     )
                   ),
-                  checkboxInput("bivariate_lines", "Path lines", value = TRUE),
+                  fluidRow(
+                    column(4, checkboxInput("bivariate_lines", strong("Show trace lines"), value = TRUE)),
+                    column(2, conditionalPanel(condition = "input.bivariate_lines == true", 
+                                               sliderInput("bivariate_lines_alpha", label = strong("Opacity"), value = alpha_calc_lines(nIter), min = 0, max = 1, step = 0.01, ticks = FALSE)
+                                               )
+                           )
+                  ),
                   hr(),
                   downloadButton("download_bivariate", "Save as ggplot2 object")
   )
