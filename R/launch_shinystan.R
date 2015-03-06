@@ -29,18 +29,24 @@
 launch_shinystan <- function(object) {
   message("\n Loading... \n For large models shinyStan may take a few moments to launch.")
 
+  is_stan <- function(X) inherits(X, "stanfit")
+  
   launch <- function(object) {
     shinystan_object <<- if (is.shinystan(object)) object else stan2shinystan(object)
     shiny::runApp(system.file("shinyStan", package = "shinyStan"))
   }
 
   cleanup_shinystan <- function(shinystan_object, out_name) {
+    rename <- out_name %in% objects(envir = .GlobalEnv)
+    if (is_stan(object) && rename) {
+      out_name <- paste0(out_name,"_",gsub("-","_", Sys.Date()))
+    }
     assign(out_name, shinystan_object, inherits = TRUE)
+    message(paste("Name of shinystan object:", out_name))
     shinystan_object <<- NULL
     rm(list = "shinystan_object", envir = globalenv())
   }
 
-  is_stan <- function(X) inherits(X, "stanfit")
   name <- deparse(substitute(object))
   no_name <- substr(name, 1, 12) == "as.shinystan"
 
