@@ -214,14 +214,17 @@ shinyUI(
                                             br(), br()
                                    ),
                                    #### density ####
-                                   tabPanel("Density", # icon = icon("area-chart"),
-                                            uiOutput("ui_density_customize"),
-                                            plotOutput("density_plot_out")
-                                   ),
-                                   #### histogram ####
-                                   tabPanel("Histogram", # icon = icon("bar-chart-o"),
-                                            uiOutput("ui_hist_customize"),
-                                            plotOutput("hist_plot_out")
+                                   tabPanel("Distribution", # icon = icon("area-chart"),
+                                            radioButtons("distribution", label = "", choices = c("Density", "Histogram"), inline = TRUE),
+                                            conditionalPanel(condition = "input.distribution == 'Density'",
+                                                             uiOutput("ui_density_customize"),
+                                                             plotOutput("density_plot_out")
+                                                             ),
+                                            conditionalPanel(condition = "input.distribution == 'Histogram'",
+                                                             uiOutput("ui_hist_customize"),
+                                                             plotOutput("hist_plot_out")
+                                                             )
+                                            
                                    ),
                                    #### trivariate plot #####
                                    tabPanel("Dynamic 3D scatterplot", # icon = icon("spinner", "fa-spin"),
