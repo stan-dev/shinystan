@@ -332,12 +332,6 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
   if(x_breaks == "None") x_scale <- scale_x_continuous(breaks = NULL)
   if(x_breaks == "Some") x_scale <- scale_x_continuous()
   if(x_breaks == "Many") x_scale <- scale_x_continuous(breaks = many_breaks)
-  #   if(x_breaks == "Too Many") x_scale <- scale_x_continuous(breaks = too_many_breaks)
-  #   if(y_breaks == "None") y_scale <- scale_y_continuous(breaks = NULL)
-  #   if(y_breaks == "Some") y_scale <- scale_y_continuous()
-  #   if(y_breaks == "Many") y_scale <- scale_y_continuous(breaks = many_breaks)
-  #   if(y_breaks == "Too Many") y_scale <- scale_y_continuous(breaks = too_many_breaks)
-  #
 
   if (chain == 0 & chain_split == TRUE) {
     graph <- ggplot(dat, aes(x = value, color = chains, fill = chains)) +
