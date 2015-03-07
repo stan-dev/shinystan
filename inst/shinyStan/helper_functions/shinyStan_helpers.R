@@ -383,26 +383,26 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
 .autocorr_single_plot <- function(samps, lags) {
   
   dat <- melt(samps)
-
+  
   if (!("chains" %in% colnames(dat))) { # fixes for if there's only 1 chain:
     dat$chains <- "chain:1"
     dat$iterations <- 1:nrow(dat)
   }
-
-  ac_dat <- ddply(dat, "chains", here(summarise),
-                  ac = acf(value, lag.max = lags, plot = FALSE)$acf[,,1],
-                  lag = 0:lags)
-
+  
+  ac_dat <- plyr::ddply(dat, "chains", plyr::here(plyr::summarise),
+                        ac = acf(value, lag.max = lags, plot = FALSE)$acf[,,1],
+                        lag = 0:lags)
+  
   ac_labs <- labs(x = "Lag", y = "Autocorrelation")
   strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "white"),
                      strip.background = element_rect(color = "#346fa1", fill = "#346fa1"))
   ac_theme <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_lgnd + strip_txt)
   y_scale <- scale_y_continuous(breaks = seq(0, 1, 0.25), labels = c("0","","0.5","",""))
-
+  
   graph <- ggplot(ac_dat, aes(x = lag, y = ac))
   graph <- graph +
     geom_bar(position = "identity", stat = "identity", fill = "gray35") +
-      y_scale + ac_theme
+    y_scale + ac_theme
   graph
 }
 
@@ -413,9 +413,9 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
                            nChains,
                            lags = 25, flip = FALSE,
                            combine_chains = FALSE) {
-
-
-
+  
+  
+  
   params <- .update_params_with_groups(params, all_param_names)
   if(length(params) == 0) {
     dim.samps <- dim(samps) 
@@ -424,24 +424,24 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
   params <- unique(params)
   dat <- samps[,,params]
   dat <- melt(dat)
-
+  
   if (!("chains" %in% colnames(dat))) { # fixes for if there's only 1 chain:
     dat$chains <- "chain:1"
     dat$iterations <- 1:nrow(dat)
   }
-
+  
   nParams <- length(params)
   if (nParams == 1) {
-    ac_dat <- ddply(dat, "chains", here(summarise),
-                    ac = acf(value, lag.max = lags, plot = FALSE)$acf[,,1],
-                    lag = 0:lags)
+    ac_dat <- plyr::ddply(dat, "chains", plyr::here(plyr::summarise),
+                          ac = acf(value, lag.max = lags, plot = FALSE)$acf[,,1],
+                          lag = 0:lags)
   }
   if (nParams > 1) {
-    ac_dat <- ddply(dat, c("parameters", "chains"), here(summarise),
-                    ac = acf(value, lag.max = lags, plot = FALSE)$acf[,,1],
-                    lag = 0:lags)
+    ac_dat <- plyr::ddply(dat, c("parameters", "chains"), plyr::here(plyr::summarise),
+                          ac = acf(value, lag.max = lags, plot = FALSE)$acf[,,1],
+                          lag = 0:lags)
   } 
-
+  
   ac_labs <- labs(x = "Lag", y = "Autocorrelation")
   strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "white"),
                      strip.background = element_rect(color = "#346fa1", fill = "#346fa1"))
@@ -451,7 +451,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
   if (combine_chains) {
     if (nParams == 1) graph <- ggplot(ac_dat, aes(x = lag, y = ac))
     else graph <- ggplot(ac_dat, aes(x= lag, y = ac))
-      
+    
     graph <- graph +
       geom_bar(position = "identity", stat = "identity", fill = "gray35") +
       y_scale + ac_labs + ac_theme
@@ -459,8 +459,8 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
     if (nParams == 1) return(graph + ggtitle(paste(params, "\n")) + title_theme)
     else return(graph + facet_wrap(~parameters))
   }
-
-
+  
+  
   graph <- ggplot(ac_dat, aes(x = lag, y = ac, fill = factor(chains)))
   graph <- graph +
     geom_bar(position = "identity", stat = "identity") +
@@ -468,7 +468,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
     y_scale +
     ac_labs +
     ac_theme
-
+  
   if (nParams == 1) {
     graph <- graph + facet_wrap(~chains) + ggtitle(paste(params, "\n")) + title_theme
     return(graph)
@@ -480,6 +480,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
     return(graph)
   }
 }
+
 
 
 
