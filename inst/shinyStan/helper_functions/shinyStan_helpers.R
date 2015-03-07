@@ -152,7 +152,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
   # x1, x2, y1, y2 are the x and y axis limits for the tracezoom feature
   # style: either "point" or "line"
 
-  dat <- melt(dat)
+  dat <- reshape2::melt(dat)
 
   if (!("chains" %in% colnames(dat))) { # fixes for if there's only 1 chain:
     dat$chains <- "chain:1"
@@ -185,7 +185,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
   if (rect == "None" & inc_warmup) graph <- graph + geom_vline(xintercept = warmup_val, color = "gray35", size = 1.5)
 
   if (style == "point") {
-    print(ddply(dat, "chains", summarise, mean = mean(value))$mean)
+    print(plyr::ddply(dat, "chains", plyr::summarise, mean = mean(value))$mean)
     graph <- graph + geom_point(size = 1.5, alpha = 0.55)
   } else {
     graph <- graph + geom_line(size = 0.35)
@@ -215,7 +215,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
     params <- dimnames(dat)$parameters[1:min(4, dim(dat)[3])]
   }
   params <- unique(params)
-  dat <- melt(dat)
+  dat <- reshape2::melt(dat)
   dat <- subset(dat, parameters %in% params)
 
   if (!("chains" %in% colnames(dat))) { # fixes for if there's only 1 chain:
@@ -268,7 +268,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
                         title = TRUE) {
   
   ttl <- "Histogram of Posterior Draws (post-warmup) \n"
-  dat <- melt(dat)
+  dat <- reshape2::melt(dat)
 
   if (!("chains" %in% colnames(dat))) { # fixes for if there's only 1 chain:
     dat$chains <- "chain:1"
@@ -308,7 +308,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
 
   ttl <- "Kernel Density Estimate (post-warmup) \n"
   
-  dat <- melt(dat)
+  dat <- reshape2::melt(dat)
 
   if (!("chains" %in% colnames(dat))) { # fixes for if there's only 1 chain:
     dat$chains <- "chain:1"
@@ -382,7 +382,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
 # markov chain autocorrelation plot for single parameter (for multiview)
 .autocorr_single_plot <- function(samps, lags) {
   
-  dat <- melt(samps)
+  dat <- reshape2::melt(samps)
   
   if (!("chains" %in% colnames(dat))) { # fixes for if there's only 1 chain:
     dat$chains <- "chain:1"
@@ -423,7 +423,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
   }
   params <- unique(params)
   dat <- samps[,,params]
-  dat <- melt(dat)
+  dat <- reshape2::melt(dat)
   
   if (!("chains" %in% colnames(dat))) { # fixes for if there's only 1 chain:
     dat$chains <- "chain:1"
