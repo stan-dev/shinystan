@@ -1,10 +1,5 @@
-# misc. functions --------------------------------------------------------
-.in_range <- function(x, a, b) {
-  x >= a & x <= b
-}
-
-
 # ggplot theme elements --------------------------------------------
+theme <- function(...) ggplot2::theme(...)
 axis_line_color <- "#346fa1"
 axis_color <- theme(axis.line = element_line(color = axis_line_color))
 axis_labs <- theme(axis.title = element_text(face = "bold", size = 13))
@@ -21,7 +16,7 @@ lgnd_top <- theme(legend.position = "top")
 no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), axis.text.y = element_blank())
 
 # make_param_list ------------------------------------------------------
-# generate list of parameter names for selectInput
+# generate list of parameter names (formatted for shiny::selectInput)
 .make_param_list <- function(object) {
   choices <- list()
   ll <- length(object@param_dims)
@@ -40,7 +35,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
 }
 
 # make_param_list_with_groups ------------------------------------------------------
-# generate list of parameter names for selectInput and include parameter groups
+# generate list of parameter names  and include parameter groups (formatted for shiny::selectInput)
 .make_param_list_with_groups <- function(object, sort_j = FALSE) {
   choices <- list()
   ll <- length(object@param_dims)
@@ -57,8 +52,9 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
       temp <- paste0("^",group,"\\[")
       ch <- object@param_names[grep(temp, object@param_names)]
       
-      # change sorting so e.g. "beta[1,1] beta[1,2] beta[2,1] beta[2,2]"
-      # instead of "beta[1,1] beta[2,1] beta[1,2] beta[2,2]"
+#       toggle row/column major sorting so e.g. "beta[1,1], beta[1,2],
+#       beta[2,1], beta[2,2]" instead of "beta[1,1], beta[2,1], beta[1,2],
+#       beta[2,2]"
       if (sort_j == TRUE & LL[i] > 1) ch <- gtools::mixedsort(ch) 
       
       ch_out <- c(paste0(group,"_as_shiny_stan_group"), ch)
@@ -86,8 +82,8 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
 
 # all_summary -------------------------------------------------------------
 # summary stats for all parameters
-.all_summary <- function(fit_summary, digits = 2, cols) {
-  df <- as.data.frame(fit_summary[, cols])
+.all_summary <- function(summary, digits = 2, cols) {
+  df <- as.data.frame(summary[, cols])
   df <- round(df, digits)
   if ("n_eff" %in% cols) {
     df[,"n_eff"] <- round(df[,"n_eff"])
@@ -98,44 +94,43 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
 
 # sampler_summary ---------------------------------------------------------
 # summary statistics for algorithm=NUTS or algorithm=HMC sampler parameters
-.sampler_summary <- function(sampler_params, inc_warmup, warmup_val,
+.sampler_summary <- function(sampler_params, warmup_val, inc_warmup = TRUE, 
                              report = "average", algorithm = "NUTS", digits = 4) {
   sampler_stuff <- function(param) {
     X <- sampler_params
+    sapply_funs <- function(x, fun_name) {
+      funs <- list(maxf = function(x) max(x[,param]), minf = function(x) min(x[,param]),
+                   meanf = function(x) mean(x[,param]), sdf = function(x) sd(x[,param]))
+      sapply(x, FUN = funs[[fun_name]])
+    }
     if (inc_warmup == FALSE) {
       X <- lapply(1:length(sampler_params), function(i) {
         out <- sampler_params[[i]]
         out[-(1:warmup_val), ]
       })
     }
-    if (report == "maximum") { # then return max
-      out <- sapply(X, FUN = function(x) max(x[,param]) )
-    } else {
-      if (report == "minimum") { # then return min
-        out <- sapply(X, FUN = function(x) min(x[,param]) )
-      } else { # return avg
-        out <- sapply(X, FUN = function(x) mean(x[,param]) )
-      }
-    }
+    out <- if (report == "maximum") sapply_funs(X, "maxf") 
+            else if (report == "minimum") sapply_funs(X, "minf")
+              else if (report == "sd") sapply_funs(X, "sdf")
+                else sapply_funs(X, "meanf")
+
     names(out) <- paste0("chain",1:length(out))
     out
   }
   params <- colnames(sampler_params[[1]])
   out <- sapply(params, FUN = function(i) sampler_stuff(param = i))
 
-  if (length(dim(out)) > 1) { # i.e. multiple chains
+  if (length(dim(out)) > 1) { # if multiple chains
     out <- rbind("All chains" = colMeans(out), out)
     colnames(out) <- gsub("__","",colnames(out))
     out <- formatC(round(out, digits), format='f', digits=digits)
     out <- cbind(Chain = rownames(out), out)
-  } else {
-    # if only 1 chain
+  } else {# if only 1 chain
     names(out) <- gsub("__.chain1", "", names(out))
     out <- t(out)
     out <- round(out, digits)
   }
-
-  return(out)
+  out
 }
 
 
@@ -152,7 +147,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
   # x1, x2, y1, y2 are the x and y axis limits for the tracezoom feature
   # style: either "point" or "line"
 
-  dat <- melt(dat)
+  dat <- reshape2::melt(dat)
 
   if (!("chains" %in% colnames(dat))) { # fixes for if there's only 1 chain:
     dat$chains <- "chain:1"
@@ -185,7 +180,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
   if (rect == "None" & inc_warmup) graph <- graph + geom_vline(xintercept = warmup_val, color = "gray35", size = 1.5)
 
   if (style == "point") {
-    print(ddply(dat, "chains", summarise, mean = mean(value))$mean)
+    print(plyr::ddply(dat, "chains", plyr::summarise, mean = mean(value))$mean)
     graph <- graph + geom_point(size = 1.5, alpha = 0.55)
   } else {
     graph <- graph + geom_line(size = 0.35)
@@ -215,7 +210,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
     params <- dimnames(dat)$parameters[1:min(4, dim(dat)[3])]
   }
   params <- unique(params)
-  dat <- melt(dat)
+  dat <- reshape2::melt(dat)
   dat <- subset(dat, parameters %in% params)
 
   if (!("chains" %in% colnames(dat))) { # fixes for if there's only 1 chain:
@@ -268,7 +263,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
                         title = TRUE) {
   
   ttl <- "Histogram of Posterior Draws (post-warmup) \n"
-  dat <- melt(dat)
+  dat <- reshape2::melt(dat)
 
   if (!("chains" %in% colnames(dat))) { # fixes for if there's only 1 chain:
     dat$chains <- "chain:1"
@@ -308,7 +303,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
 
   ttl <- "Kernel Density Estimate (post-warmup) \n"
   
-  dat <- melt(dat)
+  dat <- reshape2::melt(dat)
 
   if (!("chains" %in% colnames(dat))) { # fixes for if there's only 1 chain:
     dat$chains <- "chain:1"
@@ -382,27 +377,27 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
 # markov chain autocorrelation plot for single parameter (for multiview)
 .autocorr_single_plot <- function(samps, lags) {
   
-  dat <- melt(samps)
-
+  dat <- reshape2::melt(samps)
+  
   if (!("chains" %in% colnames(dat))) { # fixes for if there's only 1 chain:
     dat$chains <- "chain:1"
     dat$iterations <- 1:nrow(dat)
   }
-
-  ac_dat <- ddply(dat, "chains", here(summarise),
-                  ac = acf(value, lag.max = lags, plot = FALSE)$acf[,,1],
-                  lag = 0:lags)
-
+  
+  ac_dat <- plyr::ddply(dat, "chains", plyr::here(plyr::summarise),
+                        ac = acf(value, lag.max = lags, plot = FALSE)$acf[,,1],
+                        lag = 0:lags)
+  
   ac_labs <- labs(x = "Lag", y = "Autocorrelation")
   strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "white"),
                      strip.background = element_rect(color = "#346fa1", fill = "#346fa1"))
   ac_theme <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_lgnd + strip_txt)
   y_scale <- scale_y_continuous(breaks = seq(0, 1, 0.25), labels = c("0","","0.5","",""))
-
+  
   graph <- ggplot(ac_dat, aes(x = lag, y = ac))
   graph <- graph +
     geom_bar(position = "identity", stat = "identity", fill = "gray35") +
-      y_scale + ac_theme
+    y_scale + ac_theme
   graph
 }
 
@@ -413,9 +408,9 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
                            nChains,
                            lags = 25, flip = FALSE,
                            combine_chains = FALSE) {
-
-
-
+  
+  
+  
   params <- .update_params_with_groups(params, all_param_names)
   if(length(params) == 0) {
     dim.samps <- dim(samps) 
@@ -423,25 +418,25 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
   }
   params <- unique(params)
   dat <- samps[,,params]
-  dat <- melt(dat)
-
+  dat <- reshape2::melt(dat)
+  
   if (!("chains" %in% colnames(dat))) { # fixes for if there's only 1 chain:
     dat$chains <- "chain:1"
     dat$iterations <- 1:nrow(dat)
   }
-
+  
   nParams <- length(params)
   if (nParams == 1) {
-    ac_dat <- ddply(dat, "chains", here(summarise),
-                    ac = acf(value, lag.max = lags, plot = FALSE)$acf[,,1],
-                    lag = 0:lags)
+    ac_dat <- plyr::ddply(dat, "chains", plyr::here(plyr::summarise),
+                          ac = acf(value, lag.max = lags, plot = FALSE)$acf[,,1],
+                          lag = 0:lags)
   }
   if (nParams > 1) {
-    ac_dat <- ddply(dat, c("parameters", "chains"), here(summarise),
-                    ac = acf(value, lag.max = lags, plot = FALSE)$acf[,,1],
-                    lag = 0:lags)
+    ac_dat <- plyr::ddply(dat, c("parameters", "chains"), plyr::here(plyr::summarise),
+                          ac = acf(value, lag.max = lags, plot = FALSE)$acf[,,1],
+                          lag = 0:lags)
   } 
-
+  
   ac_labs <- labs(x = "Lag", y = "Autocorrelation")
   strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "white"),
                      strip.background = element_rect(color = "#346fa1", fill = "#346fa1"))
@@ -451,7 +446,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
   if (combine_chains) {
     if (nParams == 1) graph <- ggplot(ac_dat, aes(x = lag, y = ac))
     else graph <- ggplot(ac_dat, aes(x= lag, y = ac))
-      
+    
     graph <- graph +
       geom_bar(position = "identity", stat = "identity", fill = "gray35") +
       y_scale + ac_labs + ac_theme
@@ -459,8 +454,8 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
     if (nParams == 1) return(graph + ggtitle(paste(params, "\n")) + title_theme)
     else return(graph + facet_wrap(~parameters))
   }
-
-
+  
+  
   graph <- ggplot(ac_dat, aes(x = lag, y = ac, fill = factor(chains)))
   graph <- graph +
     geom_bar(position = "identity", stat = "identity") +
@@ -468,7 +463,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
     y_scale +
     ac_labs +
     ac_theme
-
+  
   if (nParams == 1) {
     graph <- graph + facet_wrap(~chains) + ggtitle(paste(params, "\n")) + title_theme
     return(graph)
@@ -480,6 +475,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
     return(graph)
   }
 }
+
 
 
 
