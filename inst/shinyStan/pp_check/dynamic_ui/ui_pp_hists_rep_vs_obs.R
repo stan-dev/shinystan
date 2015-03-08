@@ -1,5 +1,6 @@
 output$ui_pp_hists_rep_vs_obs <- renderUI({
   div(
+    br(),
     h5(withMathJax(plot_descriptions["plot_hists_rep_vs_obs"])),
 #     bsCollapse(
 #       bsCollapsePanel(title = "Making the plot", id = "make_plot1",

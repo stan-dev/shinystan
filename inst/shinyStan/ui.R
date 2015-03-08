@@ -174,7 +174,7 @@ navbarPage(title = strong(style = "color: #f9dd67;", "shinyStan"),
                                  plotOutput("multi_trace_plot_out"),
                                  br()
                         ),
-                      #### TAB: PPcheck ####
+                      #### PPcheck ####
                       tabPanel(title = "PPcheck", icon = icon("bar-chart-o", "fa-2x"),
                                h1("Graphical posterior predictive checks"),
                                navlistPanel(id = "pp_navlist", widths = c(4,8), well = FALSE,  

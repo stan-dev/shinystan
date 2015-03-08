@@ -1,5 +1,6 @@
 output$ui_pp_hists_test_statistics <- renderUI({
   div(
+    br(),
     h5(withMathJax(plot_descriptions["plot_test_statistics"])),
     #     bsCollapse(
     #       bsCollapsePanel(title = "Making the plot", id = "make_plot4",
