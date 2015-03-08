@@ -22,6 +22,9 @@ invisible(lapply(X = pkgs, FUN = library, character.only = TRUE))
 # load the helper functions
 source("helper_functions/shinyStan_helpers.R", local=TRUE)
 
+# load pp_check plot_names and plot_descriptions
+source("pp_check/plot_names_descriptions.R", local = TRUE)
+
 # extract the content of the shinystan_object slots
 source("server_files/utilities/extract_shinystan_object.R", local=TRUE)
 
@@ -38,7 +41,12 @@ function(input, output, session) {
   paths <- paste0("server_files/", c("outputs", "utilities", "dynamic_ui", "help_and_glossary"))
   files <- list.files(paths, full.names = TRUE)
   for (f in files) source(f, local = TRUE)
+  pp_paths <- paste0("pp_check/", c("outputs", "dynamic_ui"))
+  pp_files <- list.files(pp_paths, full.names = TRUE)
+  for (f in pp_files) source(f, local = TRUE)
   
+  source("pp_check/shinyStan_pp_helpers.R", local=TRUE)
+
   #### tooltips & popovers ####  
   tooltip_ids <- c("download_multiview", "dynamic_trace_stack", "download_all_summary", "tex_options")
   tooltip_msgs <- c("Will be a list object with one element per plot.", 
@@ -274,6 +282,52 @@ function(input, output, session) {
       print(paste("Saved:  ", format(Sys.time(), "%a %b %d %Y %X")))
     }
   })
-  
-  
-} # End
+
+  #### PLOT: pp hists_rep_vs_obs####
+  output$pp_hists_rep_vs_obs_out <- renderPlot({
+    x <- suppressMessages(suppressWarnings(pp_hists_rep_vs_obs()))
+    suppressMessages(suppressWarnings(print(x)))
+  })
+  #### PLOT: pp dens_rep_vs_obs####
+  output$pp_dens_rep_vs_obs_out <- renderPlot({
+    x <- suppressMessages(pp_dens_rep_vs_obs())
+    suppressMessages(suppressWarnings(print(x)))
+  })
+  #### PLOTS: pp hists_test_statistics####
+  output$pp_hists_test_statistics_mean_out <- renderPlot({
+    x <- suppressMessages(pp_hists_test_statistics_mean())
+    suppressMessages(suppressWarnings(print(x)))
+  })
+  output$pp_hists_test_statistics_sd_out <- renderPlot({
+    x <- suppressMessages(pp_hists_test_statistics_sd())
+    suppressMessages(suppressWarnings(print(x)))
+  })
+  output$pp_hists_test_statistics_min_out <- renderPlot({
+    x <- suppressMessages(pp_hists_test_statistics_min())
+    suppressMessages(suppressWarnings(print(x)))
+  })
+  output$pp_hists_test_statistics_max_out <- renderPlot({
+    x <- suppressMessages(pp_hists_test_statistics_max())
+    suppressMessages(suppressWarnings(print(x)))
+  })
+#   output$pp_hists_test_statistics_custom1_out <- renderPlot({
+#     x <- suppressMessages(pp_hists_test_statistics_custom1())
+#     suppressMessages(suppressWarnings(print(x)))
+#   })
+#   output$pp_hists_test_statistics_custom2_out <- renderPlot({
+#     x <- suppressMessages(pp_hists_test_statistics_custom2())
+#     suppressMessages(suppressWarnings(print(x)))
+#   })
+  output$pp_hist_resids_out <- renderPlot({
+    x <- suppressMessages(pp_hist_resids())
+    suppressMessages(suppressWarnings(print(x)))
+  })
+  output$pp_avg_rep_vs_avg_resid_rep_out <- renderPlot({
+    pp_avg_rep_vs_avg_resid_rep()
+  })
+  output$pp_y_vs_avg_rep_out <- renderPlot({
+    pp_y_vs_avg_rep()
+  })
+
+} # End shinyServer
+

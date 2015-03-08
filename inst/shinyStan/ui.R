@@ -22,6 +22,9 @@ invisible(lapply(X = pkgs, FUN = library, character.only = TRUE))
 # load the helper functions
 source("helper_functions/shinyStan_helpers.R", local = TRUE)
 
+# load pp_check plot_names and plot_descriptions
+source("pp_check/plot_names_descriptions.R", local = TRUE)
+
 # give shinystan_object shorter name
 object <- shinystan_object
 show_model_name <- h4(style = "padding: 0px 0px 10px 10px; color: #428bca;", paste("Model name:", object@model_name))
@@ -170,7 +173,38 @@ navbarPage(title = strong(style = "color: #f9dd67;", "shinyStan"),
                                                   uiOutput("ui_multi_trace_customize")),
                                  plotOutput("multi_trace_plot_out"),
                                  br()
-                        )
+                        ),
+                      #### TAB: PPcheck ####
+                      tabPanel(title = "PPcheck", icon = icon("bar-chart-o", "fa-2x"),
+                               h1("Graphical posterior predictive checks"),
+                               navlistPanel(id = "pp_navlist", widths = c(4,8), well = FALSE,  
+                                            "Data",
+                                            tabPanel("Select data",
+                                                     uiOutput("ui_pp_data")
+                                            ),
+                                            "Plots",
+                                            tabPanel("Distribution of observed data vs replications",
+                                                     uiOutput("ui_pp_hists_rep_vs_obs")
+                                            ),
+                                            tabPanel("Distributions of test statistics",
+                                                     uiOutput("ui_pp_hists_test_statistics")
+                                            ),
+                                            tabPanel("Scatters",
+                                                     uiOutput("ui_pp_scatters")
+                                            ),
+                                            tabPanel("Histogram of residuals",
+                                                     uiOutput("ui_pp_hist_resids")
+                                            ),
+                                            "About",
+                                            tabPanel("About graphical posterior predictive checking",
+                                                     uiOutput("ui_pp_about")
+                                            ),
+                                            tabPanel("Tutorial",
+                                                     includeMarkdown("pp_check/pp_check_tutorial.md")
+                                            )
+                                            
+                               )
+                      )
                       ) # End tabsetPanel
              ), # End Convergence
              
