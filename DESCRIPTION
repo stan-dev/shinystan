@@ -1,6 +1,6 @@
 Package: shinyStan
 Title: shinyStan: Explore your MCMC
-Version: 1.0.0
+Version: 1.1.0
 Authors@R: as.person(c(
     "Jonah Gabry <jgabry@gmail.com> [aut, cre]",
     "Stan Development Team [aut]",
