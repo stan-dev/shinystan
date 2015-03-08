@@ -15,6 +15,18 @@ density_plot <- reactive({
 #     return()
 #   }
 
+  prior_fam <- input$dens_prior
+  prior_params <- if (prior_fam == "None") NULL 
+                    else if (prior_fam == "Normal") list(mean = input$dens_prior_normal_mu, sd = input$dens_prior_normal_sigma)
+                    else if (prior_fam == "t") list(df = input$dens_prior_t_df, location = input$dens_prior_t_mu, scale = input$dens_prior_t_sigma)
+                    else if (prior_fam == "Cauchy") list(location = input$dens_prior_cauchy_mu, scale = input$dens_prior_cauchy_sigma)
+                    else if (prior_fam == "Beta") list(shape1 = input$dens_prior_beta_shape1, shape2 = input$dens_prior_beta_shape2)
+                    else if (prior_fam == "Exponential") list(rate = input$dens_prior_expo_rate)
+                    else if (prior_fam == "Gamma") list(shape = input$dens_prior_gamma_shape, rate = input$dens_prior_gamma_rate)
+                    else if (prior_fam == "Inverse Gamma") list(shape = input$dens_prior_inversegamma_shape, scale = input$dens_prior_inversegamma_scale)
+                    else NULL
+  
+  
   do.call(".param_dens", args = list(
     param       = input$param,
     dat         = par_samps_post_warmup(),
@@ -25,6 +37,8 @@ density_plot <- reactive({
     point_est   = input$dens_point_est,
     CI          = input$dens_ci,
 #     y_breaks    = input$dens_y_breaks,
-    x_breaks    = input$dens_x_breaks
+    x_breaks    = input$dens_x_breaks,
+    prior_fam   = prior_fam,
+    prior_params = prior_params
   ))
 })

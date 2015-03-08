@@ -294,13 +294,19 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
 
 # param_dens --------------------------------------------------------------
 # density plot for a single parameter
+
+# data.frame of prior families and function names
+priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", "Gamma", "Inverse Gamma"),
+                     fun = c("dnorm", ".dt_loc_scale", "dcauchy", "dbeta", "dexp", "dgamma", ".dinversegamma"))
+
 .param_dens <- function(param, dat, chain,
                         fill_color = NULL, line_color = NULL,
                         point_est = "None", CI,
                         x_breaks = "Some", # y_breaks = "None",
                         chain_split = FALSE,
-                        title = TRUE) {
-
+                        title = TRUE,
+                        prior_fam = "None", prior_params) {
+  
   ttl <- "Kernel Density Estimate (post-warmup) \n"
   
   dat <- reshape2::melt(dat)
@@ -309,33 +315,31 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
     dat$chains <- "chain:1"
     dat$iterations <- 1:nrow(dat)
   }
-
+  
   if (chain != 0) {
     dat <- subset(dat, chains == paste0("chain:",chain))
   }
-
+  
   Mean <- mean(dat$value)
   Median <- median(dat$value)
   dens_dat <- with(density(dat$value), data.frame(x,y))
   MAP <- with(dens_dat, x[which.max(y)])
-
+  
   fclr <- ifelse(is.null(fill_color), "black", fill_color)
   lclr <- ifelse(is.null(line_color), "lightgray", line_color)
-
+  
   many_breaks <- function(x) pretty(x, n = 15)
   too_many_breaks <- function(x) pretty(x, n = 35)
   if(x_breaks == "None") x_scale <- scale_x_continuous(breaks = NULL)
   if(x_breaks == "Some") x_scale <- scale_x_continuous()
   if(x_breaks == "Many") x_scale <- scale_x_continuous(breaks = many_breaks)
-  #   if(x_breaks == "Too Many") x_scale <- scale_x_continuous(breaks = too_many_breaks)
-  #   if(y_breaks == "None") y_scale <- scale_y_continuous(breaks = NULL)
-  #   if(y_breaks == "Some") y_scale <- scale_y_continuous()
-  #   if(y_breaks == "Many") y_scale <- scale_y_continuous(breaks = many_breaks)
-  #   if(y_breaks == "Too Many") y_scale <- scale_y_continuous(breaks = too_many_breaks)
-  #
-
+  
   if (chain == 0 & chain_split == TRUE) {
-    graph <- ggplot(dat, aes(x = value, color = chains, fill = chains)) +
+    graph <- ggplot(dat, aes(x = value, color = chains, fill = chains))
+    if (prior_fam != "None") {
+      graph <- graph + stat_function(alpha=0.75,color = "black", fun = as.character(priors$fun[priors$family==prior_fam]), args = prior_params, show_guides = TRUE)
+    }
+    graph <- graph +
       geom_density(alpha = 0.15) +
       scale_color_discrete("") + scale_fill_discrete("") +
       labs(x = param, y = "") +
@@ -344,16 +348,19 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
     if (title == TRUE) graph <- graph + ggtitle(ttl)
     return(graph)
   }
-
+  
   graph <- ggplot(dens_dat, aes(x = x, ymax = y))
+  if (prior_fam != "None") {
+    graph <- graph + stat_function(fun = as.character(priors$fun[priors$family==prior_fam]), args = prior_params)
+  }
   graph <- graph +
     labs(x = param, y = "") +
     x_scale + # y_scale +
-    geom_ribbon(ymin = 0, fill = fclr, color = fclr) +
+    geom_ribbon(ymin = 0, fill = fclr, color = fclr, alpha = if (prior_fam == "None") 1 else 0.85) +
     theme_classic() %+replace% (title_txt + axis_color + axis_labs + fat_axis + no_yaxs)
-
+  
   if (title == TRUE) graph <- graph + ggtitle(ttl)
-
+  
   if (point_est != "None") {
     graph <- graph + annotate("segment",
                               x = get(point_est), xend = get(point_est),
@@ -369,8 +376,6 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
   }
   graph
 }
-
-
 
 
 # autocorr_single_plot ----------------------------------------------------
@@ -555,7 +560,6 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
                  0.5 + show.level / 2)
   samps.quantile <- t(apply(samps.use, 2, quantile, probs = probs.use))
   y <- as.numeric(seq(nParams, 1, by = -1))
-
   xlim.use <- c(min(samps.quantile[,1]), max(samps.quantile[,5]))
   xrange <- diff(xlim.use)
   xlim.use[1] <- xlim.use[1] - 0.05 * xrange
@@ -783,12 +787,28 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
                             ellipse_lev = "None",
                             ellipse_lty      = 1,
                             ellipse_lwd      = 1,
-                            ellipse_alpha    = 1
+                            ellipse_alpha    = 1,
+                            lines = "back",
+                            lines_color = "gray",
+                            lines_alpha,
+                            points = TRUE
 ){
 
   shape_translator <- function(x) {
     shape <- ifelse(x >= 6, x + 9, x)
     shape
+  }
+  
+  alpha_calc_lines <- function(N) {
+    if (N < 50) return(0.5)
+    else if (N > 1000) return(0.15) 
+    else 1 - pnorm(N/750)
+  }
+  alpha_calc <- function(N) {
+    if (N <= 100) return(0.67)
+    else if (N <= 200) return(0.5)
+    else if (N >= 1000) return(0.15) 
+    else 1 - pnorm(N/1000)
   }
 
   params <- c(param, param2)
@@ -797,9 +817,23 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
   samps_use <- array(samps[,,params], c(nIter, nParams))
   colnames(samps_use) <- params
   dat <- data.frame(x = samps_use[,param], y = samps_use[,param2])
-  graph <- ggplot(dat, aes(x = x, y = y)) + labs(x = param, y = param2)
-
-  graph <- graph + geom_point(alpha = pt_alpha, size = pt_size, shape = shape_translator(pt_shape), color = pt_color)
+  
+  graph <- ggplot(dat, aes(x = x, y = y, xend=c(tail(x, n=-1), NA), yend=c(tail(y, n=-1), NA))) + labs(x = param, y = param2)
+  
+  if (lines == "hide") {
+    graph <- graph + geom_point(alpha = pt_alpha, size = pt_size, shape = shape_translator(pt_shape), color = pt_color)
+  } else { # if lines = "back" or "front"
+    if (lines == "back") {
+      graph <- graph + 
+        geom_path(alpha = lines_alpha, color = lines_color) + 
+        geom_point(alpha = pt_alpha, size = pt_size, shape = shape_translator(pt_shape), color = pt_color)
+    } else { # lines = "front"
+      graph <- graph + 
+        geom_point(alpha = pt_alpha, size = pt_size, shape = shape_translator(pt_shape), color = pt_color) +
+        geom_path(alpha = lines_alpha, color = lines_color)
+    }
+  }
+  
   if (ellipse_lev != "None") {
     graph <- graph + stat_ellipse(level = as.numeric(ellipse_lev), color = ellipse_color, linetype = ellipse_lty, size = ellipse_lwd, alpha = ellipse_alpha)
   }
