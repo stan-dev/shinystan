@@ -213,8 +213,8 @@ shinyUI(
                                             dygraphs::dygraphOutput("dynamic_trace_plot_out"),
                                             br(), br()
                                    ),
-                                   #### density ####
-                                   tabPanel("Distribution", # icon = icon("area-chart"),
+                                   #### density/histogram ####
+                                   tabPanel("Density & histogram", # icon = icon("area-chart"),
                                             radioButtons("distribution", label = "", choices = c("Density", "Histogram"), inline = TRUE),
                                             conditionalPanel(condition = "input.distribution == 'Density'",
                                                              uiOutput("ui_density_customize"),
