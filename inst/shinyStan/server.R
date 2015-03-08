@@ -122,6 +122,11 @@ function(input, output, session) {
           $("td:eq(0)", row).css("font-weight", "bold");
       }')
   ))
+  #### PLOT: sampler params ####
+  output$sampler_plot_out <- renderPlot({
+    sampler_plot()
+  })
+  
   #### PLOT: multiple parameters ####
   output$plot_param_vertical_out <- renderPlot({
     plot_param_vertical()

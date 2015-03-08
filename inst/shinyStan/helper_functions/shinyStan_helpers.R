@@ -152,6 +152,26 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
 }
 
 
+# sampler_plot -----------------------------------------------------------
+.sampler_plot <- function(sampler_params, param, warmup_val, smooth = TRUE) {
+  sp <- lapply(1:length(sampler_params), function(i) {
+    out <- sampler_params[[i]][,param]
+    t(out[-(1:warmup_val)])
+  })
+  #   sp <- do.call("rbind", args = sp)
+  names(sp) <- paste0("chain:", 1:length(sp))
+  msp <- melt(sp)[,-1]
+  colnames(msp) <- c("iteration", "value", "chain")
+  strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "white"),
+                     strip.background = element_rect(color = "#346fa1", fill = "#346fa1"))
+  graph <- ggplot(msp, aes(x = iteration, y = value))
+  graph <- graph + if (smooth) geom_smooth(method = "loess") else geom_path()
+  graph + 
+    labs(x = "Iteration", y = gsub("__","",param)) +
+    facet_wrap(~chain, scales = "fixed") + 
+    theme_classic() %+replace% (axis_color + axis_labs + fat_axis + strip_txt)
+}
+
 
 
 # param_trace -------------------------------------------------------------

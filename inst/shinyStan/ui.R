@@ -111,7 +111,11 @@ navbarPage(title = strong(style = "color: #f9dd67;", "shinyStan"),
                                  )),
                                  column(2, numericInput("sampler_digits", label = h5("Decimals"), value = 4, min = 0, max = 10, step = 1))
                                ),
-                               dataTableOutput("sampler_summary")
+                               dataTableOutput("sampler_summary"),
+                               hr(),
+                               selectInput("sampler_plot_param", "Quantity", choices = c(accept_stat = "accept_stat__", tree_depth = "treedepth__", stepsize = "stepsize__", n_divergent = "n_divergent__")),
+                               checkboxInput("sampler_plot_smooth", "Smoothing", value = TRUE),
+                               plotOutput("sampler_plot_out", height = "250px")
                       ),
                       #### Rhat, ESS, MCSE, diagnostics ####
                       tabPanel("\\((\\hat{R}, n_{eff}, \\text{se}_{mean}) \\text{ diagnostics} \\)", icon = icon("bar-chart-o", "fa-2x"),
