@@ -153,23 +153,51 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
 
 
 # sampler_plot -----------------------------------------------------------
-.sampler_plot <- function(sampler_params, param, warmup_val, smooth = TRUE) {
+.sampler_plot <- function(sampler_params, param, warmup_val, smooth = TRUE, smoothness = 1/2) {
+
   sp <- lapply(1:length(sampler_params), function(i) {
     out <- sampler_params[[i]][,param]
-    t(out[-(1:warmup_val)])
+    out <- if (warmup_val == 0) out else out[-(1:warmup_val)]
+    names(out) <- ((warmup_val + 1):(warmup_val + length(out)))
+    t(out)
   })
   #   sp <- do.call("rbind", args = sp)
-  names(sp) <- paste0("chain:", 1:length(sp))
+  names(sp) <- paste0(1:length(sp))
   msp <- melt(sp)[,-1]
   colnames(msp) <- c("iteration", "value", "chain")
   strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "white"),
                      strip.background = element_rect(color = "#346fa1", fill = "#346fa1"))
-  graph <- ggplot(msp, aes(x = iteration, y = value))
-  graph <- graph + if (smooth) geom_smooth(method = "loess") else geom_path()
-  graph + 
-    labs(x = "Iteration", y = gsub("__","",param)) +
-    facet_wrap(~chain, scales = "fixed") + 
-    theme_classic() %+replace% (axis_color + axis_labs + fat_axis + strip_txt)
+  
+  if (param %in% c("accept_stat__", "treedepth__", "n_leapfrog__")) {
+    graph <- ggplot(msp, aes(x = iteration, y = value, fill = chain))
+    graph <- graph + if (smooth) geom_smooth(color = "gray35", method = "loess", span = smoothness) else geom_path(aes(color=chain), size = 0.25)
+    graph <- graph + 
+      labs(x = "Iteration", y = gsub("__","",param)) +
+      theme_classic() %+replace% (axis_color + axis_labs + fat_axis + strip_txt)
+    return(graph)
+  } else {
+    if (param == "stepsize__") {
+      dd <- sapply(sp, mean)
+      dd <- data.frame(x = 1:length(dd), y = unname(dd))
+      graph <- ggplot(dd, aes(x,y, group = 1))
+      graph <- graph + 
+        geom_line(size = 2, color = "gray35") +
+        geom_point(size = 4) +
+        labs(x = "Chain", y = param) +
+        theme_classic() %+replace% (axis_color + axis_labs + fat_axis)
+      return(graph)
+    } else {
+      if (param == "n_divergent__") {
+        graph <- ggplot(msp, aes(x = iteration, y = value, fill = chain))
+        graph <- graph + 
+          geom_bar(stat= "identity", size = 0.1) + 
+          scale_y_continuous(breaks = NULL) +
+          theme_classic() %+replace% (axis_color + axis_labs + fat_axis)
+        return(graph)
+      }
+    }
+  }
+
 }
 
 

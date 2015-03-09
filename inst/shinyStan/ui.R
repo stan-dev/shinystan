@@ -113,8 +113,21 @@ navbarPage(title = strong(style = "color: #f9dd67;", "shinyStan"),
                                ),
                                dataTableOutput("sampler_summary"),
                                hr(),
-                               selectInput("sampler_plot_param", "Quantity", choices = c(accept_stat = "accept_stat__", tree_depth = "treedepth__", stepsize = "stepsize__", n_divergent = "n_divergent__")),
-                               checkboxInput("sampler_plot_smooth", "Smoothing", value = TRUE),
+                               fluidRow(
+                               column(4, selectInput("sampler_plot_param", "Quantity to plot", choices = c(accept_stat = "accept_stat__", stepsize = "stepsize__", tree_depth = "treedepth__", n_leapfrog = "n_leapfrog__", n_divergent = "n_divergent__"))),
+                               conditionalPanel(condition = "input.sampler_plot_param != 'n_divergent__' && input.sampler_plot_param != 'stepsize__'",
+                                                
+                                                  column(2, checkboxInput("sampler_plot_smooth", "Smoothing", value = TRUE)),
+                                                  column(4, conditionalPanel(condition = "input.sampler_plot_smooth == true",
+                                                                   sliderInput("sampler_plot_smoothness", label = "Smoothness", value = 1/2, min = 0.1, max = 1, step = 0.05, ticks = FALSE)
+                                                  ))
+                                                )
+                                 ),
+                               conditionalPanel(condition = "input.sampler_plot_param != 'n_divergent__' && input.sampler_plot_param != 'stepsize__'", 
+                                                helpText("Smooth with 95% interval bands")),
+                               conditionalPanel(condition = "input.sampler_plot_param == 'n_divergent__'",
+                                                helpText("Vertical lines indicate divergences")
+                                                ),
                                plotOutput("sampler_plot_out", height = "250px")
                       ),
                       #### Rhat, ESS, MCSE, diagnostics ####

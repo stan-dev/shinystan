@@ -124,7 +124,8 @@ function(input, output, session) {
   ))
   #### PLOT: sampler params ####
   output$sampler_plot_out <- renderPlot({
-    sampler_plot()
+    x <- sampler_plot()
+    suppressMessages(suppressWarnings(print(x)))
   })
   
   #### PLOT: multiple parameters ####
