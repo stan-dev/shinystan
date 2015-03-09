@@ -794,6 +794,10 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
     nChains <- dim_samps[2]
   }
 
+  if (nChains == 1) {
+    param_chains <- xts::as.xts(ts(param_samps, start = 1))
+  } else {
+  
   if (chain != 0) {
     param_samps <- param_samps[, chain]
     param_chains <- xts::as.xts(ts(param_samps, start = 1))
@@ -803,6 +807,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
       param_chains <- cbind(param_chains, xts::as.xts(ts(param_samps[,i], start = 1)))
     }
     colnames(param_chains) <- paste0("Chain", 1:nChains)
+  }
   }
 
   shade_to <- if (warmup_shade) paste0(warmup_val,"-01-01") else "0001-01-01"
