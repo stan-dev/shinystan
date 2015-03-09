@@ -153,7 +153,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
 
 
 # sampler_plot -----------------------------------------------------------
-.sampler_plot <- function(sampler_params, param, warmup_val, smooth = TRUE, smoothness = 1/2) {
+.sampler_plot <- function(sampler_params, param, warmup_val, smooth = TRUE, smoothness = 1/4) {
 
   sp <- lapply(1:length(sampler_params), function(i) {
     out <- sampler_params[[i]][,param]

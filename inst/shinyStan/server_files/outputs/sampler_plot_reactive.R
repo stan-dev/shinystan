@@ -6,7 +6,7 @@ sampler_plot <- reactive({
     sampler_params  = sampler_params,
     warmup_val      = warmup_val,
     param           = input$sampler_plot_param,
-    smooth          = input$sampler_plot_smooth,
+    smooth          = input$sampler_plot_smooth == "smooth",
     smoothness      = input$sampler_plot_smoothness
   ))
 })
