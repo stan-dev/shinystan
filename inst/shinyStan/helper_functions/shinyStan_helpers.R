@@ -161,16 +161,15 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
     names(out) <- ((warmup_val + 1):(warmup_val + length(out)))
     t(out)
   })
-  #   sp <- do.call("rbind", args = sp)
   names(sp) <- paste0(1:length(sp))
-  msp <- melt(sp)[,-1]
+  msp <- reshape2::melt(sp)[,-1]
   colnames(msp) <- c("iteration", "value", "chain")
   strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "white"),
                      strip.background = element_rect(color = "#346fa1", fill = "#346fa1"))
   
   if (param %in% c("accept_stat__", "treedepth__", "n_leapfrog__")) {
     graph <- ggplot(msp, aes(x = iteration, y = value, fill = chain))
-    graph <- graph + if (smooth) geom_smooth(color = "gray35", method = "loess", span = smoothness) else geom_path(aes(color=chain), size = 0.25)
+    graph <- graph + if (smooth) geom_smooth(linetype=0, method = "loess", span = smoothness) else geom_path(aes(color=chain), size = 1/5)
     graph <- graph + 
       labs(x = "Iteration", y = gsub("__","",param)) +
       theme_classic() %+replace% (axis_color + axis_labs + fat_axis + strip_txt)
@@ -178,11 +177,12 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
   } else {
     if (param == "stepsize__") {
       dd <- sapply(sp, mean)
-      dd <- data.frame(x = 1:length(dd), y = unname(dd))
-      graph <- ggplot(dd, aes(x,y, group = 1))
+      dd <- data.frame(x = factor(1:length(dd)), y = unname(dd))
+      graph <- ggplot(dd, aes(x,y, color=x, group = 1))
       graph <- graph + 
         geom_line(size = 2, color = "gray35") +
-        geom_point(size = 4) +
+        geom_point(size = 5) +
+        scale_color_discrete("chain") +
         labs(x = "Chain", y = param) +
         theme_classic() %+replace% (axis_color + axis_labs + fat_axis)
       return(graph)
@@ -190,8 +190,9 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
       if (param == "n_divergent__") {
         graph <- ggplot(msp, aes(x = iteration, y = value, fill = chain))
         graph <- graph + 
-          geom_bar(stat= "identity", size = 0.1) + 
+          geom_bar(stat= "identity", size = 0.075) + 
           scale_y_continuous(breaks = NULL) +
+          labs(x = "Iteration", y = "") + 
           theme_classic() %+replace% (axis_color + axis_labs + fat_axis)
         return(graph)
       }
