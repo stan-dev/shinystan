@@ -113,7 +113,7 @@ navbarPage(title = strong(style = "color: #f9dd67;", "shinyStan"),
                                ),
                                dataTableOutput("sampler_summary"),
                                hr(),
-                               selectInput("sampler_plot_param", "Quantity to plot", choices = c("tree_depth (post warmup)" = "treedepth__", "n_divergent (post warmup)" = "n_divergent__")),
+                               selectInput("sampler_plot_param", "Quantity to plot", choices = c("treedepth (post warmup)" = "treedepth__", "n_divergent (post warmup)" = "n_divergent__")),
                                conditionalPanel(condition = "input.sampler_plot_param == 'treedepth__'",
                                                 fluidRow(
                                                   column(6, plotOutput("sampler_plot_treedepth_hist_out", height = "150px")),

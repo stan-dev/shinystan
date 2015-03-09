@@ -154,7 +154,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
 
 # sampler plot --------------------------------------------------
 .sampler_plot <- function(sampler_params, warmup_val, param, type = "bar") {
-  plot_title <- theme(plot.title = element_text(face = "bold", size = 12, hjust = 1))
+  plot_title <- theme(plot.title = element_text(face = "bold", size = 12, hjust = 0))
   sp <- lapply(1:length(sampler_params), function(i) {
     out <- sampler_params[[i]][, param]
     out <- if (warmup_val == 0) out else out[-(1:warmup_val)]
@@ -173,7 +173,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
     }
     if (type == "freqpoly") {
       graph <- ggplot(msp, aes(x = factor(value), y = ..density.., color = chain)) +
-        geom_freqpoly(aes(group = chain), size = 3, alpha = 2/3) + 
+        geom_freqpoly(aes(group = chain), size = 2, alpha = 2/3) + 
         ggtitle("By chain")
   }
     
