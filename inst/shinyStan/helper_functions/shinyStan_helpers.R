@@ -152,11 +152,11 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
 }
 
 
-# sampler_plot -----------------------------------------------------------
-.sampler_plot <- function(sampler_params, param, warmup_val, smooth = TRUE, smoothness = 1/4) {
-
+# sampler plot --------------------------------------------------
+.sampler_plot <- function(sampler_params, warmup_val, param, type = "bar") {
+  plot_title <- theme(plot.title = element_text(face = "bold", size = 12, hjust = 1))
   sp <- lapply(1:length(sampler_params), function(i) {
-    out <- sampler_params[[i]][,param]
+    out <- sampler_params[[i]][, param]
     out <- if (warmup_val == 0) out else out[-(1:warmup_val)]
     names(out) <- ((warmup_val + 1):(warmup_val + length(out)))
     t(out)
@@ -164,43 +164,36 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
   names(sp) <- paste0(1:length(sp))
   msp <- reshape2::melt(sp)[,-1]
   colnames(msp) <- c("iteration", "value", "chain")
-  strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "white"),
-                     strip.background = element_rect(color = "#346fa1", fill = "#346fa1"))
   
-  if (param %in% c("accept_stat__", "treedepth__", "n_leapfrog__")) {
-    graph <- ggplot(msp, aes(x = iteration, y = value, fill = chain))
-    graph <- graph + if (smooth) geom_smooth(linetype=0, method = "loess", span = smoothness) else geom_path(aes(color=chain), size = 1/5)
-    graph <- graph + 
-      labs(x = "Iteration", y = gsub("__","",param)) +
-      theme_classic() %+replace% (axis_color + axis_labs + fat_axis + strip_txt)
-    return(graph)
-  } else {
-    if (param == "stepsize__") {
-      dd <- sapply(sp, mean)
-      dd <- data.frame(x = factor(1:length(dd)), y = unname(dd))
-      graph <- ggplot(dd, aes(x,y, color=x, group = 1))
-      graph <- graph + 
-        geom_line(size = 2, color = "gray35") +
-        geom_point(size = 5) +
-        scale_color_discrete("chain") +
-        labs(x = "Chain", y = param) +
-        theme_classic() %+replace% (axis_color + axis_labs + fat_axis)
-      return(graph)
-    } else {
-      if (param == "n_divergent__") {
-        graph <- ggplot(msp, aes(x = iteration, y = value, fill = chain))
-        graph <- graph + 
-          geom_bar(stat= "identity", size = 0.075) + 
-          scale_y_continuous(breaks = NULL) +
-          labs(x = "Iteration", y = "") + 
-          theme_classic() %+replace% (axis_color + axis_labs + fat_axis)
-        return(graph)
-      }
+  if (param == "treedepth__") {
+    if (type == "bar") {
+      graph <- ggplot(msp, aes(x = factor(value))) + 
+        stat_bin(aes(y=..count../sum(..count..)), fill = "gray35") + 
+        ggtitle("Aggregate")
     }
+    if (type == "freqpoly") {
+      graph <- ggplot(msp, aes(x = factor(value), y = ..density.., color = chain)) +
+        geom_freqpoly(aes(group = chain), size = 3, alpha = 2/3) + 
+        ggtitle("By chain")
   }
-
+    
+  graph <- graph + 
+    labs(x = "Treedepth", y = "") +
+    theme_classic() %+replace% (axis_color + axis_labs + fat_axis + plot_title)
+  return(graph)
+    
+  } else { #param == "n_divergent__"
+    nDivergent <- sum(msp$value == 1)
+    graph <- ggplot(msp, aes(x = iteration, y = value, fill = chain))
+    graph <- graph + 
+      geom_bar(stat = "identity") + 
+      scale_y_continuous(breaks = NULL) +
+      labs(x = "Iteration", y = "") + 
+      ggtitle(paste("Number of divergent post-warmup iterations =", nDivergent)) + 
+      theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + plot_title)
+    return(graph)
+  }
 }
-
 
 
 # param_trace -------------------------------------------------------------

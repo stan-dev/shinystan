@@ -123,8 +123,16 @@ function(input, output, session) {
       }')
   ))
   #### PLOT: sampler params ####
-  output$sampler_plot_out <- renderPlot({
-    x <- sampler_plot()
+  output$sampler_plot_treedepth_hist_out <- renderPlot({
+    x <- sampler_plot_treedepth_hist()
+    suppressMessages(suppressWarnings(print(x)))
+  })
+  output$sampler_plot_treedepth_freqpoly_out <- renderPlot({
+    x <- sampler_plot_treedepth_freqpoly()
+    suppressMessages(suppressWarnings(print(x)))
+  })
+  output$sampler_plot_divergent_out <- renderPlot({
+    x <- sampler_plot_divergent()
     suppressMessages(suppressWarnings(print(x)))
   })
   
