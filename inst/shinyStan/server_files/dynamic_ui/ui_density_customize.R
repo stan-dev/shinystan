@@ -24,18 +24,18 @@ output$ui_density_customize <- renderUI({
                     bsCollapse(
                       bsCollapsePanel(title = span(style = "color:#428bca;", "Options"), id = "density_options_collapse",
                                       fluidRow(
-                                        column(3,numericInput("dens_chain", label = h5(style = "color: white;", "Chain (0 = all)"), min = 0, max = object@nChains, step = 1, value = 0)),
+                                        column(3,numericInput("dens_chain", label = strong(style = "color: white;", "Chain (0 = all)"), min = 0, max = object@nChains, step = 1, value = 0)),
                                         column(3, conditionalPanel(condition = "input.dens_chain == 0",
-                                                                   radioButtons("dens_chain_split", label = h5("All chains"), choices = c("Together", "Separate"), selected = "Together", inline = FALSE))),
-                                        column(2, conditionalPanel(condition = "input.dens_chain_split == 'Together'", selectInput("dens_point_est", h5("Pt est"), choices = c("None","Mean","Median","MAP"), selected = my_point_est, selectize = FALSE, size = 4))),
-                                        column(2, conditionalPanel(condition = "input.dens_chain_split == 'Together'", selectInput("dens_ci", h5("CI %"), choices = c("None" = "None", "50%" = 0.5, "80%" = 0.8, "95%" = 0.95), selected = my_CI, selectize = FALSE, size = 4))),
-                                        column(2, conditionalPanel(condition = "input.dens_chain_split == 'Together'", selectInput("dens_x_breaks", h5("x breaks"), choices = c("None", "Some", "Many"), selected = my_x_breaks, selectize = FALSE, size = 3)))
+                                                                   radioButtons("dens_chain_split", label = strong("All chains"), choices = c("Together", "Separate"), selected = "Together", inline = FALSE))),
+                                        column(3, conditionalPanel(condition = "input.dens_chain_split == 'Together'", selectInput("dens_point_est", strong("Point est"), choices = c("None","Mean","Median","MAP"), selected = my_point_est))),
+                                        column(3, conditionalPanel(condition = "input.dens_chain_split == 'Together'", selectInput("dens_ci", strong("CI %"), choices = c("None" = "None", "50%" = 0.5, "80%" = 0.8, "95%" = 0.95), selected = my_CI)))
                                       )
                       ),
                       bsCollapsePanel(title = span(style = "color:#428bca;", "Aesthetics"), id = "density_collors_collapse",
                                       fluidRow(
-                                        column(3, conditionalPanel(condition = "input.dens_chain_split == 'Together'", selectInput("dens_fill_color", h5(style = "color: white;", "Fill color"), choices = colors(), selected = my_fill_color, selectize = TRUE))),
-                                        column(3, conditionalPanel(condition = "input.dens_chain_split == 'Together' && (input.dens_point_est != 'None' || input.dens_ci != 'None')", selectInput("dens_line_color", h5(style = "color: white;", "Line color"), choices = colors(), selected = my_line_color, selectize = TRUE)))
+                                        column(3, conditionalPanel(condition = "input.dens_chain_split == 'Together'", selectInput("dens_x_breaks", strong("x breaks"), choices = c("None", "Some", "Many"), selected = my_x_breaks))),
+                                        column(3, conditionalPanel(condition = "input.dens_chain_split == 'Together'", selectInput("dens_fill_color", strong(style = "color: white;", "Fill color"), choices = colors(), selected = my_fill_color, selectize = TRUE))),
+                                        column(3, conditionalPanel(condition = "input.dens_chain_split == 'Together' && (input.dens_point_est != 'None' || input.dens_ci != 'None')", selectInput("dens_line_color", strong(style = "color: white;", "Line color"), choices = colors(), selected = my_line_color, selectize = TRUE)))
                                       )
                       ),
                       bsCollapsePanel(title = span(style = "color:#428bca;", "Add prior"), id = "density_prior_collapse",
