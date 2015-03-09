@@ -27,15 +27,15 @@ source("pp_check/plot_names_descriptions.R", local = TRUE)
 
 # give shinystan_object shorter name
 object <- shinystan_object
-show_model_name <- h4(style = "padding: 0px 0px 10px 10px; color: #428bca;", paste("Model name:", object@model_name))
+show_model_name <- h4(style = "padding: 60px 0px 10px 10px; color: #428bca; opacity: 0.95; ", paste("Model name:", object@model_name))
 
 # Begin shinyUI -----------------------------------------------------------
 # _________________________________________________________________________
 
 
-navbarPage(title = strong(style = "color: #f9dd67;", "shinyStan"),
+navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
            windowTitle = "shinyStan", collapsible = FALSE, id = "nav",
-           inverse = TRUE, header = show_model_name,
+           inverse = TRUE, header = show_model_name, position = "fixed-top",
            
            #### TAB: Estimates ####
            tabPanel(title = "Estimate", icon = icon("stats", lib = "glyphicon"),
@@ -111,7 +111,19 @@ navbarPage(title = strong(style = "color: #f9dd67;", "shinyStan"),
                                  )),
                                  column(2, numericInput("sampler_digits", label = h5("Decimals"), value = 4, min = 0, max = 10, step = 1))
                                ),
-                               dataTableOutput("sampler_summary")
+                               dataTableOutput("sampler_summary"),
+                               hr(),
+                               selectInput("sampler_plot_param", "Quantity to plot", choices = c("treedepth (post warmup)" = "treedepth__", "n_divergent (post warmup)" = "n_divergent__")),
+                               conditionalPanel(condition = "input.sampler_plot_param == 'treedepth__'",
+                                                fluidRow(
+                                                  column(6, plotOutput("sampler_plot_treedepth_hist_out", height = "150px")),
+                                                  column(6, plotOutput("sampler_plot_treedepth_freqpoly_out", height = "150px"))
+                                                )
+                               ),
+                               conditionalPanel(condition = "input.sampler_plot_param == 'n_divergent__'",
+                                                fluidRow(column(12,plotOutput("sampler_plot_divergent_out", height = "150px")))
+                                                
+                               )
                       ),
                       #### Rhat, ESS, MCSE, diagnostics ####
                       tabPanel("\\((\\hat{R}, n_{eff}, \\text{se}_{mean}) \\text{ diagnostics} \\)", icon = icon("bar-chart-o", "fa-2x"),

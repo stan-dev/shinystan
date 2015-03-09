@@ -152,6 +152,48 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
 }
 
 
+# sampler plot --------------------------------------------------
+.sampler_plot <- function(sampler_params, warmup_val, param, type = "bar") {
+  plot_title <- theme(plot.title = element_text(face = "bold", size = 12, hjust = 0))
+  sp <- lapply(1:length(sampler_params), function(i) {
+    out <- sampler_params[[i]][, param]
+    out <- if (warmup_val == 0) out else out[-(1:warmup_val)]
+    names(out) <- ((warmup_val + 1):(warmup_val + length(out)))
+    t(out)
+  })
+  names(sp) <- paste0(1:length(sp))
+  msp <- reshape2::melt(sp)[,-1]
+  colnames(msp) <- c("iteration", "value", "chain")
+  
+  if (param == "treedepth__") {
+    if (type == "bar") {
+      graph <- ggplot(msp, aes(x = factor(value))) + 
+        stat_bin(aes(y=..count../sum(..count..)), fill = "gray35") + 
+        ggtitle("Aggregate")
+    }
+    if (type == "freqpoly") {
+      graph <- ggplot(msp, aes(x = factor(value), y = ..density.., color = chain)) +
+        geom_freqpoly(aes(group = chain), size = 2, alpha = 2/3) + 
+        ggtitle("By chain")
+  }
+    
+  graph <- graph + 
+    labs(x = "Treedepth", y = "") +
+    theme_classic() %+replace% (axis_color + axis_labs + fat_axis + plot_title)
+  return(graph)
+    
+  } else { #param == "n_divergent__"
+    nDivergent <- sum(msp$value == 1)
+    graph <- ggplot(msp, aes(x = iteration, y = value, fill = chain))
+    graph <- graph + 
+      geom_bar(stat = "identity") + 
+      scale_y_continuous(breaks = NULL) +
+      labs(x = "Iteration", y = "") + 
+      ggtitle(paste("Number of divergent post-warmup iterations =", nDivergent)) + 
+      theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + plot_title)
+    return(graph)
+  }
+}
 
 
 # param_trace -------------------------------------------------------------
@@ -752,6 +794,10 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
     nChains <- dim_samps[2]
   }
 
+  if (nChains == 1) {
+    param_chains <- xts::as.xts(ts(param_samps, start = 1))
+  } else {
+  
   if (chain != 0) {
     param_samps <- param_samps[, chain]
     param_chains <- xts::as.xts(ts(param_samps, start = 1))
@@ -761,6 +807,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
       param_chains <- cbind(param_chains, xts::as.xts(ts(param_samps[,i], start = 1)))
     }
     colnames(param_chains) <- paste0("Chain", 1:nChains)
+  }
   }
 
   shade_to <- if (warmup_shade) paste0(warmup_val,"-01-01") else "0001-01-01"

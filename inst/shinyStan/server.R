@@ -122,6 +122,20 @@ function(input, output, session) {
           $("td:eq(0)", row).css("font-weight", "bold");
       }')
   ))
+  #### PLOT: sampler params ####
+  output$sampler_plot_treedepth_hist_out <- renderPlot({
+    x <- sampler_plot_treedepth_hist()
+    suppressMessages(suppressWarnings(print(x)))
+  })
+  output$sampler_plot_treedepth_freqpoly_out <- renderPlot({
+    x <- sampler_plot_treedepth_freqpoly()
+    suppressMessages(suppressWarnings(print(x)))
+  })
+  output$sampler_plot_divergent_out <- renderPlot({
+    x <- sampler_plot_divergent()
+    suppressMessages(suppressWarnings(print(x)))
+  })
+  
   #### PLOT: multiple parameters ####
   output$plot_param_vertical_out <- renderPlot({
     plot_param_vertical()
