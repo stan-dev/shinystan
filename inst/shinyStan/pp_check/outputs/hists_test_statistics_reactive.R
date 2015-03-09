@@ -1,5 +1,5 @@
 pp_hists_test_statistics_mean <- reactive({
-  tests()
+  pp_tests()
   y <- get(input$y_name)
   y_rep <- y_rep()
   mean_y <- mean(y)
@@ -10,11 +10,11 @@ pp_hists_test_statistics_mean <- reactive({
     stat_y_rep = mean_y_rep,
     which = "mean",
     geom = input$pp_hists_test_statistics_type
-    ))
+  ))
 })
 
 pp_hists_test_statistics_sd <- reactive({
-  tests()
+  pp_tests()
   y <- get(input$y_name)
   y_rep <- y_rep()
   sd_y <- sd(y)
@@ -29,12 +29,12 @@ pp_hists_test_statistics_sd <- reactive({
 })
 
 pp_hists_test_statistics_min <- reactive({
-  tests()
+  pp_tests()
   y <- get(input$y_name)
   y_rep <- y_rep()  
   min_y <- min(y)
   min_y_rep <- apply(y_rep, 1, min)
-
+  
   do.call(".pp_hists_test_statistics", args = list(
     stat_y = min_y,
     stat_y_rep = min_y_rep,
@@ -44,7 +44,7 @@ pp_hists_test_statistics_min <- reactive({
 })
 
 pp_hists_test_statistics_max <- reactive({
-  tests()
+  pp_tests()
   y <- get(input$y_name)
   y_rep <- y_rep()
   max_y <- max(y)
@@ -58,50 +58,6 @@ pp_hists_test_statistics_max <- reactive({
   ))
 })
 
-pp_hists_test_statistics_mean <- reactive({
-  tests()
-  y <- get(input$y_name)
-  y_rep <- y_rep()
-  mean_y <- mean(y)
-  mean_y_rep <- apply(y_rep, 1, mean)
-  
-  do.call(".pp_hists_test_statistics", args = list(
-    stat_y = mean_y,
-    stat_y_rep = mean_y_rep,
-    which = "mean",
-    geom = input$pp_hists_test_statistics_type
-  ))
-})
-
-pp_hists_test_statistics_sd <- reactive({
-  tests()
-  y <- get(input$y_name)
-  y_rep <- y_rep()
-  sd_y <- sd(y)
-  sd_y_rep <- apply(y_rep, 1, sd)
-  
-  do.call(".pp_hists_test_statistics", args = list(
-    stat_y = sd_y,
-    stat_y_rep = sd_y_rep,
-    which = "sd",
-    geom = input$pp_hists_test_statistics_type
-  ))
-})
-
-pp_hists_test_statistics_min <- reactive({
-  tests()
-  y <- get(input$y_name)
-  y_rep <- y_rep()  
-  min_y <- min(y)
-  min_y_rep <- apply(y_rep, 1, min)
-  
-  do.call(".pp_hists_test_statistics", args = list(
-    stat_y = min_y,
-    stat_y_rep = min_y_rep,
-    which = "min",
-    geom = input$pp_hists_test_statistics_type
-  ))
-})
 
 # pp_hists_test_statistics_custom1 <- reactive({
 #   tests()

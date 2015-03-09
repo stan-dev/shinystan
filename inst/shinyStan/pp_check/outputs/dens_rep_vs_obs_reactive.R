@@ -1,5 +1,5 @@
 pp_dens_rep_vs_obs <- reactive({
-  tests()
+  pp_tests()
   y <- get(input$y_name)
   y_rep <- y_rep()
   # sample_ids <- sample_ids_for_dens()

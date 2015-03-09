@@ -14,11 +14,11 @@ output$ui_pp_about <- renderUI({
     br(),
     p("For each draw of \\(\\theta\\) from the posterior \\(p(\\theta | y) \\) 
       we simulate data \\(y^{rep}\\) from the posterior predictive distribution \\(p(y^{rep} | y) \\)."),
-  br(),
-  p("Using the simulations of \\(y^{rep}\\) we can make various
+    br(),
+    p("Using the simulations of \\(y^{rep}\\) we can make various
     graphical displays comparing our observed data to the replications."),
-  hr(),
-  helpText("For a more thorough discussion of posterior predictive checking see Chapter 6 of", a("BDA3.", href = "http://www.stat.columbia.edu/~gelman/book/"))
-  
-)
+    hr(),
+    helpText("For a more thorough discussion of posterior predictive checking see Chapter 6 of", a("BDA3.", href = "http://www.stat.columbia.edu/~gelman/book/"))
+    
+  )
 })

@@ -1,5 +1,5 @@
 # validate input tests ----------------------------------------------------
-tests <- reactive({
+pp_tests <- reactive({
   t1 <- need(input$y_name != "", message = "Waiting for y \n")
   t2 <- need(input$yrep_name != "", message = "Waiting for y_rep \n")
   validate(t1, t2)
@@ -124,7 +124,6 @@ sample_id_for_resids <- reactive({
     geom_point(color = "gray35", size = 2.75, alpha = 1, shape = 19) + 
     xy_labs +
     thm
-  
   
   if (zoom_to_zero) {
     graph <- graph + 
