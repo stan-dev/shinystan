@@ -1,5 +1,5 @@
 pp_hists_rep_vs_obs <- reactive({
-  tests()
+  pp_tests()
   validate(need(input$pp_hists_rep_vs_obs_type, message = "Loading..."))
   y <- get(input$y_name)
   y_rep <- y_rep()

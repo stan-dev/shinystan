@@ -1,5 +1,5 @@
 pp_hist_resids <- reactive({
-  tests()
+  pp_tests()
   y <- get(input$y_name)
   y_rep <- y_rep()
   s <- sample_id_for_resids()
