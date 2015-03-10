@@ -31,6 +31,7 @@ v_lines <- theme(panel.grid.major = element_line(size = 0.25, linetype = 3, colo
 no_lgnd <- theme(legend.position = "none")
 lgnd_bot <- theme(legend.position = "bottom")
 lgnd_top <- theme(legend.position = "top")
+lgnd_left <- theme(legend.position = "left")
 no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), axis.text.y = element_blank())
 
 # make_param_list ------------------------------------------------------
@@ -168,18 +169,18 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
   if (param == "treedepth__") {
     if (type == "bar") {
       graph <- ggplot(msp, aes(x = factor(value))) + 
-        stat_bin(aes(y=..count../sum(..count..)), fill = "gray35") + 
-        ggtitle("Aggregate")
+        stat_bin(aes(y=..count../sum(..count..)), fill = "gray35", color = "black", width=1) + 
+        ggtitle("Treedepth (post-warmup, all chains)")
     }
     if (type == "freqpoly") {
       graph <- ggplot(msp, aes(x = factor(value), y = ..density.., color = chain)) +
         geom_freqpoly(aes(group = chain), size = 2, alpha = 2/3) + 
-        ggtitle("By chain")
+        ggtitle("Treedepth (post-warmup)")
   }
     
   graph <- graph + 
     labs(x = "Treedepth", y = "") +
-    theme_classic() %+replace% (axis_color + axis_labs + fat_axis + plot_title)
+    theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + plot_title)
   return(graph)
     
   } else { #param == "n_divergent__"
@@ -189,8 +190,8 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
       geom_bar(stat = "identity") + 
       scale_y_continuous(breaks = NULL) +
       labs(x = "Iteration", y = "") + 
-      ggtitle(paste("Number of divergent post-warmup iterations =", nDivergent)) + 
-      theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + plot_title)
+      ggtitle(paste(nDivergent, "divergent post-warmup iterations")) + 
+      theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + plot_title + lgnd_left)
     return(graph)
   }
 }
@@ -454,9 +455,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
                         lag = 0:lags)
   
   ac_labs <- labs(x = "Lag", y = "Autocorrelation")
-  strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "white"),
-                     strip.background = element_rect(color = "#346fa1", fill = "#346fa1"))
-  ac_theme <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_lgnd + strip_txt)
+  ac_theme <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_lgnd)
   y_scale <- scale_y_continuous(breaks = seq(0, 1, 0.25), labels = c("0","","0.5","",""))
   
   graph <- ggplot(ac_dat, aes(x = lag, y = ac))
@@ -735,7 +734,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
     dat <- data.frame(parameter = names(dat), x = dat)
     my_labs <- labs(y = "", x = "Monte Carlo se / posterior sd")
   }
-  graph <- qplot(x = x, data = dat, color = I("gray65"), fill = I("gray35"))
+  graph <- qplot(x = x, data = dat, color = I("black"), fill = I("gray35"))
   graph <- graph + my_labs + theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs)
 
   graph
