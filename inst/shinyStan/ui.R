@@ -113,17 +113,17 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                ),
                                dataTableOutput("sampler_summary"),
                                hr(),
-                               selectInput("sampler_plot_param", "Quantity to plot", choices = c("treedepth (post warmup)" = "treedepth__", "n_divergent (post warmup)" = "n_divergent__")),
-                               conditionalPanel(condition = "input.sampler_plot_param == 'treedepth__'",
-                                                fluidRow(
-                                                  column(6, plotOutput("sampler_plot_treedepth_hist_out", height = "150px")),
-                                                  column(6, plotOutput("sampler_plot_treedepth_freqpoly_out", height = "150px"))
-                                                )
+                               fluidRow(
+                                 column(3, checkboxInput("sampler_plot_show_hide", label = "Show plots", value = TRUE))
                                ),
-                               conditionalPanel(condition = "input.sampler_plot_param == 'n_divergent__'",
-                                                fluidRow(column(12,plotOutput("sampler_plot_divergent_out", height = "150px")))
-                                                
-                               )
+                               conditionalPanel("condition = input.sampler_plot_show_hide == true",
+                                                fluidRow(
+                                                  column(4, plotOutput("sampler_plot_divergent_out", height = "150px")),
+                                                  column(4, plotOutput("sampler_plot_treedepth_hist_out", height = "150px")),
+                                                  column(4, plotOutput("sampler_plot_treedepth_freqpoly_out", height = "150px"))
+                                                ),
+                                                br()
+                                                )
                       ),
                       #### Rhat, ESS, MCSE, diagnostics ####
                       tabPanel("\\((\\hat{R}, n_{eff}, \\text{se}_{mean}) \\text{ diagnostics} \\)", icon = icon("bar-chart-o", "fa-2x"),
@@ -181,11 +181,11 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                  ),
                                  tags$div(class = "pull-right",style = "line-height: 150%;", checkboxInput("multi_trace_options", label = span(style = "font-size: 12px;","Show/hide customization panel"), value = TRUE))
                                ),
-                                 conditionalPanel(condition = "input.multi_trace_options == true",
-                                                  uiOutput("ui_multi_trace_customize")),
-                                 plotOutput("multi_trace_plot_out"),
-                                 br()
-                        ),
+                               conditionalPanel(condition = "input.multi_trace_options == true",
+                                                uiOutput("ui_multi_trace_customize")),
+                               plotOutput("multi_trace_plot_out"),
+                               br()
+                      ),
                       #### PPcheck ####
                       tabPanel(title = "PPcheck", icon = icon("bar-chart-o", "fa-2x"),
                                h1("Graphical posterior predictive checks"),
@@ -217,77 +217,77 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                             
                                )
                       )
-                      ) # End tabsetPanel
-             ), # End Convergence
-             
-             #### TAB: Explore Parameters ####
-             tabPanel(title = "Explore", icon = icon("eye-open", lib = "glyphicon"),
-                      fluidRow(
-                        column(3, selectizeInput(inputId = "param", label = h4("Select parameter"), choices = .make_param_list(object), multiple = FALSE)),
-                        # summary stats
-                        column(7, offset = 1, dataTableOutput("parameter_summary_out"))
-                      ),
-                      hr(),
-                      navlistPanel(well = FALSE,
-                                   #### multiview ####
-                                   tabPanel("Multiview", icon = icon("th-large", lib = "glyphicon"),
-                                            bsCollapse(
-                                              bsCollapsePanel(title = "View Options", id = "multiview_collapse",
-                                                              checkboxInput("multiview_warmup", label = strong(style = "color: white;", "Include warmup"), value = FALSE),
-                                                              hr(),
-                                                              downloadButton("download_multiview", "Save as ggplot2 objects")
-                                              )
-                                            ),
-                                            fluidRow(
-                                              column(6, h5("Density")),
-                                              column(6, h5("Autocorrelation"))
-                                            ),
-                                            fluidRow(
-                                              column(6, plotOutput("multiview_density", height = "150")),
-                                              column(6, plotOutput("multiview_autocorr", height = "150"))
-                                            ),
-                                            h5("Trace: iterations vs. sampled values"),
-                                            plotOutput("multiview_trace", height = "150")
-                                   ),
-                                   #### dynamic trace plot ####
-                                   tabPanel("Dynamic trace", # icon = icon("line-chart"),
-                                            uiOutput("ui_dynamic_trace_customize"),
-                                            dygraphs::dygraphOutput("dynamic_trace_plot_out"),
-                                            br(), br()
-                                   ),
-                                   #### density/histogram ####
-                                   tabPanel("Density & histogram", # icon = icon("area-chart"),
-                                            radioButtons("distribution", label = "", choices = c("Density", "Histogram"), inline = TRUE),
-                                            conditionalPanel(condition = "input.distribution == 'Density'",
-                                                             uiOutput("ui_density_customize"),
-                                                             plotOutput("density_plot_out")
-                                                             ),
-                                            conditionalPanel(condition = "input.distribution == 'Histogram'",
-                                                             uiOutput("ui_hist_customize"),
-                                                             plotOutput("hist_plot_out")
-                                                             )
-                                            
-                                   ),
-                                   #### trivariate plot #####
-                                   tabPanel("Dynamic 3D scatterplot", # icon = icon("spinner", "fa-spin"),
-                                            uiOutput("ui_triviariate_customize"),
-                                            fluidRow(
-                                              column(3, selectizeInput("trivariate_param_x", label = h5(style = "color: #428bca;", "x-axis"), choices = .make_param_list(object), multiple = FALSE)),
-                                              column(3, selectizeInput("trivariate_param_y", label = h5(style = "color: #428bca;", "y-axis"), choices = .make_param_list(object), multiple = FALSE)),
-                                              column(3, selectizeInput("trivariate_param_z", label = h5(style = "color: #428bca;", "z-axis"), choices = rev(.make_param_list(object)), multiple = FALSE))
-                                            ),
-                                            br(),
-                                            threejs::scatterplotThreeOutput("trivariate_plot_out"),
-                                            br()
-                                   ),
-                                   #### bivariate plot #####
-                                   tabPanel("Bivariate",
-                                            uiOutput("ui_bivariate_customize"),
-                                            selectizeInput("bivariate_param_y", label = h5(style = "color: #428bca;", "y-axis"), choices = rev(.make_param_list(object)), multiple = FALSE),
-                                            plotOutput("bivariate_plot_out")
-                                   )
-                                   
-                      )
+                    ) # End tabsetPanel
+           ), # End Convergence
+           
+           #### TAB: Explore Parameters ####
+           tabPanel(title = "Explore", icon = icon("eye-open", lib = "glyphicon"),
+                    fluidRow(
+                      column(3, selectizeInput(inputId = "param", label = h4("Select parameter"), choices = .make_param_list(object), multiple = FALSE)),
+                      # summary stats
+                      column(7, offset = 1, dataTableOutput("parameter_summary_out"))
+                    ),
+                    hr(),
+                    navlistPanel(well = FALSE,
+                                 #### multiview ####
+                                 tabPanel("Multiview", icon = icon("th-large", lib = "glyphicon"),
+                                          bsCollapse(
+                                            bsCollapsePanel(title = "View Options", id = "multiview_collapse",
+                                                            checkboxInput("multiview_warmup", label = strong(style = "color: white;", "Include warmup"), value = FALSE),
+                                                            hr(),
+                                                            downloadButton("download_multiview", "Save as ggplot2 objects")
+                                            )
+                                          ),
+                                          fluidRow(
+                                            column(6, h5("Density")),
+                                            column(6, h5("Autocorrelation"))
+                                          ),
+                                          fluidRow(
+                                            column(6, plotOutput("multiview_density", height = "150")),
+                                            column(6, plotOutput("multiview_autocorr", height = "150"))
+                                          ),
+                                          h5("Trace: iterations vs. sampled values"),
+                                          plotOutput("multiview_trace", height = "150")
+                                 ),
+                                 #### dynamic trace plot ####
+                                 tabPanel("Dynamic trace", # icon = icon("line-chart"),
+                                          uiOutput("ui_dynamic_trace_customize"),
+                                          dygraphs::dygraphOutput("dynamic_trace_plot_out"),
+                                          br(), br()
+                                 ),
+                                 #### density/histogram ####
+                                 tabPanel("Density & histogram", # icon = icon("area-chart"),
+                                          radioButtons("distribution", label = "", choices = c("Density", "Histogram"), inline = TRUE),
+                                          conditionalPanel(condition = "input.distribution == 'Density'",
+                                                           uiOutput("ui_density_customize"),
+                                                           plotOutput("density_plot_out")
+                                          ),
+                                          conditionalPanel(condition = "input.distribution == 'Histogram'",
+                                                           uiOutput("ui_hist_customize"),
+                                                           plotOutput("hist_plot_out")
+                                          )
+                                          
+                                 ),
+                                 #### trivariate plot #####
+                                 tabPanel("Dynamic 3D scatterplot", # icon = icon("spinner", "fa-spin"),
+                                          uiOutput("ui_triviariate_customize"),
+                                          fluidRow(
+                                            column(3, selectizeInput("trivariate_param_x", label = h5(style = "color: #428bca;", "x-axis"), choices = .make_param_list(object), multiple = FALSE)),
+                                            column(3, selectizeInput("trivariate_param_y", label = h5(style = "color: #428bca;", "y-axis"), choices = .make_param_list(object), multiple = FALSE)),
+                                            column(3, selectizeInput("trivariate_param_z", label = h5(style = "color: #428bca;", "z-axis"), choices = rev(.make_param_list(object)), multiple = FALSE))
+                                          ),
+                                          br(),
+                                          threejs::scatterplotThreeOutput("trivariate_plot_out"),
+                                          br()
+                                 ),
+                                 #### bivariate plot #####
+                                 tabPanel("Bivariate",
+                                          uiOutput("ui_bivariate_customize"),
+                                          selectizeInput("bivariate_param_y", label = h5(style = "color: #428bca;", "y-axis"), choices = rev(.make_param_list(object)), multiple = FALSE),
+                                          plotOutput("bivariate_plot_out")
+                                 )
+                                 
+                    )
            ),
            #### MENU: More ####
            navbarMenu(title = "More",
