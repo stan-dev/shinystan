@@ -187,7 +187,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                         ),
                       #### PPcheck ####
                       tabPanel(title = "PPcheck", icon = icon("bar-chart-o", "fa-2x"),
-                               h1("Graphical posterior predictive checks"),
+                               h2("Graphical posterior predictive checks"),
                                navlistPanel(id = "pp_navlist", widths = c(4,8), well = FALSE,  
                                             "Data",
                                             tabPanel("Select data",
