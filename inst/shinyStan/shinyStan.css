@@ -6,15 +6,55 @@
   border-radius: 0px;
   /*border-color: #222222;*/
   border-color: transparent;
-  -moz-box-shadow: 0 0 7px #222222; 
-  -webkit-box-shadow: 0 0 7px #222222; 
-  box-shadow: 0 0 7px #222222; 
+  -moz-box-shadow: 0 0 10px #222222; 
+  -webkit-box-shadow: 0 0 10px #222222; 
+  box-shadow: 0 0 10px #222222; 
+  
 }
 
+.navbar .nav > .active > a,
+.navbar .nav > .active > a:focus,
+.navbar .nav > .active > a:hover {
+    background-color: #f9dd67;
+    box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125) ;
+    -moz-box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125) ;
+    -webkit-box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125) ;
+    text-shadow: none;
+    color: #000;
+    text-decoration: none;
+    -webkit-border-radius: 0px 0px 6px 6px;
+    -moz-border-radius: 0px 0px 6px 6px;
+    -webkit-transform: scale(1.05);
+    -moz-transform: scale(1.05);
+    transform: scale(1.05);
+} 
+#nav li { 
+  -webkit-transition: all 0.2s; transition-delay: 0.1s;
+  -moz-transition: all 0.2s; transition-delay: 0.1s;
+}
+#nav li a { 
+  -webkit-transition: all 0.5s; transition-delay: 0.1s;
+  -moz-transition: all 0.5s; transition-delay: 0.1s;
+}
+#nav li ul { 
+  -webkit-transition: all 1s; transition-delay: 0.1s;
+   -moz-transition: all 1s; transition-delay: 0.1s;
+}
+#nav li ul li { 
+  -webkit-transition: height 0.5s; transition-delay: 0.1s;
+    -moz-transition: height 0.5s; transition-delay: 0.1s;
+}
+
+
+
+.table .alignRight {
+  text-align:right;
+}
 
 body {
   padding-top: 60px;
 }
+
 .well {
   padding-bottom: 5px;
   padding-top: 5px;
@@ -37,6 +77,13 @@ body {
     border-radius: 3px;
 }
 
+
+/**************************************/
+/* don't blink when recalculating */
+#autocorr_plot_out.recalculating, #plot_param_vertical_out.recalculating { 
+  opacity: 1.0; 
+}
+/**************************************/
 
 /**************************************/
 /* plot hover shadow */
