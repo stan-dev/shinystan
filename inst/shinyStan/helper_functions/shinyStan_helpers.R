@@ -31,9 +31,10 @@ h_lines <- theme(panel.grid.major = element_line(size = 0.25, linetype = 3, colo
 v_lines <- theme(panel.grid.major = element_line(size = 0.25, linetype = 3, color = "turquoise4"),
                  panel.grid.major.y = element_blank())
 no_lgnd <- theme(legend.position = "none")
-lgnd_bot <- theme(legend.position = "bottom")
-lgnd_top <- theme(legend.position = "top")
-lgnd_left <- theme(legend.position = "left")
+lgnd_bot <- theme(legend.position = "bottom", legend.background = element_blank())
+lgnd_top <- theme(legend.position = "top", legend.background = element_blank())
+lgnd_left <- theme(legend.position = "left", legend.background = element_blank())
+lgnd_right <- theme(legend.position = "right", legend.background = element_blank())
 no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), axis.text.y = element_blank())
 
 # make_param_list ------------------------------------------------------
@@ -177,12 +178,12 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
     if (type == "freqpoly") {
       graph <- ggplot(msp, aes(x = factor(value), y = ..density.., color = chain)) +
         geom_freqpoly(aes(group = chain), size = 2, alpha = 2/3) + 
-        ggtitle("Treedepth (post-warmup)")
+        ggtitle("Treedepth (post-warmup)") 
   }
     
   graph <- graph + 
     labs(x = "Treedepth", y = "") +
-    theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + plot_title + transparent)
+    theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + plot_title + lgnd_right + transparent)
   return(graph)
     
   } else { #param == "n_divergent__"
@@ -366,6 +367,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
                         fill_color = NULL, line_color = NULL,
                         point_est = "None", CI,
                         x_breaks = "Some", # y_breaks = "None",
+                        xzoom = FALSE, x_lim = NULL,
                         chain_split = FALSE,
                         title = TRUE,
                         prior_fam = "None", prior_params) {
@@ -400,7 +402,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
   if (chain == 0 & chain_split == TRUE) {
     graph <- ggplot(dat, aes(x = value, color = chains, fill = chains))
     if (prior_fam != "None") {
-      graph <- graph + stat_function(alpha=0.75,color = "black", fun = as.character(priors$fun[priors$family==prior_fam]), args = prior_params, show_guides = TRUE)
+      graph <- graph + stat_function(alpha=0.75,color = "black", fun = as.character(priors$fun[priors$family==prior_fam]), args = prior_params, show_guides = TRUE) 
     }
     graph <- graph +
       geom_density(alpha = 0.15) +
@@ -437,6 +439,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
                 annotate("segment", x = quant, xend = quant, y = 0, yend = max(dens_dat$y), color = lclr, lty = rep(1:length(CI),2))
     )
   }
+  
+  if (xzoom) graph <- graph + scale_x_continuous(limits = x_lim)
   graph
 }
 
@@ -904,6 +908,6 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
     graph <- graph + stat_ellipse(level = as.numeric(ellipse_lev), color = ellipse_color, linetype = ellipse_lty, size = ellipse_lwd, alpha = ellipse_alpha)
   }
 
-  graph + theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color)
+  graph + theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)
 }
 
