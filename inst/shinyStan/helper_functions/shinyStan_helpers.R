@@ -18,6 +18,8 @@
 
 # ggplot theme elements --------------------------------------------
 theme <- function(...) ggplot2::theme(...)
+transparent <- theme(panel.background = element_blank(),
+                     plot.background = element_blank())
 axis_line_color <- "#346fa1"
 axis_color <- theme(axis.line = element_line(color = axis_line_color))
 axis_labs <- theme(axis.title = element_text(face = "bold", size = 13))
@@ -180,7 +182,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
     
   graph <- graph + 
     labs(x = "Treedepth", y = "") +
-    theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + plot_title)
+    theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + plot_title + transparent)
   return(graph)
     
   } else { #param == "n_divergent__"
@@ -191,7 +193,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
       scale_y_continuous(breaks = NULL) +
       labs(x = "Iteration", y = "") + 
       ggtitle(paste(nDivergent, "divergent post-warmup iterations")) + 
-      theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + plot_title + lgnd_left)
+      theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + plot_title + lgnd_left + transparent)
     return(graph)
   }
 }
@@ -233,7 +235,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
   if(palette == "Brewer (spectral)") clrs <- scale_color_brewer(palette = "Spectral")
   if(palette == "Rainbow") clrs <- scale_colour_manual(values = rainbow(nclrs))
 
-  theme_elements <- axis_color + fat_axis + no_lgnd + axis_labs
+  theme_elements <- axis_color + fat_axis + no_lgnd + axis_labs + transparent
   if (style == "line") theme_elements <- theme_elements + h_lines
   graph <- ggplot(dat, aes(x = iterations, y = value, color = chains))
   graph <- graph + xy_labs + clrs + theme_classic() %+replace% theme_elements # (fat_axis + h_lines + no_lgnd)
@@ -301,7 +303,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
                      strip.background = element_rect(color = "#346fa1", fill = "#346fa1"))
 
   graph <- ggplot(dat, aes(x = iterations, y = value, color = chains))
-  graph <- graph + xy_labs + clrs + theme_classic() %+replace% (axis_color + axis_labs + fat_axis + h_lines + lgnd_top + lgnd_txt + strip_txt)
+  graph <- graph + xy_labs + clrs + theme_classic() %+replace% (axis_color + axis_labs + fat_axis + h_lines + lgnd_top + lgnd_txt + strip_txt + transparent)
   if (rect != "None") graph <- graph + shading_rect
   graph <- graph + geom_line(size = 0.35)
   if (!is.na(x1)) {
@@ -345,7 +347,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
 
   graph <- graph +
     labs(x = param, y = "") +
-    theme_classic() %+replace% (title_txt + axis_color + axis_labs + fat_axis + no_yaxs)
+    theme_classic() %+replace% (title_txt + axis_color + axis_labs + fat_axis + no_yaxs + transparent)
 
   if (title == TRUE) graph <- graph + ggtitle(ttl)
 
@@ -405,7 +407,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
       scale_color_discrete("") + scale_fill_discrete("") +
       labs(x = param, y = "") +
       x_scale + # y_scale +
-      theme_classic() %+replace% (title_txt + axis_color + axis_labs + fat_axis + no_yaxs)
+      theme_classic() %+replace% (title_txt + axis_color + axis_labs + fat_axis + no_yaxs + transparent)
     if (title == TRUE) graph <- graph + ggtitle(ttl)
     return(graph)
   }
@@ -418,7 +420,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
     labs(x = param, y = "") +
     x_scale + # y_scale +
     geom_ribbon(ymin = 0, fill = fclr, color = fclr, alpha = if (prior_fam == "None") 1 else 0.85) +
-    theme_classic() %+replace% (title_txt + axis_color + axis_labs + fat_axis + no_yaxs)
+    theme_classic() %+replace% (title_txt + axis_color + axis_labs + fat_axis + no_yaxs + transparent)
   
   if (title == TRUE) graph <- graph + ggtitle(ttl)
   
@@ -455,7 +457,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
                         lag = 0:lags)
   
   ac_labs <- labs(x = "Lag", y = "Autocorrelation")
-  ac_theme <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_lgnd)
+  ac_theme <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_lgnd + transparent)
   y_scale <- scale_y_continuous(breaks = seq(0, 1, 0.25), labels = c("0","","0.5","",""))
   
   graph <- ggplot(ac_dat, aes(x = lag, y = ac))
@@ -504,7 +506,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
   ac_labs <- labs(x = "Lag", y = "Autocorrelation")
   strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "white"),
                      strip.background = element_rect(color = "#346fa1", fill = "#346fa1"))
-  ac_theme <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_lgnd + strip_txt)
+  ac_theme <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_lgnd + strip_txt + transparent)
   y_scale <- scale_y_continuous(breaks = seq(0, 1, 0.25), labels = c("0","","0.5","",""))
   title_theme <- theme(plot.title = element_text(face = "bold", size = 18))
   if (combine_chains) {
@@ -644,7 +646,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
                    panel.grid.major = element_line(size = 0.4),
                    panel.grid.minor.y = element_blank())
 
-  p.all <- p.base + xlim(xlim.use) + p.name + theme_bw() + p.theme
+  p.all <- p.base + xlim(xlim.use) + p.name + theme_bw() + p.theme + transparent
 
   if (show_ci_line | show_density) {
     p.ci <- geom_segment(aes(x = ll, xend = hh, y = y, yend = y),
@@ -735,7 +737,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
     my_labs <- labs(y = "", x = "Monte Carlo se / posterior sd")
   }
   graph <- qplot(x = x, data = dat, color = I("black"), fill = I("gray35"))
-  graph <- graph + my_labs + theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs)
+  graph <- graph + my_labs + theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + transparent)
 
   graph
 }
@@ -809,7 +811,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
   }
   }
 
-  shade_to <- if (warmup_shade) paste0(warmup_val,"-01-01") else "0001-01-01"
+  # shade_to <- if (warmup_shade) paste0(warmup_val,"-01-01") else "0001-01-01"
   y_axis_label_remove <- if (stack) "white" else NULL
   dygraphs::dygraph(param_chains, xlab = "Iteration", ylab = param_name) %>%
     dygraphs::dyAxis("y", rangePad = "5", axisLabelColor = y_axis_label_remove) %>%
@@ -824,7 +826,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
                 hideOnMouseOut = TRUE,
                 highlightSeriesOpts = list()) %>%
     dygraphs::dyRoller(rollPeriod = 1) %>%
-    dygraphs::dyShading(from = "0001-01-01", to = shade_to, color = "#d9e7f4") %>%
+    # dygraphs::dyShading(from = "0001-01-01", to = shade_to, color = "#d9e7f4") %>%
     dygraphs::dyCSS(css = "shinyStan.css")
 }
 

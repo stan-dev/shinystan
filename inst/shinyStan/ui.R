@@ -294,7 +294,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                       #### TAB: Model Code ####
                       tabPanel(title = "Model Code", # h4(style = "padding: 0px;","Model Code"),
                                h4("Model Code"),
-                               tags$textarea(id="model_code", object@model_code)
+                               tags$textarea(id="model_code", style="background: transparent; border-width: .5px;", object@model_code)
                       ), # END TAB: Model Code
                       #### TAB: Notes ####
                       tabPanel(title = "Notes",
@@ -306,7 +306,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                         bsButton("btn_user_model_info_why", label = "Read more about the 'Notes' tab", style = "link", size = "mini")
                                ),
                                h4("Notes"),
-                               tags$textarea(id="user_model_info", rows=20, cols=60, object@user_model_info),
+                               tags$textarea(id="user_model_info", style="background: transparent; border-width: .5px; border-color: #222222", rows=20, cols=60, object@user_model_info),
                                br(),
                                fluidRow(
                                  column(3, actionButton("save_user_model_info", label = "Save notes", icon = icon("download"))),
@@ -356,5 +356,6 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
            includeCSS("shinyStan.css"),
            tags$style(type="text/css", "#autocorr_plot_out.recalculating, #plot_param_vertical_out.recalculating { opacity: 1.0; }"),
            tags$head(tags$style(".table .alignRight {text-align:right;}"))
+           
 ) # END navbarPage
 

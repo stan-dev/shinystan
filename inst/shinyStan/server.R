@@ -139,7 +139,7 @@ function(input, output, session) {
   #### PLOT: multiple parameters ####
   output$plot_param_vertical_out <- renderPlot({
     plot_param_vertical()
-  }, height = calc_height_param_plot)
+  }, height = calc_height_param_plot, bg = "transparent")
   # download the plot
   output$download_multiparam_plot <- downloadHandler(
     filename = 'shinystan_param_plot.RData',

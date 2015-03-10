@@ -9,6 +9,12 @@
   box-shadow: 0 0 5px #222222; 
 }
 
+/*
+body {
+    background-image: url("crumpled_paper.jpg");
+}
+*/
+
 .well {
   padding-bottom: 5px;
   padding-top: 5px;
@@ -115,6 +121,9 @@
 
 /**************************************/
 /* dygraphs */
+.dygraph {
+  background: transparent !important;
+}
 .dygraph-label {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	font-style: normal;
