@@ -27,7 +27,7 @@ source("pp_check/plot_names_descriptions.R", local = TRUE)
 
 # give shinystan_object shorter name
 object <- shinystan_object
-show_model_name <- h4(style = "padding: 60px 0px 10px 10px; color: #428bca; opacity: 0.95; ", paste("Model name:", object@model_name))
+show_model_name <- h4(style = "padding: 0px 0px 10px 10px; color: #428bca; opacity: 0.95; ", paste("Model name:", object@model_name))
 
 # Begin shinyUI -----------------------------------------------------------
 # _________________________________________________________________________
@@ -343,7 +343,12 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                a("Stan website", href = "http://mc-stan.org"),
                                br(),
                                a("Stan users google group", href = "https://groups.google.com/forum/#!forum/stan-users")
-                      ) # END Help
+                      ), # END Help
+                      #### TAB: Settings ####
+                      tabPanel("Settings",
+                               selectInput("background_texture", "Background texture", choices = c("Plain (white)" = "default", "Subtle" = "subtle",  "Stucco" = "stucco", "Concrete" = "concrete", "White brick" = "whitebrick", "Sweater" = "sweater", "Crumpled paper" = "crumpled", "Green cup" = "greencup"), selected = "default"),
+                               uiOutput("ui_background_texture")
+                               )
            ), # END navbarMenu
            #### QUIT ####
            tabPanel(tags$div(style = "color: #f9dd67;", "Quit"), value = "quit",
