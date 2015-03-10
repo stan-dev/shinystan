@@ -88,7 +88,7 @@ sample_id_for_resids <- reactive({
       geom_density(color = "gray35", fill = "black", alpha = 3/4)
   }
   graph + 
-    geom_vline(xintercept = stat_y, color = "#428bca", size = 1.5, alpha = 3/4) +
+    geom_vline(xintercept = stat_y, color = "#428bca", size = 1.5, alpha = 1) +
     labs(y = "", x = paste0(which, "(y_rep)")) +
     thm 
 }
