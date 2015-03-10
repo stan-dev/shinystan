@@ -41,7 +41,14 @@
   box-shadow: 0 0 10px #84afd3; 
 } 
 /**************************************/
-
+/* plot hover shadow for pp_check plots */
+#pp_y_vs_avg_rep_out:hover, #pp_avg_rep_vs_avg_resid_rep_out:hover, #pp_hist_resids_out:hover, #pp_hists_test_statistics_max_out:hover, #pp_hists_test_statistics_min_out:hover, #pp_hists_test_statistics_mean_out:hover, #pp_hists_test_statistics_sd_out:hover, #pp_dens_rep_vs_obs_out:hover, #pp_hists_rep_vs_obs_out:hover { 
+  
+  -moz-box-shadow: 0 0 10px #84afd3; 
+  -webkit-box-shadow: 0 0 10px #84afd3; 
+  box-shadow: 0 0 10px #84afd3; 
+} 
+/**************************************/
 
 /**************************************/
 /* controls */

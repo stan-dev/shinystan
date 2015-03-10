@@ -96,7 +96,6 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                     tabsetPanel(
                       #### sampler parameters ####
                       tabPanel("HMC/NUTS", icon = icon("table", "fa-2x"),
-                               #                                  bsButton("btn_open_glossary_nuts", "Open glossary", style = "link", size = "large"),
                                actionLink("btn_open_glossary_nuts", "Open glossary", icon = icon("book", lib = "glyphicon")),
                                uiOutput("glossary_modal_nuts"),
                                h3("Summary of sampler parameters"),
