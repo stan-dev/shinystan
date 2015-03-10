@@ -1,20 +1,20 @@
 .navbar {
+  background-image: url("textures/binding_dark.png");
   margin-bottom: 0px;
   font-size: 15px ;
   opacity: 0.9;
-  border-radius: 2px;
-  border-color: #222222;
-  -moz-box-shadow: 0 0 5px #222222; 
-  -webkit-box-shadow: 0 0 5px #222222; 
-  box-shadow: 0 0 5px #222222; 
+  border-radius: 0px;
+  /*border-color: #222222;*/
+  border-color: transparent;
+  -moz-box-shadow: 0 0 7px #222222; 
+  -webkit-box-shadow: 0 0 7px #222222; 
+  box-shadow: 0 0 7px #222222; 
 }
 
-/*
+
 body {
-    background-image: url("crumpled_paper.jpg");
+  padding-top: 60px;
 }
-*/
-
 .well {
   padding-bottom: 5px;
   padding-top: 5px;
