@@ -49,11 +49,10 @@ sample_id_for_resids <- reactive({
     if (i == 1) g <-  qplot(x = y, geom = geom, 
                             color = I("#428bca"), 
                             fill = I("#428bca"),
-                            alpha = 2/3) + labs(y = "", x = "y")
+                            alpha = 3/4) + labs(y = "", x = "y")
     else g <- qplot(x = y_rep_samp[i-1, ], geom = geom, 
-                 color = I("gray35"), 
-                 fill = I("black"),
-                 alpha = 2/3) + labs(y = "", x = rownames(y_rep_samp)[i-1])
+                 color = I("black"), fill = I("gray35"), alpha = 3/4) + 
+        labs(y = "", x = rownames(y_rep_samp)[i-1])
     
     g + thm 
   })
@@ -71,7 +70,7 @@ sample_id_for_resids <- reactive({
     geom_density() + 
     scale_color_manual(values = c("#428bca", "gray35")) + 
     scale_fill_manual(values = c("#428bca", "gray35")) + 
-    scale_alpha_manual(values = c(2/3, 0)) + 
+    scale_alpha_manual(values = c(3/4, 0)) + 
     scale_size_manual(values = c(1/3, 1/2)) + 
     scale_y_continuous(limits = y_lim) +
     scale_x_continuous(limits = x_lim) 
@@ -81,15 +80,15 @@ sample_id_for_resids <- reactive({
 .pp_hists_test_statistics <- function(stat_y, stat_y_rep, which, geom = "histogram") {
   thm <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs)
   graph <- ggplot(data.frame(x = stat_y_rep), aes(x = x)) 
-  if (geom == "histogram") {
-    graph <- graph + stat_bin(aes(y=..count../sum(..count..)), color = "gray35", fill = "black", alpha = 2/3) 
+  if (geom == "histogram") { 
+    graph <- graph + stat_bin(aes(y=..count../sum(..count..)), color = "black", fill = "gray35", alpha = 3/4) 
   }
   if (geom == "density") {
     graph <- graph +
-      geom_density(color = "gray35", fill = "black", alpha = 2/3)
+      geom_density(color = "gray35", fill = "black", alpha = 3/4)
   }
   graph + 
-    geom_vline(xintercept = stat_y, color = "#428bca", size = 1.5, alpha = 2/3) +
+    geom_vline(xintercept = stat_y, color = "#428bca", size = 1.5, alpha = 3/4) +
     labs(y = "", x = paste0(which, "(y_rep)")) +
     thm 
 }
@@ -97,8 +96,7 @@ sample_id_for_resids <- reactive({
 .pp_hist_resids <- function(resids) {
   thm <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + no_lgnd)
   graph <- ggplot(data.frame(x = resids), aes(x = x)) + 
-    stat_bin(aes(y=..count../sum(..count..)), color = "gray35", fill = "black", alpha = 2/3)
-    # stat_function(fun=dnorm, args=list(mean=mean(resids), sd=sd(resids)), color = "#428bca", alpha = 2/3)
+    stat_bin(aes(y=..count../sum(..count..)), color = "black", fill = "gray35", alpha = 3/4, size = 0.75)
   graph + thm + labs(y = "", x = names(resids))
 }
 
