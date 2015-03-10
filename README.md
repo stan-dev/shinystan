@@ -1,5 +1,7 @@
 # shinyStan R package and Shiny app
 
+![shinystan](https://cloud.githubusercontent.com/assets/7796803/6375377/a740c96c-bce4-11e4-82ef-4318a47a1116.png)
+
 ## Installing shinyStan
 
 For installation instructions see the **Installing shinyStan** page in the [shinyStan wiki](https://github.com/stan-dev/shinystan/wiki/Installing-shinyStan)
@@ -20,5 +22,3 @@ shinyStan allows you to store the basic components of an entire project (code, p
 ### Licensing
 
 shinyStan is licensed under GPLv3.
-
-![shinystan](https://cloud.githubusercontent.com/assets/7796803/6375377/a740c96c-bce4-11e4-82ef-4318a47a1116.png)
