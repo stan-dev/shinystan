@@ -1,5 +1,8 @@
 trivariate_plot <- reactive({
-  validate(need(input$trivariate_flip, message = "Loading..."))
+  validate(need(input$trivariate_flip, message = "Loading..."),
+           need(input$trivariate_param_x, message = "Waiting for x ..."),
+           need(input$trivariate_param_y, message = "Waiting for y ..."),
+           need(input$trivariate_param_z, message = "Waiting for z ..."))
 
   x <- input$trivariate_param_x
   y <- input$trivariate_param_y

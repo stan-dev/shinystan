@@ -346,7 +346,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                       ), # END Help
                       #### TAB: Settings ####
                       tabPanel("Settings",
-                               selectInput("background_texture", "Background texture", choices = c("Plain (white)" = "default", "Subtle" = "subtle",  "Stucco" = "stucco", "Concrete" = "concrete", "White brick" = "whitebrick", "Vignette" = "vignette", "Sweater" = "sweater", "Crumpled paper" = "crumpled", "Green cup" = "greencup"), selected = "default"),
+                               selectInput("background_texture", "Background texture", choices = c("Plain (white)" = "default", "Subtle" = "subtle",  "Concrete" = "concrete", "White brick" = "whitebrick", "Vignette" = "vignette", "Sweater" = "sweater", "Stucco" = "stucco", "Crumpled paper" = "crumpled", "Green cup" = "greencup"), selected = "default"),
                                uiOutput("ui_background_texture")
                                )
            ), # END navbarMenu

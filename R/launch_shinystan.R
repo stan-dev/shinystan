@@ -42,7 +42,7 @@ launch_shinystan <- function(object) {
       out_name <- paste0(out_name,"_",gsub("-","_", Sys.Date()))
     }
     assign(out_name, shinystan_object, inherits = TRUE)
-    message(paste("Name of shinystan object:", out_name))
+    message(paste("\n Name of shinystan object:", out_name))
     shinystan_object <<- NULL
     rm(list = "shinystan_object", envir = globalenv())
   }
