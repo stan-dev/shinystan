@@ -15,28 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-# ggplot theme elements --------------------------------------------
-theme <- function(...) ggplot2::theme(...)
-transparent <- theme(panel.background = element_blank(),
-                     plot.background = element_blank())
-axis_line_color <- "#346fa1"
-axis_color <- theme(axis.line = element_line(color = axis_line_color))
-axis_labs <- theme(axis.title = element_text(face = "bold", size = 13))
-title_txt <- theme(plot.title = element_text(face = "bold", size = 14))
-fat_axis <- theme(axis.line.x = element_line(size = 3, color = axis_line_color), 
-                  axis.line.y = element_line(size = 0.5, color = axis_line_color))
-h_lines <- theme(panel.grid.major = element_line(size = 0.25, linetype = 3, color = "turquoise4"),
-                 panel.grid.major.x = element_blank())
-v_lines <- theme(panel.grid.major = element_line(size = 0.25, linetype = 3, color = "turquoise4"),
-                 panel.grid.major.y = element_blank())
-no_lgnd <- theme(legend.position = "none")
-lgnd_bot <- theme(legend.position = "bottom", legend.background = element_blank())
-lgnd_top <- theme(legend.position = "top", legend.background = element_blank())
-lgnd_left <- theme(legend.position = "left", legend.background = element_blank())
-lgnd_right <- theme(legend.position = "right", legend.background = element_blank())
-no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), axis.text.y = element_blank())
-
 # make_param_list ------------------------------------------------------
 # generate list of parameter names (formatted for shiny::selectInput)
 .make_param_list <- function(object) {
@@ -87,6 +65,46 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
   
   choices
 }
+
+# update_params_with_groups -----------------------------------------------
+# update parameter selection for multi-parameter plots
+.update_params_with_groups <- function(params, all_param_names) {
+  as_group <- grep("_as_shiny_stan_group", params)
+  if (length(as_group) == 0) {
+    return(params)
+  }
+  
+  make_group <- function(group_name) {
+    all_param_names[grep(paste0("^",group_name,"\\["), all_param_names)]
+  }
+  single_params <- params[-as_group]
+  grouped_params <- params[as_group]
+  groups <- gsub("_as_shiny_stan_group", "", grouped_params)
+  groups <- sapply(groups, make_group)
+  updated_params <- c(single_params, unlist(groups))
+  updated_params
+}
+
+# ggplot theme elements --------------------------------------------
+theme <- function(...) ggplot2::theme(...)
+transparent <- theme(panel.background = element_blank(),
+                     plot.background = element_blank())
+axis_line_color <- "#346fa1"
+axis_color <- theme(axis.line = element_line(color = axis_line_color))
+axis_labs <- theme(axis.title = element_text(face = "bold", size = 13))
+title_txt <- theme(plot.title = element_text(face = "bold", size = 14))
+fat_axis <- theme(axis.line.x = element_line(size = 3, color = axis_line_color), 
+                  axis.line.y = element_line(size = 0.5, color = axis_line_color))
+h_lines <- theme(panel.grid.major = element_line(size = 0.25, linetype = 3, color = "turquoise4"),
+                 panel.grid.major.x = element_blank())
+v_lines <- theme(panel.grid.major = element_line(size = 0.25, linetype = 3, color = "turquoise4"),
+                 panel.grid.major.y = element_blank())
+no_lgnd <- theme(legend.position = "none")
+lgnd_bot <- theme(legend.position = "bottom", legend.background = element_blank())
+lgnd_top <- theme(legend.position = "top", legend.background = element_blank())
+lgnd_left <- theme(legend.position = "left", legend.background = element_blank())
+lgnd_right <- theme(legend.position = "right", legend.background = element_blank())
+no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), axis.text.y = element_blank())
 
 
 
@@ -549,24 +567,6 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
 
 
 
-# update_params_with_groups -----------------------------------------------
-# update parameter selection for multi-parameter plot
-.update_params_with_groups <- function(params, all_param_names) {
-  as_group <- grep("_as_shiny_stan_group", params)
-  if (length(as_group) == 0) {
-    return(params)
-  }
-  
-  make_group <- function(group_name) {
-    all_param_names[grep(paste0("^",group_name,"\\["), all_param_names)]
-  }
-  single_params <- params[-as_group]
-  grouped_params <- params[as_group]
-  groups <- gsub("_as_shiny_stan_group", "", grouped_params)
-  groups <- sapply(groups, make_group)
-  updated_params <- c(single_params, unlist(groups))
-  updated_params
-}
 
 # plot_param_vertical_gg --------------------------------------------------
 # main plot of multiple parameters
