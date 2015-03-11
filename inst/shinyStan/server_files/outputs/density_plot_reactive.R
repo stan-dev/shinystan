@@ -26,7 +26,7 @@ density_plot <- reactive({
                     else if (prior_fam == "Inverse Gamma") list(shape = input$dens_prior_inversegamma_shape, scale = input$dens_prior_inversegamma_scale)
                     else NULL
   
-  
+  xzoom <- input$dens_xzoom != "Auto"
   do.call(".param_dens", args = list(
     param       = input$param,
     dat         = par_samps_post_warmup(),
@@ -38,6 +38,8 @@ density_plot <- reactive({
     CI          = input$dens_ci,
 #     y_breaks    = input$dens_y_breaks,
     x_breaks    = input$dens_x_breaks,
+    xzoom = xzoom,
+    x_lim = if (xzoom) eval(parse(text = input$dens_xzoom)) else NULL,
     prior_fam   = prior_fam,
     prior_params = prior_params
   ))

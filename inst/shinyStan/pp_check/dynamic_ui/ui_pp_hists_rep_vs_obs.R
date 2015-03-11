@@ -10,6 +10,7 @@ output$ui_pp_hists_rep_vs_obs <- renderUI({
              ))
     ),
     plotOutput("pp_hists_rep_vs_obs_out"),
-    actionButton("resample_hist_go", label = "Show different replications", icon = icon("refresh"))
+    actionButton("resample_hist_go", label = "Show different replications", icon = icon("refresh")),
+    br()
   )
 })

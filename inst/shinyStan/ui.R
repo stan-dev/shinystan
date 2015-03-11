@@ -27,7 +27,7 @@ source("pp_check/plot_names_descriptions.R", local = TRUE)
 
 # give shinystan_object shorter name
 object <- shinystan_object
-show_model_name <- h4(style = "padding: 60px 0px 10px 10px; color: #428bca; opacity: 0.95; ", paste("Model name:", object@model_name))
+show_model_name <- h4(style = "padding: 0px 0px 10px 10px; color: #428bca; opacity: 0.95; ", paste("Model name:", object@model_name))
 
 # Begin shinyUI -----------------------------------------------------------
 # _________________________________________________________________________
@@ -294,7 +294,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                       #### TAB: Model Code ####
                       tabPanel(title = "Model Code", # h4(style = "padding: 0px;","Model Code"),
                                h4("Model Code"),
-                               tags$textarea(id="model_code", object@model_code)
+                               tags$textarea(id="model_code", style="background: transparent; border-width: .5px;", object@model_code)
                       ), # END TAB: Model Code
                       #### TAB: Notes ####
                       tabPanel(title = "Notes",
@@ -306,7 +306,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                         bsButton("btn_user_model_info_why", label = "Read more about the 'Notes' tab", style = "link", size = "mini")
                                ),
                                h4("Notes"),
-                               tags$textarea(id="user_model_info", rows=20, cols=60, object@user_model_info),
+                               tags$textarea(id="user_model_info", style="background: transparent; border-width: .5px; border-color: #222222", rows=20, cols=60, object@user_model_info),
                                br(),
                                fluidRow(
                                  column(3, actionButton("save_user_model_info", label = "Save notes", icon = icon("download"))),
@@ -343,7 +343,12 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                a("Stan website", href = "http://mc-stan.org"),
                                br(),
                                a("Stan users google group", href = "https://groups.google.com/forum/#!forum/stan-users")
-                      ) # END Help
+                      ), # END Help
+                      #### TAB: Settings ####
+                      tabPanel("Settings",
+                               selectInput("background_texture", "Background texture", choices = c("Plain (white)" = "default", "Subtle" = "subtle",  "Stucco" = "stucco", "Concrete" = "concrete", "White brick" = "whitebrick", "Vignette" = "vignette", "Sweater" = "sweater", "Crumpled paper" = "crumpled", "Green cup" = "greencup"), selected = "default"),
+                               uiOutput("ui_background_texture")
+                               )
            ), # END navbarMenu
            #### QUIT ####
            tabPanel(tags$div(style = "color: #f9dd67;", "Quit"), value = "quit",
@@ -353,8 +358,8 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
            ),
            
            #### includeCSS ####
-           includeCSS("shinyStan.css"),
-           tags$style(type="text/css", "#autocorr_plot_out.recalculating, #plot_param_vertical_out.recalculating { opacity: 1.0; }"),
-           tags$head(tags$style(".table .alignRight {text-align:right;}"))
+           includeCSS("shinyStan.css")
+           
+           
 ) # END navbarPage
 
