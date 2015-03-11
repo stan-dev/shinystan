@@ -9,7 +9,6 @@
   -moz-box-shadow: 0 0 10px #222222; 
   -webkit-box-shadow: 0 0 10px #222222; 
   box-shadow: 0 0 10px #222222; 
-  
 }
 
 .navbar .nav > .active > a,
@@ -19,26 +18,28 @@
     box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.125) ;
     -moz-box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.125) ;
     -webkit-box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.125) ;
-    box-shadow: 0 0 1px 1px ;
-    -moz-box-shadow: 0 0 1px 1px #f9dd67 ;
-    -webkit-box-shadow: 0 0 1px 1px #f9dd67 ;
+    box-shadow: 0 2px 5px -3px #428bca;
+    -moz-box-shadow: 0 2px 5px -3px #428bca ;
+    -webkit-box-shadow: 0 2px 5px -3px #428bca ;
+    
     text-shadow: none;
-    color: #000;
+    color: #428bca;
     text-decoration: none;
     -webkit-border-radius: 0px 0px 4px 4px;
     -moz-border-radius: 0px 0px 4px 4px;
-    -webkit-transform: scale(1.05);
-    -moz-transform: scale(1.05);
-    transform: scale(1.05);
+    -webkit-transform: scale(1.075);
+    -moz-transform: scale(1.075);
+    transform: scale(1.075);
     font-family: 'Tahoma';
+    font-weight: 600;
 } 
 #nav li { 
   -webkit-transition: all 0.2s; transition-delay: 0.1s;
   -moz-transition: all 0.2s; transition-delay: 0.1s;
 }
 #nav li a { 
-  -webkit-transition: all 0.5s; transition-delay: 0.1s;
-  -moz-transition: all 0.5s; transition-delay: 0.1s;
+  -webkit-transition: all 1.0s; transition-delay: 0.1s;
+  -moz-transition: all 1.0s; transition-delay: 0.1s;
 }
 #nav li ul { 
   -webkit-transition: all 1s; transition-delay: 0.1s;
@@ -57,6 +58,10 @@
 
 body {
   padding-top: 60px;
+/*  
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+   font-weight: 300;
+*/
 }
 
 .well {
