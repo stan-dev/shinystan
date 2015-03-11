@@ -16,17 +16,21 @@
 .navbar .nav > .active > a:focus,
 .navbar .nav > .active > a:hover {
     background-color: #f9dd67;
-    box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125) ;
-    -moz-box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125) ;
-    -webkit-box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125) ;
+    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.125) ;
+    -moz-box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.125) ;
+    -webkit-box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.125) ;
+    box-shadow: 0 0 1px 1px ;
+    -moz-box-shadow: 0 0 1px 1px #f9dd67 ;
+    -webkit-box-shadow: 0 0 1px 1px #f9dd67 ;
     text-shadow: none;
     color: #000;
     text-decoration: none;
-    -webkit-border-radius: 0px 0px 6px 6px;
-    -moz-border-radius: 0px 0px 6px 6px;
+    -webkit-border-radius: 0px 0px 4px 4px;
+    -moz-border-radius: 0px 0px 4px 4px;
     -webkit-transform: scale(1.05);
     -moz-transform: scale(1.05);
     transform: scale(1.05);
+    font-family: 'Tahoma';
 } 
 #nav li { 
   -webkit-transition: all 0.2s; transition-delay: 0.1s;
