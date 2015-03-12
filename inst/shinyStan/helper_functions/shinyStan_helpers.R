@@ -897,7 +897,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
   if (transform_z != "z") colnames(samps_use)[3] <- gsub("z", params[3], transform_z) 
   
   labels <- rep("xyz", nrow(samps_use))
-  threejs::scatterplot3js(samps_use, size = pt_size, color = pt_color, grid = show_grid, flip.y = flip_y, signif = 4)
+  threejs::scatterplot3js(samps_use, size = pt_size, color = pt_color, grid = show_grid, flip.y = flip_y)
 }
 
 
