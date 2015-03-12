@@ -1,7 +1,7 @@
 output$ui_pp_about <- renderUI({
   div(
     withMathJax(),
-    h3(style = "color: #428bca;","What is posterior predictive checking?"),
+    h3(style = "color: #337ab7;","What is posterior predictive checking?"),
     p(strong("The idea behind posterior predictive checking is simple:")),
     p(style = "text-indent: 10px", 
       em("If our model is a good fit then we should be able to use it to generate")), 
@@ -9,7 +9,7 @@ output$ui_pp_about <- renderUI({
     br(),
     p("To generate this 'replicated' data we use the", 
       em("posterior predictive distribution")),
-    span(style = "color: #428bca; font-face: bold;", withMathJax("$$ p(y^{rep} | y )  = \\int p(y^{rep} | \\theta) p(\\theta | y ) d \\theta,$$")),
+    span(style = "color: #337ab7; font-face: bold;", withMathJax("$$ p(y^{rep} | y )  = \\int p(y^{rep} | \\theta) p(\\theta | y ) d \\theta,$$")),
     p("where \\(y\\) is the observed data and \\(\\theta\\) the parameters in our model."),
     br(),
     p("For each draw of \\(\\theta\\) from the posterior \\(p(\\theta | y) \\) 

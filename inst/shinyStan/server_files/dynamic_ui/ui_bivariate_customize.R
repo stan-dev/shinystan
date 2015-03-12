@@ -43,7 +43,7 @@ output$ui_bivariate_customize <- renderUI({
   bsCollapse(id = "bivariate_collapse_all",
     bsCollapsePanel(title = "View Options", id = "bivariate_collapse",
                     bsCollapse(
-                      bsCollapsePanel(title = span(style = "color:#428bca;","Points"), id = "bivariate_points_collapse",
+                      bsCollapsePanel(title = span(style = "color:#337ab7;","Points"), id = "bivariate_points_collapse",
                                       fluidRow(
                                         column(4, selectInput("bivariate_pt_color", strong("Color"), choices = colors(), selected = my_pt_color)),
                                         column(2, offset = 1, numericInput("bivariate_pt_size", strong("Size"), value = my_pt_size, min = 0, max = 10, step = 0.5)),
@@ -51,7 +51,7 @@ output$ui_bivariate_customize <- renderUI({
                                         column(2, sliderInput("bivariate_pt_alpha", strong("Opacity"), value = my_pt_alpha, min = 0, max = 1, step = 0.01, ticks = FALSE))
                                       )
                       ),
-                      bsCollapsePanel(title = span(style = "color:#428bca;","Ellipse"), id = "bivariate_ellipse_collapse",
+                      bsCollapsePanel(title = span(style = "color:#337ab7;","Ellipse"), id = "bivariate_ellipse_collapse",
                                       radioButtons("bivariate_ellipse_lev", label = "", selected = my_ellipse_lev, inline = TRUE,
                                                    choices = list("None" = "None", "50%" = 0.5, "80%" = 0.8, "95%" = 0.95, "99%" = 0.99)),
                                       fluidRow(
@@ -61,7 +61,7 @@ output$ui_bivariate_customize <- renderUI({
                                         column(2, sliderInput("bivariate_ellipse_alpha", strong("Opacity"), value = my_ellipse_alpha, min = 0, max = 1, step = 0.01, ticks = FALSE))
                                       )
                       ),
-                      bsCollapsePanel(title = span(style = "color:#428bca;","Lines"), id = "bivariate_lines_collapse",
+                      bsCollapsePanel(title = span(style = "color:#337ab7;","Lines"), id = "bivariate_lines_collapse",
                                       radioButtons("bivariate_lines", label = "", choices = c("Hide" = "hide", "Behind" = "back", "In front" = "front"), selected = "back", inline = TRUE),
                                       fluidRow(
                                         column(4, selectInput("bivariate_lines_color", strong("Color"), choices = colors(), selected = my_lines_color)),

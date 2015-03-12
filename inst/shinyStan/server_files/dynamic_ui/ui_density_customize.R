@@ -22,7 +22,7 @@ output$ui_density_customize <- renderUI({
   bsCollapse(
     bsCollapsePanel(title = "View Options", id = "density_collapse",
                     bsCollapse(
-                      bsCollapsePanel(title = span(style = "color:#428bca;", "Options"), id = "density_options_collapse",
+                      bsCollapsePanel(title = span(style = "color:#337ab7;", "Options"), id = "density_options_collapse",
                                       fluidRow(
                                         column(3,numericInput("dens_chain", label = strong(style = "color: white;", "Chain (0 = all)"), min = 0, max = object@nChains, step = 1, value = 0)),
                                         column(3, conditionalPanel(condition = "input.dens_chain == 0",
@@ -31,14 +31,14 @@ output$ui_density_customize <- renderUI({
                                         column(3, conditionalPanel(condition = "input.dens_chain_split == 'Together'", selectInput("dens_ci", strong("CI %"), choices = c("None" = "None", "50%" = 0.5, "80%" = 0.8, "95%" = 0.95), selected = my_CI)))
                                       )
                       ),
-                      bsCollapsePanel(title = span(style = "color:#428bca;", "Aesthetics"), id = "density_collors_collapse",
+                      bsCollapsePanel(title = span(style = "color:#337ab7;", "Aesthetics"), id = "density_collors_collapse",
                                       fluidRow(
                                         column(3, conditionalPanel(condition = "input.dens_chain_split == 'Together'", selectInput("dens_x_breaks", strong("x breaks"), choices = c("None", "Some", "Many"), selected = my_x_breaks))),
                                         column(3, conditionalPanel(condition = "input.dens_chain_split == 'Together'", selectInput("dens_fill_color", strong(style = "color: white;", "Fill color"), choices = colors(), selected = my_fill_color, selectize = TRUE))),
                                         column(3, conditionalPanel(condition = "input.dens_chain_split == 'Together' && (input.dens_point_est != 'None' || input.dens_ci != 'None')", selectInput("dens_line_color", strong(style = "color: white;", "Line color"), choices = colors(), selected = my_line_color, selectize = TRUE)))
                                       )
                       ),
-                      bsCollapsePanel(title = span(style = "color:#428bca;", "Compare to density function"), id = "density_prior_collapse",
+                      bsCollapsePanel(title = span(style = "color:#337ab7;", "Compare to density function"), id = "density_prior_collapse",
                                       fluidRow(
                                         column(4, selectInput("dens_prior", "Family", choices = list("None", "Normal", "t", "Cauchy", "Exponential", "Gamma", "Inverse Gamma", "Beta"))),
                                         column(2, conditionalPanel(condition = "input.dens_prior == 'Normal'",

@@ -22,13 +22,12 @@ output$ui_autocorr_customize <- renderUI({
   absolutePanel(id = "controls_autocorr", class = "panel panel-default hvr-glow", fixed = TRUE,
     top = 400, right = 20, width = 270,
     draggable = TRUE,
-    wellPanel(style = "background-color: #222222 ;",
-              h4(style = "color: #428bca; ",strong("shinyStan customize")),
-              hr(),
+    div(class = "shinystan_customize", "shinyStan customize"),
+    wellPanel(style = "background-color: #222222; padding-top: 10px ; padding-bottom: 10px;",
               bsCollapse(
                 select_collapse
               ),
-              hr(),
+              hr(class = "hr hr_controls"),
               downloadButton("download_autocorr", "Save as ggplot2 object")
     )
   )

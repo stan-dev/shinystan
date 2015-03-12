@@ -27,7 +27,7 @@ source("pp_check/plot_names_descriptions.R", local = TRUE)
 
 # give shinystan_object shorter name
 object <- shinystan_object
-show_model_name <- h4(style = "padding: 0px 0px 10px 10px; color: #428bca; opacity: 0.95; ", paste("Model name:", object@model_name))
+show_model_name <- h4(style = "padding: 0px 0px 10px 10px; color: #337ab7; opacity: 0.95; ", paste("Model name:", object@model_name))
 
 # Begin shinyUI -----------------------------------------------------------
 # _________________________________________________________________________
@@ -133,12 +133,14 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                       #### Rhat, ESS, MCSE, diagnostics ####
                       tabPanel("\\((\\hat{R}, n_{eff}, \\text{se}_{mean}) \\text{ diagnostics} \\)", icon = icon("bar-chart-o", "fa-2x"),
                                fluidRow(
-                                 column(6, 
-                                        actionLink("btn_open_glossary_copy", "Open glossary", icon = icon("book", lib = "glyphicon")),
-                                        uiOutput("glossary_modal_copy")
+                                 column(2, 
+                                        actionLink("btn_open_glossary_copy", "Open glossary", icon = icon("book", lib = "glyphicon"))
+                                 )
                                  ),
-                                 column(6, tags$div(class = "pull-right",style = "line-height: 150%;", checkboxInput("warnings_options", label = span(style = "font-size: 12px;","Show/hide customization panel"), value = TRUE)))
+                                 fluidRow(
+                                 column(3, splitLayout(includeHTML("html/warnings_options.html"), span("Customize"), cellWidths = c("25%","75%")))
                                ),
+                               uiOutput("glossary_modal_copy"),
                                fluidRow(
                                  column(4, h4("\\(n_{eff} / N\\)", align = "center")),
                                  column(4, h4("\\(\\text{se}_{mean} / sd\\)", align = "center")),
@@ -158,9 +160,9 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                tags$style(type="text/css", "#n_eff_warnings_title, #rhat_warnings_title, #mcse_over_sd_warnings_title {font-size: 13px;}"),
                                br(),
                                fluidRow(
-                                 column(4, div(style = "color: #428bca;", textOutput("n_eff_warnings"))),
-                                 column(4, div(style = "color: #428bca;", textOutput("mcse_over_sd_warnings"))),
-                                 column(4, div(style = "color: #428bca;", textOutput("rhat_warnings")))
+                                 column(4, div(style = "color: #337ab7;", textOutput("n_eff_warnings"))),
+                                 column(4, div(style = "color: #337ab7;", textOutput("mcse_over_sd_warnings"))),
+                                 column(4, div(style = "color: #337ab7;", textOutput("rhat_warnings")))
                                ),
                                tags$style(type="text/css", "#n_eff_warnings, #rhat_warnings, #mcse_over_sd_warnings {font-size: 12px;}"),
                                conditionalPanel(condition = "input.warnings_options == true",
@@ -173,9 +175,9 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                ),
                                wellPanel(
                                  fluidRow(
-                                 column(6, selectizeInput("ac_params", width = "100%", label = h5("Select or enter parameter names"), choices = .make_param_list_with_groups(object), multiple = TRUE)),
-                                 column(2, offset = 4, tags$div(h5("Customize"),includeHTML("html/ac_options.html")))
-                                 # tags$div(class = "pull-right",style = "line-height: 150%;", checkboxInput("ac_options", label = span(style = "font-size: 12px;","Show/hide customization panel"), value = TRUE))
+                                   column(6, selectizeInput("ac_params", width = "100%", label = h5("Select or enter parameter names"), choices = .make_param_list_with_groups(object), multiple = TRUE)),
+                                   column(2, offset = 4, tags$div(h5("Customize"),includeHTML("html/ac_options.html")))
+                                   # tags$div(class = "pull-right",style = "line-height: 150%;", checkboxInput("ac_options", label = span(style = "font-size: 12px;","Show/hide customization panel"), value = TRUE))
                                  )
                                ),
                                plotOutput("autocorr_plot_out")
@@ -278,12 +280,12 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                           
                                  ),
                                  #### trivariate plot #####
-                                 tabPanel("Dynamic 3D scatterplot", # icon = icon("spinner", "fa-spin"),
+                                 tabPanel("Dynamic 3D scatterplot", 
                                           uiOutput("ui_triviariate_customize"),
                                           fluidRow(
-                                            column(3, selectizeInput("trivariate_param_x", label = strong(style = "color: #428bca;", "x-axis"), choices = .make_param_list(object), multiple = FALSE)),
-                                            column(3, selectizeInput("trivariate_param_y", label = strong(style = "color: #428bca;", "y-axis"), choices = .make_param_list(object), multiple = FALSE)),
-                                            column(3, selectizeInput("trivariate_param_z", label = strong(style = "color: #428bca;", "z-axis"), choices = rev(.make_param_list(object)), multiple = FALSE))
+                                            column(3, selectizeInput("trivariate_param_x", label = strong(style = "color: #337ab7;", "x-axis"), choices = .make_param_list(object), multiple = FALSE)),
+                                            column(3, selectizeInput("trivariate_param_y", label = strong(style = "color: #337ab7;", "y-axis"), choices = .make_param_list(object), multiple = FALSE)),
+                                            column(3, selectizeInput("trivariate_param_z", label = strong(style = "color: #337ab7;", "z-axis"), choices = rev(.make_param_list(object)), multiple = FALSE))
                                           ),
                                           fluidRow(
                                             column(3, textInput("trivariate_transform_x", label = "Transform x", value = "x")),
@@ -298,7 +300,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                  tabPanel("Bivariate",
                                           uiOutput("ui_bivariate_customize"),
                                           fluidRow(
-                                            column(4, selectizeInput("bivariate_param_y", label = strong(style = "color: #428bca;", "y-axis"), choices = rev(.make_param_list(object)), multiple = FALSE)),
+                                            column(4, selectizeInput("bivariate_param_y", label = strong(style = "color: #337ab7;", "y-axis"), choices = rev(.make_param_list(object)), multiple = FALSE)),
                                             # column(3, offset=1, selectInput("bivariate_transform_x", strong("Transform x"), choices = c("None", "Log", "Logit"))),
                                             column(3, offset = 2, textInput("bivariate_transform_y", label = "Transform y", value = "y")),
                                             # column(1, actionButton("bivariate_transform_y_go", label = "", icon = icon("check"))),
@@ -372,7 +374,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                       tabPanel("Settings",
                                selectInput("background_texture", "Background texture", choices = c("Plain (white)" = "default", "Subtle" = "subtle",  "Concrete" = "concrete", "White brick" = "whitebrick", "Vignette" = "vignette", "Sweater" = "sweater", "Stucco" = "stucco", "Crumpled paper" = "crumpled", "Green cup" = "greencup"), selected = "default"),
                                uiOutput("ui_background_texture")
-                               )
+                      )
            ), # END navbarMenu
            #### QUIT ####
            tabPanel(tags$div(style = "color: #f9dd67;", "Quit"), value = "quit",
