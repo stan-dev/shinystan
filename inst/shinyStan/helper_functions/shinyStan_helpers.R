@@ -201,7 +201,7 @@ strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "
   
 }
 
-.sampler_plot_treedepth <- function(sampler_params, warmup_val, n_divergent = c("All", 0, 1)) {
+.sampler_plot_treedepth <- function(sampler_params, warmup_val, divergent = c("All", 0, 1)) {
   plot_title <- theme(plot.title = element_text(size = 11, hjust = 0))
   sp_td <- lapply(1:length(sampler_params), function(i) {
     out <- sampler_params[[i]][, "treedepth__"]
@@ -221,11 +221,11 @@ strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "
     names(out) <- ((warmup_val + 1):(warmup_val + length(out)))
     t(out)
   })
-  divergent <- reshape2::melt(sp_div)[,"value"]
-  msp_td <- cbind(msp_td, n_divergent = divergent)
+  n_divergent <- reshape2::melt(sp_div)[,"value"]
+  msp_td <- cbind(msp_td, n_divergent = n_divergent)
   
-  if (n_divergent == 0 || n_divergent == 1) {
-    if (any(msp_td$n_divergent == 1)) msp_td <- subset(msp_td, n_divergent == n_divergent) 
+  if (divergent == 0 || divergent == 1) {
+    if (any(msp_td$n_divergent == 1)) msp_td <- subset(msp_td, n_divergent == divergent) 
     else return()
   }
    
@@ -235,8 +235,8 @@ strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "
     theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + plot_title + lgnd_right + transparent) 
   
   graph <- graph + 
-    if (n_divergent == 0) ggtitle("n_divergent = 0") 
-    else if (n_divergent == 1) ggtitle("n_divergent = 1") 
+    if (divergent == 0) ggtitle("n_divergent = 0") 
+    else if (divergent == 1) ggtitle("n_divergent = 1") 
     else ggtitle("All")
   
   graph

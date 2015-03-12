@@ -9,7 +9,7 @@ sampler_plot_treedepth <- reactive({
   do.call(".sampler_plot_treedepth", args = list(
     sampler_params  = sampler_params,
     warmup_val      = warmup_val,
-    n_divergent     = "All"
+    divergent     = "All"
   ))
 })
 sampler_plot_treedepth0 <- reactive({
@@ -17,7 +17,7 @@ sampler_plot_treedepth0 <- reactive({
   do.call(".sampler_plot_treedepth", args = list(
     sampler_params  = sampler_params,
     warmup_val      = warmup_val,
-    n_divergent     = 0
+    divergent     = 0
   ))
 })
 sampler_plot_treedepth1 <- reactive({
@@ -25,7 +25,7 @@ sampler_plot_treedepth1 <- reactive({
   do.call(".sampler_plot_treedepth", args = list(
     sampler_params  = sampler_params,
     warmup_val      = warmup_val,
-    n_divergent     = 1
+    divergent     = 1
   ))
 })
 sampler_plot_divergent <- reactive({
