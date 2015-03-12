@@ -96,7 +96,7 @@ body {
 
 /**************************************/
 /* plot hover shadow */
-#multi_trace_plot_out:hover, #autocorr_plot_out:hover, #plot_param_vertical_out:hover, #multiview_density:hover, #multiview_trace:hover, #multiview_autocorr:hover, #mcse_over_sd_plot_out:hover, #n_eff_plot_out:hover, #rhat_plot_out:hover, #hist_plot_out:hover, #density_plot_out:hover, #trace_plot_out:hover, #bivariate_plot_out:hover, #sampler_plot_treedepth_out:hover, #sampler_plot_divergent_out:hover { 
+#multi_trace_plot_out:hover, #autocorr_plot_out:hover, #plot_param_vertical_out:hover, #multiview_density:hover, #multiview_trace:hover, #multiview_autocorr:hover, #mcse_over_sd_plot_out:hover, #n_eff_plot_out:hover, #rhat_plot_out:hover, #hist_plot_out:hover, #density_plot_out:hover, #trace_plot_out:hover, #bivariate_plot_out:hover, #sampler_plot_treedepth_out:hover, #sampler_plot_treedepth0_out:hover, #sampler_plot_treedepth1_out:hover, #sampler_plot_divergent_out:hover { 
   
   -moz-box-shadow: 0 0 10px #84afd3; 
   -webkit-box-shadow: 0 0 10px #84afd3; 
@@ -267,3 +267,65 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
 }
 
+
+
+
+/**************************************/
+/* customization switch-style toggles*/
+#multiparam_options, #ac_options, #multi_trace_options {
+max-height: 0;
+max-width: 0;
+opacity: 0;
+}
+
+#multiparam_options + label, #ac_options + label, #multi_trace_options + label {
+display: block;
+position: relative;
+box-shadow: inset 0 0 0px 1px #d5d5d5;
+text-indent: -5000px;
+height: 20px;
+width: 50px;
+border-radius: 15px;
+}
+
+#multiparam_options + label:before, #ac_options + label:before, #multi_trace_options + label:before {
+content: "";
+position: absolute;
+display: block;
+height: 20px;
+width: 30px;
+top: 0;
+left: 0;
+border-radius: 15px;
+background: rgba(19,191,17,0);
+-moz-transition: .25s ease-in-out;
+-webkit-transition: .25s ease-in-out;
+transition: .25s ease-in-out;
+}
+
+#multiparam_options + label:after, #ac_options + label:after, #multi_trace_options + label:after {
+content: "";
+position: absolute;
+display: block;
+height: 20px;
+width: 30px;
+top: 0;
+left: 0px;
+border-radius: 15px;
+background: white;
+box-shadow: inset 0 0 0 1px rgba(0,0,0,.2), 0 2px 4px rgba(0,0,0,.2);
+-moz-transition: .25s ease-in-out;
+-webkit-transition: .25s ease-in-out;
+transition: .25s ease-in-out;
+}
+
+#multiparam_options:checked + label:before, #ac_options:checked + label:before, #multi_trace_options:checked + label:before {
+width: 50px;
+background: #428bca;
+}
+
+#multiparam_options:checked + label:after, #ac_options:checked + label:after, #multi_trace_options:checked + label:after {
+left: 20px;
+box-shadow: inset 0 0 0 1px #428bca, 0 2px 4px rgba(0,0,0,.2);
+}
+/**************************************/

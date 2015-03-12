@@ -47,9 +47,11 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                wellPanel(
                                  fluidRow(
                                    uiOutput("ui_multiparam_selectize"),
-                                   column(3, offset = 1, sliderInput("param_plot_ci_level", h5("Credible interval"), ticks = FALSE, min = 50, max = 95, value = 50, step = 5, post = "%"))
-                                 ),
-                                 tags$div(class = "pull-right",style = "line-height: 150%;", checkboxInput("multiparam_options", label = span(style = "font-size: 12px;","Show/hide customization panel"), value = TRUE))
+                                   column(3, offset = 1, sliderInput("param_plot_ci_level", h5("Credible interval"), width = "75%", ticks = FALSE, min = 50, max = 95, value = 50, step = 5, post = "%")),
+                                   column(2, tags$div(h5("Customize"),includeHTML("html/multiparam_options.html")))
+                                 )
+                                 
+                                 # tags$div(class = "pull-right",style = "line-height: 150%;", checkboxInput("multiparam_options", label = span(style = "font-size: 12px;","Show/hide customization panel"), value = TRUE))
                                ),
                                conditionalPanel(condition = "input.multiparam_options == true",
                                                 uiOutput("ui_multiparam_customize")),
@@ -170,8 +172,11 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                                 uiOutput("ui_autocorr_customize")
                                ),
                                wellPanel(
-                                 selectizeInput("ac_params", width = "50%", label = h5("Select or enter parameter names"), choices = .make_param_list_with_groups(object), multiple = TRUE),
-                                 tags$div(class = "pull-right",style = "line-height: 150%;", checkboxInput("ac_options", label = span(style = "font-size: 12px;","Show/hide customization panel"), value = TRUE))
+                                 fluidRow(
+                                 column(6, selectizeInput("ac_params", width = "100%", label = h5("Select or enter parameter names"), choices = .make_param_list_with_groups(object), multiple = TRUE)),
+                                 column(2, offset = 4, tags$div(h5("Customize"),includeHTML("html/ac_options.html")))
+                                 # tags$div(class = "pull-right",style = "line-height: 150%;", checkboxInput("ac_options", label = span(style = "font-size: 12px;","Show/hide customization panel"), value = TRUE))
+                                 )
                                ),
                                plotOutput("autocorr_plot_out")
                       ),
@@ -180,9 +185,10 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                wellPanel(
                                  fluidRow(
                                    column(6,selectizeInput("multi_trace_params", width = '100%', label = h5("Select or enter parameter names"), choices = .make_param_list_with_groups(object), multiple = TRUE)),
-                                   column(6, sliderInput("multi_xzoom", width = "100%",label = h5("Control range of iterations"), min = 0, max = object@nIter, step = 1, value = c(object@nWarmup + 1, object@nIter)))
-                                 ),
-                                 tags$div(class = "pull-right",style = "line-height: 150%;", checkboxInput("multi_trace_options", label = span(style = "font-size: 12px;","Show/hide customization panel"), value = TRUE))
+                                   column(3, offset = 1, sliderInput("multi_xzoom", width = "75%",label = h5("Iterations range"), min = 0, max = object@nIter, step = 1, value = c(object@nWarmup + 1, object@nIter), ticks = FALSE)),
+                                   column(2, tags$div(h5("Customize"),includeHTML("html/multi_trace_options.html")))
+                                 )
+                                 # tags$div(class = "pull-right",style = "line-height: 150%;", checkboxInput("multi_trace_options", label = span(style = "font-size: 12px;","Show/hide customization panel"), value = TRUE))
                                ),
                                conditionalPanel(condition = "input.multi_trace_options == true",
                                                 uiOutput("ui_multi_trace_customize")),
@@ -280,9 +286,9 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                             column(3, selectizeInput("trivariate_param_z", label = strong(style = "color: #428bca;", "z-axis"), choices = rev(.make_param_list(object)), multiple = FALSE))
                                           ),
                                           fluidRow(
-                                            column(3, textInput("trivariate_transform_x", label = strong(style = "color: #428bca;", "Transform x"), value = "x")),
-                                            column(3, textInput("trivariate_transform_y", label = strong(style = "color: #428bca;", "Transform y"), value = "y")),
-                                            column(3, textInput("trivariate_transform_z", label = strong(style = "color: #428bca;", "Transform z"), value = "z"))
+                                            column(3, textInput("trivariate_transform_x", label = "Transform x", value = "x")),
+                                            column(3, textInput("trivariate_transform_y", label = "Transform y", value = "y")),
+                                            column(3, textInput("trivariate_transform_z", label = "Transform z", value = "z"))
                                           ),
                                           br(),
                                           threejs::scatterplotThreeOutput("trivariate_plot_out"),
@@ -294,9 +300,9 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                           fluidRow(
                                             column(4, selectizeInput("bivariate_param_y", label = strong(style = "color: #428bca;", "y-axis"), choices = rev(.make_param_list(object)), multiple = FALSE)),
                                             # column(3, offset=1, selectInput("bivariate_transform_x", strong("Transform x"), choices = c("None", "Log", "Logit"))),
-                                            column(3, offset = 2, textInput("bivariate_transform_y", strong(style = "color: #428bca;", "Transform y"), value = "y")),
+                                            column(3, offset = 2, textInput("bivariate_transform_y", label = "Transform y", value = "y")),
                                             # column(1, actionButton("bivariate_transform_y_go", label = "", icon = icon("check"))),
-                                            column(3, textInput("bivariate_transform_x", strong(style = "color: #428bca;", "Transform x"), value = "x"))
+                                            column(3, textInput("bivariate_transform_x", label = "Transform x", value = "x"))
                                             # column(1, actionButton("bivariate_transform_x_go", label = "", icon = icon("check")))
                                             # column(3, selectInput("bivariate_transform_y", strong("Transform y"), choices = c("None", "Log", "Logit")))
                                           ),
