@@ -113,16 +113,20 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                dataTableOutput("sampler_summary"),
                                hr(),
                                fluidRow(
-                                 column(3, checkboxInput("sampler_plot_show_hide", label = "Show plots", value = TRUE))
+                                 column(4, strong("n_divergent (post-warmup)")),
+                                 column(8, strong("treedepth (post-warmup)"))
                                ),
-                               conditionalPanel("condition = input.sampler_plot_show_hide == true",
-                                                fluidRow(
-                                                  column(4, plotOutput("sampler_plot_divergent_out", height = "150px")),
-                                                  column(4, plotOutput("sampler_plot_treedepth_hist_out", height = "150px")),
-                                                  column(4, plotOutput("sampler_plot_treedepth_freqpoly_out", height = "150px"))
-                                                ),
-                                                br()
-                                                )
+                               fluidRow(
+                                 column(4, plotOutput("sampler_plot_divergent_out", height = "150px")),
+                                 column(8, 
+                                        fluidRow(
+                                          column(4, plotOutput("sampler_plot_treedepth_out", height = "150px")),  
+                                          column(4, plotOutput("sampler_plot_treedepth0_out", height = "150px")),
+                                          column(4, plotOutput("sampler_plot_treedepth1_out", height = "150px"))
+                                        )
+                                 )
+                               ),
+                               br()
                       ),
                       #### Rhat, ESS, MCSE, diagnostics ####
                       tabPanel("\\((\\hat{R}, n_{eff}, \\text{se}_{mean}) \\text{ diagnostics} \\)", icon = icon("bar-chart-o", "fa-2x"),

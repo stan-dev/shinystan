@@ -105,7 +105,8 @@ lgnd_top <- theme(legend.position = "top", legend.background = element_blank())
 lgnd_left <- theme(legend.position = "left", legend.background = element_blank())
 lgnd_right <- theme(legend.position = "right", legend.background = element_blank())
 no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), axis.text.y = element_blank())
-
+strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "white"),
+                   strip.background = element_rect(color = "#346fa1", fill = "#346fa1"))
 
 
 # param_summary -----------------------------------------------------------
@@ -174,11 +175,11 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
 }
 
 
-# sampler plot --------------------------------------------------
-.sampler_plot <- function(sampler_params, warmup_val, param, type = "bar") {
-  plot_title <- theme(plot.title = element_text(face = "bold", size = 12, hjust = 0))
+# sampler plots --------------------------------------------------
+.sampler_plot_divergent <- function(sampler_params, warmup_val) {
+  plot_title <- theme(plot.title = element_text(size = 11, hjust = 0))
   sp <- lapply(1:length(sampler_params), function(i) {
-    out <- sampler_params[[i]][, param]
+    out <- sampler_params[[i]][, "n_divergent__"]
     out <- if (warmup_val == 0) out else out[-(1:warmup_val)]
     names(out) <- ((warmup_val + 1):(warmup_val + length(out)))
     t(out)
@@ -187,35 +188,58 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
   msp <- reshape2::melt(sp)[,-1]
   colnames(msp) <- c("iteration", "value", "chain")
   
-  if (param == "treedepth__") {
-    if (type == "bar") {
-      graph <- ggplot(msp, aes(x = factor(value))) + 
-        stat_bin(aes(y=..count../sum(..count..)), fill = "gray35", color = "black", width=1) + 
-        ggtitle("Treedepth (post-warmup, all chains)")
-    }
-    if (type == "freqpoly") {
-      graph <- ggplot(msp, aes(x = factor(value), y = ..density.., color = chain)) +
-        geom_freqpoly(aes(group = chain), size = 2, alpha = 2/3) + 
-        ggtitle("Treedepth (post-warmup)") 
-  }
-    
+  nDivergent <- sum(msp$value == 1)
+  graph <- ggplot(msp, aes(x = iteration, y = value, fill = chain))
   graph <- graph + 
-    labs(x = "Treedepth", y = "") +
-    theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + plot_title + lgnd_right + transparent)
-  return(graph)
-    
-  } else { #param == "n_divergent__"
-    nDivergent <- sum(msp$value == 1)
-    graph <- ggplot(msp, aes(x = iteration, y = value, fill = chain))
-    graph <- graph + 
-      geom_bar(stat = "identity") + 
-      scale_y_continuous(breaks = NULL) +
-      labs(x = "Iteration", y = "") + 
-      ggtitle(paste(nDivergent, "divergent post-warmup iterations")) + 
-      theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + plot_title + lgnd_left + transparent)
-    return(graph)
-  }
+    geom_bar(stat = "identity") + 
+    scale_y_continuous(breaks = NULL) +
+    labs(x = "Iteration", y = "") + 
+    ggtitle(paste(nDivergent, "divergent post-warmup iterations")) + 
+    theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + plot_title + lgnd_left + transparent)
+  
+  graph
+  
 }
+
+.sampler_plot_treedepth <- function(sampler_params, warmup_val, n_divergent = c("All", 0, 1)) {
+  plot_title <- theme(plot.title = element_text(size = 11, hjust = 0))
+  sp_td <- lapply(1:length(sampler_params), function(i) {
+    out <- sampler_params[[i]][, "treedepth__"]
+    out <- if (warmup_val == 0) out else out[-(1:warmup_val)]
+    names(out) <- ((warmup_val + 1):(warmup_val + length(out)))
+    t(out)
+  })
+  
+  msp_td <- cbind(reshape2::melt(sp_td)[,-1])
+  names(sp_td) <- paste0(1:length(sp_td))
+  colnames(msp_td) <- c("iteration", "value", "chain")
+  
+  
+  sp_div <- lapply(1:length(sampler_params), function(i) {
+    out <- sampler_params[[i]][, "n_divergent__"]
+    out <- if (warmup_val == 0) out else out[-(1:warmup_val)]
+    names(out) <- ((warmup_val + 1):(warmup_val + length(out)))
+    t(out)
+  })
+  divergent <- reshape2::melt(sp_div)[,"value"]
+  msp_td <- cbind(msp_td, n_divergent = divergent)
+  
+  if (n_divergent == 0) msp_td <- subset(msp_td, n_divergent == 0)
+  if (n_divergent == 1) msp_td <- subset(msp_td, n_divergent == 1)
+
+  graph <- ggplot(msp_td, aes(x = factor(value))) + 
+    stat_bin(aes(y=..count../sum(..count..)), fill = "gray35", color = "black", width=1) + 
+    labs(x = "Treedepth", y = "") +
+    theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + plot_title + lgnd_right + transparent) 
+  
+  graph <- graph + 
+    if (n_divergent == 0) ggtitle("n_divergent = 0") 
+    else if (n_divergent == 1) ggtitle("n_divergent = 1") 
+    else ggtitle("All")
+  
+  graph
+}
+
 
 
 # param_trace -------------------------------------------------------------
@@ -318,9 +342,7 @@ no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), 
 
 
   lgnd_txt <- theme(legend.text = element_text(size = 13, face = "bold"))
-  strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "white"),
-                     strip.background = element_rect(color = "#346fa1", fill = "#346fa1"))
-
+  
   graph <- ggplot(dat, aes(x = iterations, y = value, color = chains))
   graph <- graph + xy_labs + clrs + theme_classic() %+replace% (axis_color + axis_labs + fat_axis + h_lines + lgnd_top + lgnd_txt + strip_txt + transparent)
   if (rect != "None") graph <- graph + shading_rect
@@ -525,9 +547,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
                           lag = 0:lags)
   } 
   
+  
   ac_labs <- labs(x = "Lag", y = "Autocorrelation")
-  strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "white"),
-                     strip.background = element_rect(color = "#346fa1", fill = "#346fa1"))
   ac_theme <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_lgnd + strip_txt + transparent)
   y_scale <- scale_y_continuous(breaks = seq(0, 1, 0.25), labels = c("0","","0.5","",""))
   title_theme <- theme(plot.title = element_text(face = "bold", size = 18))

@@ -4,34 +4,34 @@ sampler_plot_tests <- reactive({
     need(stan_algorithm == "NUTS", message = "Only available for algorithm = NUTS")
   )
 })
-sampler_plot_treedepth_hist <- reactive({
+sampler_plot_treedepth <- reactive({
   sampler_plot_tests()
-  
-  do.call(".sampler_plot", args = list(
+  do.call(".sampler_plot_treedepth", args = list(
     sampler_params  = sampler_params,
     warmup_val      = warmup_val,
-    param           = "treedepth__",
-    type            = "bar"
+    n_divergent     = "All"
   ))
 })
-
-sampler_plot_treedepth_freqpoly <- reactive({
+sampler_plot_treedepth0 <- reactive({
   sampler_plot_tests()
-  
-  do.call(".sampler_plot", args = list(
+  do.call(".sampler_plot_treedepth", args = list(
     sampler_params  = sampler_params,
     warmup_val      = warmup_val,
-    param           = "treedepth__",
-    type            = "freqpoly"
+    n_divergent     = 0
   ))
 })
-
+sampler_plot_treedepth1 <- reactive({
+  sampler_plot_tests()
+  do.call(".sampler_plot_treedepth", args = list(
+    sampler_params  = sampler_params,
+    warmup_val      = warmup_val,
+    n_divergent     = 1
+  ))
+})
 sampler_plot_divergent <- reactive({
   sampler_plot_tests()
-  
-  do.call(".sampler_plot", args = list(
+  do.call(".sampler_plot_divergent", args = list(
     sampler_params  = sampler_params,
-    warmup_val      = warmup_val,
-    param           = "n_divergent__"
+    warmup_val      = warmup_val
   ))
 })
