@@ -1,12 +1,13 @@
 # bivariate_plot
 bivariate_plot <- reactive({
-  test_transform <- function(x) is.function(eval(parse(text = paste0("function(x) {",x,"}"))))
+  test_transform_x <- function(x) is.function(eval(parse(text = paste0("function(x) {",x,"}"))))
+  test_transform_y <- function(y) is.function(eval(parse(text = paste0("function(y) {",y,"}"))))
   validate(
     need(input$param, message = FALSE),
     need(input$bivariate_ellipse_lev, message = FALSE),
     need(input$bivariate_param_y, message = FALSE),
-    need(try(test_transform(input$bivariate_transform_x)), message = FALSE),
-    need(try(test_transform(input$bivariate_transform_y)), message = FALSE)
+    need(try(test_transform_x(input$bivariate_transform_x)), message = paste(input$bivariate_transform_x, "is not a valid function")),
+    need(try(test_transform_y(input$bivariate_transform_y)), message = paste(input$bivariate_transform_y, "is not a valid function"))
     )
 
   if (input$bivariate_ellipse_lev != "None") {
