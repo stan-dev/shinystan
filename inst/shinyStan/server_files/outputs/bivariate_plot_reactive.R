@@ -1,9 +1,13 @@
 # bivariate_plot
 bivariate_plot <- reactive({
+  test_transform <- function(x) is.function(eval(parse(text = paste0("function(x) {",x,"}"))))
   validate(
     need(input$param, message = FALSE),
     need(input$bivariate_ellipse_lev, message = FALSE),
-    need(input$bivariate_param_y, message = FALSE))
+    need(input$bivariate_param_y, message = FALSE),
+    need(try(test_transform(input$bivariate_transform_x)), message = FALSE),
+    need(try(test_transform(input$bivariate_transform_y)), message = FALSE)
+    )
 
   if (input$bivariate_ellipse_lev != "None") {
     validate(need(input$param != input$bivariate_param_y,
@@ -25,6 +29,8 @@ bivariate_plot <- reactive({
     ellipse_alpha    = input$bivariate_ellipse_alpha,
     lines            = input$bivariate_lines,
     lines_color      = input$bivariate_lines_color,
-    lines_alpha      = input$bivariate_lines_alpha
+    lines_alpha      = input$bivariate_lines_alpha,
+    transform_x      = input$bivariate_transform_x,
+    transform_y      = input$bivariate_transform_y
   ))
 })

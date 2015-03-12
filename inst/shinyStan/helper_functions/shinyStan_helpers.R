@@ -224,10 +224,12 @@ strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "
   divergent <- reshape2::melt(sp_div)[,"value"]
   msp_td <- cbind(msp_td, n_divergent = divergent)
   
-  if (n_divergent == 0) msp_td <- subset(msp_td, n_divergent == 0)
-  if (n_divergent == 1) msp_td <- subset(msp_td, n_divergent == 1)
-
-  graph <- ggplot(msp_td, aes(x = factor(value))) + 
+  if (n_divergent == 0 || n_divergent == 1) {
+    if (any(msp_td$n_divergent == 1)) msp_td <- subset(msp_td, n_divergent == n_divergent) 
+    else return()
+  }
+   
+  graph <- ggplot(msp_td, aes(x = factor(value)), na.rm = TRUE) + 
     stat_bin(aes(y=..count../sum(..count..)), fill = "gray35", color = "black", width=1) + 
     labs(x = "Treedepth", y = "") +
     theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + plot_title + lgnd_right + transparent) 
@@ -882,7 +884,9 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
                             lines = "back",
                             lines_color = "gray",
                             lines_alpha,
-                            points = TRUE
+                            points = TRUE,
+                            transform_x = "x",
+                            transform_y = "y"
 ){
 
   shape_translator <- function(x) {
@@ -907,9 +911,25 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
   nIter <- dim(samps)[1] * dim(samps)[2]
   samps_use <- array(samps[,,params], c(nIter, nParams))
   colnames(samps_use) <- params
-  dat <- data.frame(x = samps_use[,param], y = samps_use[,param2])
   
-  graph <- ggplot(dat, aes(x = x, y = y, xend=c(tail(x, n=-1), NA), yend=c(tail(y, n=-1), NA))) + labs(x = param, y = param2)
+  
+  t_x <- eval(parse(text = paste0("function(x) {", transform_x,"}")))
+  t_y <- eval(parse(text = paste0("function(y) {", transform_y,"}")))
+  
+#   if (transform_x_from_list == "log") t_x <- function(x) log(x)
+#   if (transform_x_from_list == "logit") t_x <- function(x) log(x / (1-x))
+#   if (transform_x_from_list == "sqrt") t_x <- function(x) sqrt(x)
+#   if (transform_y_from_list == "log") t_y <- function(y) log(y)
+#   if (transform_y_from_list == "logit") t_y <- function(y) log(y / (1-y))
+#   if (transform_y_from_list == "sqrt") t_y <- function(y) sqrt(y)
+  
+  dat <- data.frame(x = t_x(samps_use[,param]), y = t_y(samps_use[,param2]))
+
+  x_lab <- if (transform_x != "x") gsub("x", param, transform_x) else param
+  y_lab <- if (transform_y != "y") gsub("y", param2, transform_y) else param2
+  param_labs <- labs(x = x_lab, y = y_lab)
+  
+  graph <- ggplot(dat, aes(x = x, y = y, xend=c(tail(x, n=-1), NA), yend=c(tail(y, n=-1), NA)))
   
   if (lines == "hide") {
     graph <- graph + geom_point(alpha = pt_alpha, size = pt_size, shape = shape_translator(pt_shape), color = pt_color)
@@ -929,6 +949,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
     graph <- graph + stat_ellipse(level = as.numeric(ellipse_lev), color = ellipse_color, linetype = ellipse_lty, size = ellipse_lwd, alpha = ellipse_alpha)
   }
 
-  graph + theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)
+  graph +
+    param_labs + 
+    theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)
 }
 

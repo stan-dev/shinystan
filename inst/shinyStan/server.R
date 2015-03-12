@@ -277,7 +277,8 @@ function(input, output, session) {
   })
   #### PLOT: bivariate ####
   output$bivariate_plot_out <- renderPlot({
-    bivariate_plot()
+    x <- bivariate_plot()
+    suppressWarnings(print(x))
   }, bg = "transparent")
   output$download_bivariate <- downloadHandler(
     filename = 'shinystan_bivariate.RData',
