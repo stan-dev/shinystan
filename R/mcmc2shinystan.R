@@ -3,7 +3,7 @@
 mcmc2shinystan <- function(X, model_name = "unnamed model", burnin = 0, param_dims = list(),
                            model_code) {
 
-  stopifnot(require("coda", quietly = TRUE))
+  stopifnot(requireNamespace("coda", quietly = TRUE))
 
   Xname <- deparse(substitute(X))
   if (!inherits(X, "mcmc.list")) {
@@ -11,10 +11,10 @@ mcmc2shinystan <- function(X, model_name = "unnamed model", burnin = 0, param_di
   }
 
   if (length(X) == 1) {
-    return(chains2shinystan(list(as.matrix(X))))
+    return(chains2shinystan(list(coda:::as.matrix.mcmc(X))))
   }
 
-  samps_array <- aperm(as.array(X), c(1,3,2))
+  samps_array <- aperm(coda:::as.array.mcmc.list(X), c(1,3,2))
   dimnames(samps_array) <- list(iterations = 1:nrow(samps_array),
                                 chains = paste0("chain:",1:ncol(samps_array)),
                                 parameters = dimnames(samps_array)[[3]])
