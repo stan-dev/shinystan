@@ -3,7 +3,7 @@ output$ui_dynamic_trace_customize <- renderUI({
     bsCollapsePanel(title = "View Options", id = "dynamic_trace_collapse",
                     fluidRow(
                       column(3, numericInput("dynamic_trace_chain", label = h5(style = "color: white;", "Chain (0 = all)"), min = 0, max = object@nChains, step = 1, value = 0)),
-                      column(3, radioButtons("dynamic_trace_stack", label = h5("Lines"), choices = list(Normal = "normal", Stacked = "stacked"), selected = "normal", inline = TRUE)),
+                      column(4, radioButtons("dynamic_trace_stack", label = h5("Lines"), choices = list(Normal = "normal", Stacked = "stacked"), selected = "normal", inline = TRUE)),
                       column(3, radioButtons("dynamic_trace_grid", label = h5("Grid"), choices = list(Show = "show", Hide = "hide"), selected = "hide", inline = TRUE))
                       # column(3, radioButtons("dynamic_trace_warmup_shade", label = h5("Warmup shading"), choices = list(Show = "show", Hide = "hide"), selected = "show", inline = FALSE))
                     ),

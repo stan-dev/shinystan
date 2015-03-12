@@ -112,7 +112,7 @@ body {
 /**************************************/
 
 /**************************************/
-/* controls */
+/* customization control panels */
 
 .hr_controls {
   border-width: 2px; 
@@ -154,7 +154,6 @@ body {
 #multiview_collapse, #density_collapse, #dynamic_trace_collapse, #hist_collapse, #trivariate_collapse, #bivariate_collapse_all .panel-body{
   opacity: 0.8; color: white;
 }
-
 
 #bivariate_points_collapse .panel-body{
   opacity: 1; color: white; padding 2px;
