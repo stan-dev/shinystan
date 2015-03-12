@@ -4,6 +4,7 @@ output$ui_autocorr_customize <- renderUI({
   if (length(params > 1)) {
     select_collapse <- bsCollapsePanel(title = "Options", id = "ac_options_collapse",
                                        sliderInput("ac_lags", label = "Lags", post = " lags", min = 0, max = nIter-warmup_val-5, step = 5, value = min(25, round((nIter-warmup_val)/2))),
+                                       checkboxInput("ac_partial", "Partial autocorrelation", value = FALSE),
                                        checkboxInput("ac_warmup", label = "Include warmup", TRUE),
                                        checkboxInput("ac_combine", label = "Combine chains", FALSE),
                                        conditionalPanel(condition = "input.ac_combine == false", checkboxInput("ac_flip", label = "Flip facets", FALSE))
@@ -11,6 +12,7 @@ output$ui_autocorr_customize <- renderUI({
   } else {
     select_collapse <- bsCollapsePanel(title = "Options", id = "ac_options_collapse",
                                        sliderInput("ac_lags", label = "Lags", post = " lags", min = 0, max = nIter-warmup_val-5, step = 5, value = min(25, round((nIter-warmup_val)/2))),
+                                       checkboxInput("ac_partial", "Partial autocorrelation", value = FALSE),
                                        checkboxInput("ac_warmup", label = "Include warmup", TRUE),
                                        checkboxInput("ac_combine", label = "Combine chains", FALSE)
 

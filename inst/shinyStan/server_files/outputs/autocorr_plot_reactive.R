@@ -21,6 +21,7 @@ autocorr_plot <- reactive({
     lags            = input$ac_lags,
     flip            = input$ac_flip,
     combine_chains  = input$ac_combine,
+    partial         = input$ac_partial,
     nChains         = nChains
   ))
 })

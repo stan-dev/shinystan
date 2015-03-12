@@ -518,6 +518,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
 # markov chain autocorrelation plot for multiple parameters
 .autocorr_plot <- function(samps, params = NULL, all_param_names,
                            nChains,
+                           partial = FALSE,
                            lags = 25, flip = FALSE,
                            combine_chains = FALSE) {
   
@@ -538,19 +539,35 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
   }
   
   nParams <- length(params)
-  if (nParams == 1) {
-    ac_dat <- plyr::ddply(dat, "chains", plyr::here(plyr::summarise),
-                          ac = acf(value, lag.max = lags, plot = FALSE)$acf[,,1],
-                          lag = 0:lags)
+  ac_type <- if (partial) "partial" else "correlation"
+  
+  if (!partial) {
+    if (nParams == 1) {
+      ac_dat <- plyr::ddply(dat, "chains", plyr::here(plyr::summarise),
+                            ac = acf(value, lag.max = lags, plot = FALSE)$acf[,,1],
+                            lag = 0:lags)
+    }
+    if (nParams > 1) {
+      ac_dat <- plyr::ddply(dat, c("parameters", "chains"), plyr::here(plyr::summarise),
+                            ac = acf(value, lag.max = lags, plot = FALSE)$acf[,,1],
+                            lag = 0:lags)
+    }
+  } else {
+    if (nParams == 1) {
+      ac_dat <- plyr::ddply(dat, "chains", plyr::here(plyr::summarise),
+                            ac = pacf(value, lag.max = lags, plot = FALSE)$acf[,,1],
+                            lag = 1:lags)
+    }
+    if (nParams > 1) {
+      ac_dat <- plyr::ddply(dat, c("parameters", "chains"), plyr::here(plyr::summarise),
+                            ac = pacf(value, lag.max = lags, plot = FALSE)$acf[,,1],
+                            lag = 1:lags)
+    }
   }
-  if (nParams > 1) {
-    ac_dat <- plyr::ddply(dat, c("parameters", "chains"), plyr::here(plyr::summarise),
-                          ac = acf(value, lag.max = lags, plot = FALSE)$acf[,,1],
-                          lag = 0:lags)
-  } 
+   
   
   
-  ac_labs <- labs(x = "Lag", y = "Autocorrelation")
+  ac_labs <- labs(x = "Lag", y = if (partial) "Partial autocorrelation" else "Autocorrelation")
   ac_theme <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_lgnd + strip_txt + transparent)
   y_scale <- scale_y_continuous(breaks = seq(0, 1, 0.25), labels = c("0","","0.5","",""))
   title_theme <- theme(plot.title = element_text(face = "bold", size = 18))
