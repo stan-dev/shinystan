@@ -224,10 +224,12 @@ strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "
   divergent <- reshape2::melt(sp_div)[,"value"]
   msp_td <- cbind(msp_td, n_divergent = divergent)
   
-  if (n_divergent == 0) msp_td <- subset(msp_td, n_divergent == 0)
-  if (n_divergent == 1) msp_td <- subset(msp_td, n_divergent == 1)
-
-  graph <- ggplot(msp_td, aes(x = factor(value))) + 
+  if (n_divergent == 0 || n_divergent == 1) {
+    if (any(msp_td$n_divergent == 1)) msp_td <- subset(msp_td, n_divergent == n_divergent) 
+    else return()
+  }
+   
+  graph <- ggplot(msp_td, aes(x = factor(value)), na.rm = TRUE) + 
     stat_bin(aes(y=..count../sum(..count..)), fill = "gray35", color = "black", width=1) + 
     labs(x = "Treedepth", y = "") +
     theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + plot_title + lgnd_right + transparent) 
@@ -856,33 +858,49 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
 }
 
 # trivariate_plot ---------------------------------------------------------
-.param_trivariate <- function(samps, params,
-                              pt_size = 1, show_grid = TRUE, flip_y = TRUE) {
-  nParams <- length(params)
+.param_trivariate <- function(samps, params, 
+                              transform_x = "x", transform_y = "y", transform_z = "z",
+                              pt_size = 1, pt_color = "gray35", show_grid = TRUE, flip_y = TRUE) {
+  nParams <- 3
   dim_samps <- dim(samps)
   nIter <- dim_samps[1] * dim_samps[2]
   samps_use <- array(samps[,,params], c(nIter, nParams))
   colnames(samps_use) <- params
-  threejs::scatterplot3js(samps_use, size = pt_size, grid = show_grid, flip.y = flip_y)
+  
+  t_x <- eval(parse(text = paste0("function(x) {", transform_x,"}")))
+  t_y <- eval(parse(text = paste0("function(y) {", transform_y,"}")))
+  t_z <- eval(parse(text = paste0("function(z) {", transform_z,"}")))
+  
+  if (transform_x != "x") samps_use[,1] <- t_x(samps_use[,1])
+  if (transform_y != "y") samps_use[,2] <- t_y(samps_use[,2])
+  if (transform_z != "z") samps_use[,3] <- t_z(samps_use[,3])
+  
+  if (transform_x != "x") colnames(samps_use)[1] <- gsub("x", params[1], transform_x) 
+  if (transform_y != "y") colnames(samps_use)[2] <- gsub("y", params[2], transform_y) 
+  if (transform_z != "z") colnames(samps_use)[3] <- gsub("z", params[3], transform_z) 
+  
+  labels <- rep("xyz", nrow(samps_use))
+  threejs::scatterplot3js(samps_use, size = pt_size, color = pt_color, grid = show_grid, flip.y = flip_y, signif = 4)
 }
-
 
 
 # bivariate plot ----------------------------------------------------------
 .bivariate_plot <- function(samps, param, param2,
                             pt_alpha = 0.10,
-                            pt_size     = 2,
-                            pt_shape    = 10,
-                            pt_color    = "firebrick",
-                            ellipse_color    = "black",
+                            pt_size = 2,
+                            pt_shape = 10,
+                            pt_color = "firebrick",
+                            ellipse_color = "black",
                             ellipse_lev = "None",
-                            ellipse_lty      = 1,
-                            ellipse_lwd      = 1,
-                            ellipse_alpha    = 1,
+                            ellipse_lty = 1,
+                            ellipse_lwd = 1,
+                            ellipse_alpha = 1,
                             lines = "back",
                             lines_color = "gray",
                             lines_alpha,
-                            points = TRUE
+                            points = TRUE,
+                            transform_x = "x",
+                            transform_y = "y"
 ){
 
   shape_translator <- function(x) {
@@ -907,9 +925,25 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
   nIter <- dim(samps)[1] * dim(samps)[2]
   samps_use <- array(samps[,,params], c(nIter, nParams))
   colnames(samps_use) <- params
-  dat <- data.frame(x = samps_use[,param], y = samps_use[,param2])
   
-  graph <- ggplot(dat, aes(x = x, y = y, xend=c(tail(x, n=-1), NA), yend=c(tail(y, n=-1), NA))) + labs(x = param, y = param2)
+  
+  t_x <- eval(parse(text = paste0("function(x) {", transform_x,"}")))
+  t_y <- eval(parse(text = paste0("function(y) {", transform_y,"}")))
+  
+#   if (transform_x_from_list == "log") t_x <- function(x) log(x)
+#   if (transform_x_from_list == "logit") t_x <- function(x) log(x / (1-x))
+#   if (transform_x_from_list == "sqrt") t_x <- function(x) sqrt(x)
+#   if (transform_y_from_list == "log") t_y <- function(y) log(y)
+#   if (transform_y_from_list == "logit") t_y <- function(y) log(y / (1-y))
+#   if (transform_y_from_list == "sqrt") t_y <- function(y) sqrt(y)
+  
+  dat <- data.frame(x = t_x(samps_use[,param]), y = t_y(samps_use[,param2]))
+
+  x_lab <- if (transform_x != "x") gsub("x", param, transform_x) else param
+  y_lab <- if (transform_y != "y") gsub("y", param2, transform_y) else param2
+  param_labs <- labs(x = x_lab, y = y_lab)
+  
+  graph <- ggplot(dat, aes(x = x, y = y, xend=c(tail(x, n=-1), NA), yend=c(tail(y, n=-1), NA)))
   
   if (lines == "hide") {
     graph <- graph + geom_point(alpha = pt_alpha, size = pt_size, shape = shape_translator(pt_shape), color = pt_color)
@@ -929,6 +963,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
     graph <- graph + stat_ellipse(level = as.numeric(ellipse_lev), color = ellipse_color, linetype = ellipse_lty, size = ellipse_lwd, alpha = ellipse_alpha)
   }
 
-  graph + theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)
+  graph +
+    param_labs + 
+    theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)
 }
 

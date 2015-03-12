@@ -275,9 +275,14 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                  tabPanel("Dynamic 3D scatterplot", # icon = icon("spinner", "fa-spin"),
                                           uiOutput("ui_triviariate_customize"),
                                           fluidRow(
-                                            column(3, selectizeInput("trivariate_param_x", label = h5(style = "color: #428bca;", "x-axis"), choices = .make_param_list(object), multiple = FALSE)),
-                                            column(3, selectizeInput("trivariate_param_y", label = h5(style = "color: #428bca;", "y-axis"), choices = .make_param_list(object), multiple = FALSE)),
-                                            column(3, selectizeInput("trivariate_param_z", label = h5(style = "color: #428bca;", "z-axis"), choices = rev(.make_param_list(object)), multiple = FALSE))
+                                            column(3, selectizeInput("trivariate_param_x", label = strong(style = "color: #428bca;", "x-axis"), choices = .make_param_list(object), multiple = FALSE)),
+                                            column(3, selectizeInput("trivariate_param_y", label = strong(style = "color: #428bca;", "y-axis"), choices = .make_param_list(object), multiple = FALSE)),
+                                            column(3, selectizeInput("trivariate_param_z", label = strong(style = "color: #428bca;", "z-axis"), choices = rev(.make_param_list(object)), multiple = FALSE))
+                                          ),
+                                          fluidRow(
+                                            column(3, textInput("trivariate_transform_x", label = strong(style = "color: #428bca;", "Transform x"), value = "x")),
+                                            column(3, textInput("trivariate_transform_y", label = strong(style = "color: #428bca;", "Transform y"), value = "y")),
+                                            column(3, textInput("trivariate_transform_z", label = strong(style = "color: #428bca;", "Transform z"), value = "z"))
                                           ),
                                           br(),
                                           threejs::scatterplotThreeOutput("trivariate_plot_out"),
@@ -286,7 +291,16 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                  #### bivariate plot #####
                                  tabPanel("Bivariate",
                                           uiOutput("ui_bivariate_customize"),
-                                          selectizeInput("bivariate_param_y", label = h5(style = "color: #428bca;", "y-axis"), choices = rev(.make_param_list(object)), multiple = FALSE),
+                                          fluidRow(
+                                            column(4, selectizeInput("bivariate_param_y", label = strong(style = "color: #428bca;", "y-axis"), choices = rev(.make_param_list(object)), multiple = FALSE)),
+                                            # column(3, offset=1, selectInput("bivariate_transform_x", strong("Transform x"), choices = c("None", "Log", "Logit"))),
+                                            column(3, offset = 2, textInput("bivariate_transform_y", strong(style = "color: #428bca;", "Transform y"), value = "y")),
+                                            # column(1, actionButton("bivariate_transform_y_go", label = "", icon = icon("check"))),
+                                            column(3, textInput("bivariate_transform_x", strong(style = "color: #428bca;", "Transform x"), value = "x"))
+                                            # column(1, actionButton("bivariate_transform_x_go", label = "", icon = icon("check")))
+                                            # column(3, selectInput("bivariate_transform_y", strong("Transform y"), choices = c("None", "Log", "Logit")))
+                                          ),
+                                          tags$style(type='text/css', "#bivariate_transform_y_go, #bivariate_transform_x_go { margin-top: 24px; margin-left: -25px; }"),
                                           plotOutput("bivariate_plot_out")
                                  )
                                  

@@ -48,15 +48,19 @@ function(input, output, session) {
   source("pp_check/shinyStan_pp_helpers.R", local=TRUE)
 
   #### tooltips & popovers ####  
-  tooltip_ids <- c("download_multiview", "dynamic_trace_stack", "download_all_summary", "tex_options")
+  tooltip_ids <- c("download_multiview", "dynamic_trace_stack", "download_all_summary", "tex_options", "bivariate_transform_x", "trivariate_transform_x", "bivariate_transform_y", "trivariate_transform_y", "trivariate_transform_z")
   tooltip_msgs <- c("Will be a list object with one element per plot.", 
                     "If 'Stacked' is selected, the chains will be stacked on top of one another rather than drawing them independently. The first series specified in the input data will wind up on top of the chart and the last will be on bottom. Note that the y-axis values no longer correspond to the true values when this option is enabled.",
-                    "Save as data.frame (.RData)", "Print latex table to R console")
+                    "Save as data.frame (.RData)", "Print latex table to R console", 
+                    rep("A function of x, e.g. log(x), log(x/(1-x)), sqrt(x), etc.",2),
+                    rep("A function of y, e.g. log(y), log(y/(1-y)), sqrt(y), etc.",2),
+                    "A function of z, e.g. log(z), log(z/(1-z)), sqrt(z), etc.")
+  tooltip_placements <- c(rep("right", 4), rep("top", 5))
   popover_ids <- c(paste0("tex_", c("booktabs", "long")))
   popover_msgs <- c("From print.xtable {xtable}: If TRUE, the toprule, midrule and bottomrule tags from the LaTex 'booktabs' package are used rather than hline for the horizontal line tags.",
                     "For tables longer than a single page. If TRUE, will use LaTeX package 'longtable'.")
   for (id in seq_along(tooltip_ids)) {
-    addTooltip(session, id = tooltip_ids[id], trigger = "hover", placement = "right",
+    addTooltip(session, id = tooltip_ids[id], trigger = "hover", placement = tooltip_placements[id],
                title = tooltip_msgs[id])
   }
   for (id in seq_along(popover_ids)) {
@@ -277,7 +281,8 @@ function(input, output, session) {
   })
   #### PLOT: bivariate ####
   output$bivariate_plot_out <- renderPlot({
-    bivariate_plot()
+    x <- bivariate_plot()
+    suppressWarnings(print(x))
   }, bg = "transparent")
   output$download_bivariate <- downloadHandler(
     filename = 'shinystan_bivariate.RData',
