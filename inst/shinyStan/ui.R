@@ -107,7 +107,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                                         inline = TRUE
                                  )),
                                  column(5, radioButtons("sampler_report", label = h5("Report average, maximum, or minimum values"),
-                                                        choices = list(Average = "average", Maximum = "maximum", Minimum = "minimum"),
+                                                        choices = list(Mean = "average", SD = "sd", Maximum = "maximum", Minimum = "minimum"),
                                                         inline = TRUE
                                  )),
                                  column(2, numericInput("sampler_digits", label = h5("Decimals"), value = 4, min = 0, max = 10, step = 1))
