@@ -1,14 +1,10 @@
 trivariate_plot <- reactive({
-  test_transform_x <- function(x) is.function(eval(parse(text = paste0("function(x) {",x,"}"))))
-  test_transform_y <- function(y) is.function(eval(parse(text = paste0("function(y) {",y,"}"))))
-  test_transform_z <- function(z) is.function(eval(parse(text = paste0("function(z) {",z,"}"))))
+  
   validate(need(input$trivariate_flip, message = "Loading..."),
            need(input$trivariate_param_x, message = "Waiting for x ..."),
            need(input$trivariate_param_y, message = "Waiting for y ..."),
-           need(input$trivariate_param_z, message = "Waiting for z ..."),
-           need(try(test_transform_x(input$trivariate_transform_x)), message = FALSE),
-           need(try(test_transform_y(input$trivariate_transform_y)), message = FALSE),
-           need(try(test_transform_z(input$trivariate_transform_z)), message = FALSE))
+           need(input$trivariate_param_z, message = "Waiting for z ...")
+  )
 
   x <- input$trivariate_param_x
   y <- input$trivariate_param_y
