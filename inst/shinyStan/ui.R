@@ -37,7 +37,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
            windowTitle = "shinyStan", collapsible = FALSE, id = "nav",
            inverse = TRUE, header = show_model_name, position = "fixed-top",
            
-           #### TAB: Estimates ####
+           #### TAB: ESTIMATE ####
            tabPanel(title = "Estimate", icon = icon("stats", lib = "glyphicon"),
                     withMathJax(),
                     
@@ -50,8 +50,6 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                    column(3, offset = 1, sliderInput("param_plot_ci_level", h5("Credible interval"), width = "75%", ticks = FALSE, min = 50, max = 95, value = 50, step = 5, post = "%")),
                                    column(2, tags$div(h5("Customize"),includeHTML("html/multiparam_options.html")))
                                  )
-                                 
-                                 # tags$div(class = "pull-right",style = "line-height: 150%;", checkboxInput("multiparam_options", label = span(style = "font-size: 12px;","Show/hide customization panel"), value = TRUE))
                                ),
                                conditionalPanel(condition = "input.multiparam_options == true",
                                                 uiOutput("ui_multiparam_customize")),
@@ -91,9 +89,9 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                )
                       )
                     ) # End tabsetPanel
-           ), # End Estimates
+           ), # End ESTIMATE
            
-           #### TAB: Convergence ####
+           #### TAB: DIAGNOSE ####
            tabPanel(title = "Diagnose", icon = icon("medkit"),
                     tabsetPanel(
                       #### sampler parameters ####
@@ -136,8 +134,8 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                  column(2, 
                                         actionLink("btn_open_glossary_copy", "Open glossary", icon = icon("book", lib = "glyphicon"))
                                  )
-                                 ),
-                                 fluidRow(
+                               ),
+                               fluidRow(
                                  column(3, splitLayout(includeHTML("html/warnings_options.html"), span("Customize"), cellWidths = c("25%","75%")))
                                ),
                                uiOutput("glossary_modal_copy"),
@@ -177,7 +175,6 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                  fluidRow(
                                    column(6, selectizeInput("ac_params", width = "100%", label = h5("Select or enter parameter names"), choices = .make_param_list_with_groups(object), multiple = TRUE)),
                                    column(2, offset = 4, tags$div(h5("Customize"),includeHTML("html/ac_options.html")))
-                                   # tags$div(class = "pull-right",style = "line-height: 150%;", checkboxInput("ac_options", label = span(style = "font-size: 12px;","Show/hide customization panel"), value = TRUE))
                                  )
                                ),
                                plotOutput("autocorr_plot_out")
@@ -190,7 +187,6 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                    column(3, offset = 1, sliderInput("multi_xzoom", width = "75%",label = h5("Iterations range"), min = 0, max = object@nIter, step = 1, value = c(object@nWarmup + 1, object@nIter), ticks = FALSE)),
                                    column(2, tags$div(h5("Customize"),includeHTML("html/multi_trace_options.html")))
                                  )
-                                 # tags$div(class = "pull-right",style = "line-height: 150%;", checkboxInput("multi_trace_options", label = span(style = "font-size: 12px;","Show/hide customization panel"), value = TRUE))
                                ),
                                conditionalPanel(condition = "input.multi_trace_options == true",
                                                 uiOutput("ui_multi_trace_customize")),
@@ -229,9 +225,9 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                )
                       )
                     ) # End tabsetPanel
-           ), # End Convergence
+           ), # End DIAGNOSE
            
-           #### TAB: Explore Parameters ####
+           #### TAB: EXPLORE ####
            tabPanel(title = "Explore", icon = icon("eye-open", lib = "glyphicon"),
                     fluidRow(
                       column(3, selectizeInput(inputId = "param", label = h4("Select parameter"), choices = .make_param_list(object), multiple = FALSE)),
@@ -315,7 +311,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                  )
                                  
                     )
-           ),
+           ), # End EXPLORE
            #### MENU: More ####
            navbarMenu(title = "More",
                       
@@ -377,7 +373,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                selectInput("background_texture", "Background texture", choices = c("Plain (white)" = "default", "Subtle" = "subtle",  "Concrete" = "concrete", "White brick" = "whitebrick", "Vignette" = "vignette", "Sweater" = "sweater", "Stucco" = "stucco", "Crumpled paper" = "crumpled", "Green cup" = "greencup"), selected = "default"),
                                uiOutput("ui_background_texture")
                       )
-           ), # END navbarMenu
+           ), # END navbarMenu MORE
            #### QUIT ####
            tabPanel(tags$div(style = "color: #f9dd67;", "Quit"), value = "quit",
                     h1("Thanks for using shinyStan."),
