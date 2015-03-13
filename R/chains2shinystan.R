@@ -6,7 +6,7 @@ chains2shinystan <- function(chain_list, ...) {
 
   if (!is.list(chain_list)) {
     name <- deparse(substitute(chain_list))
-    stop (paste(name, "is not a list."))
+    stop(paste(name, "is not a list."), call. = FALSE)
   }
 
   nChain <- length(chain_list)

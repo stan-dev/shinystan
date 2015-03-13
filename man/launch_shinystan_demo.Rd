@@ -7,12 +7,12 @@
 launch_shinystan_demo(...)
 }
 \arguments{
-\item{...}{Optional arguments to pass to \code{rstanDemo::stan_demo}.}
+\item{...}{Optional arguments to pass to \code{stan_demo} (\pkg{rstan}).}
 }
 \description{
 The user will be presented with the option of launching the default
 shinyStan demo (in which case the app will launch immediately)
-or running a Stan demo model (\pkg{rstanDemo}), after which shinyStan
+or running a Stan demo model (\pkg{rstan}), after which shinyStan
 will launch.
 }
 \details{
@@ -31,5 +31,8 @@ can click on 'Open in Browser' at the top of the Viewer pane.
 \dontrun{
 launch_shinystan_demo()
 }
+}
+\seealso{
+\code{\link[shinyStan]{launch_shinystan}}, \code{\link[shinyStan]{as.shinystan}},
 }
 

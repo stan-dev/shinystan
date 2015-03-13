@@ -88,14 +88,14 @@ as.shinystan <- function(X, ...) {
   if (what_X_is == "shinystan") {
     print(paste0(Xname,
                " is already a shinystan object.", "\n",
-               " You can use launch_shinystan(",Xname,") to launch the app."))
+               " You can use launch_shinystan(",Xname,") to launch shinyStan."))
     return(X)
   }
   if (what_X_is == "stanfit") return(stan2shinystan(X, ...))
   if (what_X_is == "mcmclist") return(mcmc2shinystan(X, ...))
   if (what_X_is == "chainlist") return(chains2shinystan(X, ...))
   if (what_X_is == "other") {
-    if (!is.array(X)) stop(paste(Xname, "is not a valid input type. See ?as.shinystan"))
+    if (!is.array(X)) stop(paste(Xname, "is not a valid input type. See ?as.shinystan"), call. = FALSE)
     array2shinystan(X, ...)
   }
 
