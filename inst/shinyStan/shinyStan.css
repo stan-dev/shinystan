@@ -38,8 +38,8 @@
   -moz-transition: all 0.2s; transition-delay: 0.1s;
 }
 #nav li a { 
-  -webkit-transition: all 1.0s; transition-delay: 0.1s;
-  -moz-transition: all 1.0s; transition-delay: 0.1s;
+  -webkit-transition: all 0.75s; transition-delay: 0.1s;
+  -moz-transition: all 0.75s; transition-delay: 0.1s;
 }
 #nav li ul { 
   -webkit-transition: all 1s; transition-delay: 0.1s;
