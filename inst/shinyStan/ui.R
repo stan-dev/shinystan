@@ -299,12 +299,8 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                           uiOutput("ui_bivariate_customize"),
                                           fluidRow(
                                             column(4, selectizeInput("bivariate_param_y", label = strong(style = "color: #337ab7;", "y-axis"), choices = rev(.make_param_list(object)), multiple = FALSE)),
-                                            # column(3, offset=1, selectInput("bivariate_transform_x", strong("Transform x"), choices = c("None", "Log", "Logit"))),
                                             column(3, offset = 2, textInput("bivariate_transform_y", label = "Transform y", value = "y")),
-                                            # column(1, actionButton("bivariate_transform_y_go", label = "", icon = icon("check"))),
                                             column(3, textInput("bivariate_transform_x", label = "Transform x", value = "x"))
-                                            # column(1, actionButton("bivariate_transform_x_go", label = "", icon = icon("check")))
-                                            # column(3, selectInput("bivariate_transform_y", strong("Transform y"), choices = c("None", "Log", "Logit")))
                                           ),
                                           tags$style(type='text/css', "#bivariate_transform_y_go, #bivariate_transform_x_go { margin-top: 24px; margin-left: -25px; }"),
                                           plotOutput("bivariate_plot_out")
