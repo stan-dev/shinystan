@@ -23,7 +23,7 @@ invisible(lapply(X = pkgs, FUN = library, character.only = TRUE))
 source("helper_functions/shinyStan_helpers.R", local = TRUE)
 
 # load pp_check plot_names and plot_descriptions
-source("pp_check/plot_names_descriptions.R", local = TRUE)
+source("server_files/pp_check/plot_names_descriptions.R", local = TRUE)
 
 # give shinystan_object shorter name
 object <- shinystan_object
@@ -223,7 +223,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                                      uiOutput("ui_pp_about")
                                             ),
                                             tabPanel("Tutorial",
-                                                     includeMarkdown("pp_check/pp_check_tutorial.md")
+                                                     includeMarkdown("markdown/pp_check_tutorial.md")
                                             )
                                             
                                )
