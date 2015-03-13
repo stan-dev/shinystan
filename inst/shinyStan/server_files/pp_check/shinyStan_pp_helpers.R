@@ -51,8 +51,10 @@ sample_id_for_resids <- reactive({
                             fill = I("#428bca"),
                             alpha = 3/4) + labs(y = "", x = "y")
     else g <- qplot(x = y_rep_samp[i-1, ], geom = geom, 
-                 color = I("black"), fill = I("gray35"), alpha = 3/4) + 
-        labs(y = "", x = rownames(y_rep_samp)[i-1])
+                    color = if (geom == "histogram") I("black") else I("gray35"), 
+                    fill = if (geom == "histogram") I("gray35") else I("black"), 
+                    alpha = I(3/4)) + 
+                labs(y = "", x = rownames(y_rep_samp)[i-1])
     
     g + thm 
   })

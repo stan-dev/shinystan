@@ -22,7 +22,6 @@ pp_hists_rep_vs_obs <- reactive({
     return(out)
   }
 
-  graphs <- .pp_hists_rep_vs_obs(y = y, y_rep_samp = y_rep_samp,
-                                 geom = geom)
+  graphs <- .pp_hists_rep_vs_obs(y = y, y_rep_samp = y_rep_samp, geom = geom)
   do.call(gridExtra::grid.arrange, c(graphs, ncol = 3))
 })
