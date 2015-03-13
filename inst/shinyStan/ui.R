@@ -271,10 +271,12 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                           radioButtons("distribution", label = "", choices = c("Density", "Histogram"), inline = TRUE),
                                           conditionalPanel(condition = "input.distribution == 'Density'",
                                                            uiOutput("ui_density_customize"),
+                                                           textInput("dens_transform_x", "Transform", value = "x"),
                                                            plotOutput("density_plot_out")
                                           ),
                                           conditionalPanel(condition = "input.distribution == 'Histogram'",
                                                            uiOutput("ui_hist_customize"),
+                                                           textInput("hist_transform_x", "Transform", value = "x"),
                                                            plotOutput("hist_plot_out")
                                           )
                                           

@@ -41,6 +41,7 @@ density_plot <- reactive({
     xzoom = xzoom,
     x_lim = if (xzoom) eval(parse(text = input$dens_xzoom)) else NULL,
     prior_fam   = prior_fam,
-    prior_params = prior_params
+    prior_params = prior_params,
+    transform_x = input$dens_transform_x
   ))
 })

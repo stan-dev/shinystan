@@ -365,10 +365,18 @@ strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "
 # param_hist --------------------------------------------------------------
 # histogram for a single parameter
 .param_hist <- function(param, dat, chain, binwd,
+                        transform_x = "x",
                         fill_color = "gray35", line_color = "gray35",
                         title = TRUE) {
   
   ttl <- "Histogram of Posterior Draws (post-warmup) \n"
+
+  if (transform_x != "x") {
+    t_x <- eval(parse(text = paste0("function(x) {", transform_x,"}")))
+    dat <- apply(dat, 2, t_x)
+  }
+  x_lab <- if (transform_x != "x") gsub("x", param, transform_x) else param
+  
   dat <- reshape2::melt(dat)
 
   if (!("chains" %in% colnames(dat))) { # fixes for if there's only 1 chain:
@@ -389,7 +397,7 @@ strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "
   }
 
   graph <- graph +
-    labs(x = param, y = "") +
+    labs(x = x_lab, y = "") +
     theme_classic() %+replace% (title_txt + axis_color + axis_labs + fat_axis + no_yaxs + transparent)
 
   if (title == TRUE) graph <- graph + ggtitle(ttl)
@@ -412,12 +420,19 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
                         xzoom = FALSE, x_lim = NULL,
                         chain_split = FALSE,
                         title = TRUE,
+                        transform_x = "x",
                         prior_fam = "None", prior_params) {
   
   ttl <- "Kernel Density Estimate (post-warmup) \n"
+
+  if (transform_x != "x") {
+    t_x <- eval(parse(text = paste0("function(x) {", transform_x,"}")))
+    dat <- apply(dat, 2, t_x)
+  }
+  x_lab <- if (transform_x != "x") gsub("x", param, transform_x) else param
   
   dat <- reshape2::melt(dat)
-
+  
   if (!("chains" %in% colnames(dat))) { # fixes for if there's only 1 chain:
     dat$chains <- "chain:1"
     dat$iterations <- 1:nrow(dat)
@@ -449,7 +464,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
     graph <- graph +
       geom_density(alpha = 0.15) +
       scale_color_discrete("") + scale_fill_discrete("") +
-      labs(x = param, y = "") +
+      labs(x = x_lab, y = "") +
       x_scale + # y_scale +
       theme_classic() %+replace% (title_txt + axis_color + axis_labs + fat_axis + no_yaxs + transparent)
     if (title == TRUE) graph <- graph + ggtitle(ttl)
@@ -946,13 +961,6 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
   
   t_x <- eval(parse(text = paste0("function(x) {", transform_x,"}")))
   t_y <- eval(parse(text = paste0("function(y) {", transform_y,"}")))
-  
-#   if (transform_x_from_list == "log") t_x <- function(x) log(x)
-#   if (transform_x_from_list == "logit") t_x <- function(x) log(x / (1-x))
-#   if (transform_x_from_list == "sqrt") t_x <- function(x) sqrt(x)
-#   if (transform_y_from_list == "log") t_y <- function(y) log(y)
-#   if (transform_y_from_list == "logit") t_y <- function(y) log(y / (1-y))
-#   if (transform_y_from_list == "sqrt") t_y <- function(y) sqrt(y)
   
   dat <- data.frame(x = t_x(samps_use[,param]), y = t_y(samps_use[,param2]))
 
