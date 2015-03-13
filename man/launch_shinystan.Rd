@@ -22,9 +22,9 @@ the Global Environment.
 \note{
 Unless you are using RStudio, \code{launch_shinystan} will open the app
 in your system's default web browser. For RStudio users \strong{shinyStan} will
-launch in RStudio's (pop-up) Viewer pane by default. Once open in the Viewer pane
-it can then be opened in your web browser if you prefer by clicking on 'Open in Browser'
-at the top of the Viewer pane.
+launch in RStudio's (pop-up) Viewer pane by default. If you prefer to use \strong{shinyStan}
+in your web browser (or if you are having trouble with the RStudio Viewer pane) you
+can click on 'Open in Browser' at the top of the Viewer pane.
 }
 \examples{
 \dontrun{
