@@ -36,8 +36,15 @@ cleanup_shinystan <- function(shinystan_object, out_name, is_stanfit_object) {
   rm(list = "shinystan_object", envir = globalenv())
 }
 
+# assignment function
+assign_shinystan <- function(X) {
+  assign("shinystan_object", X, envir = globalenv())
+}
+
 # launch the app
 launch <- function(object) {
-  shinystan_object <<- if (is.shinystan(object)) object else stan2shinystan(object)
+  if (is.shinystan(object)) assign_shinystan(object)
+  else assign_shinystan(stan2shinystan(object))
+
   shiny::runApp(system.file("shinyStan", package = "shinyStan"))
 }
