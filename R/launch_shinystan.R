@@ -28,37 +28,19 @@
 #'
 launch_shinystan <- function(object) {
   message("\n Loading... \n For large models shinyStan may take a few moments to launch.")
-
-  is_stan <- function(X) inherits(X, "stanfit")
   
-  launch <- function(object) {
-    shinystan_object <<- if (is.shinystan(object)) object else stan2shinystan(object)
-    shiny::runApp(system.file("shinyStan", package = "shinyStan"))
-  }
-
-  cleanup_shinystan <- function(shinystan_object, out_name) {
-    rename <- out_name %in% objects(envir = .GlobalEnv)
-    if (is_stan(object) && rename) {
-      out_name <- paste0(out_name,"_",gsub("-","_", Sys.Date()))
-    }
-    assign(out_name, shinystan_object, inherits = TRUE)
-    message(paste("\n Name of shinystan object:", out_name))
-    shinystan_object <<- NULL
-    rm(list = "shinystan_object", envir = globalenv())
-  }
-
   name <- deparse(substitute(object))
   no_name <- substr(name, 1, 12) == "as.shinystan"
 
   if (missing(object)) stop("Please specify a shinystan or stanfit object.")
+  
+  is_stanfit_object <- is_stan(object)
 
-  if (!is_stan(object) & !is.shinystan(object)) {
-    stop(paste(name, "is not a shinystan or stanfit object."))
-  }
+  if (!is_stanfit_object & !is.shinystan(object)) stop(paste(name, "is not a shinystan or stanfit object."))
 
-  out_name <- if (is_stan(object)) paste0(name,"_shinystan") else name
+  out_name <- if (is_stanfit_object) paste0(name,"_shinystan") else name
   if (no_name) out_name <- "unnamed_shinystan"
   
-  on.exit(cleanup_shinystan(shinystan_object, out_name))
+  on.exit(cleanup_shinystan(shinystan_object, out_name, is_stanfit_object))
   launch(object)
 }
