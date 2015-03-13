@@ -26,12 +26,11 @@
 
 launch_shinystan_demo <- function(...) {
   launch_demo <- function(object) {
-    shinystan_object <<- object
+    assign_shinystan(object)
     shiny::runApp(system.file("shinyStan", package = "shinyStan"))
   }
   cleanup_shinystan <- function(shinystan_object, out_name) {
     assign(out_name, shinystan_object, inherits = TRUE)
-    # shinystan_object <<- NULL
     rm(list = "shinystan_object", envir = globalenv())
   }
 
@@ -46,7 +45,7 @@ launch_shinystan_demo <- function(...) {
   } else {
     has_rstan <- requireNamespace("rstan", quietly = TRUE)
     if(!has_rstan) stop("You need to have the RStan package installed to use this option. Try runnning the default shinyStan demo instead.", call. = FALSE)
-    stanfit <- rstan::stan_demo(...)
-    launch_shinystan(stanfit)
+    rstan_demo <- rstan::stan_demo(...)
+    launch_shinystan(rstan_demo)
   }
 }
