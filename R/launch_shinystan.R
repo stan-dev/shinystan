@@ -41,6 +41,6 @@ launch_shinystan <- function(object) {
   out_name <- if (is_stanfit_object) paste0(name,"_shinystan") else name
   if (no_name) out_name <- "unnamed_shinystan"
   
-  on.exit(cleanup_shinystan(shinystan_object, out_name, is_stanfit_object))
+  on.exit(cleanup_shinystan(get("shinystan_object"), out_name, is_stanfit_object))
   launch(object)
 }

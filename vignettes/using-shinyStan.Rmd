@@ -21,7 +21,7 @@ If your stan code is in the file `my_stan_code.stan` and you have your data in a
 knitr::opts_chunk$set(eval=FALSE, warning=FALSE)
 ```
 
-```{r, rstan}
+```{r, rstan, eval=FALSE}
 library(shinyStan)
 library(rstan)
 my_stanfit <- stan(file = "my_stan_code.stan", 
@@ -29,7 +29,7 @@ my_stanfit <- stan(file = "my_stan_code.stan",
 ```
 
 Using **shinyStan** with `my_stanfit` is as easy as
-```{r, rstan_shinystan}
+```{r, rstan_shinystan, eval=FALSE}
 launch_shinystan(my_stanfit)
 ```
 
@@ -40,20 +40,20 @@ and **shinyStan** will launch.
 
 If you have an `mcmc.list` object called `my_mcmc` then you can use the `as.shinystan` function to convert `my_mcmc` into a `shinystan` object that can then be used with `launch_shinystan`: 
 
-```{r, mcmclist1}
+```{r, mcmclist1, eval=FALSE}
 my_shinystan <- as.shinystan(my_mcmc)
 launch_shinystan(my_shinystan)
 ```
 
 If, for example, the first 100 iterations in each chain in `my_mcmc` are burnin/warmup iterations, you should add the `burnin` argument when you call `as.shinystan`:
 
-```{r, mcmclist2}
+```{r, mcmclist2, eval=FALSE}
 my_shinystan <- as.shinystan(my_mcmc, burnin = 100)
 ```
 
 You can also give **shinyStan** a name for your model using the `model_name` argument:
 
-```{r, mcmclist3}
+```{r, mcmclist3, eval=FALSE}
 my_shinystan <- as.shinystan(my_mcmc, burnin = 100, model_name = "Example model")
 ```
 
@@ -69,7 +69,7 @@ To convert a 3-D array to a `shinystan` object make sure that the 3 dimensions o
 ### List of matrices
 
 If you have separate chains that are each a matrix (with iterations as rows and parameters as columns) you can combine them in a list to pass to `as.shinystan`
-```{r, chainlist1}
+```{r, chainlist1, eval=FALSE}
 # Generate some fake data
 chain1 <- cbind(beta1 = rnorm(100), beta2 = rnorm(100), sigma = rexp(100))
 chain2 <- cbind(beta1 = rnorm(100), beta2 = rnorm(100), sigma = rexp(100))
@@ -87,7 +87,7 @@ launch_shinystan(my_shinystan)
 
 You can a new parameter as a function of one or two existing parameters to your `shinystan` object by using the `generate_quantity` function. For example, assume `X` is a `shinystan` object and two of the parameters are ```alpha``` and ```beta```. We could add a parameter ```gamma``` that is the inverse logit of ```beta``` using the code
 
-```{r, generate1}
+```{r, generate1, eval=FALSE}
 inv_logit <- function(x) 1/(exp(-x) + 1)
 X <- generate_quantity(sso = X, fun = inv_logit,
                        param1 = "beta", new_name = "gamma")
@@ -97,7 +97,7 @@ The argument `sso` is the `shinystan` object, `fun` is the function we want to u
 
 Adding a parameter as a function of two parameters just requires specifying the `param2` argument and providing a function of two variables. For example, we can add a parameter ```delta``` to `X` that is the squared difference of ```alpha``` and ```beta``` like this
 
-```{r, generate2}
+```{r, generate2, eval = FALSE}
 X <- generate_quantity(sso = X, fun = function(x,y) (x-y)^2,
                        param1 = "alpha", param2 = "beta", 
                        new_name = "delta")
@@ -122,7 +122,7 @@ If you did not use the **RStan** package to fit your model then you can add your
 ```
 
 to your `shinystan` object. To add that code you can simply include it as the `code` argument to the `include_model_code` function 
-```{r, code1}
+```{r, code1, eval = FALSE}
 my_code <- "
  model {
   for (i in 1:length(Y)) {

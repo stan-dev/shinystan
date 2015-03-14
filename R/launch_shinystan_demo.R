@@ -40,8 +40,8 @@ launch_shinystan_demo <- function(...) {
   if (choice == choices[1]) {
     demo_name <- "eight_schools"
     out_name <- paste0("shinystan_demo_object")
-    on.exit(cleanup_shinystan(shinystan_object, out_name))
-    launch_demo(eight_schools)
+    on.exit(cleanup_shinystan(get("shinystan_object"), out_name))
+    launch_demo(get(demo_name))
   } else {
     has_rstan <- requireNamespace("rstan", quietly = TRUE)
     if(!has_rstan) stop("You need to have the RStan package installed to use this option. Try runnning the default shinyStan demo instead.", call. = FALSE)
