@@ -203,6 +203,9 @@ strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "
 
 .sampler_plot_treedepth <- function(sampler_params, warmup_val, divergent = c("All", 0, 1)) {
   plot_title <- theme(plot.title = element_text(size = 11, hjust = 0))
+  plot_labs <- labs(x = "Treedepth", y = "") 
+  plot_theme <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + plot_title + lgnd_right + transparent) 
+    
   sp_td <- lapply(1:length(sampler_params), function(i) {
     out <- sampler_params[[i]][, "treedepth__"]
     out <- if (warmup_val == 0) out else out[-(1:warmup_val)]
@@ -224,15 +227,28 @@ strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "
   n_divergent <- reshape2::melt(sp_div)[,"value"]
   msp_td <- cbind(msp_td, n_divergent = n_divergent)
   
-  if (divergent == 0 || divergent == 1) {
-    if (any(msp_td$n_divergent == 1)) msp_td <- subset(msp_td, n_divergent == divergent) 
-    else return()
+  if (divergent == 0) {
+    msp_td <- subset(msp_td, n_divergent == divergent) 
+  }
+  
+  if (divergent == 1) {
+    if (any(msp_td$n_divergent == 1)) {
+      msp_td <- subset(msp_td, n_divergent == divergent) 
+    } else {
+      df <- data.frame(x = msp_td$value, y = rep(0, nrow(msp_td)))
+      blank_plot <- ggplot(df, aes(x,y)) + 
+        geom_bar(stat = "identity") + 
+        plot_labs +
+        plot_theme +
+        ggtitle("n_divergent = 1") 
+      return(blank_plot)
+    } 
   }
    
   graph <- ggplot(msp_td, aes(x = factor(value)), na.rm = TRUE) + 
     stat_bin(aes(y=..count../sum(..count..)), fill = "gray35", color = "black", width=1) + 
-    labs(x = "Treedepth", y = "") +
-    theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + plot_title + lgnd_right + transparent) 
+    plot_labs + 
+    plot_theme
   
   graph <- graph + 
     if (divergent == 0) ggtitle("n_divergent = 0") 
