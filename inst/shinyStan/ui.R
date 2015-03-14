@@ -184,7 +184,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                wellPanel(
                                  fluidRow(
                                    column(6,selectizeInput("multi_trace_params", width = '100%', label = h5("Select or enter parameter names"), choices = .make_param_list_with_groups(object), multiple = TRUE)),
-                                   column(3, offset = 1, sliderInput("multi_xzoom", width = "75%",label = h5("Iterations range"), min = 0, max = object@nIter, step = 1, value = c(object@nWarmup + 1, object@nIter), ticks = FALSE)),
+                                   column(3, offset = 1, sliderInput("multi_xzoom", width = "75%",label = h5("Iterations range"), min = 1, max = object@nIter, step = 1, value = c(object@nWarmup + 1, object@nIter), ticks = FALSE)),
                                    column(2, tags$div(h5("Customize"),includeHTML("html/multi_trace_options.html")))
                                  )
                                ),

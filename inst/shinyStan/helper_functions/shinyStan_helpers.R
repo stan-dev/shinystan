@@ -95,7 +95,7 @@ axis_labs <- theme(axis.title = element_text(face = "bold", size = 13))
 title_txt <- theme(plot.title = element_text(face = "bold", size = 14))
 fat_axis <- theme(axis.line.x = element_line(size = 3, color = axis_line_color), 
                   axis.line.y = element_line(size = 0.5, color = axis_line_color))
-h_lines <- theme(panel.grid.major = element_line(size = 0.25, linetype = 3, color = "turquoise4"),
+h_lines <- theme(panel.grid.major = element_line(size = 0.10, linetype = 3, color = "turquoise4"),
                  panel.grid.major.x = element_blank())
 v_lines <- theme(panel.grid.major = element_line(size = 0.25, linetype = 3, color = "turquoise4"),
                  panel.grid.major.y = element_blank())
@@ -281,9 +281,9 @@ strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "
   if(palette == "Rainbow") clrs <- scale_colour_manual(values = rainbow(nclrs))
 
   theme_elements <- axis_color + fat_axis + no_lgnd + axis_labs + transparent
-  if (style == "line") theme_elements <- theme_elements + h_lines
+  # if (style == "line") theme_elements <- theme_elements + h_lines
   graph <- ggplot(dat, aes(x = iterations, y = value, color = chains))
-  graph <- graph + xy_labs + clrs + theme_classic() %+replace% theme_elements # (fat_axis + h_lines + no_lgnd)
+  graph <- graph + xy_labs + clrs + theme_classic() %+replace% theme_elements 
   if (rect != "None") graph <- graph + shading_rect
   if (rect == "None" & inc_warmup) graph <- graph + geom_vline(xintercept = warmup_val, color = "gray35", size = 1.5)
 
@@ -309,24 +309,24 @@ strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "
 # param_trace_multi ------------------------------------------------------
 # trace plots for multiple parameters
 .param_trace_multi <- function(params = NULL, all_param_names, dat, warmup_val = 0,
-                               inc_warmup = TRUE, chain = 0, palette = "Default",
+                               chain = 0, palette = "Default",
                                rect = "Samples", rect_color = "skyblue", rect_alpha = 0.1,
                                layout = "Long", x1, x2) {
 
+  
   params <- .update_params_with_groups(params, all_param_names)
   if(length(params) == 0) {
     params <- dimnames(dat)$parameters[1:min(4, dim(dat)[3])]
   }
   params <- unique(params)
-  dat <- reshape2::melt(dat)
-  dat <- subset(dat, parameters %in% params)
+  dat <- reshape2::melt(dat[,,params, drop=FALSE])
 
   if (!("chains" %in% colnames(dat))) { # fixes for if there's only 1 chain:
     dat$chains <- "chain:1"
-    dat$iterations <- 1:nrow(dat)
   }
+  
+  dat$iterations <- x1:x2
 
-  if (!inc_warmup) dat <- subset(dat, iterations >= warmup_val)
   if (chain != 0) dat <- subset(dat, chains == paste0("chain:",chain))
 
   rect_xmin <- ifelse(rect == "Samples", Inf, -Inf)
@@ -336,11 +336,11 @@ strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "
   xy_labs <- labs(y = "Value", x = "Iteration")
   nclrs <- length(unique(dat$chains))
 
-  ldgn_title <- ""
-  if(palette == "Default") clrs <- scale_color_discrete(name = ldgn_title)
-  if(palette == "Gray") clrs <- scale_color_grey(name = ldgn_title)
-  if(palette == "Brewer (spectral)") clrs <- scale_color_brewer(name = ldgn_title, palette = "Spectral")
-  if(palette == "Rainbow") clrs <- scale_colour_manual(name = ldgn_title, values = rainbow(nclrs))
+  lgnd_title <- ""
+  if(palette == "Default") clrs <- scale_color_discrete(name = lgnd_title)
+  if(palette == "Gray") clrs <- scale_color_grey(name = lgnd_title)
+  if(palette == "Brewer (spectral)") clrs <- scale_color_brewer(name = lgnd_title, palette = "Spectral")
+  if(palette == "Rainbow") clrs <- scale_colour_manual(name = lgnd_title, values = rainbow(nclrs))
 
 
   lgnd_txt <- theme(legend.text = element_text(size = 13, face = "bold"))
@@ -348,14 +348,12 @@ strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "
   graph <- ggplot(dat, aes(x = iterations, y = value, color = chains))
   graph <- graph + xy_labs + clrs + theme_classic() %+replace% (axis_color + axis_labs + fat_axis + h_lines + lgnd_top + lgnd_txt + strip_txt + transparent)
   if (rect != "None") graph <- graph + shading_rect
-  graph <- graph + geom_line(size = 0.35)
-  if (!is.na(x1)) {
-    graph <- graph + scale_x_continuous(limits = c(x1, x2))
-  }
+  graph <- graph + geom_line(size = 0.35) + scale_x_continuous(limits = c(x1, x2))
+
   if (layout == "Grid") {
-    graph <- graph + facet_wrap(~ parameters, scale = "free_y")
+    graph <- graph + facet_wrap(~ parameters, scales = "free_y") 
   } else {
-    graph <- graph + facet_grid(parameters ~., scale = "free_y")
+    graph <- graph + facet_grid(parameters ~., scales = "free_y")
   }
 
   graph

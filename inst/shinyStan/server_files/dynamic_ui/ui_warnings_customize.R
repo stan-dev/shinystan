@@ -1,7 +1,7 @@
 output$ui_warnings_customize <- renderUI({
   
   absolutePanel(id = "controls_warnings", class = "panel panel-default hvr-glow", fixed = TRUE,
-                top = 100, right = 20, width = 270,
+                top = 150, right = 20, width = 270,
                 draggable = TRUE,
                 div(class = "shinystan_customize", "shinyStan customize"),
                 wellPanel(style = "background-color: #222222; padding-top: 10px ; padding-bottom: 0px;",

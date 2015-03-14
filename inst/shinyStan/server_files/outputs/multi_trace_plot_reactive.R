@@ -20,21 +20,26 @@ calc_height_trace_plot <- reactive({
 multi_trace_plot <- reactive({
 
   validate(need(!is.null(input$multi_trace_rect), message = "Loading..."))
+  
+  x1 <- input$multi_xzoom[1]
+  x2 <- input$multi_xzoom[2]
+  
+  dat <- samps_all[x1:x2,,,drop=FALSE]
+
 
   # zoom <- "On"
   do.call(".param_trace_multi", args = list(
     params      = input$multi_trace_params,
     all_param_names = param_names,
-    dat         = samps_all,
+    dat         = dat,
     chain       = input$multi_trace_chain,
     warmup_val  = warmup_val,
-    inc_warmup  = TRUE, # input$multi_trace_warmup == "include",
     palette     = input$multi_trace_palette ,
     rect        = input$multi_trace_rect,
     rect_color  = "skyblue",
     rect_alpha  = input$multi_trace_rect_alpha,
     layout      = input$multi_trace_layout,
-    x1          = input$multi_xzoom[1],
-    x2          = input$multi_xzoom[2]
+    x1          = x1,
+    x2          = x2
   ))
 })
