@@ -48,3 +48,18 @@ launch <- function(object) {
 
   shiny::runApp(system.file("shinyStan", package = "shinyStan"))
 }
+
+
+# mcmclist to matrix (adapted from Coda package)
+mcmclist2matrix <- function(x) {
+  out <- matrix(nrow = coda::niter(x) * coda::nchain(x), ncol = coda::nvar(x))
+  cols <- 1:coda::nvar(x)
+  for (i in 1:coda::nchain(x)) {
+    rows <- (i-1)*coda::niter(x) + 1:coda::niter(x)
+    out[rows, cols] <- x[[i]]
+  }
+  rownames <- character(ncol(out))
+  rownames[cols] <- coda::varnames(x, allow.null = FALSE)
+  dimnames(out) <- list(NULL, rownames)
+  out
+}

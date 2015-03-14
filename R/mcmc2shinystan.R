@@ -11,10 +11,13 @@ mcmc2shinystan <- function(X, model_name = "unnamed model", burnin = 0, param_di
   }
 
   if (length(X) == 1) {
-    return(chains2shinystan(list(coda:::as.matrix.mcmc(X))))
+    return(chains2shinystan(list(mcmclist2matrix(X))))
   }
 
-  samps_array <- aperm(coda:::as.array.mcmc.list(X), c(1,3,2))
+  samps_array <- array(NA, dim = c(coda::niter(X), coda::nvar(X), coda::nchain(X)),
+                       dimnames = list(iter = time(X), var = coda::varnames(X), chain = coda::chanames(X)))
+  for (c in 1:coda::nchain(X)) samps_array[,,c] <- X[[c]]
+  samps_array <- aperm(drop(samps_array), c(1,3,2))
   dimnames(samps_array) <- list(iterations = 1:nrow(samps_array),
                                 chains = paste0("chain:",1:ncol(samps_array)),
                                 parameters = dimnames(samps_array)[[3]])
