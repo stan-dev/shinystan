@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-pkgs <- c("shiny", "shinyBS", "ggplot2", "gtools", "plyr", "reshape2", "dygraphs", "xts", "threejs", "xtable")
+pkgs <- c("shiny", "shinyBS", "ggplot2", "gtools", "plyr", "reshape2", "dygraphs", "xts", "threejs", "xtable", "gridExtra")
 invisible(lapply(X = pkgs, FUN = library, character.only = TRUE))
 
 # load the helper functions
