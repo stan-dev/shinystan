@@ -44,47 +44,18 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                     tabsetPanel(
                       #### multiparameter plot ####
                       tabPanel("Parameters plot", icon = icon("bar-chart-o", "fa-2x"),
-                               wellPanel(
-                                 fluidRow(
-                                   uiOutput("ui_multiparam_selectize"),
-                                   column(3, offset = 1, sliderInput("param_plot_ci_level", h5("Credible interval"), width = "75%", ticks = FALSE, min = 50, max = 95, value = 50, step = 5, post = "%")),
-                                   column(2, tags$div(h5("Customize"),includeHTML("html/multiparam_options.html")))
-                                 )
-                               ),
+                               uiOutput("ui_multiparam_selectize"),
                                conditionalPanel(condition = "input.multiparam_options == true",
                                                 uiOutput("ui_multiparam_customize")),
                                plotOutput("plot_param_vertical_out", width = "90%")
                       ),
                       #### Posterior summary statistics ####
-                      tabPanel("Posterior summary statistics", icon = icon("table", "fa-2x"),                                
+                      tabPanel("Posterior summary statistics", icon = icon("table", "fa-2x"),
+                               br(),
                                fluidRow(
-                                 column(3,
-                                        br(),
-                                        bsCollapse(
-                                          bsCollapsePanel(title = "View Table Options", id = "stats_table_options_collapse",
-                                                          #                                                             bsButton("btn_open_glossary", "Open glossary", style = "link"),
-                                                          actionLink("btn_open_glossary", "Open glossary", icon = icon("book", lib = "glyphicon")),
-                                                          uiOutput("glossary_modal"),
-                                                          numericInput("stats_digits", label = h5(style = "color: black;", "Decimal places"), value = 1, min = 0, max = 7, step = 1),
-                                                          checkboxGroupInput("stats_columns", label = h5(style = "color: black;", "Columns"),
-                                                                             choices = c("Rhat", "Effective sample size (n_eff)" = "n_eff", "Posterior mean" = "mean", "Posterior standard deviation" = "sd", "Monte Carlo uncertainty (se_mean)" = "se_mean", "Quantile: 2.5%" = "2.5%", "Quantile: 25%" = "25%", "Quantile: 50%" = "50%", "Quantile: 75%" = "75%", "Quantile: 97.5%" = "97.5%"),
-                                                                             selected = c("Rhat", "n_eff", "mean", "sd", "2.5%", "50%", "97.5%")),
-                                                          
-                                                          downloadButton("download_all_summary", "Save"),
-                                                          actionButton("tex_options", "LaTeX", icon = icon("print", lib = "glyphicon")),
-                                                          bsModal("tex", title = "Print LaTeX table", trigger = "tex_options",
-                                                                  helpText("The LaTeX table will print in the R console and can be pasted into a .tex file"),
-                                                                  selectizeInput("tex_params", width = "100%", label = h5("Select or enter parameter names"), choices = .make_param_list_with_groups(object), multiple = TRUE,
-                                                                                 options = list(placeholder = "Leave blank for all parameters")),
-                                                                  checkboxInput("tex_booktabs", "Booktabs", value = TRUE),
-                                                                  checkboxInput("tex_long", "Longtable", value = FALSE),
-                                                                  hr(),
-                                                                  actionButton("tex_go", "Print LaTeX")
-                                                          )
-                                          )
-                                        )
+                                 column(3, uiOutput("ui_summary_stats_customize")
                                  ),
-                                 column(9, br(), dataTableOutput("all_summary_out")
+                                 column(9, dataTableOutput("all_summary_out")
                                  )
                                )
                       )
@@ -99,17 +70,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                actionLink("btn_open_glossary_nuts", "Open glossary", icon = icon("book", lib = "glyphicon")),
                                uiOutput("glossary_modal_nuts"),
                                h3("Summary of sampler parameters"),
-                               fluidRow(
-                                 column(3, radioButtons("sampler_warmup", label = h5("Warmup period"),
-                                                        choices = list(Include = "include", Omit = "omit"),
-                                                        inline = TRUE
-                                 )),
-                                 column(5, radioButtons("sampler_report", label = h5("Report average, maximum, or minimum values"),
-                                                        choices = list(Mean = "average", SD = "sd", Maximum = "maximum", Minimum = "minimum"),
-                                                        inline = TRUE
-                                 )),
-                                 column(2, numericInput("sampler_digits", label = h5("Decimals"), value = 4, min = 0, max = 10, step = 1))
-                               ),
+                               uiOutput("ui_sampler_stats_customize"),
                                dataTableOutput("sampler_summary"),
                                hr(),
                                fluidRow(
@@ -139,15 +100,13 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                  column(3, splitLayout(includeHTML("html/warnings_options.html"), span("Customize"), cellWidths = c("25%","75%")))
                                ),
                                uiOutput("glossary_modal_copy"),
-                               fluidRow(
-                                 column(4, h4("\\(n_{eff} / N\\)", align = "center")),
-                                 column(4, h4("\\(\\text{se}_{mean} / sd\\)", align = "center")),
-                                 column(4, h4("\\(\\hat{R}\\)", align = "center"))
-                               ),
-                               fluidRow(
-                                 column(4, plotOutput("n_eff_plot_out", height = "250px")),
-                                 column(4, plotOutput("mcse_over_sd_plot_out", height = "250px")),
-                                 column(4, plotOutput("rhat_plot_out", height = "250px"))
+                               splitLayout(h4("\\(n_{eff} / N\\)", align = "center"),
+                                           h4("\\(\\text{se}_{mean} / sd\\)", align = "center"),
+                                           h4("\\(\\hat{R}\\)", align = "center")),
+                               splitLayout(
+                                 plotOutput("n_eff_plot_out", height = "250px"),
+                                 plotOutput("mcse_over_sd_plot_out", height = "250px"),
+                                 plotOutput("rhat_plot_out", height = "250px")
                                ),
                                hr(),
                                fluidRow(
