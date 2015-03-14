@@ -95,7 +95,7 @@ axis_labs <- theme(axis.title = element_text(face = "bold", size = 13))
 title_txt <- theme(plot.title = element_text(face = "bold", size = 14))
 fat_axis <- theme(axis.line.x = element_line(size = 3, color = axis_line_color), 
                   axis.line.y = element_line(size = 0.5, color = axis_line_color))
-h_lines <- theme(panel.grid.major = element_line(size = 0.25, linetype = 3, color = "turquoise4"),
+h_lines <- theme(panel.grid.major = element_line(size = 0.10, linetype = 3, color = "turquoise4"),
                  panel.grid.major.x = element_blank())
 v_lines <- theme(panel.grid.major = element_line(size = 0.25, linetype = 3, color = "turquoise4"),
                  panel.grid.major.y = element_blank())
@@ -281,9 +281,9 @@ strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "
   if(palette == "Rainbow") clrs <- scale_colour_manual(values = rainbow(nclrs))
 
   theme_elements <- axis_color + fat_axis + no_lgnd + axis_labs + transparent
-  if (style == "line") theme_elements <- theme_elements + h_lines
+  # if (style == "line") theme_elements <- theme_elements + h_lines
   graph <- ggplot(dat, aes(x = iterations, y = value, color = chains))
-  graph <- graph + xy_labs + clrs + theme_classic() %+replace% theme_elements # (fat_axis + h_lines + no_lgnd)
+  graph <- graph + xy_labs + clrs + theme_classic() %+replace% theme_elements 
   if (rect != "None") graph <- graph + shading_rect
   if (rect == "None" & inc_warmup) graph <- graph + geom_vline(xintercept = warmup_val, color = "gray35", size = 1.5)
 
