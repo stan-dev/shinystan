@@ -53,10 +53,8 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                       tabPanel("Posterior summary statistics", icon = icon("table", "fa-2x"),
                                br(),
                                fluidRow(
-                                 column(3, uiOutput("ui_summary_stats_customize")
-                                 ),
-                                 column(9, dataTableOutput("all_summary_out")
-                                 )
+                                 column(3, uiOutput("ui_summary_stats_customize")),
+                                 column(9, dataTableOutput("all_summary_out"))
                                )
                       )
                     ) # End tabsetPanel
@@ -142,7 +140,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                       tabPanel("Trace", icon = icon("bar-chart-o", "fa-2x"),
                                wellPanel(
                                  fluidRow(
-                                   column(6,selectizeInput("multi_trace_params", width = '100%', label = h5("Select or enter parameter names"), choices = .make_param_list_with_groups(object), multiple = TRUE)),
+                                   column(6, selectizeInput("multi_trace_params", width = '100%', label = h5("Select or enter parameter names"), choices = .make_param_list_with_groups(object), multiple = TRUE)),
                                    column(3, offset = 1, sliderInput("multi_xzoom", width = "75%",label = h5("Iterations range"), min = 1, max = object@nIter, step = 1, value = c(object@nWarmup + 1, object@nIter), ticks = FALSE)),
                                    column(2, tags$div(h5("Customize"),includeHTML("html/multi_trace_options.html")))
                                  )
@@ -155,34 +153,9 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                       #### PPcheck ####
                       tabPanel(title = "PPcheck", icon = icon("bar-chart-o", "fa-2x"),
                                h2("Graphical posterior predictive checks"),
-                               navlistPanel(id = "pp_navlist", widths = c(4,8), well = FALSE,  
-                                            "Data",
-                                            tabPanel("Select data",
-                                                     uiOutput("ui_pp_data")
-                                            ),
-                                            "Plots",
-                                            tabPanel("Distribution of observed data vs replications",
-                                                     uiOutput("ui_pp_hists_rep_vs_obs")
-                                            ),
-                                            tabPanel("Distributions of test statistics",
-                                                     uiOutput("ui_pp_hists_test_statistics")
-                                            ),
-                                            tabPanel("Scatters",
-                                                     uiOutput("ui_pp_scatters")
-                                            ),
-                                            tabPanel("Histogram of residuals",
-                                                     uiOutput("ui_pp_hist_resids")
-                                            ),
-                                            "About",
-                                            tabPanel("About graphical posterior predictive checking",
-                                                     uiOutput("ui_pp_about")
-                                            ),
-                                            tabPanel("Tutorial",
-                                                     includeMarkdown("markdown/pp_check_tutorial.md")
-                                            )
-                                            
-                               )
-                      )
+                               uiOutput("ui_ppcheck_navlist")
+                      ) # End PPCHECK
+                      
                     ) # End tabsetPanel
            ), # End DIAGNOSE
            
@@ -197,21 +170,10 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                     navlistPanel(well = FALSE,
                                  #### multiview ####
                                  tabPanel("Multiview", icon = icon("th-large", lib = "glyphicon"),
-                                          bsCollapse(
-                                            bsCollapsePanel(title = "View Options", id = "multiview_collapse",
-                                                            checkboxInput("multiview_warmup", label = strong(style = "color: white;", "Include warmup"), value = FALSE),
-                                                            hr(),
-                                                            downloadButton("download_multiview", "Save as ggplot2 objects")
-                                            )
-                                          ),
-                                          fluidRow(
-                                            column(6, h5("Density")),
-                                            column(6, h5("Autocorrelation"))
-                                          ),
-                                          fluidRow(
-                                            column(6, plotOutput("multiview_density", height = "150")),
-                                            column(6, plotOutput("multiview_autocorr", height = "150"))
-                                          ),
+                                          uiOutput("ui_multiview_customize"),
+                                          splitLayout(h5("Density"), h5("Autocorrelation")),
+                                          splitLayout(plotOutput("multiview_density", height = "150"), 
+                                                      plotOutput("multiview_autocorr", height = "150")),
                                           h5("Trace: iterations vs. sampled values"),
                                           plotOutput("multiview_trace", height = "150")
                                  ),
@@ -265,7 +227,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                           plotOutput("bivariate_plot_out")
                                  )
                                  
-                    )
+                    ) # End navlist
            ), # End EXPLORE
            #### MENU: More ####
            navbarMenu(title = "More",
@@ -297,31 +259,11 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                       ),  # END TAB: Notes
                       #### TAB: About ####
                       tabPanel(title = "About",
-                               h4("shinyStan"),
-                               htmlOutput("ui_credits"),
-                               br(),
-                               actionLink("citation_modal", "Citing shinyStan"),
-                               uiOutput("ui_cite"),
-                               br(),
-                               h4("Stan & RStan"),
-                               a("Stan Development Team", href="http://mc-stan.org/team.html"),
-                               hr(),
                                uiOutput("ui_about")
                       ), # END TAB: About
                       #### TAB: Help ####
                       tabPanel(title = "Help",
-                               br(),
-                               a(style = "color: maroon; font-size: 15px;", "Click here to report a bug, request a new feature, or ask us a question.", href = "https://github.com/stan-dev/shinystan/issues"),
-                               br(),br(),
-                               h3("shinyStan help"),
-                               p("More coming soon."),
-                               uiOutput("help_navlist"), # output navlist with help files
-                               br(),
-                               hr(),
-                               h3("Stan help"),
-                               a("Stan website", href = "http://mc-stan.org"),
-                               br(),
-                               a("Stan users google group", href = "https://groups.google.com/forum/#!forum/stan-users")
+                               uiOutput("ui_help")
                       ), # END Help
                       #### TAB: Settings ####
                       tabPanel("Settings",

@@ -1,8 +1,7 @@
 
 trace_plot_multiview <- reactive({
-  validate(need(input$param, message = FALSE))
-  #   need(input$multiview_warmup, message = FALSE)
-  
+  validate(need(input$param, message = FALSE),
+           need(!is.null(input$multiview_warmup), message = "Loading..."))
   
   do.call(".param_trace", args = list(
     param       = input$param,
@@ -24,7 +23,8 @@ trace_plot_multiview <- reactive({
 
 
 autocorr_plot_multiview <- reactive({
-  validate(need(input$param, message = FALSE))
+  validate(need(input$param, message = FALSE),
+           need(!is.null(input$multiview_warmup), message = "Loading..."))
   
   if (is.null(input$multiview_warmup)) warmup <- FALSE
   else warmup <- input$multiview_warmup
@@ -46,8 +46,8 @@ autocorr_plot_multiview <- reactive({
 
 density_plot_multiview <- reactive({
   
-  validate(need(input$param, message = FALSE))
-  #   need(input$multiview_warmup, message = FALSE))
+  validate(need(input$param, message = FALSE),
+           need(!is.null(input$multiview_warmup), message = "Loading..."))
   
   if (input$multiview_warmup == FALSE) {
     samps <- par_samps_post_warmup()
