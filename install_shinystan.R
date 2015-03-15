@@ -32,7 +32,7 @@ install_shinystan <- function() {
     if (!shiny_ok) install.packages("shiny")
   }
   
-  install.packages(c("knitr", "htmlwidgets", "maps"), dependencies = TRUE)
+  install.packages(c("gridExtra","knitr", "htmlwidgets", "maps"), dependencies = TRUE)
   devtools::install_github("ebailey78/shinyBS", ref = "shinyBS3", dependencies = TRUE)
   devtools::install_github("bwlewis/rthreejs", dependencies = TRUE)
   devtools::install_github("stan-dev/shinyStan", build_vignettes = TRUE)
