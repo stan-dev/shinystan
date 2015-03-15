@@ -98,28 +98,9 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                  column(3, splitLayout(includeHTML("html/warnings_options.html"), span("Customize"), cellWidths = c("25%","75%")))
                                ),
                                uiOutput("glossary_modal_copy"),
-                               splitLayout(h4("\\(n_{eff} / N\\)", align = "center"),
-                                           h4("\\(\\text{se}_{mean} / sd\\)", align = "center"),
-                                           h4("\\(\\hat{R}\\)", align = "center")),
-                               splitLayout(
-                                 plotOutput("n_eff_plot_out", height = "250px"),
-                                 plotOutput("mcse_over_sd_plot_out", height = "250px"),
-                                 plotOutput("rhat_plot_out", height = "250px")
-                               ),
+                               uiOutput("ui_rhat_neff_mcse"),
                                hr(),
-                               fluidRow(
-                                 column(4, strong(textOutput("n_eff_warnings_title"))),
-                                 column(4, strong(textOutput("mcse_over_sd_warnings_title"))),
-                                 column(4, strong(textOutput("rhat_warnings_title")))
-                               ),
-                               tags$style(type="text/css", "#n_eff_warnings_title, #rhat_warnings_title, #mcse_over_sd_warnings_title {font-size: 13px;}"),
-                               br(),
-                               fluidRow(
-                                 column(4, div(style = "color: #337ab7;", textOutput("n_eff_warnings"))),
-                                 column(4, div(style = "color: #337ab7;", textOutput("mcse_over_sd_warnings"))),
-                                 column(4, div(style = "color: #337ab7;", textOutput("rhat_warnings")))
-                               ),
-                               tags$style(type="text/css", "#n_eff_warnings, #rhat_warnings, #mcse_over_sd_warnings {font-size: 12px;}"),
+                               uiOutput("ui_rhat_neff_mcse_warnings"),
                                conditionalPanel(condition = "input.warnings_options == true",
                                                 uiOutput("ui_warnings_customize"))
                       ),
@@ -163,7 +144,6 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
            tabPanel(title = "Explore", icon = icon("eye-open", lib = "glyphicon"),
                     fluidRow(
                       column(3, selectizeInput(inputId = "param", label = h4("Select parameter"), choices = .make_param_list(object), multiple = FALSE)),
-                      # summary stats
                       column(7, offset = 1, dataTableOutput("parameter_summary_out"))
                     ),
                     hr(),
@@ -201,16 +181,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                  #### trivariate plot #####
                                  tabPanel("Dynamic 3D scatterplot", 
                                           uiOutput("ui_triviariate_customize"),
-                                          fluidRow(
-                                            column(3, selectizeInput("trivariate_param_x", label = strong(style = "color: #337ab7;", "x-axis"), choices = .make_param_list(object), multiple = FALSE)),
-                                            column(3, selectizeInput("trivariate_param_y", label = strong(style = "color: #337ab7;", "y-axis"), choices = .make_param_list(object), multiple = FALSE)),
-                                            column(3, selectizeInput("trivariate_param_z", label = strong(style = "color: #337ab7;", "z-axis"), choices = rev(.make_param_list(object)), multiple = FALSE))
-                                          ),
-                                          fluidRow(
-                                            column(3, textInput("trivariate_transform_x", label = "Transform x", value = "x")),
-                                            column(3, textInput("trivariate_transform_y", label = "Transform y", value = "y")),
-                                            column(3, textInput("trivariate_transform_z", label = "Transform z", value = "z"))
-                                          ),
+                                          uiOutput("ui_trivariate_select"),
                                           br(),
                                           threejs::scatterplotThreeOutput("trivariate_plot_out"),
                                           br()
@@ -218,12 +189,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                  #### bivariate plot #####
                                  tabPanel("Bivariate",
                                           uiOutput("ui_bivariate_customize"),
-                                          fluidRow(
-                                            column(4, selectizeInput("bivariate_param_y", label = strong(style = "color: #337ab7;", "y-axis"), choices = rev(.make_param_list(object)), multiple = FALSE)),
-                                            column(3, offset = 2, textInput("bivariate_transform_y", label = "Transform y", value = "y")),
-                                            column(3, textInput("bivariate_transform_x", label = "Transform x", value = "x"))
-                                          ),
-                                          tags$style(type='text/css', "#bivariate_transform_y_go, #bivariate_transform_x_go { margin-top: 24px; margin-left: -25px; }"),
+                                          uiOutput("ui_bivariate_select"),
                                           plotOutput("bivariate_plot_out")
                                  )
                                  
