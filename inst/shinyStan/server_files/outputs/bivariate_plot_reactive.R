@@ -6,10 +6,20 @@ bivariate_plot <- reactive({
     need(input$bivariate_ellipse_lev, message = FALSE),
     need(input$bivariate_param_y, message = FALSE)
     )
-
-  if (input$bivariate_ellipse_lev != "None") {
-    validate(need(input$param != input$bivariate_param_y,
-                  "For this option the x and y can't be the same parameter."))
+  
+  if (!is.null(input$bivariate_ellipse_lev)) {
+    validate(
+    need(is.numeric(input$bivariate_pt_size), message = "Point size must be numeric"),
+    need(is.numeric(input$bivariate_pt_shape), message = "Point shape must be numeric")
+    )
+    
+    if (input$bivariate_ellipse_lev != "None") {
+      validate(
+        need(input$param != input$bivariate_param_y, "For this option the x and y can't be the same parameter."),
+        need(is.numeric(input$bivariate_ellipse_lwd), message = "Ellipse size must be numeric"),
+        need(is.numeric(input$bivariate_ellipse_lty), message = "Ellipse shape must be numeric")
+      )
+    }
   }
 
   do.call(".bivariate_plot", args = list(

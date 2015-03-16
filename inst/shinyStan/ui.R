@@ -188,7 +188,8 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                  tabPanel("Bivariate",
                                           uiOutput("ui_bivariate_customize"),
                                           uiOutput("ui_bivariate_select"),
-                                          plotOutput("bivariate_plot_out")
+                                          plotOutput("bivariate_plot_out"),
+                                          br()
                                  )
                                  
                     ) # End navlist

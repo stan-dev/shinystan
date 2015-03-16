@@ -15,10 +15,13 @@ output$ui_bivariate_customize <- renderUI({
     else if (N >= 1500) return(0.15) 
     else 1 - pnorm(N/1500)
   }
+
   alpha_calc_lines <- function(N) {
     if (N < 50) return(0.5)
-    else if (N > 1000) return(0.15) 
-    else 1 - pnorm(N/750)
+    if (N < 500) return(0.4)
+    if (N < 1000) return(0.3)
+    if (N < 5000) return(0.2)
+    else return(0.1)
   }
   
   my_pt_alpha <- alpha_calc_pt(nIter)

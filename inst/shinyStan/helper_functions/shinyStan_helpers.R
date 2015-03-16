@@ -954,22 +954,10 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
 ){
 
   shape_translator <- function(x) {
-    shape <- ifelse(x >= 6, x + 9, x)
+    shape <- if (x >= 6) x + 9 else x
     shape
   }
   
-  alpha_calc_lines <- function(N) {
-    if (N < 50) return(0.5)
-    else if (N > 1000) return(0.15) 
-    else 1 - pnorm(N/750)
-  }
-  alpha_calc <- function(N) {
-    if (N <= 100) return(0.67)
-    else if (N <= 200) return(0.5)
-    else if (N >= 1000) return(0.15) 
-    else 1 - pnorm(N/1000)
-  }
-
   params <- c(param, param2)
   nParams <- 2
   nIter <- dim(samps)[1] * dim(samps)[2]
