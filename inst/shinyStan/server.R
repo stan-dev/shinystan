@@ -32,7 +32,7 @@ function(input, output, session) {
   
   # Stop the app when "Quit" button is clicked
   observe({
-    if (input$nav == "quit") stopApp()
+    if (input$nav == "quit") stopApp("Session ended")
   })
   
   # source all files from server_files directory and subdirectories
@@ -64,9 +64,9 @@ function(input, output, session) {
     scrollX = TRUE,
     scrollCollapse = FALSE,
     columnDefs = list(list(targets = "_all", searchable = FALSE), list(width="85px", targets=list(0)), list(sClass="alignRight", targets ="_all")),
-    initComplete = I( # change background color of table header
+    initComplete = I( # change text color of column titles
       'function(settings, json) {
-      $(this.api().table().header()).css({"background-color": "#346fa1", "color": "#fff"});
+      $(this.api().table().header()).css({"color": "#337ab7"});
       }'),
     rowCallback = I(
       'function(row, data) {
@@ -92,14 +92,17 @@ function(input, output, session) {
   }, options = list(
     processing = TRUE,
     scrollX = TRUE,
+    scrollY = "200px",
+    scrollCollapse = TRUE,
     paging = FALSE,
+    # pageLength = 3,
     searching = FALSE,
     info = FALSE,
     aoColumnDefs = list(list(sClass="alignRight", aTargets = "_all")),
     orderClasses = TRUE,
-    initComplete = I( # change background color of table header
+    initComplete = I( # change text color of column titles
       'function(settings, json) {
-      $(this.api().table().header()).css({"background-color": "#346fa1", "color": "#fff"});
+      $(this.api().table().header()).css({"color": "#337ab7"});
       }'),
     rowCallback = I(
       'function(row, data) {

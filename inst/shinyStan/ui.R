@@ -67,23 +67,22 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                       tabPanel("HMC/NUTS", icon = icon("table", "fa-2x"),
                                actionLink("btn_open_glossary_nuts", "Open glossary", icon = icon("book", lib = "glyphicon")),
                                uiOutput("glossary_modal_nuts"),
-                               h3("Summary of sampler parameters"),
+                               h2("Summary of sampler parameters"),
                                uiOutput("ui_sampler_stats_customize"),
                                dataTableOutput("sampler_summary"),
                                hr(),
-                               fluidRow(
-                                 column(4, strong("n_divergent (post-warmup)")),
-                                 column(8, strong("treedepth (post-warmup)"))
+                               splitLayout(
+                                 h4("n_divergent (post-warmup)"),
+                                 h4("treedepth (post-warmup)"),
+                                 cellWidths = c("33%", "67%")
                                ),
-                               fluidRow(
-                                 column(4, plotOutput("sampler_plot_divergent_out", height = "150px")),
-                                 column(8, 
-                                        fluidRow(
-                                          column(4, plotOutput("sampler_plot_treedepth_out", height = "150px")),  
-                                          column(4, plotOutput("sampler_plot_treedepth0_out", height = "150px")),
-                                          column(4, plotOutput("sampler_plot_treedepth1_out", height = "150px"))
-                                        )
-                                 )
+                               splitLayout(
+                                 plotOutput("sampler_plot_divergent_out", height = "150px"),
+                                        splitLayout(plotOutput("sampler_plot_treedepth_out", height = "150px"),
+                                                    plotOutput("sampler_plot_treedepth0_out", height = "150px"),
+                                                    plotOutput("sampler_plot_treedepth1_out", height = "150px")
+                                                    ),
+                                 cellWidths = c("33%", "67%")
                                ),
                                br()
                       ),
@@ -245,7 +244,8 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
            ),
            
            #### includeCSS ####
-           includeCSS("shinyStan.css")
+           includeCSS("shinyStan.css"),
+           includeCSS("shinyStan_DT.css")
            
            
 ) # END navbarPage
