@@ -4,8 +4,10 @@ output$ui_summary_stats_customize <- renderUI({
                     #                                                             bsButton("btn_open_glossary", "Open glossary", style = "link"),
                     actionLink("btn_open_glossary", "Open glossary", icon = icon("book", lib = "glyphicon")),
                     uiOutput("glossary_modal"),
-                    numericInput("stats_digits", label = h5(style = "color: black;", "Decimal places"), value = 1, min = 0, max = 7, step = 1),
-                    checkboxGroupInput("stats_columns", label = h5(style = "color: black;", "Columns"),
+                    br(),
+                    numericInput("stats_digits", label = strong(style = "color: black;", "Decimal places"), value = 1, min = 0, max = 7, step = 1),
+                    checkboxInput("user_regex",strong(style = "color: black;","Regex searching"), value = TRUE),
+                    checkboxGroupInput("stats_columns", label = strong(style = "color: black;", "Columns"),
                                        choices = c("Rhat", "Effective sample size (n_eff)" = "n_eff", "Posterior mean" = "mean", "Posterior standard deviation" = "sd", "Monte Carlo uncertainty (se_mean)" = "se_mean", "Quantile: 2.5%" = "2.5%", "Quantile: 25%" = "25%", "Quantile: 50%" = "50%", "Quantile: 75%" = "75%", "Quantile: 97.5%" = "97.5%"),
                                        selected = c("Rhat", "n_eff", "mean", "sd", "2.5%", "50%", "97.5%")),
                     

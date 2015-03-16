@@ -47,27 +47,30 @@ function(input, output, session) {
   #### DATATABLE: summary stats (all parameters) ####
   output$all_summary_out <- renderDataTable({
     summary_stats()
-  }, options = list(
-    search = list(regex = TRUE), # allow regular expression when searching for parameter names
-    processing = TRUE,
-    pagingType = "full", # show only first, previous, next, last buttons (no page numbers)
-    pageLength = 10,
-    lengthMenu = list(c(5, 10, 20, 50, -1), c('5', '10', '20', '50', 'All')),
-    orderClasses = TRUE,
-    scrollY = 400,
-    scrollX = TRUE,
-    scrollCollapse = FALSE,
-    columnDefs = list(list(targets = "_all", searchable = FALSE), list(width="85px", targets=list(0)), list(sClass="alignRight", targets ="_all")),
-    initComplete = I( # change text color of column titles
-      'function(settings, json) {
+  }, options = function() {
+    list(
+      search = list(regex = input$user_regex), # allow regular expression when searching for parameter names
+      processing = TRUE,
+      pagingType = "full", # show only first, previous, next, last buttons (no page numbers)
+      pageLength = 10,
+      lengthMenu = list(c(5, 10, 20, 50, -1), c('5', '10', '20', '50', 'All')),
+      orderClasses = TRUE,
+      scrollY = 400,
+      scrollX = TRUE,
+      scrollCollapse = FALSE,
+      columnDefs = list(list(targets = "_all", searchable = FALSE), list(width="85px", targets=list(0)), list(sClass="alignRight", targets ="_all")),
+      initComplete = I( # change text color of column titles
+        'function(settings, json) {
       $(this.api().table().header()).css({"color": "#337ab7"});
       }'),
-    rowCallback = I(
-      'function(row, data) {
+      rowCallback = I(
+        'function(row, data) {
         // Bold cells in the first column
           $("td:eq(0)", row).css("font-weight", "bold");
       }')
-  ))
+    )
+  }
+  )
   # download the table
   output$download_all_summary <- downloadHandler(
     filename = paste0('shinystan_summary_stats.RData'),
