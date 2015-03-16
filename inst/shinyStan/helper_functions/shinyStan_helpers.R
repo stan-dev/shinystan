@@ -888,6 +888,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
   }
 
   # shade_to <- if (warmup_shade) paste0(warmup_val,"-01-01") else "0001-01-01"
+  `%>%` <- dygraphs::`%>%`
   y_axis_label_remove <- if (stack) "white" else NULL
   dygraphs::dygraph(param_chains, xlab = "Iteration", ylab = param_name) %>%
     dygraphs::dyAxis("y", rangePad = "5", axisLabelColor = y_axis_label_remove) %>%
