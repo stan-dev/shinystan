@@ -34,5 +34,5 @@ Imports:
     reshape2,
     threejs,
     xtable,
-    xts
+    xts (>= 0.9-7)
 VignetteBuilder: knitr
