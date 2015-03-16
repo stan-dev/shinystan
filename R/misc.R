@@ -38,7 +38,7 @@ cleanup_shinystan <- function(shinystan_object, out_name, is_stanfit_object) {
 
 # assignment function
 assign_shinystan <- function(X) {
-  assign("shinystan_object", X, envir = globalenv())
+  assign("shinystan_object", X, inherits = TRUE)
 }
 
 # launch the app

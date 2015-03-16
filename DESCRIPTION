@@ -23,7 +23,8 @@ LazyData: true
 Suggests: 
     rstan,
     coda,
-    knitr (>= 1.9)
+    knitr (>= 1.9),
+    testthat
 Imports: 
     dygraphs (>= 0.4.1),
     gridExtra,
