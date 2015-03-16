@@ -900,7 +900,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
                 highlightSeriesOpts = list()) %>%
     dygraphs::dyRoller(rollPeriod = 1) %>%
     # dygraphs::dyShading(from = "0001-01-01", to = shade_to, color = "#d9e7f4") %>%
-    dygraphs::dyCSS(css = "shinyStan.css")
+    dygraphs::dyCSS(css = "css/shinyStan_dygraphs.css")
 }
 
 # trivariate_plot ---------------------------------------------------------

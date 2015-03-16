@@ -244,8 +244,9 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
            ),
            
            #### includeCSS ####
-           includeCSS("shinyStan.css"),
-           includeCSS("shinyStan_DT.css")
+           includeCSS("css/shinyStan.css"),
+           includeCSS("css/shinyStan_datatables.css"),
+           includeCSS("css/shinyStan_dygraphs.css")
            
            
 ) # END navbarPage
