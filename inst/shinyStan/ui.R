@@ -78,7 +78,8 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                              plotOutput("sampler_plot_treedepth0_out", height = "150px"),
                                              plotOutput("sampler_plot_treedepth1_out", height = "150px")
                                  ),
-                                 cellWidths = c("33%", "67%")
+                                 cellWidths = c("33%", "67%"),
+                                 cellArgs = list(class = "plot_hover_shadow")
                                ),
                                br()
                       ),
@@ -148,7 +149,9 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                           uiOutput("ui_multiview_customize"),
                                           splitLayout(h5("Density"), h5("Autocorrelation")),
                                           splitLayout(plotOutput("multiview_density", height = "150"), 
-                                                      plotOutput("multiview_autocorr", height = "150")),
+                                                      plotOutput("multiview_autocorr", height = "150"),
+                                                      cellArgs = list(class = "plot_hover_shadow")
+                                                      ),
                                           h5("Trace: iterations vs. sampled values"),
                                           plotOutput("multiview_trace", height = "150")
                                  ),

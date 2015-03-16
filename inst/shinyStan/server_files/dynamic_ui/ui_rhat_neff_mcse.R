@@ -6,7 +6,8 @@ output$ui_rhat_neff_mcse <- renderUI({
     splitLayout(
       plotOutput("n_eff_plot_out", height = "250px"),
       plotOutput("mcse_over_sd_plot_out", height = "250px"),
-      plotOutput("rhat_plot_out", height = "250px")
+      plotOutput("rhat_plot_out", height = "250px"),
+      cellArgs = list(class = "plot_hover_shadow")
     )
   )
 })
