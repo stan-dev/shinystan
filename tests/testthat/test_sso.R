@@ -16,4 +16,3 @@ test_that("as.shinystan creates sso", {
   expect_true(is.shinystan(mcmc_test))
   expect_true(is.shinystan(chains_test))
 })
-
