@@ -1,5 +1,6 @@
 summary_stats_sampler <- reactive({
-  validate(need(sampler_params[[1]] != "Not Stan", message = "Only available for Stan models"))
+  validate(need(sampler_params[[1]] != "Not Stan", message = "Only available for Stan models"),
+           need(input$sampler_warmup, message = "Loading..."))
   do.call(".sampler_summary", args = list(
     sampler_params  = sampler_params,
     inc_warmup      = input$sampler_warmup == "include",

@@ -1,3 +1,5 @@
+/* Also see shinyStan_datatables.css and shinyStan_dygraphs.css*/
+
 .navbar {
   background-image: url("textures/binding_dark.png");
   margin-bottom: 0px;
@@ -189,48 +191,6 @@ body {
 }
 /**************************************/
 
-/**************************************/
-/* dygraphs */
-.dygraph {
-  background: transparent !important;
-}
-.dygraph-label {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-	font-style: normal;
-	font-variant: normal;
-	font-weight: 500;
-	line-height: 26px;
-}
-.dygraph-label.dygraph-xlabel{
-  font-size: 14px;
-}
-.dygraph-label.dygraph-ylabel{
-  font-size: 18px;
-}
-.dygraph-axis-label{
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 10px;
-  font-style: normal;
-  font-variant: normal;
-	font-weight: 200;
-}
-.dygraph-legend{
-  background: transparent !important;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 10px;
-  font-style: normal;
-  font-variant: normal;
-  font-weight: 200;
-}
-.dygraphs input[type="text"] {
-  width: 30px;
-  border: 2px solid #346fa1;
-  border-radius: 5px;
-  text-align: center;
-  background-color: black ;
-  color: white ;
-}
-/**************************************/
 
 
 
