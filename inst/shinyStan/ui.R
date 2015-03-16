@@ -236,6 +236,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                uiOutput("ui_background_texture")
                       )
            ), # END navbarMenu MORE
+           
            #### QUIT ####
            tabPanel(tags$div(style = "color: #f9dd67;", "Quit"), value = "quit",
                     h1("Thanks for using shinyStan."),
@@ -243,7 +244,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                     h5("It's safe to close this browser window.")
            ),
            
-           #### includeCSS ####
+           #### css style sheets ####
            includeCSS("css/shinyStan.css"),
            includeCSS("css/shinyStan_datatables.css"),
            includeCSS("css/shinyStan_dygraphs.css")
