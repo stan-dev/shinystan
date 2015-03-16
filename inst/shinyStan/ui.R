@@ -247,7 +247,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                     h5("It's safe to close this browser window.")
            ),
            
-           #### css style sheets ####
+           #### include css style sheets ####
            includeCSS("css/shinyStan.css"),
            includeCSS("css/shinyStan_datatables.css"),
            includeCSS("css/shinyStan_dygraphs.css")
