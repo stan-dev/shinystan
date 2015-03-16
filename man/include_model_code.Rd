@@ -24,7 +24,7 @@ Add model code to a \code{shinystan} object
 to \code{cat}. See \strong{Examples}, below.
 }
 \note{
-This is only useful for users who did not run their models using \pkg{rstan}.
+This is intended for users who did not run their models using \pkg{rstan}.
 For \pkg{rstan} users the model code will be automatically available.
 }
 \examples{

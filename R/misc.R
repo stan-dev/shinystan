@@ -32,13 +32,12 @@ cleanup_shinystan <- function(shinystan_object, out_name, is_stanfit_object) {
   }
   assign(out_name, shinystan_object, inherits = TRUE)
   message(paste("\n Name of shinystan object:", out_name))
-  shinystan_object <<- NULL
   rm(list = "shinystan_object", envir = globalenv())
 }
 
 # assignment function
 assign_shinystan <- function(X) {
-  assign("shinystan_object", X, envir = globalenv())
+  assign("shinystan_object", X, inherits = TRUE)
 }
 
 # launch the app
@@ -49,6 +48,11 @@ launch <- function(object) {
   shiny::runApp(system.file("shinyStan", package = "shinyStan"))
 }
 
+# launch the demo
+launch_demo <- function(object) {
+  assign_shinystan(object)
+  shiny::runApp(system.file("shinyStan", package = "shinyStan"))
+}
 
 # mcmclist to matrix (adapted from Coda package)
 mcmclist2matrix <- function(x) {
