@@ -15,10 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-pkgs <- c("shiny", "shinyBS", "ggplot2", "gtools", "plyr", "reshape2", "dygraphs", "xts", "threejs", "xtable", "gridExtra")
-invisible(lapply(X = pkgs, FUN = library, character.only = TRUE))
-
 # load the helper functions
 source("helper_functions/shinyStan_helpers.R", local = TRUE)
 
