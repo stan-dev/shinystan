@@ -22,3 +22,6 @@ shinyStan allows you to store the basic components of an entire project (code, p
 ### Licensing
 
 shinyStan is licensed under GPLv3.
+
+
+[![Travis-CI Build Status](https://travis-ci.org/stan-dev/shinystan.png?branch=develop)](https://travis-ci.org/stan-dev/shinystan)
