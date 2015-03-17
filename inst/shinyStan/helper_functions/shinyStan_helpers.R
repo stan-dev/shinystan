@@ -44,10 +44,9 @@
   choices[1:ll] <- ""
   names(choices) <- object@param_groups
   for(i in 1:ll) {
-    if (LL[i] == 0) {
+    if (LL[i] == 0) 
       choices[[i]] <- list(object@param_groups[i])
-    }
-    else {
+    } else {
       group <- object@param_groups[i]
       temp <- paste0("^",group,"\\[")
       ch <- object@param_names[grep(temp, object@param_names)]
@@ -70,9 +69,7 @@
 # update parameter selection for multi-parameter plots
 .update_params_with_groups <- function(params, all_param_names) {
   as_group <- grep("_as_shiny_stan_group", params)
-  if (length(as_group) == 0) {
-    return(params)
-  }
+  if (length(as_group) == 0) return(params)
   
   make_group <- function(group_name) {
     all_param_names[grep(paste0("^",group_name,"\\["), all_param_names)]
@@ -149,9 +146,9 @@ strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "
     })
   }
   out <- if (report == "maximum") sapply_funs(X, "maxf") 
-  else if (report == "minimum") sapply_funs(X, "minf")
-  else if (report == "sd") sapply_funs(X, "sdf")
-  else sapply_funs(X, "meanf")
+          else if (report == "minimum") sapply_funs(X, "minf")
+          else if (report == "sd") sapply_funs(X, "sdf")
+          else sapply_funs(X, "meanf")
   
   names(out) <- paste0("chain",1:length(out))
   out
@@ -204,7 +201,6 @@ strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "
     theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + plot_title + lgnd_left + transparent)
   
   graph
-  
 }
 
 .sampler_plot_treedepth <- function(sampler_params, warmup_val, divergent = c("All", 0, 1)) {
@@ -222,7 +218,6 @@ strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "
   msp_td <- cbind(reshape2::melt(sp_td)[,-1])
   names(sp_td) <- paste0(1:length(sp_td))
   colnames(msp_td) <- c("iteration", "value", "chain")
-  
   
   sp_div <- lapply(1:length(sampler_params), function(i) {
     out <- sampler_params[[i]][, "n_divergent__"]
@@ -483,11 +478,14 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
     }
     graph <- graph +
       geom_density(alpha = 0.15) +
-      scale_color_discrete("") + scale_fill_discrete("") +
+      scale_color_discrete("") + 
+      scale_fill_discrete("") +
       labs(x = x_lab, y = "") +
       x_scale + # y_scale +
       theme_classic() %+replace% (title_txt + axis_color + axis_labs + fat_axis + no_yaxs + transparent)
+    
     if (title == TRUE) graph <- graph + ggtitle(ttl)
+    
     return(graph)
   }
   
@@ -557,8 +555,6 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
                            lags = 25, flip = FALSE,
                            combine_chains = FALSE) {
   
-  
-  
   params <- .update_params_with_groups(params, all_param_names)
   if(length(params) == 0) {
     dim.samps <- dim(samps) 
@@ -600,19 +596,17 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
     }
   }
    
-  
-  
   ac_labs <- labs(x = "Lag", y = if (partial) "Partial autocorrelation" else "Autocorrelation")
   ac_theme <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_lgnd + strip_txt + transparent)
   y_scale <- scale_y_continuous(breaks = seq(0, 1, 0.25), labels = c("0","","0.5","",""))
   title_theme <- theme(plot.title = element_text(face = "bold", size = 18))
   if (combine_chains) {
-    if (nParams == 1) graph <- ggplot(ac_dat, aes(x = lag, y = ac))
-    else graph <- ggplot(ac_dat, aes(x= lag, y = ac))
-    
+    graph <- ggplot(ac_dat, aes(x= lag, y = ac))
     graph <- graph +
       geom_bar(position = "identity", stat = "identity", fill = "gray35") +
-      y_scale + ac_labs + ac_theme
+      y_scale + 
+      ac_labs + 
+      ac_theme
     
     if (nParams == 1) return(graph + ggtitle(paste(params, "\n")) + title_theme)
     else return(graph + facet_wrap(~parameters))
@@ -815,7 +809,9 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
     my_labs <- labs(y = "", x = "Monte Carlo se / posterior sd")
   }
   graph <- qplot(x = x, data = dat, color = I("black"), fill = I("gray35"))
-  graph <- graph + my_labs + theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + transparent)
+  graph <- graph + 
+    my_labs + 
+    theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + transparent)
 
   graph
 }
