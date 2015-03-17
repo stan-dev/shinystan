@@ -8,7 +8,11 @@ r_github_packages:
 
 after_failure:
   - ./travis-tool.sh dump_logs
-
+  
+env:
+  global:
+  - _R_CHECK_FORCE_SUGGESTS_=FALSE
+    
 notifications:
   email:
     recipients:
