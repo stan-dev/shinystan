@@ -1,5 +1,7 @@
 # shinyStan R package and Shiny app
 
+[![Travis-CI Build Status](https://travis-ci.org/stan-dev/shinystan.png?branch=develop)](https://travis-ci.org/stan-dev/shinystan)
+
 ## Installing shinyStan
 
 For installation instructions see the **Installing shinyStan** page in the [shinyStan wiki](https://github.com/stan-dev/shinystan/wiki/Installing-shinyStan)
