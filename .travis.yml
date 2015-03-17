@@ -6,8 +6,6 @@ r_github_packages:
  - bwlewis/rthreejs
  - ebailey/shinyBS@shinyBS3 
 
-script: ./travis-tool.sh run_tests
-
 after_failure:
   - ./travis-tool.sh dump_logs
 
