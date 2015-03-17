@@ -1,12 +1,15 @@
-# checks if an object is a stanfit object
+
+# checks if an object is a stanfit object ---------------------------------
 is_stan <- function(X) inherits(X, "stanfit")
 
-# gets names of all shinystan objects in user's global environment
+
+# gets names of all shinystan objects in user's global environment --------
 get_sso_names <- function() {
   Filter(function(x) "shinystan" %in% class(get(x)), objects(envir = .GlobalEnv))
 }
 
-# generates new name for shinystan object if default name is already taken
+
+# generates new name for shinystan object if default name is taken --------
 rename_sso <- function(out_name, sso_names) {
   
   renamer <- function(i) {
@@ -23,7 +26,8 @@ rename_sso <- function(out_name, sso_names) {
   new_out_name
 }
 
-# function to run on exiting launch_shinystan
+
+# cleanup function to run on exiting launch_shinystan -----------------------------
 cleanup_shinystan <- function(shinystan_object, out_name, is_stanfit_object) {
   rename <- out_name %in% objects(envir = .GlobalEnv)
   if (is_stanfit_object && rename) {
@@ -35,12 +39,14 @@ cleanup_shinystan <- function(shinystan_object, out_name, is_stanfit_object) {
   rm(list = "shinystan_object", envir = globalenv())
 }
 
-# assignment function
+
+# assignment function -----------------------------------------------------
 assign_shinystan <- function(X) {
   assign("shinystan_object", X, inherits = TRUE)
 }
 
-# launch the app
+
+# launch the app ----------------------------------------------------------
 launch <- function(object) {
   if (is.shinystan(object)) assign_shinystan(object)
   else assign_shinystan(stan2shinystan(object))
@@ -48,13 +54,15 @@ launch <- function(object) {
   shiny::runApp(system.file("shinyStan", package = "shinyStan"))
 }
 
-# launch the demo
+
+# launch the demo ---------------------------------------------------------
 launch_demo <- function(object) {
   assign_shinystan(object)
   shiny::runApp(system.file("shinyStan", package = "shinyStan"))
 }
 
-# mcmclist to matrix (adapted from Coda package)
+
+# mcmclist to matrix (adapted from Coda package) --------------------------
 mcmclist2matrix <- function(x) {
   out <- matrix(nrow = coda::niter(x) * coda::nchain(x), ncol = coda::nvar(x))
   cols <- 1:coda::nvar(x)

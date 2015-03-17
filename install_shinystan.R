@@ -21,6 +21,7 @@ install_shinystan <- function() {
   }
   
   try(remove.packages("SHINYstan"), silent = TRUE)
+  try(remove.packages("shinyStan"), silent = TRUE)
   try(remove.packages("shinyBS"), silent = TRUE)
   
   if (!require(devtools)) install.packages("devtools")
@@ -32,10 +33,12 @@ install_shinystan <- function() {
     if (!shiny_ok) install.packages("shiny")
   }
   
-  install.packages(c("gridExtra","knitr", "htmlwidgets", "maps"), dependencies = TRUE)
+  install.packages(c("gtools","gridExtra","knitr", "htmlwidgets", "maps"), dependencies = TRUE)
   devtools::install_github("ebailey78/shinyBS", ref = "shinyBS3", dependencies = TRUE)
   devtools::install_github("bwlewis/rthreejs", dependencies = TRUE)
-  devtools::install_github("stan-dev/shinyStan", build_vignettes = TRUE)
+  
+  
+  devtools::install_github("stan-dev/shinystan", build_vignettes = TRUE)
   
   message("\n All set. \n You might need to restart R before using shinyStan. \n")
   return(invisible(NULL))
