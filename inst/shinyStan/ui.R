@@ -151,7 +151,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                           splitLayout(plotOutput("multiview_density", height = "150"), 
                                                       plotOutput("multiview_autocorr", height = "150"),
                                                       cellArgs = list(class = "plot_hover_shadow")
-                                                      ),
+                                          ),
                                           h5("Trace: iterations vs. sampled values"),
                                           plotOutput("multiview_trace", height = "150")
                                  ),
