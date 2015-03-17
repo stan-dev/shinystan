@@ -64,7 +64,7 @@ sample_id_for_resids <- reactive({
 .pp_dens_rep_vs_obs <- function(y, y_rep_samp, x_lim, y_lim) {
   dat <- data.frame(t(y_rep_samp))
   dat <- cbind(y = y, dat)
-  mdat <- melt(dat)
+  mdat <- reshape2::melt(dat)
   mdat$which <- "y_rep"
   mdat$which[mdat$variable == "y"] <- "y"
   graph <- ggplot(mdat, aes(x = value, group = variable, fill = which, color = which, alpha = which, size = which))

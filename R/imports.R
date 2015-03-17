@@ -5,7 +5,7 @@
 #' @import markdown
 #' @import threejs
 #' @import xtable
-#' @importFrom xts as.xts
+#' @import xts
 #' @import methods
 #' @importFrom gridExtra arrangeGrob grid.arrange
 #' @importFrom plyr ddply summarise
