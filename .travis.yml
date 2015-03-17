@@ -2,9 +2,6 @@ language: r
 
 warnings_are_errors: true
 
-r_packages:
-  -testthat
-
 r_github_packages:
  - bwlewis/rthreejs
  - ebailey/shinyBS@shinyBS3 
