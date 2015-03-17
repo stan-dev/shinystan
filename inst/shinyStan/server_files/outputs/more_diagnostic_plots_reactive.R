@@ -1,7 +1,7 @@
 # more diagnostic plots
 n_eff_plot <- reactive({
   do.call(".rhat_neff_mcse_hist", args = list(
-    fit_summary = fit_summary,
+    summary = fit_summary,
     samps = samps_post_warmup,
     which = "n_eff"
   ))
@@ -9,7 +9,7 @@ n_eff_plot <- reactive({
 
 rhat_plot <- reactive({
   do.call(".rhat_neff_mcse_hist", args = list(
-    fit_summary = fit_summary,
+    summary = fit_summary,
     samps = samps_post_warmup,
     which = "rhat"
   ))
@@ -17,7 +17,7 @@ rhat_plot <- reactive({
 
 mcse_over_sd_plot <- reactive({
   do.call(".rhat_neff_mcse_hist", args = list(
-    fit_summary = fit_summary,
+    summary = fit_summary,
     samps = samps_post_warmup,
     which = "mcse"
   ))

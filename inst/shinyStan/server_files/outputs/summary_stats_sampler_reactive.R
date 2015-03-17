@@ -6,7 +6,7 @@ summary_stats_sampler <- reactive({
     inc_warmup      = input$sampler_warmup == "include",
     warmup_val      = warmup_val,
     report          = input$sampler_report,
-    algorithm       = stan_algorithm,
+    # algorithm       = stan_algorithm,
     digits          = input$sampler_digits
   ))
 })
