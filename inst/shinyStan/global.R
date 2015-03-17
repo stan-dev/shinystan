@@ -1,3 +1,5 @@
+# probability distributions -----------------------------------------------
+
 # t distribution with location and scale
 .dt_loc_scale <- function(x, df, location, scale) {
   1/scale * dt((x - location)/scale, df)
