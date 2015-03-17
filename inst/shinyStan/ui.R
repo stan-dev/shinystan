@@ -173,8 +173,8 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                                            uiOutput("ui_hist_customize"),
                                                            textInput("hist_transform_x", "Transform", value = "x"),
                                                            plotOutput("hist_plot_out")
-                                          )
-                                          
+                                          ),
+                                          br()
                                  ),
                                  #### trivariate plot #####
                                  tabPanel("Dynamic 3D scatterplot", 
