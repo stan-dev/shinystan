@@ -1,4 +1,21 @@
-# convert mcmc.list object to shinystan object
+# Convert mcmc.list object to shinystan object
+#
+# @param X An mcmc.list object (\pkg{coda})
+# @param model_name A character string giving a name for the model
+# @param burnin The number of burnin (warmup) iterations. Should only be specified if the 
+# burnin samples are included in \code{X}.
+# @param param_dims Rarely used and never necessary. A named list giving the dimensions for 
+# all parameters. For scalar parameters use \code{0} as the dimension. 
+# See Examples in \code{\link[shinyStan]{as.shinystan}}.
+# @param model_code A character string with the code you used to run your model. This can 
+# also be added to your \code{shinystan} object later using the 
+# \code{\link[shinyStan]{include_model_code}} function. 
+# See \code{\link[shinyStan]{include_model_code}} for additional formatting instructions. 
+# After launching the app \code{model_code} will be viewable in the \strong{Model Code} tab.
+# 
+# @return An object of class \code{shinystan} that can be used with 
+# \code{\link[shinyStan]{launch_shinystan}}. 
+# 
 
 mcmc2shinystan <- function(X, model_name = "unnamed model", burnin = 0, param_dims = list(),
                            model_code) {

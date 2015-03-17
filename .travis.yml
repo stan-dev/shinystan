@@ -4,7 +4,7 @@ warnings_are_errors: true
 
 r_github_packages:
  - bwlewis/rthreejs
- - ebailey/shinyBS@shinyBS3 
+ - ebailey78/shinyBS@shinyBS3 
 
 after_failure:
   - ./travis-tool.sh dump_logs

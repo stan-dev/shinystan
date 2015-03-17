@@ -7,11 +7,10 @@
 #'
 #' @param ... Optional arguments to pass to \code{stan_demo} (\pkg{rstan}).
 #'
-#' @details After running \code{launch_shinystan_demo} you will also
-#' have an S4 object of class \code{shinystan} in your Global Environment which can be
-#' used with \code{launch_shinystan}.
+#' @return In addition to launching the \strong{shinyStan} app an S4 object of 
+#' class \code{shinystan} is returned. 
 #'
-#' @note Unless you are using RStudio, \code{launch_shinystan} will open your
+#' @details Unless you are using RStudio, \code{launch_shinystan} will open your
 #' system's default web browser. For RStudio users \strong{shinyStan} will
 #' launch in RStudio's (pop-up) Viewer pane. If you prefer to use \strong{shinyStan}
 #' in your web browser (or if you are having trouble with the RStudio Viewer pane) you 

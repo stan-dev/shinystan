@@ -9,6 +9,10 @@ launch_shinystan_demo(...)
 \arguments{
 \item{...}{Optional arguments to pass to \code{stan_demo} (\pkg{rstan}).}
 }
+\value{
+In addition to launching the \strong{shinyStan} app an S4 object of
+class \code{shinystan} is returned.
+}
 \description{
 The user will be presented with the option of launching the default
 shinyStan demo (in which case the app will launch immediately)
@@ -16,11 +20,6 @@ or running a Stan demo model (\pkg{rstan}), after which shinyStan
 will launch.
 }
 \details{
-After running \code{launch_shinystan_demo} you will also
-have an S4 object of class \code{shinystan} in your Global Environment which can be
-used with \code{launch_shinystan}.
-}
-\note{
 Unless you are using RStudio, \code{launch_shinystan} will open your
 system's default web browser. For RStudio users \strong{shinyStan} will
 launch in RStudio's (pop-up) Viewer pane. If you prefer to use \strong{shinyStan}
