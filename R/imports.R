@@ -1,8 +1,11 @@
+#' @import ggplot2
+#' @import shiny
+#' @import shinyBS
 #' @import dygraphs
 #' @import markdown
 #' @import threejs
 #' @import xtable
-#' @import xts
+#' @importFrom xts as.xts
 #' @import methods
 #' @importFrom gridExtra arrangeGrob grid.arrange
 #' @importFrom plyr ddply summarise
