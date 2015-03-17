@@ -1,0 +1,24 @@
+# Sample .travis.yml for R projects from https://github.com/craigcitro/r-travis
+
+language: r
+
+warnings_are_errors: true
+
+r_packages:
+  -testthat
+
+r_github_packages:
+ - bwlewis/rthreejs
+ - ebailey/shinyBS@shinyBS3 
+
+script: ./travis-tool.sh run_tests
+
+after_failure:
+  - ./travis-tool.sh dump_logs
+
+notifications:
+  email:
+    recipients:
+      - jgabry@gmail.com
+    on_success: change
+    on_failure: change
