@@ -198,13 +198,12 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
            navbarMenu(title = "More",
                       
                       #### TAB: Model Code ####
-                      tabPanel(title = "Model Code", # h4(style = "padding: 0px;","Model Code"),
+                      tabPanel(title = "Model Code", 
                                h4("Model Code"),
                                tags$textarea(id="model_code", style="background: transparent; border-width: .5px;", object@model_code)
                       ), # END TAB: Model Code
                       #### TAB: Notes ####
                       tabPanel(title = "Notes",
-                               
                                helpText(strong("Use this space to store notes about your model")),
                                helpText("The text will be saved in the", code("user_model_info"),
                                         "slot of your", code("shinystan"), "object and displayed here
@@ -222,17 +221,14 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                hr(),
                                uiOutput("user_model_info_modal")
                       ),  # END TAB: Notes
-                      
                       #### TAB: About ####
                       tabPanel(title = "About",
                                uiOutput("ui_about")
                       ), # END TAB: About
-                      
                       #### TAB: Help ####
                       tabPanel(title = "Help",
                                uiOutput("ui_help")
                       ), # END Help
-                      
                       #### TAB: Settings ####
                       tabPanel("Settings",
                                selectInput("background_texture", "Background texture", choices = c("Plain (white)" = "default", "Subtle" = "subtle",  "Concrete" = "concrete", "White brick" = "whitebrick", "Vignette" = "vignette", "Sweater" = "sweater", "Stucco" = "stucco", "Crumpled paper" = "crumpled", "Green cup" = "greencup"), selected = "default"),

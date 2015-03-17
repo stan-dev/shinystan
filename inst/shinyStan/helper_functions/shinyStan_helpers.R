@@ -44,7 +44,7 @@
   choices[1:ll] <- ""
   names(choices) <- object@param_groups
   for(i in 1:ll) {
-    if (LL[i] == 0) 
+    if (LL[i] == 0) {
       choices[[i]] <- list(object@param_groups[i])
     } else {
       group <- object@param_groups[i]
