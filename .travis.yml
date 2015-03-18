@@ -7,7 +7,7 @@ before_install:
   - ./travis-tool.sh bootstrap
 
 install:
-  - ./travis-tool.sh install_github ebailey78/shinyBS@shinyBS3 
+  - ./travis-tool.sh install_github jgabry/shinyBS@shinyBS_for_shinyStan 
   - ./travis-tool.sh install_github bwlewis/rthreejs
   - ./travis-tool.sh install_deps
 
