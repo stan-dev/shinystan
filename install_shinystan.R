@@ -6,10 +6,9 @@
 # 3) Restart R
 # 4) library(shinyStan) 
 
-# If installation fails you can open an issue on github
-# (https://github.com/stan-dev/shinystan/issues) 
-# or ask for help at the Stan users google group 
-# (https://groups.google.com/forum/#!forum/stan-users)
+# Troubleshooting                     https://github.com/stan-dev/shinystan/wiki/Troubleshooting
+# Open an issue on github             https://github.com/stan-dev/shinystan/issues
+# Ask on Stan users google group      https://groups.google.com/forum/#!forum/stan-users
 #######################################################
 
 install_shinystan <- function() {
@@ -21,7 +20,6 @@ install_shinystan <- function() {
   }
   
   try(remove.packages("SHINYstan"), silent = TRUE)
-  try(remove.packages("shinyStan"), silent = TRUE)
   try(remove.packages("shinyBS"), silent = TRUE)
   
   if (!require(devtools)) install.packages("devtools")
@@ -33,11 +31,10 @@ install_shinystan <- function() {
     if (!shiny_ok) install.packages("shiny")
   }
   
-  install.packages(c("gtools","gridExtra","knitr", "htmlwidgets", "maps"), dependencies = TRUE)
-  devtools::install_github("ebailey78/shinyBS", ref = "shinyBS3", dependencies = TRUE)
+  install.packages(c("knitr", "htmlwidgets", "maps"), dependencies = TRUE)
+  # devtools::install_github("ebailey78/shinyBS", ref = "f56e41b236ecda63c28af2ffd34b7b72a76c5ec5", dependencies = TRUE)
+  devtools::install_github("jgabry/shinyBS", ref = "shinyBS_for_shinyStan")
   devtools::install_github("bwlewis/rthreejs", dependencies = TRUE)
-  
-  
   devtools::install_github("stan-dev/shinystan", build_vignettes = TRUE)
   
   message("\n All set. \n You might need to restart R before using shinyStan. \n")
