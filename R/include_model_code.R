@@ -8,7 +8,7 @@
 #'
 #' @details \code{code} should be a character string that can be used as an argument
 #' to \code{cat}. See \strong{Examples}, below.
-#' @note This is only useful for users who did not run their models using \pkg{rstan}.
+#' @note This is intended for users who did not run their models using \pkg{rstan}.
 #' For \pkg{rstan} users the model code will be automatically available.
 #' @seealso \code{cat}
 #' @export

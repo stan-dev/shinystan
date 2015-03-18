@@ -10,7 +10,7 @@ summary_stats_latex <- reactive({
     ))
   } else {
     x <- do.call(".all_summary", args = list(
-      fit_summary = fit_summary[params, ],
+      summary     = fit_summary[params, ],
       digits      = input$stats_digits,
       cols        = input$stats_columns
     ))

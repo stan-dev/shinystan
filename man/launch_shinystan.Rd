@@ -11,20 +11,47 @@ launch_shinystan(object)
 See \code{\link[shinyStan]{as.shinystan}} for how to easily convert other types
 of objects to \code{shinystan} objects.}
 }
+\value{
+If \code{object} is a \code{shinystan} object then \code{object} will be
+returned (or a slightly modified version of \code{object} reflecting any changes saved while
+using the app). If \code{object} is a \code{stanfit} object then, in addition to launching
+the \strong{shinyStan} app, an S4 object of class \code{shinystan} is returned
+(see \strong{Note}).
+}
 \description{
 Launch shinyStan app
 }
 \details{
-If \code{object} is a \code{stanfit} object then, in addition to launching
-the shinyStan app, this function creates an S4 object of class \code{shinystan} in
-the Global Environment.
-}
-\note{
 Unless you are using RStudio, \code{launch_shinystan} will open the app
 in your system's default web browser. For RStudio users \strong{shinyStan} will
-launch in RStudio's (pop-up) Viewer pane by default. Once open in the Viewer pane
-it can then be opened in your web browser if you prefer by clicking on 'Open in Browser'
-at the top of the Viewer pane.
+launch in RStudio's (pop-up) Viewer pane by default. If you prefer to use \strong{shinyStan}
+in your web browser (or if you are having trouble with the RStudio Viewer pane) you
+can click on 'Open in Browser' at the top of the Viewer pane.
+}
+\note{
+The following note is only relevant for Stan users.
+
+If \code{object} is a \code{stanfit} object then the returned \code{shinystan} object
+will be named \code{object_shinystan}. For example, if \code{object} is a \code{stanfit} object
+named \code{my_stanfit} then the returned \code{shinystan} object will be named \code{my_stanfit_shinystan}.
+To avoid overwriting existing \code{shinystan} objects, if there is already an object named
+\code{my_stanfit_shinystan} then the \code{shinystan} objected returned will be named
+\code{my_stanfit_shinystan.1}. If there is also already an object named
+\code{my_stanfit_shinystan.1} then the returned \code{shinystan} object will be named
+\code{my_stanfit_shinystan.2}, etc.
+
+To avoid creating multiple \code{shinystan} objects for a single \code{stanfit} object
+you should use the returned \code{shinystan} object the next time you want to launch \strong{shinyStan}
+to explore the same \code{stanfit} object. For example, running \code{launch_shinystan(my_stanfit)}
+three times will create the \code{shinystan} objects \code{my_stanfit_shinystan},
+\code{my_stanfit_shinystan.1}, and \code{my_stanfit_shinystan.2}. On the other hand, once
+\code{my_stanfit_shinystan} is created after the first launch, it can then be used to launch
+\strong{shinyStan} as many times as you want without creating duplicate objects.
+\code{launch_shinystan(my_stanfit_shinystan)} will always return \code{my_stanfit_shinystan}
+(updated to reflect any saved changes while running the app). The only reasons to continue to use
+\code{my_stanfit} as the argument to \code{launch_shinystan} (instead of using \code{my_stanfit_shinystan})
+are 1) you intentionally want to create extra \code{shinystan} objects, or 2) you keep deleting
+\code{my_stanfit_shinystan} each time it's created.
 }
 \examples{
 \dontrun{

@@ -1,12 +1,19 @@
+# Convert list of chains to shinystan object
+# 
+# @param chain_list A list of 2D-arrays or matrices of iterations (rows) and parameters (columns). 
+# Each chain in chain_list should have the same number of iterations and the same parameters 
+# (with the same names and in the same order).
+# @param ... Arguments to pass to \code{array2shinystan}
+# 
+# @return An object of class \code{shinystan} that can be used with 
+# \code{\link[shinyStan]{launch_shinystan}}. 
+# 
+
 chains2shinystan <- function(chain_list, ...) {
-#   chain_list: a list of 2D-arrays or matrices of iterations (rows) and
-#   parameters (columns). each chain in chain_list should have the same number
-#   of iterations and the same parameters (with the same names and in the same
-#   order)
 
   if (!is.list(chain_list)) {
     name <- deparse(substitute(chain_list))
-    stop (paste(name, "is not a list."))
+    stop(paste(name, "is not a list."), call. = FALSE)
   }
 
   nChain <- length(chain_list)

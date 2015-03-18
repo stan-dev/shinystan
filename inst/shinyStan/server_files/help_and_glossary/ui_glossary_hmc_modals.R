@@ -1,8 +1,8 @@
 # modal windows for the sampler param glossary entries
 output$glossary_modal_nuts <- renderUI({
 
-  algorithm_nuts <- h5(style = "color: #428bca;", "algorithm = NUTS")
-  algorithm_hmc <- h5(style = "color: #428bca;", "algorithm = HMC")
+  algorithm_nuts <- h5(style = "color: #337ab7;", "algorithm = NUTS")
+  algorithm_hmc <- h5(style = "color: #337ab7;", "algorithm = HMC")
 
   bsModal("glossary_nuts", "shinyStan glossary", trigger = "btn_open_glossary_nuts",
           withMathJax(),

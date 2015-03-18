@@ -1,5 +1,14 @@
 output$ui_about <- renderUI({
 tags$div(
+  h4("shinyStan"),
+  htmlOutput("ui_credits"),
+  br(),
+  actionLink("citation_modal", "Citing shinyStan"),
+  uiOutput("ui_cite"),
+  br(),
+  h4("Stan & RStan"),
+  a("Stan Development Team", href="http://mc-stan.org/team.html"),
+  hr(),
   h4("About shinyStan"),
   p("Most applied Bayesian data analysis requires employing a Markov chain 
 Monte Carlo (MCMC) algorithm to obtain samples from the posterior 

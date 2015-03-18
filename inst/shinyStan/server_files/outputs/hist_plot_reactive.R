@@ -16,7 +16,8 @@ hist_plot <- reactive({
     chain       = chain,
     binwd       = binwd,
     fill_color  = input$hist_fill_color,
-    line_color  = input$hist_line_color
+    line_color  = input$hist_line_color,
+    transform_x = input$hist_transform_x
   ))
 })
 

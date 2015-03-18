@@ -15,72 +15,51 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pkgs <- c("shiny", "shinyBS")
-invisible(lapply(X = pkgs, FUN = library, character.only = TRUE))
-
 # options(shiny.trace=TRUE)
-# load the helper functions
 source("helper_functions/shinyStan_helpers.R", local=TRUE)
-
-# extract the content of the shinystan_object slots
+source("server_files/pp_check/plot_names_descriptions.R", local = TRUE)
 source("server_files/utilities/extract_shinystan_object.R", local=TRUE)
 
 # Begin shinyServer -------------------------------------------------------
 # _________________________________________________________________________
 function(input, output, session) {
   
-  # Stop the app when button is clicked
+  # Stop the app when "Quit" button is clicked
   observe({
-    if (input$nav == "quit") stopApp()
+    if (input$nav == "quit") stopApp("Session ended")
   })
   
-  # load utility functions & all files for dynamic UIs
-  paths <- paste0("server_files/", c("outputs", "utilities", "dynamic_ui", "help_and_glossary"))
-  files <- list.files(paths, full.names = TRUE)
+  # source all files from server_files directory and subdirectories
+  files <- list.files("server_files", full.names = TRUE, recursive = TRUE)
   for (f in files) source(f, local = TRUE)
-  
-  #### tooltips & popovers ####  
-  tooltip_ids <- c("download_multiview", "dynamic_trace_stack", "download_all_summary", "tex_options")
-  tooltip_msgs <- c("Will be a list object with one element per plot.", 
-                    "If 'Stacked' is selected, the chains will be stacked on top of one another rather than drawing them independently. The first series specified in the input data will wind up on top of the chart and the last will be on bottom. Note that the y-axis values no longer correspond to the true values when this option is enabled.",
-                    "Save as data.frame (.RData)", "Print latex table to R console")
-  popover_ids <- c(paste0("tex_", c("booktabs", "long")))
-  popover_msgs <- c("From print.xtable {xtable}: If TRUE, the toprule, midrule and bottomrule tags from the LaTex 'booktabs' package are used rather than hline for the horizontal line tags.",
-                    "For tables longer than a single page. If TRUE, will use LaTeX package 'longtable'.")
-  for (id in seq_along(tooltip_ids)) {
-    addTooltip(session, id = tooltip_ids[id], trigger = "hover", placement = "right",
-               title = tooltip_msgs[id])
-  }
-  for (id in seq_along(popover_ids)) {
-    addPopover(session, id = popover_ids[id], trigger = "hover", placement = "right",
-               title = popover_msgs[id])
-  }
-  
-  
+
   #### DATATABLE: summary stats (all parameters) ####
   output$all_summary_out <- renderDataTable({
     summary_stats()
-  }, options = list(
-    search = list(regex = TRUE), # allow regular expression when searching for parameter names
-    processing = TRUE,
-    pagingType = "full", # show only first, previous, next, last buttons (no page numbers)
-    pageLength = 10,
-    lengthMenu = list(c(5, 10, 20, 50, -1), c('5', '10', '20', '50', 'All')),
-    orderClasses = TRUE,
-    scrollY = 400,
-    scrollX = TRUE,
-    scrollCollapse = FALSE,
-    columnDefs = list(list(targets = "_all", searchable = FALSE), list(width="85px", targets=list(0)), list(sClass="alignRight", targets ="_all")),
-    initComplete = I( # change background color of table header
-      'function(settings, json) {
-      $(this.api().table().header()).css({"background-color": "#346fa1", "color": "#fff"});
+  }, options = function() {
+    list(
+      search = list(regex = input$user_regex), # allow regular expression when searching for parameter names
+      processing = TRUE,
+      pagingType = "full", # show only first, previous, next, last buttons (no page numbers)
+      pageLength = 10,
+      lengthMenu = list(c(5, 10, 20, 50, -1), c('5', '10', '20', '50', 'All')),
+      orderClasses = TRUE,
+      scrollY = 400,
+      scrollX = TRUE,
+      scrollCollapse = FALSE,
+      columnDefs = list(list(targets = "_all", searchable = FALSE), list(width="85px", targets=list(0)), list(sClass="alignRight", targets ="_all")),
+      initComplete = I( # change text color of column titles
+        'function(settings, json) {
+      $(this.api().table().header()).css({"color": "#337ab7"});
       }'),
-    rowCallback = I(
-      'function(row, data) {
+      rowCallback = I(
+        'function(row, data) {
         // Bold cells in the first column
           $("td:eq(0)", row).css("font-weight", "bold");
       }')
-  ))
+    )
+  }
+  )
   # download the table
   output$download_all_summary <- downloadHandler(
     filename = paste0('shinystan_summary_stats.RData'),
@@ -99,14 +78,17 @@ function(input, output, session) {
   }, options = list(
     processing = TRUE,
     scrollX = TRUE,
+    scrollY = "200px",
+    scrollCollapse = TRUE,
     paging = FALSE,
+    # pageLength = 3,
     searching = FALSE,
     info = FALSE,
     aoColumnDefs = list(list(sClass="alignRight", aTargets = "_all")),
     orderClasses = TRUE,
-    initComplete = I( # change background color of table header
+    initComplete = I( # change text color of column titles
       'function(settings, json) {
-      $(this.api().table().header()).css({"background-color": "#346fa1", "color": "#fff"});
+      $(this.api().table().header()).css({"color": "#337ab7"});
       }'),
     rowCallback = I(
       'function(row, data) {
@@ -114,10 +96,25 @@ function(input, output, session) {
           $("td:eq(0)", row).css("font-weight", "bold");
       }')
   ))
+  #### PLOT: sampler params ####
+  output$sampler_plot_treedepth_out <- renderPlot({
+    sampler_plot_treedepth()
+  }, bg = "transparent")
+  output$sampler_plot_treedepth0_out <- renderPlot({
+    sampler_plot_treedepth0()
+  }, bg = "transparent")
+  output$sampler_plot_treedepth1_out <- renderPlot({
+    sampler_plot_treedepth1()
+  }, bg = "transparent")
+  output$sampler_plot_divergent_out <- renderPlot({
+    x <- sampler_plot_divergent()
+    suppress_and_print(x)
+  }, bg = "transparent")
+  
   #### PLOT: multiple parameters ####
   output$plot_param_vertical_out <- renderPlot({
     plot_param_vertical()
-  }, height = calc_height_param_plot)
+  }, height = calc_height_param_plot, bg = "transparent")
   # download the plot
   output$download_multiparam_plot <- downloadHandler(
     filename = 'shinystan_param_plot.RData',
@@ -129,18 +126,18 @@ function(input, output, session) {
   #### PLOT: n_eff / total sample size ####
   output$n_eff_plot_out <- renderPlot({
     x <- n_eff_plot()
-    suppressMessages(suppressWarnings(print(x)))
-  })
+    suppress_and_print(x)
+  }, bg = "transparent")
   #### PLOT: ratio of mcmc se to posterior sd  ####
   output$mcse_over_sd_plot_out <- renderPlot({
     x <- mcse_over_sd_plot()
-    suppressMessages(suppressWarnings(print(x)))
-  })
+    suppress_and_print(x)
+  }, bg = "transparent")
   #### PLOT: rhat ####
   output$rhat_plot_out <- renderPlot({
     x <- rhat_plot()
-    suppressMessages(suppressWarnings(print(x)))
-  })
+    suppress_and_print(x)
+  }, bg = "transparent")
   #### TEXT: n_eff warnings ####
   output$n_eff_warnings_title <- renderText({
     paste0("The following parameters have an effective sample size less than ", input$n_eff_threshold,"% of the total number of samples: ")
@@ -165,7 +162,7 @@ function(input, output, session) {
   #### PLOT: autocorrelation ####
   output$autocorr_plot_out <- renderPlot({
     autocorr_plot()
-  })
+  }, bg = "transparent")
   # download the plot
   output$download_autocorr <- downloadHandler(
     filename = paste0('shinystan_autocorr.RData'),
@@ -178,7 +175,7 @@ function(input, output, session) {
   output$multi_trace_plot_out <- renderPlot({
     x <- multi_trace_plot()
     suppressWarnings(print(x)) # this avoids warnings about removing rows when using tracezoom feature
-  }, height = calc_height_trace_plot)
+  }, height = calc_height_trace_plot, bg = "transparent")
   # download the plot
   output$download_multi_trace <- downloadHandler(
     filename = paste0('shinystan_multi_trace.RData'),
@@ -199,14 +196,14 @@ function(input, output, session) {
     columnDefs = list(list(sClass="alignRight", targets ="_all")),
     initComplete = I( # change background color of table header
       'function(settings, json) {
-      $(this.api().table().header()).css({"background-color": "white", "color": "black"});
+      $(this.api().table().header()).css({"background-color": "transparent", "color": "black"});
       }')
   ))
   #### PLOT: Multiview ####
   output$multiview_param_name <- renderUI(strong(style = "font-size: 250%; color: #f9dd67;", input$param))
-  output$multiview_trace <- renderPlot(trace_plot_multiview())
-  output$multiview_density <- renderPlot(density_plot_multiview())
-  output$multiview_autocorr <- renderPlot(autocorr_plot_multiview())
+  output$multiview_trace <- renderPlot(trace_plot_multiview(), bg = "transparent")
+  output$multiview_density <- renderPlot(density_plot_multiview(), bg = "transparent")
+  output$multiview_autocorr <- renderPlot(autocorr_plot_multiview(), bg = "transparent")
   # download multiview plot
   output$download_multiview <- downloadHandler(
     filename = 'shinystan_multiview.RData',
@@ -222,8 +219,8 @@ function(input, output, session) {
   ### PLOT: histogram ####
   output$hist_plot_out <- renderPlot({
     x <- hist_plot()
-    suppressMessages(suppressWarnings(print(x)))
-  })
+    suppress_and_print(x)
+  }, bg = "transparent")
   # download plot
   output$download_histogram <- downloadHandler(
     filename = 'shinystan_histogram.RData',
@@ -239,7 +236,7 @@ function(input, output, session) {
   ### PLOT: density ####
   output$density_plot_out <- renderPlot({
     density_plot()
-  })
+  }, bg = "transparent")
   # download plot
   output$download_density <- downloadHandler(
     filename = 'shinystan_density.RData',
@@ -254,8 +251,9 @@ function(input, output, session) {
   })
   #### PLOT: bivariate ####
   output$bivariate_plot_out <- renderPlot({
-    bivariate_plot()
-  })
+    x <- bivariate_plot()
+    suppressWarnings(print(x))
+  }, bg = "transparent")
   output$download_bivariate <- downloadHandler(
     filename = 'shinystan_bivariate.RData',
     content = function(file) {
@@ -274,6 +272,44 @@ function(input, output, session) {
       print(paste("Saved:  ", format(Sys.time(), "%a %b %d %Y %X")))
     }
   })
-  
-  
-} # End
+  #### PLOT: pp hists_rep_vs_obs####
+  output$pp_hists_rep_vs_obs_out <- renderPlot({
+    x <- suppressMessages(suppressWarnings(pp_hists_rep_vs_obs()))
+    suppress_and_print(x)
+  }, bg = "transparent")
+  #### PLOT: pp dens_rep_vs_obs####
+  output$pp_dens_rep_vs_obs_out <- renderPlot({
+    x <- suppressMessages(pp_dens_rep_vs_obs())
+    suppress_and_print(x)
+  }, bg = "transparent")
+  #### PLOTS: pp hists_test_statistics####
+  output$pp_hists_test_statistics_mean_out <- renderPlot({
+    x <- suppressMessages(pp_hists_test_statistics_mean())
+    suppress_and_print(x)
+  }, bg = "transparent")
+  output$pp_hists_test_statistics_sd_out <- renderPlot({
+    x <- suppressMessages(pp_hists_test_statistics_sd())
+    suppress_and_print(x)
+  }, bg = "transparent")
+  output$pp_hists_test_statistics_min_out <- renderPlot({
+    x <- suppressMessages(pp_hists_test_statistics_min())
+    suppress_and_print(x)
+  }, bg = "transparent")
+  output$pp_hists_test_statistics_max_out <- renderPlot({
+    x <- suppressMessages(pp_hists_test_statistics_max())
+    suppress_and_print(x)
+  }, bg = "transparent")
+  output$pp_hist_resids_out <- renderPlot({
+    x <- suppressMessages(pp_hist_resids())
+    suppress_and_print(x)
+  }, bg = "transparent")
+  output$pp_avg_rep_vs_avg_resid_rep_out <- renderPlot({
+    pp_avg_rep_vs_avg_resid_rep()
+  }, bg = "transparent")
+  output$pp_y_vs_avg_rep_out <- renderPlot({
+    pp_y_vs_avg_rep()
+  }, bg = "transparent")
+
+
+} # End shinyServer
+

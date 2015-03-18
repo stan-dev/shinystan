@@ -5,7 +5,7 @@ trace_plot <- reactive({
   if (input$param == "") {
     return()
   }
-
+  
   customize <- input$trace_customize
   zoom <- input$tracezoom
 

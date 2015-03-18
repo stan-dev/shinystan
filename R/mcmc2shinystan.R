@@ -1,9 +1,26 @@
-# convert mcmc.list object to shinystan object
+# Convert mcmc.list object to shinystan object
+#
+# @param X An mcmc.list object (\pkg{coda})
+# @param model_name A character string giving a name for the model
+# @param burnin The number of burnin (warmup) iterations. Should only be specified if the 
+# burnin samples are included in \code{X}.
+# @param param_dims Rarely used and never necessary. A named list giving the dimensions for 
+# all parameters. For scalar parameters use \code{0} as the dimension. 
+# See Examples in \code{\link[shinyStan]{as.shinystan}}.
+# @param model_code A character string with the code you used to run your model. This can 
+# also be added to your \code{shinystan} object later using the 
+# \code{\link[shinyStan]{include_model_code}} function. 
+# See \code{\link[shinyStan]{include_model_code}} for additional formatting instructions. 
+# After launching the app \code{model_code} will be viewable in the \strong{Model Code} tab.
+# 
+# @return An object of class \code{shinystan} that can be used with 
+# \code{\link[shinyStan]{launch_shinystan}}. 
+# 
 
 mcmc2shinystan <- function(X, model_name = "unnamed model", burnin = 0, param_dims = list(),
                            model_code) {
 
-  stopifnot(require("coda", quietly = TRUE))
+  stopifnot(requireNamespace("coda", quietly = TRUE))
 
   Xname <- deparse(substitute(X))
   if (!inherits(X, "mcmc.list")) {
@@ -11,10 +28,13 @@ mcmc2shinystan <- function(X, model_name = "unnamed model", burnin = 0, param_di
   }
 
   if (length(X) == 1) {
-    return(chains2shinystan(list(as.matrix(X))))
+    return(chains2shinystan(list(mcmclist2matrix(X))))
   }
 
-  samps_array <- aperm(as.array(X), c(1,3,2))
+  samps_array <- array(NA, dim = c(coda::niter(X), coda::nvar(X), coda::nchain(X)),
+                       dimnames = list(iter = time(X), var = coda::varnames(X), chain = coda::chanames(X)))
+  for (c in 1:coda::nchain(X)) samps_array[,,c] <- X[[c]]
+  samps_array <- aperm(drop(samps_array), c(1,3,2))
   dimnames(samps_array) <- list(iterations = 1:nrow(samps_array),
                                 chains = paste0("chain:",1:ncol(samps_array)),
                                 parameters = dimnames(samps_array)[[3]])

@@ -7,29 +7,31 @@
 launch_shinystan_demo(...)
 }
 \arguments{
-\item{...}{Optional arguments to pass to \code{rstanDemo::stan_demo}.}
+\item{...}{Optional arguments to pass to \code{stan_demo} (\pkg{rstan}).}
+}
+\value{
+In addition to launching the \strong{shinyStan} app an S4 object of
+class \code{shinystan} is returned.
 }
 \description{
 The user will be presented with the option of launching the default
 shinyStan demo (in which case the app will launch immediately)
-or running a Stan demo model (\pkg{rstanDemo}), after which shinyStan
+or running a Stan demo model (\pkg{rstan}), after which shinyStan
 will launch.
 }
 \details{
-After running \code{launch_shinystan_demo} you will also
-have an S4 object of class \code{shinystan} in your Global Environment which can be
-used with \code{launch_shinystan}.
-}
-\note{
 Unless you are using RStudio, \code{launch_shinystan} will open your
 system's default web browser. For RStudio users \strong{shinyStan} will
-launch in RStudio's (pop-up) Viewer pane. If you prefer to view \strong{shinyStan}
-in your web browser you can then click on 'Open in Browser' at the top of
-the Viewer pane.
+launch in RStudio's (pop-up) Viewer pane. If you prefer to use \strong{shinyStan}
+in your web browser (or if you are having trouble with the RStudio Viewer pane) you
+can click on 'Open in Browser' at the top of the Viewer pane.
 }
 \examples{
 \dontrun{
 launch_shinystan_demo()
 }
+}
+\seealso{
+\code{\link[shinyStan]{launch_shinystan}}, \code{\link[shinyStan]{as.shinystan}},
 }
 

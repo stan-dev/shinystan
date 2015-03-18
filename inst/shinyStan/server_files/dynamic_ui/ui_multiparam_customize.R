@@ -34,9 +34,8 @@ output$ui_multiparam_customize <- renderUI({
   absolutePanel(id = "controls_multiparam", class = "panel panel-default hvr-glow", fixed = FALSE,
     top = 400, right = 20, width = 240,
     draggable = TRUE,
-    wellPanel(style = "background-color: #222222;",
-              h4(style = "color: #428bca;", strong("shinyStan customize")),
-              hr(),
+    div(class="shinystan_customize", "shinyStan customize"),
+    wellPanel(style = "background-color: #222222; padding-top: 10px ; padding-bottom: 10px;",
               bsCollapse(# open = "multiparam_options_collapse",
                 bsCollapsePanel(title = "Options", id = "multiparam_options_collapse",
                                 checkboxInput("param_plot_show_density", label = "Kernal density estimates", value = my_show_density),
@@ -46,12 +45,12 @@ output$ui_multiparam_customize <- renderUI({
                 bsCollapsePanel(title = "Aesthetics", id = "multiparam_colors_collapse",
                                 withMathJax(),
                                 checkboxInput("param_plot_color_by_rhat", label = "Color point est. by \\(\\hat{R}\\)", value = my_color_by_rhat),
-                                selectInput("param_plot_fill_color", h6("Density/CI color"), choices = colors(), selected = my_fill_color, selectize = TRUE),
-                                selectInput("param_plot_outline_color", h6("Outline color"), choices = colors(), selected = my_outline_color, selectize = TRUE),
+                                selectInput("param_plot_fill_color", span(style = "font-size: 12px", "Density/CI color"), choices = colors(), selected = my_fill_color, selectize = TRUE),
+                                selectInput("param_plot_outline_color", span(style = "font-size: 12px", "Outline color"), choices = colors(), selected = my_outline_color, selectize = TRUE),
                                 conditionalPanel(condition = "input.param_plot_color_by_rhat == false",
-                                                 selectInput("param_plot_est_color", h6("Point est. color"), choices = colors(), selected = my_est_color, selectize = TRUE)),
+                                                 selectInput("param_plot_est_color", span(style = "font-size: 12px", "Point estimate color"), choices = colors(), selected = my_est_color, selectize = TRUE)),
                                 conditionalPanel(condition = "input.param_plot_color_by_rhat == true",
-                                                 selectInput("param_plot_rhat_palette", h6("Rhat palette"), choices = c("Blues", "Grays", "Greens", "Oranges", "Purples", "Reds"), selected = my_rhat_palette, selectize=TRUE))
+                                                 selectInput("param_plot_rhat_palette", span(style = "font-size: 12px", "Rhat palette"), choices = c("Blues", "Grays", "Greens", "Oranges", "Purples", "Reds"), selected = my_rhat_palette, selectize=TRUE))
                 ),
                 bsCollapsePanel(title = "Sorting", id = "multiparam_options_sorting",
                                 # checkboxInput("param_plot_sort_j", label = "Sort j", value = FALSE),
@@ -59,7 +58,7 @@ output$ui_multiparam_customize <- renderUI({
                                 span(style = "font-size: 12px;","If applicable, sort with x[1,2] before x[2,1] or vice-versa")
                 )
               ),
-              hr(),
+              hr(class = "hr hr_controls"),
               downloadButton("download_multiparam_plot", "Save as ggplot2 object")
     )
   )
