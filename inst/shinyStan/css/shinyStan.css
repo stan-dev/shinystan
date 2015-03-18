@@ -89,6 +89,9 @@ body {
 }
 */
 
+
+/**************************************/
+/* text boxes for transformations */
 #bivariate_transform_x, #bivariate_transform_y,
 #trivariate_transform_x, #trivariate_transform_y, #trivariate_transform_z,
 #dens_transform_x, #hist_transform_x {
@@ -96,6 +99,7 @@ body {
   padding: 1px 6px;
   font-family: monospace;
 }
+/**************************************/
 
 
 /**************************************/
