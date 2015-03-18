@@ -34,14 +34,14 @@ function(input, output, session) {
   for (f in files) source(f, local = TRUE)
 
   #### tooltips & popovers ####  
-  for (id in seq_along(tooltip_ids)) {
-    addTooltip(session, id = tooltip_ids[id], trigger = "hover", placement = tooltip_placements[id],
-               title = tooltip_msgs[id])
-  }
-  for (id in seq_along(popover_ids)) {
-    addPopover(session, id = popover_ids[id], trigger = "hover", placement = "right",
-               title = popover_msgs[id])
-  }
+#   for (id in seq_along(tooltip_ids)) {
+#     addTooltip(session, id = tooltip_ids[id], trigger = "hover", placement = tooltip_placements[id],
+#                title = tooltip_msgs[id])
+#   }
+#   for (id in seq_along(popover_ids)) {
+#     addPopover(session, id = popover_ids[id], trigger = "hover", placement = "right",
+#                title = popover_msgs[id])
+#   }
   
   
   #### DATATABLE: summary stats (all parameters) ####

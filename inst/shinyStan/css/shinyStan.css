@@ -82,10 +82,24 @@ body {
 .popover-title {
     font-size: 12px;
 }
+/*
 .popover-content {
     background-color: #337ab7;
     border-radius: 3px;
 }
+*/
+
+
+/**************************************/
+/* text boxes for transformations */
+#bivariate_transform_x, #bivariate_transform_y,
+#trivariate_transform_x, #trivariate_transform_y, #trivariate_transform_z,
+#dens_transform_x, #hist_transform_x {
+  height: 25px;
+  padding: 1px 6px;
+  font-family: monospace;
+}
+/**************************************/
 
 
 /**************************************/
@@ -195,6 +209,7 @@ body {
   height: 600px; 
   border-color: #214565; 
   border-radius: 3px;
+  font-family: monospace;
 }
 /**************************************/
 
