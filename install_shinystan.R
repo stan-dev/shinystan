@@ -33,7 +33,8 @@ install_shinystan <- function() {
   }
   
   install.packages(c("knitr", "htmlwidgets", "maps"), dependencies = TRUE)
-  devtools::install_github("ebailey78/shinyBS", ref = "f56e41b236ecda63c28af2ffd34b7b72a76c5ec5", dependencies = TRUE)
+  # devtools::install_github("ebailey78/shinyBS", ref = "f56e41b236ecda63c28af2ffd34b7b72a76c5ec5", dependencies = TRUE)
+  devtools::install_github("jgabry/shinyBS", ref = "shinyBS_for_shinyStan")
   devtools::install_github("bwlewis/rthreejs", dependencies = TRUE)
   devtools::install_github("stan-dev/shinyStan", build_vignettes = TRUE)
   
