@@ -172,7 +172,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                                             downloadButton("download_multiview", "Save as ggplot2 objects")
                                             )
                                           ),
-                                          bsTooltip("download_multiview", title = "Will be a list object with one element per plot.", placement="right"),
+                                          bsTooltip("download_multiview", title = "Will be a list with three elements corresponding the the ggplot2 objects for the three plots.", placement="right"),
                                           splitLayout(h5("Density"), h5("Autocorrelation")),
                                           splitLayout(plotOutput("multiview_density", height = "150"), 
                                                       plotOutput("multiview_autocorr", height = "150"),
