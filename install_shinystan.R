@@ -6,10 +6,9 @@
 # 3) Restart R
 # 4) library(shinyStan) 
 
-# If installation fails you can open an issue on github
-# (https://github.com/stan-dev/shinystan/issues) 
-# or ask for help at the Stan users google group 
-# (https://groups.google.com/forum/#!forum/stan-users)
+# Troubleshooting                     https://github.com/stan-dev/shinystan/wiki/Troubleshooting
+# Open an issue on github             https://github.com/stan-dev/shinystan/issues
+# Ask on Stan users google group      https://groups.google.com/forum/#!forum/stan-users
 #######################################################
 
 install_shinystan <- function() {
