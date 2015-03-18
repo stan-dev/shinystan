@@ -1,4 +1,4 @@
-[![Travis-CI Build Status](https://travis-ci.org/stan-dev/shinystan.png?branch=develop)](https://travis-ci.org/stan-dev/shinystan)
+[![Travis-CI Build Status](https://travis-ci.org/stan-dev/shinystan.svg?branch=develop)](https://travis-ci.org/stan-dev/shinystan)
 
 # shinyStan R package and Shiny app
 
