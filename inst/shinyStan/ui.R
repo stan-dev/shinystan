@@ -49,7 +49,26 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                       tabPanel("Posterior summary statistics", icon = icon("table", "fa-2x"),
                                br(),
                                fluidRow(
-                                 column(3, uiOutput("ui_summary_stats_customize")),
+                                 column(3, 
+                                        bsCollapse(
+                                          bsCollapsePanel(title = "View Table Options", id = "stats_table_options_collapse",
+                                                          actionLink("btn_open_glossary", "Open glossary", icon = icon("book", lib = "glyphicon")),
+                                                          uiOutput("glossary_modal"),
+                                                          br(),
+                                                          numericInput("stats_digits", label = strong(style = "color: black;", "Decimal places"), value = 1, min = 0, max = 7, step = 1),
+                                                          checkboxInput("user_regex",strong(style = "color: black;","Regex searching"), value = TRUE),
+                                                          checkboxGroupInput("stats_columns", label = strong(style = "color: black;", "Columns"),
+                                                                             choices = c("Rhat", "Effective sample size (n_eff)" = "n_eff", "Posterior mean" = "mean", "Posterior standard deviation" = "sd", "Monte Carlo uncertainty (se_mean)" = "se_mean", "Quantile: 2.5%" = "2.5%", "Quantile: 25%" = "25%", "Quantile: 50%" = "50%", "Quantile: 75%" = "75%", "Quantile: 97.5%" = "97.5%"),
+                                                                             selected = c("Rhat", "n_eff", "mean", "sd", "2.5%", "50%", "97.5%")),
+                                                          
+                                                          downloadButton("download_all_summary", "Save"),
+                                                          bsTooltip(id="download_all_summary", title = "Save as data.frame (.RData)", placement="right", options = list(container = 'body')),
+                                                          actionButton("tex_options", "LaTeX", icon = icon("print", lib = "glyphicon")),
+                                                          bsTooltip(id="tex_options", title = "Print latex table to R console", placement="right", options = list(container = 'body')),
+                                                          uiOutput("ui_tex_modal")
+                                          )
+                                        )
+                                        ),
                                  column(9, dataTableOutput("all_summary_out"))
                                )
                       )
@@ -139,14 +158,21 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
            #### TAB: EXPLORE ####
            tabPanel(title = "Explore", icon = icon("eye-open", lib = "glyphicon"),
                     fluidRow(
-                      column(3, selectizeInput(inputId = "param", label = h4("Select parameter"), choices = .make_param_list(object), multiple = FALSE)),
+                      column(3, selectizeInput(inputId = "param", label = h4("Select parameter"), choices = .make_param_list(object), selected = .make_param_list(object)[1], multiple = FALSE)),
                       column(7, offset = 1, dataTableOutput("parameter_summary_out"))
                     ),
                     hr(),
                     navlistPanel(well = FALSE,
                                  #### multiview ####
                                  tabPanel("Multiview", icon = icon("th-large", lib = "glyphicon"),
-                                          uiOutput("ui_multiview_customize"),
+                                          bsCollapse(
+                                            bsCollapsePanel(title = "View Options", id = "multiview_collapse",
+                                                            checkboxInput("multiview_warmup", label = strong(style = "color: white;", "Include warmup"), value = FALSE),
+                                                            hr(),
+                                                            downloadButton("download_multiview", "Save as ggplot2 objects")
+                                            )
+                                          ),
+                                          bsTooltip("download_multiview", title = "Will be a list object with one element per plot.", placement="right"),
                                           splitLayout(h5("Density"), h5("Autocorrelation")),
                                           splitLayout(plotOutput("multiview_density", height = "150"), 
                                                       plotOutput("multiview_autocorr", height = "150"),
@@ -157,7 +183,18 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                  ),
                                  #### dynamic trace plot ####
                                  tabPanel("Dynamic trace", # icon = icon("line-chart"),
-                                          uiOutput("ui_dynamic_trace_customize"),
+                                          bsCollapse(
+                                            bsCollapsePanel(title = "View Options", id = "dynamic_trace_collapse",
+                                                            fluidRow(
+                                                              column(3, numericInput("dynamic_trace_chain", label = strong("Chain (0 = all)"), min = 0, max = object@nChains, step = 1, value = 0)),
+                                                              column(4, radioButtons("dynamic_trace_stack", label = strong("Lines"), choices = list(Normal = "normal", Stacked = "stacked"), selected = "normal", inline = TRUE)),
+                                                              column(3, radioButtons("dynamic_trace_grid", label = strong("Grid"), choices = list(Show = "show", Hide = "hide"), selected = "hide", inline = TRUE))
+                                                            ),
+                                                            hr(),
+                                                            uiOutput("ui_dynamic_trace_helptext")
+                                            )
+                                          ),
+                                          bsTooltip("dynamic_trace_stack", title = "Stack chains vertically. (Note that the y-axis values will no longer correspond to the true values when this option is enabled.)", placement="right", options = list(container = 'body')),
                                           dygraphs::dygraphOutput("dynamic_trace_plot_out"),
                                           br(), br()
                                  ),
@@ -166,12 +203,14 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                           radioButtons("distribution", label = "", choices = c("Density", "Histogram"), inline = TRUE),
                                           conditionalPanel(condition = "input.distribution == 'Density'",
                                                            uiOutput("ui_density_customize"),
-                                                           textInput("dens_transform_x", "Transform", value = "x"),
+                                                           textInput("dens_transform_x", strong(style = "font-size: 11px;","Transform"), value = "x"),
+                                                           bsTooltip("dens_transform_x", title = "A function of x, e.g. log(x), log(x/(1-x)), sqrt(x), x^2, etc.", placement="right"),
                                                            plotOutput("density_plot_out")
                                           ),
                                           conditionalPanel(condition = "input.distribution == 'Histogram'",
                                                            uiOutput("ui_hist_customize"),
-                                                           textInput("hist_transform_x", "Transform", value = "x"),
+                                                           textInput("hist_transform_x", strong(style = "font-size: 11px;","Transform"), value = "x"),
+                                                           bsTooltip("hist_transform_x", title = "A function of x, e.g. log(x), log(x/(1-x)), sqrt(x), x^2, etc.", placement="right"),
                                                            plotOutput("hist_plot_out")
                                           ),
                                           br()
@@ -180,6 +219,14 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                  tabPanel("Dynamic 3D scatterplot", 
                                           uiOutput("ui_triviariate_customize"),
                                           uiOutput("ui_trivariate_select"),
+                                          fluidRow(
+                                            column(3, textInput("trivariate_transform_x", label = strong(style = "font-size: 11px;","Transform x"), value = "x")),
+                                            column(3, textInput("trivariate_transform_y", label = strong(style = "font-size: 11px;", "Transform y"), value = "y")),
+                                            column(3, textInput("trivariate_transform_z", label = strong(style = "font-size: 11px;", "Transform z"), value = "z"))
+                                          ),
+                                          bsTooltip("trivariate_transform_x", title = "A function of x, e.g. log(x), log(x/(1-x)), sqrt(x), x^2, etc.", placement="top", options = list(container = 'body')),
+                                          bsTooltip("trivariate_transform_y", title = "A function of y, e.g. log(y), log(y/(1-y)), sqrt(y), y^2, etc.", placement="top", options = list(container = 'body')),
+                                          bsTooltip("trivariate_transform_z", title = "A function of z, e.g. log(z), log(z/(1-z)), sqrt(z), z^2, etc.", placement="top", options = list(container = 'body')),
                                           br(),
                                           threejs::scatterplotThreeOutput("trivariate_plot_out"),
                                           br()
@@ -187,7 +234,13 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                  #### bivariate plot #####
                                  tabPanel("Bivariate",
                                           uiOutput("ui_bivariate_customize"),
-                                          uiOutput("ui_bivariate_select"),
+                                          fluidRow(
+                                            column(4, selectizeInput("bivariate_param_y", label = strong(style = "color: #337ab7;", "y-axis"), choices = rev(.make_param_list(object)), selected = rev(.make_param_list(object))[1], multiple = FALSE)),
+                                            column(3, offset = 2, textInput("bivariate_transform_y", label = strong(style = "font-size: 11px;","Transform y"), value = "y")),
+                                            column(3, textInput("bivariate_transform_x", label = strong(style = "font-size: 11px;","Transform x"), value = "x"))
+                                          ),
+                                          bsTooltip("bivariate_transform_x", title = "A function of x, e.g. log(x), log(x/(1-x)), sqrt(x), x^2, etc.", placement="top", options = list(container = 'body')),
+                                          bsTooltip("bivariate_transform_y", title = "A function of y, e.g. log(y), log(y/(1-y)), sqrt(y), y^2, etc.", placement="top", options = list(container = 'body')),
                                           plotOutput("bivariate_plot_out"),
                                           br()
                                  )

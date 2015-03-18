@@ -9,7 +9,7 @@ output$ui_triviariate_customize <- renderUI({
                       column(2, radioButtons("trivariate_flip", strong("y-axis"), choices = list(Normal = "normal", Flipped = "flip"), selected = "normal", inline = FALSE))
                     ),
                     hr(),
-                    h5(style = "color: white;", "Controlling the dynamic 3D scatterplot"),
+                    h5(style = "color: #337ab7;", "Controlling the dynamic 3D scatterplot"),
                     helpText(style = "color: white; font-size: 12px;", "Use your mouse or trackpad to rotate the plot and zoom in or out.")
     )
   )
