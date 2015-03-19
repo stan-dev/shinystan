@@ -21,7 +21,9 @@
 #' @param directory Path to shinystan_for_shinyapps library See \strong{Details}.
 #' @param ppcheck_data Optional. Vector of observations to use for graphical posterior 
 #' predictive checking. 
-#' @param ... Arguments to pass to \code{\link[shinyapps]{deployApp}}.
+#' @param ... Arguments other than \code{appDir} to pass to 
+#' \code{\link[shinyapps]{deployApp}}. The \code{appDir} argument should not be
+#' specified (it will be automatically set to \code{directory}) . 
 #' 
 #' @details In order to deploy a shinyStan app to shinyapps.io you first 
 #' need to download the \code{shinystan_for_shinyapps} library, which is 
@@ -43,7 +45,8 @@ deploy_shinystan <- function(sso, directory, ppcheck_data, ...) {
   
   shinystan_object <- sso
   y <- ppcheck_data
-  save(shinystan_object, file = normalizePath(directory,"/shinystan_object.RData"))
-  save(y, file = normalizePath(directory,"/y.RData"))
-  shinyapps::deployApp(appDir = normalizePath(directory), ...)
+  directory <- normalizePath(directory)
+  save(shinystan_object, file = file.path(directory,"shinystan_object.RData"))
+  save(y, file = file.path(directory,"y.RData"))
+  shinyapps::deployApp(appDir = directory, ...)
 }

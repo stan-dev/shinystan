@@ -4,26 +4,31 @@
 \alias{deploy_shinystan}
 \title{Deploy to shinyapps.io}
 \usage{
-deploy_shinystan(sso, directory, y, ...)
+deploy_shinystan(sso, directory, ppcheck_data, ...)
 }
 \arguments{
 \item{sso}{The \code{shinystan} object to use.}
 
-\item{directory}{Path to shinystan_for_shinyapps repository. See \strong{Details}.}
+\item{directory}{Path to shinystan_for_shinyapps library See \strong{Details}.}
 
-\item{y}{Optional. Vector of observations to use for graphical posterior
+\item{ppcheck_data}{Optional. Vector of observations to use for graphical posterior
 predictive checking.}
 
-\item{...}{Arguments to pass to \code{\link[shinyapps]{deployApp}}.}
+\item{...}{Arguments other than \code{appDir} to pass to
+\code{\link[shinyapps]{deployApp}}. The \code{appDir} argument should not be
+specified (it will be automatically set to \code{directory}) .}
 }
 \description{
 Deploy to shinyapps.io
 }
 \details{
 In order to deploy a shinyStan app to shinyapps.io you first
-need to clone the \code{shinystan_for_shinyapps} GitHub repository, which
-contains a modified version of the shinyStan source code required for deploying
-to shinyapps.io.
+need to download the \code{shinystan_for_shinyapps} library, which is
+available at https://github.com/stan-dev/shinystan/releases.
+}
+\note{
+With one exception, all shinyStan features should work properly on shinyapps.io.
+The exception is the trivariate 3D scatterplot, which is not available at this time.
 }
 \seealso{
 \code{\link[shinyapps]{deployApp}}
