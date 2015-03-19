@@ -18,21 +18,23 @@
 #' Deploy to shinyapps.io
 #'
 #' @param sso The \code{shinystan} object to use.
-#' @param directory Path to shinystan_for_shinyapps repository. See \strong{Details}.
-#' @param ... Arguments to pass to \code{\link[shinyapps]{deployApp}}.
-#' @param y Optional. Vector of observations to use for graphical posterior 
+#' @param directory Path to shinystan_for_shinyapps library See \strong{Details}.
+#' @param ppcheck_data Optional. Vector of observations to use for graphical posterior 
 #' predictive checking. 
+#' @param ... Arguments to pass to \code{\link[shinyapps]{deployApp}}.
 #' 
 #' @details In order to deploy a shinyStan app to shinyapps.io you first 
-#' need to clone the \code{shinystan_for_shinyapps} GitHub repository, which
-#' contains a modified version of the shinyStan source code required for deploying
-#' to shinyapps.io. 
+#' need to download the \code{shinystan_for_shinyapps} library, which is 
+#' available at https://github.com/stan-dev/shinystan/releases. 
+#' 
+#' @note With one exception, all shinyStan features should work properly on shinyapps.io. 
+#' The exception is the trivariate 3D scatterplot, which is not available at this time.  
 #' 
 #' @seealso \code{\link[shinyapps]{deployApp}}
 #' @export
 #' 
 
-deploy_shinystan <- function(sso, directory, y, ...) {
+deploy_shinystan <- function(sso, directory, ppcheck_data, ...) {
   
   has_shinyapps <- requireNamespace("shinyapps", quietly = TRUE)
   if (!has_shinyapps) stop("deploy_shinystan requires the shinyapps package.", call. = FALSE)
@@ -40,7 +42,8 @@ deploy_shinystan <- function(sso, directory, y, ...) {
   # Missing: Need to clone shinystan_for_shinyapps repo from GitHub and place in directory
   
   shinystan_object <- sso
+  y <- ppcheck_data
   save(shinystan_object, file = normalizePath(directory,"/shinystan_object.RData"))
-  save(shinystan_object, file = normalizePath(directory,"/y.RData"))
+  save(y, file = normalizePath(directory,"/y.RData"))
   shinyapps::deployApp(appDir = normalizePath(directory), ...)
 }
