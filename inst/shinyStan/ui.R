@@ -64,7 +64,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                                           downloadButton("download_all_summary", "Save"),
                                                           bsTooltip(id="download_all_summary", title = "Save as data.frame (.RData)", placement="right", options = list(container = 'body')),
                                                           actionButton("tex_options", "LaTeX", icon = icon("print", lib = "glyphicon")),
-                                                          bsTooltip(id="tex_options", title = "Print latex table to R console", placement="right", options = list(container = 'body')),
+                                                          # bsTooltip(id="tex_options", title = "Print latex table to R console", placement="right", options = list(container = 'body')),
                                                           uiOutput("ui_tex_modal")
                                           )
                                         )
@@ -170,9 +170,9 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                                             checkboxInput("multiview_warmup", label = strong(style = "color: white;", "Include warmup"), value = FALSE),
                                                             hr(),
                                                             downloadButton("download_multiview", "Save as ggplot2 objects")
+                                                            # bsTooltip("download_multiview", title = "Will be a list with three elements corresponding the the ggplot2 objects for the three plots.", placement="right")
                                             )
                                           ),
-                                          bsTooltip("download_multiview", title = "Will be a list with three elements corresponding the the ggplot2 objects for the three plots.", placement="right"),
                                           splitLayout(h5("Density"), h5("Autocorrelation")),
                                           splitLayout(plotOutput("multiview_density", height = "150"), 
                                                       plotOutput("multiview_autocorr", height = "150"),
