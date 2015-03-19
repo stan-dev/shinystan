@@ -11,7 +11,8 @@
                   "0.50.1 of the shinyBS package (you ",
                   "have version ", sbs_version, ").",
                   "\nTo install the preferred version ",
-                  "run \ndevtools::install_github('jgabry/shinyBS@shinyBS_for_shinyStan')"
+                  "restart R and then run ",
+                  "\ndevtools::install_github('jgabry/shinyBS@shinyBS_for_shinyStan')"
     )
   }
   packageStartupMessage(msg)
