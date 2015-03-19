@@ -33,8 +33,11 @@ function(input, output, session) {
   files <- list.files("server_files", full.names = TRUE, recursive = TRUE)
   for (f in files) source(f, local = TRUE)
 
-  addTooltip(session, "download_multiview", title = "Will be a list with three elements corresponding the the ggplot2 objects for the three plots.", placement="right")
-  addTooltip(session, id="tex_options", title = "Print latex table to R console", placement="right", options = list(container = 'body'))
+  # tooltips
+  for (id in seq_along(tooltip_ids)) {
+    addTooltip(session, id = tooltip_ids[id], trigger = "hover", placement = tooltip_placements[id],
+               title = tooltip_msgs[id], options = list(container = 'body'))
+  }
   
   #### DATATABLE: summary stats (all parameters) ####
   output$all_summary_out <- renderDataTable({
