@@ -19,8 +19,7 @@ shinyStan provides immediate, informative, customizable visual and numerical sum
 ### Making saving and sharing more convenient 
 shinyStan allows you to store the basic components of an entire project (code, posterior samples, graphs, tables, notes) in a single object. Users can also export graphics into their R sessions as ggplot2 objects for further customization and easy integration in reports or post-processing for publication.
 
-***
 
 ### Licensing
 
-shinyStan is licensed under GPLv3.
+shinyStan is open source licensed under the GNU Public License, version 3 (GPLv3).
