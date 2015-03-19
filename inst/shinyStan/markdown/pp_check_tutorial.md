@@ -78,4 +78,4 @@ If we've saved our Stan code in a file called `stan_code.stan` then we can run t
 
 Once we've launched **shinyStan** we can navigate to the page for posterior predictive checking. In the dropdown menus it will ask us to select the object containing our data from our R global environment and the name of the paramter from our model containing the posterior predictive replications. So we enter `y` and `y_rep`, respectively. 
 
-**shinyStan** will then generate graphics that will help us check the fit of our model. 
+**shinyStan** will then generate graphics that will aid in checking the fit of our model including comparisons of the distribution of the observed data to the distributions of the posterior predictive replications, distributions of test statistics, and residual plots.

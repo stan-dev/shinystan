@@ -20,5 +20,5 @@ output$ui_credits <- renderUI({
   michael <- "Michael Andreae,"
   yuanjun <- "Yuanjun Gao,"
   dongying <- "Dongying Song"
-  HTML(paste(strong(jonah_and_stan), paste("with", michael, yuanjun, dongying), sep = '<br/>'))
+  HTML(paste(strong(jonah_and_stan), paste("with contributions from", michael, yuanjun, dongying), sep = '<br/>'))
 })

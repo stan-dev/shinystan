@@ -28,10 +28,10 @@ output$ui_ppcheck_navlist <- renderUI({
                tabPanel("Distributions of test statistics",
                         uiOutput("ui_pp_hists_test_statistics")
                ),
-               tabPanel("Scatters",
+               tabPanel("Scatterplots",
                         uiOutput("ui_pp_scatters")
                ),
-               tabPanel("Histogram of residuals",
+               tabPanel("Histograms of residuals",
                         uiOutput("ui_pp_hist_resids")
                ),
                "About",
