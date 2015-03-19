@@ -18,16 +18,19 @@
 #' Deploy to shinyapps.io
 #'
 #' @param sso The \code{shinystan} object to use.
-#' @param directory path to directory to be created to store modified shinyStan for shinyapps.io
-#' or \code{function(param1,param2)}. See strong(Examples), below.
+#' @param directory Path to shinystan_for_shinyapps repository. See \strong{Details}.
 #' @param ... Arguments to pass to \code{\link[shinyapps]{deployApp}}.
 #' @param y Optional. Vector of observations to use for graphical posterior 
 #' predictive checking. 
+#' 
+#' @details In order to deploy a shinyStan app to shinyapps.io you first 
+#' need to clone the \code{shinystan_for_shinyapps} GitHub repository, which
+#' contains a modified version of the shinyStan source code required for deploying
+#' to shinyapps.io. 
+#' 
 #' @seealso \code{\link[shinyapps]{deployApp}}
 #' @export
-#' @examples
-#' \dontrun{
-#' }
+#' 
 
 deploy_shinystan <- function(sso, directory, y, ...) {
   
