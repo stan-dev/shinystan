@@ -1,5 +1,5 @@
 #######################################################
-# Installation instructions: 
+# shinyStan Installation instructions: 
 
 # 1) Restart R
 # 2) Run install_shinystan(), included below, to install
