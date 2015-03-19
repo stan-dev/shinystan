@@ -62,9 +62,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                                                              selected = c("Rhat", "n_eff", "mean", "sd", "2.5%", "50%", "97.5%")),
                                                           
                                                           downloadButton("download_all_summary", "Save"),
-                                                          bsTooltip(id="download_all_summary", title = "Save as data.frame (.RData)", placement="right", options = list(container = 'body')),
                                                           actionButton("tex_options", "LaTeX", icon = icon("print", lib = "glyphicon")),
-                                                          bsTooltip(id="tex_options", title = "Print latex table to R console", placement="right", options = list(container = 'body')),
                                                           uiOutput("ui_tex_modal")
                                           )
                                         )
@@ -172,7 +170,6 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                                             downloadButton("download_multiview", "Save as ggplot2 objects")
                                             )
                                           ),
-                                          bsTooltip("download_multiview", title = "Will be a list with three elements corresponding the the ggplot2 objects for the three plots.", placement="right"),
                                           splitLayout(h5("Density"), h5("Autocorrelation")),
                                           splitLayout(plotOutput("multiview_density", height = "150"), 
                                                       plotOutput("multiview_autocorr", height = "150"),
@@ -194,7 +191,6 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                                             uiOutput("ui_dynamic_trace_helptext")
                                             )
                                           ),
-                                          bsTooltip("dynamic_trace_stack", title = "Stack chains vertically. (Note that the y-axis values will no longer correspond to the true values when this option is enabled.)", placement="right", options = list(container = 'body')),
                                           dygraphs::dygraphOutput("dynamic_trace_plot_out"),
                                           br(), br()
                                  ),
@@ -204,13 +200,11 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                           conditionalPanel(condition = "input.distribution == 'Density'",
                                                            uiOutput("ui_density_customize"),
                                                            textInput("dens_transform_x", strong(style = "font-size: 11px;","Transform"), value = "x"),
-                                                           bsTooltip("dens_transform_x", title = "A function of x, e.g. log(x), log(x/(1-x)), sqrt(x), x^2, etc.", placement="right"),
                                                            plotOutput("density_plot_out")
                                           ),
                                           conditionalPanel(condition = "input.distribution == 'Histogram'",
                                                            uiOutput("ui_hist_customize"),
                                                            textInput("hist_transform_x", strong(style = "font-size: 11px;","Transform"), value = "x"),
-                                                           bsTooltip("hist_transform_x", title = "A function of x, e.g. log(x), log(x/(1-x)), sqrt(x), x^2, etc.", placement="right"),
                                                            plotOutput("hist_plot_out")
                                           ),
                                           br()
@@ -224,9 +218,6 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                             column(3, textInput("trivariate_transform_y", label = strong(style = "font-size: 11px;", "Transform y"), value = "y")),
                                             column(3, textInput("trivariate_transform_z", label = strong(style = "font-size: 11px;", "Transform z"), value = "z"))
                                           ),
-                                          bsTooltip("trivariate_transform_x", title = "A function of x, e.g. log(x), log(x/(1-x)), sqrt(x), x^2, etc.", placement="top", options = list(container = 'body')),
-                                          bsTooltip("trivariate_transform_y", title = "A function of y, e.g. log(y), log(y/(1-y)), sqrt(y), y^2, etc.", placement="top", options = list(container = 'body')),
-                                          bsTooltip("trivariate_transform_z", title = "A function of z, e.g. log(z), log(z/(1-z)), sqrt(z), z^2, etc.", placement="top", options = list(container = 'body')),
                                           br(),
                                           threejs::scatterplotThreeOutput("trivariate_plot_out"),
                                           br()
@@ -239,8 +230,6 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                             column(3, offset = 2, textInput("bivariate_transform_y", label = strong(style = "font-size: 11px;","Transform y"), value = "y")),
                                             column(3, textInput("bivariate_transform_x", label = strong(style = "font-size: 11px;","Transform x"), value = "x"))
                                           ),
-                                          bsTooltip("bivariate_transform_x", title = "A function of x, e.g. log(x), log(x/(1-x)), sqrt(x), x^2, etc.", placement="top", options = list(container = 'body')),
-                                          bsTooltip("bivariate_transform_y", title = "A function of y, e.g. log(y), log(y/(1-y)), sqrt(y), y^2, etc.", placement="top", options = list(container = 'body')),
                                           plotOutput("bivariate_plot_out"),
                                           br()
                                  )
