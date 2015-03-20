@@ -14,6 +14,7 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 
+
 output$ui_background_texture <- renderUI({
   bg <- input$background_texture
   if (bg == "default") NULL 
@@ -25,4 +26,3 @@ output$ui_body_font <- renderUI({
   if (fnt == "default") NULL 
   else tags$style(type = "text/css", paste0("body {font-family: ", fnt,";}"))
 })
-

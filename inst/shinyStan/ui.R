@@ -271,7 +271,10 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                       ), # END Help
                       #### TAB: Appearance ####
                       tabPanel("Appearance",
+                               h3("Appearance settings"),
+                               br(),br(),
                                selectInput("background_texture", "Background texture", choices = c("Plain (white)" = "default", "Subtle" = "subtle",  "Concrete" = "concrete", "White brick" = "whitebrick", "Vignette" = "vignette", "Sweater" = "sweater", "Stucco" = "stucco", "Crumpled paper" = "crumpled", "Green cup" = "greencup"), selected = "default"),
+                               br(),br(),
                                selectInput("body_font", "Font family", choices = c(Default = "default", 
                                                                                    Corbel = "'Corbel'", 
                                                                                    "Times New Roman" = "'Times New Roman', Times, serif", 
