@@ -269,10 +269,23 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                       tabPanel(title = "Help",
                                uiOutput("ui_help")
                       ), # END Help
-                      #### TAB: Settings ####
-                      tabPanel("Settings",
+                      #### TAB: Appearance ####
+                      tabPanel("Appearance",
+                               h3("Appearance settings"),
+                               br(),br(),
                                selectInput("background_texture", "Background texture", choices = c("Plain (white)" = "default", "Subtle" = "subtle",  "Concrete" = "concrete", "White brick" = "whitebrick", "Vignette" = "vignette", "Sweater" = "sweater", "Stucco" = "stucco", "Crumpled paper" = "crumpled", "Green cup" = "greencup"), selected = "default"),
-                               uiOutput("ui_background_texture")
+                               br(),br(),
+                               selectInput("body_font", "Font family", choices = c(Default = "default", 
+                                                                                   Arial = "Arial, Helvetica, sans-serif", 
+                                                                                   Corbel = "'Corbel'", 
+                                                                                   Georgia = "Georgia, serif",
+                                                                                   "Palatino Linotype" = "'Palatino Linotype', 'Book Antiqua', Palatino, serif", 
+                                                                                   Tahoma = "Tahoma, Geneva, sans-serif",
+                                                                                   "Times New Roman" = "'Times New Roman', Times, serif", 
+                                                                                   Trebuchet = "'Trebuchet MS', Helvetica, sans-serif",
+                                                                                   Verdana = "Verdana, Geneva, sans-serif")),
+                               uiOutput("ui_background_texture"),
+                               uiOutput("ui_body_font")
                       )
            ), # END navbarMenu MORE
            
