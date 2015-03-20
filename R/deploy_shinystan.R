@@ -46,7 +46,7 @@
 #'
 #' # if we first set the working directory to be 'shinystan_for_shinyapps' 
 #' # we don't need to specify the appDir argument   
-#' setwd("shinystan_for_shinyapps") 
+#' setwd(path to shinystan_for_shinyapps library) 
 #' deploy_shinystan(my_sso, appName = "my_shinystan_app", account = "username")
 #' }
 
