@@ -2,7 +2,8 @@
 
 # shinyStan R package and Shiny app
 
-![shinystan](https://cloud.githubusercontent.com/assets/7796803/6375377/a740c96c-bce4-11e4-82ef-4318a47a1116.png)
+[![shinystan](https://cloud.githubusercontent.com/assets/7796803/6375377/a740c96c-bce4-11e4-82ef-4318a47a1116.png)](https://jsg2201.shinyapps.io/shinyStan_demo/)
+[Try the online demo](https://jsg2201.shinyapps.io/shinyStan_demo/)
 
 ## Installing shinyStan
 
