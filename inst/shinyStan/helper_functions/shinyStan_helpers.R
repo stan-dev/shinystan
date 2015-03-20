@@ -481,8 +481,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
       scale_fill_discrete("") +
       labs(x = x_lab, y = "") +
       x_scale + # y_scale +
-      theme_classic() %+replace% (title_txt + axis_color + axis_labs + fat_axis + no_yaxs + transparent)
-    
+      theme_classic() %+replace% (title_txt + axis_color + axis_labs + fat_axis + no_yaxs + transparent) 
+      
     if (title == TRUE) graph <- graph + ggtitle(ttl)
     
     return(graph)
@@ -495,6 +495,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
   graph <- graph +
     labs(x = param, y = "") +
     x_scale + # y_scale +
+    labs(x = x_lab, y = "") +
     geom_ribbon(ymin = 0, fill = fclr, color = fclr, alpha = if (prior_fam == "None") 1 else 0.85) +
     theme_classic() %+replace% (title_txt + axis_color + axis_labs + fat_axis + no_yaxs + transparent)
   
