@@ -4,22 +4,25 @@
 \alias{deploy_shinystan}
 \title{Deploy to shinyapps.io}
 \usage{
-deploy_shinystan(sso, directory, ppcheck_data, ...)
+deploy_shinystan(sso, ppcheck_data, appDir = getwd(), appName = NULL,
+  account = NULL)
 }
 \arguments{
 \item{sso}{The \code{shinystan} object to use.}
 
-\item{directory}{Path to shinystan_for_shinyapps library See \strong{Details}.}
-
 \item{ppcheck_data}{Optional. Vector of observations to use for graphical posterior
 predictive checking.}
 
-\item{...}{Arguments other than \code{appDir} to pass to
-\code{\link[shinyapps]{deployApp}}. The \code{appDir} argument should not be
-specified (it will be automatically set to \code{directory}) .}
+\item{appDir}{Path to shinystan_for_shinyapps library. See \strong{Details}.}
+
+\item{appName}{The name to use for the application.}
+
+\item{account}{ShinyApps account username. Only required if multiple
+accounts are configured on the system. See \code{\link[shinyapps]{deployApp}}
+and \code{\link[shinyapps]{accounts}}.}
 }
 \description{
-Deploy to shinyapps.io
+Requires a ShinyApps account. Visit http://www.shinyapps.io/ to sign up.
 }
 \details{
 In order to deploy a shinyStan app to shinyapps.io you first
@@ -28,9 +31,22 @@ available at https://github.com/stan-dev/shinystan/releases.
 }
 \note{
 With one exception, all shinyStan features should work properly on shinyapps.io.
-The exception is the trivariate 3D scatterplot, which is not available at this time.
+The exception is the trivariate 3D scatterplot, which is not available in shinyStan apps
+on shinyapps.io at this time.
+}
+\examples{
+\dontrun{
+
+# For this example assume my_sso is the name of the shinystan object
+# you want to use and that your ShinyApps username is 'username'.
+
+# if we first set the working directory to be 'shinystan_for_shinyapps'
+# we don't need to specify the appDir argument
+setwd("shinystan_for_shinyapps")
+deploy_shinystan(my_sso, appName = "my_shinystan_app", account = "username")
+}
 }
 \seealso{
-\code{\link[shinyapps]{deployApp}}
+\code{\link[shinyapps]{deployApp}}, \code{\link[shinyapps]{accounts}}
 }
 
