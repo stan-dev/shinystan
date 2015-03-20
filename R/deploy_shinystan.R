@@ -60,12 +60,12 @@ deploy_shinystan <- function(sso, ppcheck_data, appDir = getwd(), appName = NULL
   appDir <- normalizePath(appDir)
   
   shinystan_object <- sso
-  save(shinystan_object, file = file.path(appDir,"shinystan_object.RData"))
+  save(shinystan_object, file = file.path(appDir, "shinystan_object.RData"))
   
   if (!missing(ppcheck_data)) {
     y <- ppcheck_data
-    save(y, file = file.path(appDir,"y.RData"))
+    save(y, file = file.path(appDir, "y.RData"))
   }
   
-  shinyapps::deployApp(appDir = appDir, appName = appName, lint = FALSE)
+  shinyapps::deployApp(appDir = appDir, appName = appName, account = account, lint = FALSE)
 }
