@@ -12,6 +12,9 @@
 #######################################################
 
 install_shinystan <- function() {
+
+  if (getRversion() < '3.1.2') stop("shinyStan requires R version 3.1.2 or greater.")
+  
   msg <- "Note: this will install or update any missing or out-of-date packages needed to run shinyStan. Do you want to continue?"
   continue <- select.list(choices = c("Yes", "No"), title = msg, graphics = FALSE)
   if (continue == "No") {
@@ -28,7 +31,7 @@ install_shinystan <- function() {
   } 
   
   # install needed packages from CRAN
-  install.packages(c("shiny","knitr", "htmlwidgets", "maps"), dependencies = TRUE)
+  install.packages(c("shiny", "knitr", "htmlwidgets", "maps"), dependencies = TRUE)
   
   # install needed packages from GitHub
   devtools::install_github("jgabry/shinyBS", ref = "shinyBS_for_shinyStan")
