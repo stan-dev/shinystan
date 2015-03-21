@@ -11,7 +11,7 @@
 
 ## Installing shinyStan
 
-For installation instructions see the **Installing shinyStan** page in the [shinyStan wiki](https://github.com/stan-dev/shinystan/wiki/Installing-shinyStan)
+For installation instructions see the **Installing shinyStan** page in the [shinyStan wiki](https://github.com/stan-dev/shinystan/wiki/Installing-shinyStan).
 
 ## About shinyStan
 
