@@ -26,7 +26,7 @@ install_shinystan <- function() {
   try(remove.packages("shinyStan"), silent = TRUE)
   try(remove.packages("shinyBS"), silent = TRUE)
   
-  if (!requireNamespace(devtools, quietly = TRUE)) {
+  if (!requireNamespace("devtools", quietly = TRUE)) {
     install.packages("devtools")
   } 
   
