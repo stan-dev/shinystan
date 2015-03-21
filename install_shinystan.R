@@ -12,6 +12,9 @@
 #######################################################
 
 install_shinystan <- function() {
+  
+  if (getRversion() < '3.1.2') stop("shinyStan requires R version 3.1.2 or greater.")
+  
   msg <- "Note: this will install or update any missing or out-of-date packages needed to run shinyStan. Do you want to continue?"
   continue <- select.list(choices = c("Yes", "No"), title = msg, graphics = FALSE)
   if (continue == "No") {
@@ -19,22 +22,26 @@ install_shinystan <- function() {
     return(invisible(NULL))
   }
   
-  try(remove.packages("SHINYstan"), silent = TRUE)
+  # remove old versions of shinyStan and shinyBS
+  try(remove.packages("shinyStan"), silent = TRUE)
   try(remove.packages("shinyBS"), silent = TRUE)
   
-  if (!require(devtools)) install.packages("devtools")
+  # check for devtools
+  if (!requireNamespace("devtools", quietly = TRUE)) {
+    install.packages("devtools")
+  } 
   
-  if (!("shiny" %in% installed.packages()[,"Package"])) {
-    install.packages("shiny")
-  } else {
-    shiny_ok <- packageVersion("shiny") == "0.11.1"
-    if (!shiny_ok) install.packages("shiny")
-  }
+  # install needed packages from CRAN
+  install.packages(c("shiny", "knitr", "htmlwidgets", "maps"), dependencies = TRUE)
   
-  install.packages(c("knitr", "htmlwidgets", "maps"), dependencies = TRUE)
-  # devtools::install_github("ebailey78/shinyBS", ref = "f56e41b236ecda63c28af2ffd34b7b72a76c5ec5", dependencies = TRUE)
+  # install needed packages from GitHub
   devtools::install_github("jgabry/shinyBS", ref = "shinyBS_for_shinyStan")
   devtools::install_github("bwlewis/rthreejs", dependencies = TRUE)
+  
+  # install shinyapps package for deploying to shinyapps.io
+  devtools::install_github("rstudio/shinyapps")
+  
+  # install latest shinyStan release from GitHub
   devtools::install_github("stan-dev/shinystan", build_vignettes = TRUE)
   
   message("\n All set. \n You might need to restart R before using shinyStan. \n")
