@@ -8,19 +8,19 @@ existing parameters}
 generate_quantity(sso, param1, param2, fun, new_name)
 }
 \arguments{
-\item{sso}{The \code{shinystan} object to modify}
+\item{sso}{The \code{shinystan} object to modify.}
 
-\item{param1}{Name of first parameter as character string}
+\item{param1}{Name of first parameter as character string.}
 
-\item{param2}{Optional. Name of second paramter as character string}
+\item{param2}{Optional. Name of second paramter as character string.}
 
 \item{fun}{Function to call, i.e. \code{function(param1)}
-or \code{function(param1,param2)}. See strong(Examples), below.}
+or \code{function(param1,param2)}. See \strong(Examples), below.}
 
-\item{new_name}{Name for the new parameter as character string}
+\item{new_name}{Name for the new parameter as character string.}
 }
 \value{
-A \code{shinystan} object including \code{new_name} as a parameter
+A \code{shinystan} object with \code{new_name} included as a parameter.
 }
 \description{
 Add to \code{shinystan} object a new parameter as a function of one or two
