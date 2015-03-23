@@ -91,3 +91,12 @@ mcmclist2matrix <- function(x) {
   dimnames(out) <- list(NULL, rownames)
   out
 }
+
+
+get_type <- function(x) {
+  if (is.shinystan(x)) return("shinystan")
+  if (is_stan(x)) return("stanfit")
+  if (inherits(x, "mcmc.list")) return("mcmclist")
+  if (is.list(x) & !inherits(x, "mcmc.list")) return("chainlist")
+  return("other")
+}
