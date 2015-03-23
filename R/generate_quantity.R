@@ -62,8 +62,8 @@ generate_quantity <- function(sso, param1, param2, fun, new_name) {
   if (missing(new_name)) stop_missing("new_name")
 
   sso_name <- deparse(substitute(sso))
-  name_exists <- new_name %in% sso@param_names  
   if (!is.shinystan(sso)) stop(paste(sso_name, "is not a shinystan object."))
+  name_exists <- new_name %in% sso@param_names  
   if (name_exists) stop(paste("There is already a parameter named", new_name))
   
   message("This might take a moment for large shinystan objects")
