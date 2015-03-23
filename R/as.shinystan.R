@@ -89,21 +89,15 @@
 #'}
 
 as.shinystan <- function(X, ...) {
-  get_type <- function(x) {
-    if (inherits(x, "shinystan")) return("shinystan")
-    if (inherits(x, "stanfit")) return("stanfit")
-    if (inherits(x, "mcmc.list")) return("mcmclist")
-    if (is.list(x) & !inherits(x, "mcmc.list")) return("chainlist")
-    return("other")
-  }
-
+  
   Xname <- deparse(substitute(X))
   what_X_is <- get_type(X)
-
+  
   if (what_X_is == "shinystan") {
-    print(paste0(Xname,
-               " is already a shinystan object.", "\n",
-               " You can use launch_shinystan(",Xname,") to launch shinyStan."))
+    message(
+      paste0(Xname, " is already a shinystan object.\n",
+             "You can use launch_shinystan(", Xname, ") to launch shinyStan.")
+    )
     return(X)
   }
   if (what_X_is == "stanfit") return(stan2shinystan(X, ...))
@@ -113,7 +107,7 @@ as.shinystan <- function(X, ...) {
     if (!is.array(X)) stop(paste(Xname, "is not a valid input type. See ?as.shinystan"), call. = FALSE)
     array2shinystan(X, ...)
   }
-
+  
 }
 
 #' @rdname as.shinystan

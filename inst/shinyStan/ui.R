@@ -290,7 +290,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
            ), # END navbarMenu MORE
            
            #### QUIT ####
-           tabPanel(tags$div(style = "color: #f9dd67;", "Quit"), value = "quit",
+           tabPanel(strong(style = "color: #f9dd67;", "Quit"), value = "quit", icon = icon("close"),
                     h1("Thanks for using shinyStan."),
                     br(),br(),
                     h5("It's safe to close this browser window.")
