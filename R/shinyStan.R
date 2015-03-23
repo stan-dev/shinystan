@@ -46,10 +46,20 @@
 #' \code{\link[shinyStan]{launch_shinystan_demo}} or try it with one of 
 #' your own models using \code{\link[shinyStan]{launch_shinystan}}. 
 #'    
-#' @importFrom plyr ddply summarise
-#' @importFrom reshape2 melt
+#' 
+#' @import dygraphs
+#' @import ggplot2
+#' @import methods
 #' @import shiny
 #' @import shinyBS
+#' @import threejs
+#' @import xts
+#' @importFrom gridExtra arrangeGrob grid.arrange
+#' @importFrom gtools mixedsort
+#' @importFrom markdown markdownToHTML
+#' @importFrom plyr ddply summarise
+#' @importFrom reshape2 melt
+#' @importFrom xtable xtable print.xtable
 #'
 #' @docType package
 #' @name shinyStan
