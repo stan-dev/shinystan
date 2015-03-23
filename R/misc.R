@@ -92,7 +92,7 @@ mcmclist2matrix <- function(x) {
   out
 }
 
-
+# check objects for as.shinystan
 get_type <- function(x) {
   if (is.shinystan(x)) return("shinystan")
   if (is_stan(x)) return("stanfit")
