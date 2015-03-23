@@ -19,18 +19,19 @@
 #' 
 #' Requires a ShinyApps account. Visit http://www.shinyapps.io/ to sign up.
 #'
-#' @param sso The \code{shinystan} object to use.
-#' @param ppcheck_data Optional. Vector of observations to use for graphical posterior 
+#' @param sso The \code{shinystan} object for the model you want to use. 
+#' @param ppcheck_data Optional vector of observations to use for graphical posterior 
 #' predictive checking. 
 #' @param appDir Path to shinystan_for_shinyapps library. See \strong{Details}.
-#' @param appName The name to use for the application.
+#' @param appName The name to use for the application as a character string. 
 #' @param account ShinyApps account username. Only required if multiple 
 #' accounts are configured on the system. See \code{\link[shinyapps]{deployApp}}
 #' and \code{\link[shinyapps]{accounts}}. 
 #' 
 #' @details In order to deploy a shinyStan app to shinyapps.io you first 
 #' need to download the \code{shinystan_for_shinyapps} library, which is 
-#' available at https://github.com/stan-dev/shinystan/releases. 
+#' available at https://github.com/stan-dev/shinystan/releases. You will 
+#' also need to set up a ShinyApps account (see http://www.shinyapps.io/).  
 #' 
 #' @note With one exception, all shinyStan features should work properly on shinyapps.io. 
 #' The exception is the trivariate 3D scatterplot, which is not available in shinyStan apps
@@ -46,19 +47,21 @@
 #'
 #' # if we first set the working directory to be 'shinystan_for_shinyapps' 
 #' # we don't need to specify the appDir argument   
-#' setwd(path to shinystan_for_shinyapps library) 
+#' setwd(Path to shinystan_for_shinyapps folder) 
 #' deploy_shinystan(my_sso, appName = "my_shinystan_app", account = "username")
 #' }
 
 deploy_shinystan <- function(sso, ppcheck_data, appDir = getwd(), appName = NULL, account = NULL) {
   
   has_shinyapps <- requireNamespace("shinyapps", quietly = TRUE)
-  if (!has_shinyapps) stop("Deploying a shinyStan app requires the shinyapps package.", call. = FALSE)
+  if (!has_shinyapps) stop("Deploying a shinyStan app requires the shinyapps package. 
+                           To download the package use devtools::install_github('rstudio/shinyapps')", 
+                           call. = FALSE)
   
-  if (!is.shinystan(sso)) stop(paste(sso, "is not a shinystan object"))
+  sso_name <- deparse(substitute(sso))
+  if (!is.shinystan(sso)) stop(paste(sso_name, "is not a shinystan object"))
   
   appDir <- normalizePath(appDir)
-  
   shinystan_object <- sso
   save(shinystan_object, file = file.path(appDir, "shinystan_object.RData"))
   
