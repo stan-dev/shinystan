@@ -15,7 +15,7 @@ generate_quantity(sso, param1, param2, fun, new_name)
 \item{param2}{Optional. Name of second paramter as character string.}
 
 \item{fun}{Function to call, i.e. \code{function(param1)}
-or \code{function(param1,param2)}. See \strong(Examples), below.}
+or \code{function(param1,param2)}. See \strong{Examples}, below.}
 
 \item{new_name}{Name for the new parameter as character string.}
 }
