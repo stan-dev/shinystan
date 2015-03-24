@@ -1,0 +1,33 @@
+---
+title: "Deploying to shinyapps.io"
+author: "Jonah Gabry"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: true    
+vignette: >
+  %\VignetteIndexEntry{Deploying to shinyapps.io}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+---
+
+
+
+# Step 1: ShinyApps account
+
+### Signup
+
+To deploy your app to RStudio's shinyapps.io you will need a ShinyApps account. If you don't already have one you can sign up at http://www.shinyapps.io/. 
+
+### Setup
+
+After signing up for a ShinyApps account, follow the instruction for setting up your account on your local system using the `setAccountInfo` function in the `shinyapps` package.  
+
+
+# Step 2: Download `shinystan_for_shinyapps` library
+
+Download the `shinystan_for_shinyapps` library. 
+
+
+# Step 3: Use `deploy_shinystan` to deploy your app to shinyapps.io
+
