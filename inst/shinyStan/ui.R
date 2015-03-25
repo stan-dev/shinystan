@@ -60,7 +60,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                                                              selected = c("Rhat", "n_eff", "mean", "sd", "2.5%", "50%", "97.5%")),
                                                           
                                                           downloadButton("download_all_summary", "Save"),
-                                                          actionButton("tex_options", "LaTeX", icon = icon("print", lib = "glyphicon")),
+                                                          actionButton("tex_options", withMathJax("\\(\\LaTeX\\)"), icon = icon("print", lib = "glyphicon")),
                                                           uiOutput("ui_tex_modal")
                                           )
                                         )
