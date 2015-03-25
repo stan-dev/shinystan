@@ -20,13 +20,14 @@
 #' Requires a ShinyApps account. Visit http://www.shinyapps.io/ to sign up.
 #'
 #' @param sso The \code{shinystan} object for the model you want to use. 
-#' @param ppcheck_data Optional vector of observations to use for graphical posterior 
-#' predictive checking. 
-#' @param appDir Path to shinystan_for_shinyapps library. See \strong{Details}.
+#' @param account ShinyApps account username. Not required if only one 
+#' ShinyApps account is configured on the system. 
+#' See \code{\link[shinyapps]{deployApp}} and \code{\link[shinyapps]{accounts}}. 
 #' @param appName The name to use for the application as a character string. 
-#' @param account ShinyApps account username. Only required if multiple 
-#' accounts are configured on the system. See \code{\link[shinyapps]{deployApp}}
-#' and \code{\link[shinyapps]{accounts}}. 
+#' @param appDir Path to shinystan_for_shinyapps library. Defaults to working directory. 
+#' See \strong{Details}.
+#' @param ppcheck_data Optional vector of observations to use for graphical posterior 
+#' predictive checking. Not used if missing or `NULL`. 
 #' 
 #' @details In order to deploy a shinyStan app to shinyapps.io you first 
 #' need to download the \code{shinystan_for_shinyapps} library, which is 
@@ -51,12 +52,14 @@
 #' deploy_shinystan(my_sso, appName = "my_shinystan_app", account = "username")
 #' }
 
-deploy_shinystan <- function(sso, ppcheck_data, appDir = getwd(), appName = NULL, account = NULL) {
+deploy_shinystan <- function(sso, account, appName, appDir = getwd(), ppcheck_data = NULL) {
   
   has_shinyapps <- requireNamespace("shinyapps", quietly = TRUE)
   if (!has_shinyapps) stop("Deploying a shinyStan app requires the shinyapps package. 
                            To download the package use devtools::install_github('rstudio/shinyapps')", 
                            call. = FALSE)
+  
+  if (missing(appName)) stop("Please specify a name for your app using the 'appName' argument")
   
   sso_name <- deparse(substitute(sso))
   if (!is.shinystan(sso)) stop(paste(sso_name, "is not a shinystan object"))
@@ -69,6 +72,8 @@ deploy_shinystan <- function(sso, ppcheck_data, appDir = getwd(), appName = NULL
     y <- ppcheck_data
     save(y, file = file.path(appDir, "y.RData"))
   }
+  
+  if (missing(account)) account <- NULL
   
   shinyapps::deployApp(appDir = appDir, appName = appName, account = account, lint = FALSE)
 }

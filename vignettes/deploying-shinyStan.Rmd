@@ -11,23 +11,51 @@ vignette: >
   %\usepackage[utf8]{inputenc}
 ---
 
+### About
 
+Create an app hosted on RStudio's ShinyApps service (shinyapps.io) for each of your models. 
 
-# Step 1: ShinyApps account
+Note: R users who don't use RStudio's IDE can still deploy shinyStan apps to shinyapps.io. 
 
-### Signup
+### Step 1: ShinyApps account
+
+**Signup**
 
 To deploy your app to RStudio's shinyapps.io you will need a ShinyApps account. If you don't already have one you can sign up at http://www.shinyapps.io/. 
 
-### Setup
+**Setup**
 
 After signing up for a ShinyApps account, follow the instruction for setting up your account on your local system using the `setAccountInfo` function in the `shinyapps` package.  
 
 
-# Step 2: Download `shinystan_for_shinyapps` library
+### Step 2: Download `shinystan_for_shinyapps` library
 
 Download the `shinystan_for_shinyapps` library. 
 
 
-# Step 3: Use `deploy_shinystan` to deploy your app to shinyapps.io
+### Step 3: Use `deploy_shinystan` to deploy your app to shinyapps.io
 
+The `deploy_shinystan` function will deploy a shinyStan app unique to your model to RStudio's ShinyApps service.
+
+For this example assume that 
+
+- `sso` is the `shinystan` object you want to use
+- the username for your ShinyApps account (from Step 1) is `username`
+- the path to the `shinystan_for_shinyapps` library (from Step 2) is `Desktop/shinystan_for_shinyapps`
+- the name you want to use for the app is `MyModel`. 
+
+You can deploy the app with the commands
+
+```
+deploy_shinystan(sso, appDir = "Desktop/shinystan_for_shinyapps", appName = "MyModel", account = "username")
+```
+
+If you have a vector of observations `y` that you want to use for shinyStan's graphical posterior predictive checks then you can also specify the `ppcheck_data` argument
+
+```
+deploy_shinystan(sso, ppcheck_data = y, appDir = "Desktop/shinystan_for_shinyapps", appName = "MyModel", account = "username")
+```
+
+After the deployment process has finished your app should be located at https://username.shinyapps.io/appName, where username and appName are your ShinyApps username and the name for your app. You can also view your app by going to http://www.shinyapps.io and logging into your account.
+
+The only limit to the number of shinyStan apps you can deploy is the limit set by RStudio [your type of ShinyApps account](https://www.shinyapps.io/#pricing).  
