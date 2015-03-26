@@ -92,7 +92,14 @@ mcmclist2matrix <- function(x) {
   out
 }
 
-
+# check objects for as.shinystan
+get_type <- function(x) {
+  if (is.shinystan(x)) return("shinystan")
+  if (is_stan(x)) return("stanfit")
+  if (inherits(x, "mcmc.list")) return("mcmclist")
+  if (is.list(x) & !inherits(x, "mcmc.list")) return("chainlist")
+  return("other")
+}
 
 # functions to set defaults for ppcheck selectInputs for y and y_rep ---------------
 y_lines <- function(y_name = "y") {
@@ -147,6 +154,4 @@ set_ppcheck_defaults <- function(appDir, yrep_name, y_name = "y") {
               lines = c(y_lines(y_name), yrep_lines(yrep_name))
   )
 }
-
-
 
