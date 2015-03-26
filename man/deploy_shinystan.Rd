@@ -31,6 +31,7 @@ This can also be set manually while using the app.}
 }
 \description{
 Requires a ShinyApps account. Visit http://www.shinyapps.io/ to sign up.
+Also see the \code{deploying-shinyStan} vignette for a step-by-step guide.
 }
 \details{
 In order to deploy a shinyStan app to shinyapps.io you first
@@ -39,9 +40,9 @@ available at https://github.com/stan-dev/shinystan/releases. You will
 also need to set up a ShinyApps account (see http://www.shinyapps.io/).
 }
 \note{
-With one exception, all shinyStan features should work properly on shinyapps.io.
-The exception is the trivariate 3D scatterplot, which is not available in shinyStan apps
-on shinyapps.io at this time.
+With one exception, all shinyStan features should work properly on
+shinyapps.io. The exception is the trivariate 3D scatterplot, which is not
+available in shinyStan apps on shinyapps.io at this time.
 }
 \examples{
 \dontrun{

@@ -18,9 +18,8 @@
 #' Deploy to shinyapps.io
 #' 
 #' Requires a ShinyApps account. Visit http://www.shinyapps.io/ to sign up. 
-#' Also see the deploying-shinyStan vignette.
+#' Also see the \code{deploying-shinyStan} vignette for a step-by-step guide.  
 #' 
-#'
 #' @param sso The \code{shinystan} object for the model you want to use. 
 #' @param account ShinyApps account username. Not required if only one 
 #' ShinyApps account is configured on the system. 
