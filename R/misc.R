@@ -150,8 +150,9 @@ set_ppcheck_defaults <- function(appDir, yrep_name, y_name = "y") {
     }
   }
   
-  write_files(files = c(y_file, yrep_file), 
-              lines = c(y_lines(y_name), yrep_lines(yrep_name))
+  write_files(
+    files = c(y_file, yrep_file), 
+    lines = c(y_lines(y_name), yrep_lines(yrep_name))
   )
 }
 
