@@ -4,8 +4,8 @@
 \alias{deploy_shinystan}
 \title{Deploy to shinyapps.io}
 \usage{
-deploy_shinystan(sso, account, appName, appDir = getwd(),
-  ppcheck_data = NULL)
+deploy_shinystan(sso, account, appName, appDir = getwd(), ppcheck_data,
+  ppcheck_yrep)
 }
 \arguments{
 \item{sso}{The \code{shinystan} object for the model you want to use.}
@@ -14,13 +14,20 @@ deploy_shinystan(sso, account, appName, appDir = getwd(),
 ShinyApps account is configured on the system.
 See \code{\link[shinyapps]{deployApp}} and \code{\link[shinyapps]{accounts}}.}
 
-\item{appName}{The name to use for the application as a character string.}
+\item{appName}{The name to use for the application as a character string. Application
+names must be at least four characters long and may only contain letters, numbers,
+dashes and underscores.}
 
 \item{appDir}{Path to shinystan_for_shinyapps library. Defaults to working directory.
 See \strong{Details}.}
 
 \item{ppcheck_data}{Optional vector of observations to use for graphical posterior
-predictive checking. Not used if missing or `NULL`.}
+predictive checking.}
+
+\item{ppcheck_yrep}{Optional character string naming the parameter in \code{sso}
+containing the posterior predictive simulations/replications. This is only used to
+preselect ppcheck_yrep as the parameter to use for the posterior predictive checking.
+This can also be set manually while using the app.}
 }
 \description{
 Requires a ShinyApps account. Visit http://www.shinyapps.io/ to sign up.
@@ -42,7 +49,7 @@ on shinyapps.io at this time.
 # For this example assume my_sso is the name of the shinystan object
 # you want to use and that your ShinyApps username is 'username'.
 
-# if we first set the working directory to be 'shinystan_for_shinyapps'
+# If we first set the working directory to be 'shinystan_for_shinyapps'
 # we don't need to specify the appDir argument
 setwd(Path to shinystan_for_shinyapps folder)
 deploy_shinystan(my_sso, appName = "my_shinystan_app", account = "username")

@@ -91,3 +91,62 @@ mcmclist2matrix <- function(x) {
   dimnames(out) <- list(NULL, rownames)
   out
 }
+
+
+
+# functions to set defaults for ppcheck selectInputs for y and y_rep ---------------
+y_lines <- function(y_name = "y") {
+  paste0(
+    "output$ui_pp_y_from_r <- renderUI({
+    choices <- objects(envir = .GlobalEnv)
+    selectizeInput('y_name', label = span(style = 'color: #337ab7;', 'y, a vector of observations'), 
+    choices = c('', choices), 
+    selected = '",y_name,"')
+    })"
+  )
+}
+
+yrep_lines <- function(yrep_name) {
+  paste0(
+    "output$ui_pp_yrep_from_sso <- renderUI({
+    choices <- param_names
+    choices <- strsplit(choices, split = '[', fixed = TRUE)
+    choices <- lapply(choices, function(i) return(i[1]))
+    choices <- unique(unlist(choices))
+    selectizeInput('yrep_name', 
+    label = span(style = 'color: #337ab7;', 'y_rep, posterior predictive replications'), 
+    choices = c('', choices),
+    selected = '",yrep_name,"')
+    })"
+  )
+}
+
+write_files <- function(files, lines) {
+  stopifnot(length(files) == length(lines))
+  for (f in seq_along(files)) {
+    fileConn <- file(files[f])
+    writeLines(lines[f], fileConn)
+    close(fileConn)
+  }
+}
+
+set_ppcheck_defaults <- function(appDir, yrep_name, y_name = "y") {
+  fileDir <- file.path(appDir, "server_files", "pp_check", "dynamic_ui")
+  y_file <- file.path(fileDir, "ui_pp_y_from_r.R")
+  yrep_file <- file.path(fileDir, "ui_pp_yrep_from_sso.R")
+  
+  for (file in c("y_file", "yrep_file")) {
+    f <- get(file)
+    if (file.exists(f)) {
+      file.remove(f)
+      file.create(f)
+    }
+  }
+  
+  write_files(files = c(y_file, yrep_file), 
+              lines = c(y_lines(y_name), yrep_lines(yrep_name))
+  )
+}
+
+
+
