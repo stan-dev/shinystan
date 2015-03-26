@@ -18,7 +18,7 @@ See \code{\link[shinyapps]{deployApp}} and \code{\link[shinyapps]{accounts}}.}
 names must be at least four characters long and may only contain letters, numbers,
 dashes and underscores.}
 
-\item{appDir}{Path to shinystan_for_shinyapps library. Defaults to working directory.
+\item{appDir}{Path to shinyStanApps library. Defaults to working directory.
 See \strong{Details}.}
 
 \item{ppcheck_data}{Optional vector of observations to use for graphical posterior
@@ -35,7 +35,7 @@ Also see the \code{deploying-shinyStan} vignette for a step-by-step guide.
 }
 \details{
 In order to deploy a shinyStan app to shinyapps.io you first
-need to download the \code{shinystan_for_shinyapps} library, which is
+need to download the \code{shinyStanApps} library, which is
 available at https://github.com/stan-dev/shinystan/releases. You will
 also need to set up a ShinyApps account (see http://www.shinyapps.io/).
 }
@@ -50,10 +50,10 @@ available in shinyStan apps on shinyapps.io at this time.
 # For this example assume my_sso is the name of the shinystan object
 # you want to use and that your ShinyApps username is 'username'.
 
-# If we first set the working directory to be 'shinystan_for_shinyapps'
+# If we first set the working directory to be 'shinyStanApps'
 # we don't need to specify the appDir argument
-setwd(Path to shinystan_for_shinyapps folder)
-deploy_shinystan(my_sso, appName = "my_shinystan_app", account = "username")
+setwd(Path to shinyStanApps folder)
+deploy_shinystan(my_sso, appName = "my-shinystan-app", account = "username")
 }
 }
 \seealso{
