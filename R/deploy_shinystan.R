@@ -64,12 +64,10 @@ deploy_shinystan <- function(sso, account, appName, appDir = getwd(), ppcheck_da
   if (!has_shinyapps) stop("Deploying a shinyStan app requires the shinyapps package. 
                            To download the package use devtools::install_github('rstudio/shinyapps')", 
                            call. = FALSE)
-  
-  if (missing(appName)) stop("Please specify a name for your app using the 'appName' argument")
-  
+
   sso_name <- deparse(substitute(sso))
-  if (!is.shinystan(sso)) stop(paste(sso_name, "is not a shinystan object"))
-  
+  if (!is.shinystan(sso)) stop(paste(sso_name, "is not a shinystan object"), call. = FALSE)
+  if (missing(appName)) stop("Please specify a name for your app using the 'appName' argument", call. = FALSE)
   if (missing(account)) account <- NULL
   
   appDir <- normalizePath(appDir)
