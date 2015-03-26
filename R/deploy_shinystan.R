@@ -17,7 +17,9 @@
 
 #' Deploy to shinyapps.io
 #' 
-#' Requires a ShinyApps account. Visit http://www.shinyapps.io/ to sign up.
+#' Requires a ShinyApps account. Visit http://www.shinyapps.io/ to sign up. 
+#' Also see the deploying-shinyStan vignette.
+#' 
 #'
 #' @param sso The \code{shinystan} object for the model you want to use. 
 #' @param account ShinyApps account username. Not required if only one 
@@ -40,9 +42,9 @@
 #' available at https://github.com/stan-dev/shinystan/releases. You will 
 #' also need to set up a ShinyApps account (see http://www.shinyapps.io/).  
 #' 
-#' @note With one exception, all shinyStan features should work properly on shinyapps.io. 
-#' The exception is the trivariate 3D scatterplot, which is not available in shinyStan apps
-#' on shinyapps.io at this time.  
+#' @note With one exception, all shinyStan features should work properly on 
+#' shinyapps.io. The exception is the trivariate 3D scatterplot, which is not 
+#' available in shinyStan apps on shinyapps.io at this time.  
 #' 
 #' @seealso \code{\link[shinyapps]{deployApp}}, \code{\link[shinyapps]{accounts}}
 #' @export
