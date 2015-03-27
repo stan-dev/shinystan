@@ -4,12 +4,14 @@
 \alias{launch_shinystan}
 \title{Launch shinyStan app}
 \usage{
-launch_shinystan(object)
+launch_shinystan(object, ...)
 }
 \arguments{
 \item{object}{An object of class \code{shinystan} or \code{stanfit}.
 See \code{\link[shinyStan]{as.shinystan}} for how to easily convert other types
 of objects to \code{shinystan} objects.}
+
+\item{...}{Optional arguments to pass to \code{\link[shiny]{runApp}}.}
 }
 \value{
 If \code{object} is a \code{shinystan} object then \code{object} will be
