@@ -1,3 +1,4 @@
+/* css for dynamic trace plot */
 .dygraph {
     background: transparent !important;
   }
@@ -37,5 +38,3 @@
   background-color: black ;
   color: white ;
 }
-
-  
