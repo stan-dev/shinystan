@@ -63,11 +63,11 @@ assign_shinystan <- function(X) {
 
 
 # launch the app ----------------------------------------------------------
-launch <- function(object) {
+launch <- function(object, ...) {
   if (is.shinystan(object)) assign_shinystan(object)
   else assign_shinystan(stan2shinystan(object))
 
-  shiny::runApp(system.file("shinyStan", package = "shinyStan"))
+  shiny::runApp(system.file("shinyStan", package = "shinyStan"), ...)
 }
 
 

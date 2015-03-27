@@ -71,7 +71,7 @@
 #' launch_shinystan(X_shinystan)
 #' }
 #'
-launch_shinystan <- function(object) {
+launch_shinystan <- function(object, ...) {
   message("\n Loading... \n For large models shinyStan may take a few moments to launch.")
   
   name <- deparse(substitute(object))
@@ -87,5 +87,5 @@ launch_shinystan <- function(object) {
   if (no_name) out_name <- "unnamed_shinystan"
   
   on.exit(cleanup_shinystan(get("shinystan_object"), out_name, is_stanfit_object))
-  launch(object)
+  launch(object, ...)
 }
