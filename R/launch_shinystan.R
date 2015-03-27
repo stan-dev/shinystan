@@ -21,6 +21,8 @@
 #' See \code{\link[shinyStan]{as.shinystan}} for how to easily convert other types
 #' of objects to \code{shinystan} objects.
 #' 
+#' @param ... Optional arguments to pass to \code{\link[shiny]{runApp}}.
+#' 
 #' @return If \code{object} is a \code{shinystan} object then \code{object} will be 
 #' returned (or a slightly modified version of \code{object} reflecting any changes saved while 
 #' using the app). If \code{object} is a \code{stanfit} object then, in addition to launching
