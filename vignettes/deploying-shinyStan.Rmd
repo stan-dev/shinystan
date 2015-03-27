@@ -1,7 +1,5 @@
 ---
-title: "Deploying to shinyapps.io"
-author: "Jonah Gabry"
-date: "`r Sys.Date()`"
+title: "shinyStan: Deploying to shinyapps.io"
 output: 
   rmarkdown::html_vignette:
     toc: true    
@@ -46,23 +44,28 @@ For the example below assume that
 
 You can deploy the app with the commands
 
-```
-deploy_shinystan(sso, appDir = "Desktop/shinyStanApps", appName = "MyModel", account = "username")
+```r
+deploy_shinystan(sso, appDir = "Desktop/shinyStanApps", 
+                appName = "MyModel", account = "username")
 ```
 
 If you have a vector of observations `y` that you want to use for shinyStan's graphical posterior predictive checks then you can also specify the `ppcheck_data` argument
 
-```
-deploy_shinystan(sso, appDir = "Desktop/shinyStanApps", appName = "MyModel", account = "username", ppcheck_data = y)
+```r
+deploy_shinystan(sso, appDir = "Desktop/shinyStanApps", 
+                appName = "MyModel", account = "username", 
+                ppcheck_data = y)
 ```
 
 If you've specified the `ppcheck_data` argument you can also use the `ppcheck_yrep` argument to tell shinyStan the name of the parameter/quantity in your model containing the posterior predictive simulations/replications so that it is preselected as the parameter to use for doing the graphical posterior predictive checks. This is never required because you can also set this manually while using the app, but it is helpful if you want other people to view your model online because it avoids the need to communicate to them which parameter they need to select. If this parameter/quantity containing the posterior predictive replications is named `yRep` then you would use
 
-```
-deploy_shinystan(sso, appDir = "Desktop/shinyStanApps", appName = "MyModel", account = "username", ppcheck_data = y, ppcheck_yrep = "yRep")
+```r
+deploy_shinystan(sso, appDir = "Desktop/shinyStanApps", 
+                appName = "MyModel", account = "username", 
+                ppcheck_data = y, ppcheck_yrep = "yRep")
 ```
 
 
 If the deployment process is successful the url for your app will be printed to the console and it should open in your web browser. You can also view your app by going to http://www.shinyapps.io and logging into your account.
 
-The only limit to the number of shinyStan apps you can deploy is the limit set by RStudio for[your type of ShinyApps account](https://www.shinyapps.io/#pricing).  
+The only limit to the number of shinyStan apps you can deploy is the limit set by RStudio for [your type of ShinyApps account](https://www.shinyapps.io/#pricing).  

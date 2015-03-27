@@ -35,3 +35,4 @@
   packageStartupMessage(msg)
 } 
 
+.onLoad <- function(libname, pkgname) { }
