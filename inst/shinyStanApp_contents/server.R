@@ -319,11 +319,5 @@ function(input, output, session) {
   }, bg = "transparent")
 
 
-  observeEvent(input$explore_navlist == "Dynamic 3D scatterplot",({
-    updateSliderInput("trivariate_pt_size", value = 0.45)
-  })
-  )
-  
-  
 } # End shinyServer
 

@@ -162,7 +162,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                       column(7, offset = 1, dataTableOutput("parameter_summary_out"))
                     ),
                     hr(),
-                    navlistPanel(well = FALSE, id = "explore_navlist",
+                    navlistPanel(well = FALSE, 
                                  #### multiview ####
                                  tabPanel("Multiview", icon = icon("th-large", lib = "glyphicon"),
                                           bsCollapse(
@@ -212,7 +212,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                           br()
                                  ),
                                  #### trivariate plot #####
-                                 tabPanel("Dynamic 3D scatterplot", 
+                                 tabPanel("Dynamic 3D scatterplot", value = "threejs",
                                           uiOutput("ui_triviariate_customize"),
                                           uiOutput("ui_trivariate_select"),
                                           fluidRow(
