@@ -4,7 +4,7 @@
 \alias{deploy_shinystan}
 \title{Deploy to shinyapps.io}
 \usage{
-deploy_shinystan(sso, account, appName, appDir = getwd(), ppcheck_data,
+deploy_shinystan(sso, account, appName, Dir = getwd(), ppcheck_data,
   ppcheck_yrep)
 }
 \arguments{
@@ -18,7 +18,7 @@ See \code{\link[shinyapps]{deployApp}} and \code{\link[shinyapps]{accounts}}.}
 names must be at least four characters long and may only contain letters, numbers,
 dashes and underscores.}
 
-\item{appDir}{Path to shinyStanApps library. Defaults to working directory.
+\item{Dir}{Directory where app folder should be created. Defaults to working directory.
 See \strong{Details}.}
 
 \item{ppcheck_data}{Optional vector of observations to use for graphical posterior
@@ -27,22 +27,14 @@ predictive checking.}
 \item{ppcheck_yrep}{Optional character string naming the parameter in \code{sso}
 containing the posterior predictive simulations/replications. This is only used to
 preselect ppcheck_yrep as the parameter to use for the posterior predictive checking.
-This can also be set manually while using the app.}
+This can also be set interactively while using the app.}
 }
 \description{
 Requires a ShinyApps account. Visit http://www.shinyapps.io/ to sign up.
 Also see the \code{deploying-shinyStan} vignette for a step-by-step guide.
 }
-\details{
-In order to deploy a shinyStan app to shinyapps.io you first
-need to download the \code{shinyStanApps} library, which is
-available at https://github.com/stan-dev/shinystan/releases. You will
-also need to set up a ShinyApps account (see http://www.shinyapps.io/).
-}
 \note{
-With one exception, all shinyStan features should work properly on
-shinyapps.io. The exception is the trivariate 3D scatterplot, which is not
-available in shinyStan apps on shinyapps.io at this time.
+To set up a ShinyApps account visit http://www.shinyapps.io/.
 }
 \examples{
 \dontrun{

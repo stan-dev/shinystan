@@ -27,7 +27,7 @@
 #' @param appName The name to use for the application as a character string. Application
 #' names must be at least four characters long and may only contain letters, numbers,
 #' dashes and underscores.
-#' @param appDir Path to shinyStanApps library. Defaults to working directory. 
+#' @param Dir Directory where app folder should be created. Defaults to working directory.   
 #' See \strong{Details}.
 #' @param ppcheck_data Optional vector of observations to use for graphical posterior 
 #' predictive checking. 
@@ -36,53 +36,65 @@
 #' preselect ppcheck_yrep as the parameter to use for the posterior predictive checking.
 #' This can also be set interactively while using the app. 
 #' 
-#' @details In order to deploy a shinyStan app to shinyapps.io you first 
-#' need to download the \code{shinyStanApps} library, which is 
-#' available at https://github.com/stan-dev/shinystan/releases. You will 
-#' also need to set up a ShinyApps account (see http://www.shinyapps.io/).  
-#' 
-#' @note With one exception, all shinyStan features should work properly on 
-#' shinyapps.io. The exception is the trivariate 3D scatterplot, which is not 
-#' available in shinyStan apps on shinyapps.io at this time.  
+#' @note To set up a ShinyApps account visit http://www.shinyapps.io/.  
 #' 
 #' @seealso \code{\link[shinyapps]{deployApp}}, \code{\link[shinyapps]{accounts}}
 #' @export
-#' @examples
-#' \dontrun{
+#' # @examples
+#' # \dontrun{
 #' 
-#' # For this example assume my_sso is the name of the shinystan object
-#' # you want to use and that your ShinyApps username is 'username'.
-#'
-#' # If we first set the working directory to be 'shinyStanApps' 
-#' # we don't need to specify the appDir argument   
-#' setwd(Path to shinyStanApps folder) 
-#' deploy_shinystan(my_sso, appName = "my-shinystan-app", account = "username")
-#' }
+# # For this example assume my_sso is the name of the shinystan object
+# # you want to use and that your ShinyApps username is 'username'.
+# 
+# # If we first set the working directory to be 'shinyStanApps' 
+# # we don't need to specify the appDir argument   
+# setwd(Path to shinyStanApps folder) 
+# deploy_shinystan(my_sso, appName = "my-shinystan-app", account = "username")
+# }
 
-deploy_shinystan <- function(sso, account, appName, appDir = getwd(), ppcheck_data, ppcheck_yrep) {
+deploy_shinystan <- function(sso, account, appName, Dir = getwd(), ppcheck_data, ppcheck_yrep) {
   
   has_shinyapps <- requireNamespace("shinyapps", quietly = TRUE)
   if (!has_shinyapps) stop("Deploying a shinyStan app requires the shinyapps package. 
                            To download the package use devtools::install_github('rstudio/shinyapps')", 
                            call. = FALSE)
-
+  
   sso_name <- deparse(substitute(sso))
   if (!is.shinystan(sso)) stop(paste(sso_name, "is not a shinystan object"), call. = FALSE)
   if (missing(appName)) stop("Please specify a name for your app using the 'appName' argument", call. = FALSE)
   if (missing(account)) account <- NULL
   
-  appDir <- normalizePath(appDir)
-  shinystan_object <- sso
-  save(shinystan_object, file = file.path(appDir, "shinystan_object.RData"))
+  Dir <- normalizePath(Dir)
+  appDir <- file.path(Dir, appName)
   
-  if (!missing(ppcheck_data)) {
-    y <- ppcheck_data
-    save(y, file = file.path(appDir, "y.RData"))
-    
-    if (!missing(ppcheck_yrep)) {
-      set_ppcheck_defaults(appDir = appDir, yrep_name = ppcheck_yrep, y_name = "y")
+  contents <- system.file("shinyStanApp_contents", package = "shinyStan")
+  if (file.exists(file.path(appDir))) {
+    decision <- select.list(choices = c("Overwrite existing", "Cancel"),
+                            title = "Decision time", graphics = FALSE)
+    if (decision == "Cancel") {
+      message("Deployment canceled by user.")
+      return(invisible(NULL))
     }
   }
   
-  shinyapps::deployApp(appDir = appDir, appName = appName, account = account, lint = FALSE)
+  unlink(appDir, recursive = TRUE, force = TRUE) # delete directory appDir
+  dir.create(appDir)
+  file.copy(from = contents, to = appDir, recursive = TRUE)
+  # file.rename(from = file.path(Dir,"shinyStanApp"), to = appDir)
+  message(paste0("shinyStanApp library '", appName, "' created at", appDir))
+  
+  shinystan_object <- sso
+  deployDir <- file.path(appDir, "shinyStanApp_contents")
+  save(shinystan_object, file = file.path(deployDir, "shinystan_object.RData"))
+  
+  if (!missing(ppcheck_data)) {
+    y <- ppcheck_data
+    save(y, file = file.path(deployDir, "y.RData"))
+    
+    if (!missing(ppcheck_yrep)) {
+      set_ppcheck_defaults(appDir = deployDir, yrep_name = ppcheck_yrep, y_name = "y")
+    }
+  }
+  
+  shinyapps::deployApp(appDir = deployDir, appName = appName, account = account, lint = FALSE)
 }
