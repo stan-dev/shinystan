@@ -19,7 +19,7 @@ names must be at least four characters long and may only contain letters, number
 dashes and underscores.}
 
 \item{Dir}{Directory where app folder should be created. Defaults to working directory.
-See \strong{Details}.}
+The folder \code{Dir/appName} will be created to store the contents of the app required for deployment.}
 
 \item{ppcheck_data}{Optional vector of observations to use for graphical posterior
 predictive checking.}
@@ -31,21 +31,24 @@ This can also be set interactively while using the app.}
 }
 \description{
 Requires a ShinyApps account. Visit http://www.shinyapps.io/ to sign up.
-Also see the \code{deploying-shinyStan} vignette for a step-by-step guide.
+Also see the \code{shinyStan: Deploying to shinyapps.io} vignette for a
+step-by-step guide.
 }
 \note{
-To set up a ShinyApps account visit http://www.shinyapps.io/.
+See the \code{shinyStan: Deploying to shinyapps.io} vignette for more detailed
+examples.
 }
 \examples{
 \dontrun{
 
-# For this example assume my_sso is the name of the shinystan object
-# you want to use and that your ShinyApps username is 'username'.
+# For this example assume my_sso is the name of the shinystan object for the model you want to use.
+# Assume also that you want to name your app 'my-model' and that your ShinyApps username is 'username'.
 
-# If we first set the working directory to be 'shinyStanApps'
-# we don't need to specify the appDir argument
-setwd(Path to shinyStanApps folder)
-deploy_shinystan(my_sso, appName = "my-shinystan-app", account = "username")
+deploy_shinystan(my_sso, appName = "my-model", account = "username")
+
+# If you only have one ShinyApps account configured then you also omit the 'account' argument.
+
+deploy_shinystan(my_sso, appName = "my-model")
 }
 }
 \seealso{
