@@ -44,13 +44,14 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' 
-#' # For this example assume my_sso is the name of the shinystan object for the model you want to use. 
-#' # Assume also that you want to name your app 'my-model' and that your ShinyApps username is 'username'. 
+#' # For this example assume my_sso is the name of the shinystan object for 
+#' # the model you want to use. Assume also that you want to name your app 
+#' # 'my-model' and that your ShinyApps username is 'username'. 
 #'
 #' deploy_shinystan(my_sso, appName = "my-model", account = "username") 
 #'
-#' # If you only have one ShinyApps account configured then you also omit the 'account' argument. 
+#' # If you only have one ShinyApps account configured then you also omit 
+#' # the 'account' argument. 
 #'
 #' deploy_shinystan(my_sso, appName = "my-model")
 #' }

@@ -59,7 +59,6 @@
 #' @importFrom markdown markdownToHTML
 #' @importFrom plyr ddply summarise
 #' @importFrom reshape2 melt
-#' @importFrom shinyapps deployApp
 #' @importFrom xtable xtable print.xtable
 #'
 #' @docType package
