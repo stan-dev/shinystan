@@ -1,0 +1,333 @@
+/* Also see shinyStan_datatables.css and shinyStan_dygraphs.css*/
+
+.navbar {
+  background-image: url("textures/binding_dark.png");
+  margin-bottom: 0px;
+  margin-top: 50px;
+  font-size: 15px ;
+  opacity: 0.9;
+  border-radius: 0px;
+  /*border-color: #222222;*/
+  border-color: transparent;
+  -moz-box-shadow: 0 0 10px #222222; 
+  -webkit-box-shadow: 0 0 10px #222222; 
+  box-shadow: 0 0 10px #222222; 
+}
+
+.navbar .nav > .active > a,
+.navbar .nav > .active > a:focus,
+.navbar .nav > .active > a:hover {
+    background-color: #f9dd67;
+    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.125) ;
+    -moz-box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.125) ;
+    -webkit-box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.125) ;
+    box-shadow: 0 2px 5px -3px #337ab7;
+    -moz-box-shadow: 0 2px 5px -3px #337ab7 ;
+    -webkit-box-shadow: 0 2px 5px -3px #337ab7 ;
+    
+    text-shadow: none;
+    color: #337ab7;
+    text-decoration: none;
+    -webkit-border-radius: 0px 0px 4px 4px;
+    -moz-border-radius: 0px 0px 4px 4px;
+    -webkit-transform: scale(1.075);
+    -moz-transform: scale(1.075);
+    transform: scale(1.075);
+    font-family: 'Tahoma';
+    font-weight: 600;
+} 
+#nav li { 
+  -webkit-transition: all 0.2s; transition-delay: 0.1s;
+  -moz-transition: all 0.2s; transition-delay: 0.1s;
+}
+#nav li a { 
+  -webkit-transition: all 0.75s; transition-delay: 0.1s;
+  -moz-transition: all 0.75s; transition-delay: 0.1s;
+}
+#nav li ul { 
+  -webkit-transition: all 1s; transition-delay: 0.1s;
+   -moz-transition: all 1s; transition-delay: 0.1s;
+}
+#nav li ul li { 
+  -webkit-transition: height 0.5s; transition-delay: 0.1s;
+    -moz-transition: height 0.5s; transition-delay: 0.1s;
+}
+
+
+body {
+  padding-top: 60px;
+/*  
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+   font-weight: 300;
+*/
+}
+
+.well {
+  padding-top: 5px;
+  padding-bottom: 0px;
+}
+
+.panel-body {
+  background-color: #222222; 
+}
+
+.table .alignRight {
+  text-align:right;
+}
+
+.modal-header {
+  background-color: #222222;
+  color: #f9dd67;
+}
+
+.popover-title {
+    font-size: 12px;
+}
+/*
+.popover-content {
+    background-color: #337ab7;
+    border-radius: 3px;
+}
+*/
+
+
+/**************************************/
+/* text boxes for transformations */
+#bivariate_transform_x, #bivariate_transform_y,
+#trivariate_transform_x, #trivariate_transform_y, #trivariate_transform_z,
+#dens_transform_x, #hist_transform_x {
+  height: 25px;
+  padding: 1px 6px;
+  font-family: monospace;
+}
+/**************************************/
+
+
+/**************************************/
+/* don't blink when recalculating */
+#autocorr_plot_out.recalculating, #plot_param_vertical_out.recalculating { 
+  opacity: 1.0; 
+}
+/**************************************/
+
+/**************************************/
+/* plot hover shadow */
+
+.plot_hover_shadow:hover { 
+  -moz-box-shadow: 0 0 10px #84afd3; 
+  -webkit-box-shadow: 0 0 10px #84afd3; 
+  box-shadow: 0 0 10px #84afd3; 
+} 
+
+#multi_trace_plot_out:hover, #autocorr_plot_out:hover, #plot_param_vertical_out:hover, #multiview_density:hover, #multiview_trace:hover, #multiview_autocorr:hover, #mcse_over_sd_plot_out:hover, #n_eff_plot_out:hover, #rhat_plot_out:hover, #hist_plot_out:hover, #density_plot_out:hover, #trace_plot_out:hover, #bivariate_plot_out:hover, #sampler_plot_treedepth_out:hover, #sampler_plot_treedepth0_out:hover, #sampler_plot_treedepth1_out:hover, #sampler_plot_divergent_out:hover { 
+  
+  -moz-box-shadow: 0 0 10px #84afd3; 
+  -webkit-box-shadow: 0 0 10px #84afd3; 
+  box-shadow: 0 0 10px #84afd3; 
+} 
+/**************************************/
+/* plot hover shadow for pp_check plots */
+#pp_y_vs_avg_rep_out:hover, #pp_avg_rep_vs_avg_resid_rep_out:hover, #pp_hist_resids_out:hover, #pp_hists_test_statistics_max_out:hover, #pp_hists_test_statistics_min_out:hover, #pp_hists_test_statistics_mean_out:hover, #pp_hists_test_statistics_sd_out:hover, #pp_dens_rep_vs_obs_out:hover, #pp_hists_rep_vs_obs_out:hover { 
+  
+  -moz-box-shadow: 0 0 10px #84afd3; 
+  -webkit-box-shadow: 0 0 10px #84afd3; 
+  box-shadow: 0 0 10px #84afd3; 
+} 
+/**************************************/
+
+/**************************************/
+/* customization control panels */
+
+.hr_controls {
+  border-width: 2px; 
+  border-radius: 1px; 
+  border-color: #337ab7; 
+  margin-top: 5px;
+}
+
+.shinystan_customize {
+  color: #337ab7; 
+  text-align: right; 
+  padding-right: 5px; 
+  font-size: 11px; 
+  font-weight: bold;
+}
+
+#controls_autocorr, #controls_multi_trace, #controls_multiparam, #controls_warnings {
+  /* Appearance */
+  color: white;
+  cursor: move;
+  /* Fade out while not hovering */
+  opacity: 0.1;
+  transition: opacity 500ms 1s;
+}
+#controls_autocorr:hover, #controls_multi_trace:hover, #controls_multiparam:hover, #controls_warnings:hover {
+  /* Fade in while hovering */
+  opacity: 0.9;
+  transition-delay: 0;
+}
+
+#n_eff_threshold, #rhat_threshold, #mcse_threshold .irs-min, .irs-max {
+  color: white ;
+}
+/**************************************/
+
+
+/**************************************/
+/* collapsePanels */
+#multiview_collapse, #density_collapse, #dynamic_trace_collapse, #hist_collapse, #trivariate_collapse, #bivariate_collapse_all .panel-body{
+  opacity: 0.8; color: white;
+}
+
+#bivariate_points_collapse .panel-body{
+  opacity: 1; color: white; padding 2px;
+}
+#bivariate_lines_collapse .panel-body{
+  opacity: 1; color: white; padding-top: 0px;
+}
+#bivariate_ellipse_collapse .panel-body{
+  opacity: 1; color: white; padding-top: 0px;
+}
+
+#stats_table_options_collapse .panel-body{
+  background-color: #F5F5F5;
+}
+#stats_columns .shiny-options-group {
+  color: black;
+}
+/**************************************/
+
+
+/**************************************/
+/* notes and model_code text areas */
+#user_model_info {
+  width: 500px; 
+  border-color: #214565; 
+  border-radius: 3px;
+}
+#model_code {
+  width: 600px; 
+  height: 600px; 
+  border-color: #214565; 
+  border-radius: 3px;
+  font-family: monospace;
+}
+/**************************************/
+
+
+
+
+/*!
+ * Hover.css (http://ianlunn.github.io/Hover/)
+ * Version: 2.0.2
+ * Author: Ian Lunn @IanLunn
+ * Author URL: http://ianlunn.co.uk/
+ * Github: https://github.com/IanLunn/Hover
+ * Made available under a MIT License:
+ * Hover.css Copyright Ian Lunn 2014. Generated with Sass.
+*/
+.hvr-grow {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: transform;
+  transition-property: transform;
+}
+.hvr-grow:hover, .hvr-grow:focus, .hvr-grow:active {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+}
+
+/* Glow */
+.hvr-glow {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: box-shadow;
+  transition-property: box-shadow;
+}
+.hvr-glow:hover, .hvr-glow:focus, .hvr-glow:active {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+}
+
+
+
+
+/**************************************/
+/* customization switch-style toggles*/
+#multiparam_options, #ac_options, #multi_trace_options, #warnings_options {
+max-height: 0;
+max-width: 0;
+opacity: 0;
+}
+
+#multiparam_options + label, #ac_options + label, #multi_trace_options + label, #warnings_options + label {
+display: block;
+position: relative;
+box-shadow: inset 0 0 0px 1px #d5d5d5;
+text-indent: -5000px;
+height: 20px;
+width: 50px;
+top: -15px;
+border-radius: 15px;
+}
+
+#warnings_options + label {
+top: -20px;
+}
+
+#multiparam_options + label:before, #ac_options + label:before, #multi_trace_options + label:before, #warnings_options + label:before {
+content: "";
+position: absolute;
+display: block;
+height: 20px;
+width: 30px;
+top: 0;
+left: 0;
+border-radius: 15px;
+background: rgba(19,191,17,0);
+-moz-transition: .25s ease-in-out;
+-webkit-transition: .25s ease-in-out;
+transition: .25s ease-in-out;
+}
+
+#multiparam_options + label:after, #ac_options + label:after, #multi_trace_options + label:after, #warnings_options + label:after {
+content: "";
+position: absolute;
+display: block;
+height: 20px;
+width: 30px;
+top: 0;
+left: 0px;
+border-radius: 15px;
+background: white;
+box-shadow: inset 0 0 0 1px rgba(0,0,0,.2), 0 2px 4px rgba(0,0,0,.2);
+-moz-transition: .25s ease-in-out;
+-webkit-transition: .25s ease-in-out;
+transition: .25s ease-in-out;
+}
+
+#multiparam_options:checked + label:before, #ac_options:checked + label:before, #multi_trace_options:checked + label:before, #warnings_options:checked + label:before {
+width: 50px;
+background: #337ab7;
+}
+
+#multiparam_options:checked + label:after, #ac_options:checked + label:after, #multi_trace_options:checked + label:after, #warnings_options:checked + label:after {
+left: 20px;
+box-shadow: inset 0 0 0 1px #337ab7, 0 2px 4px rgba(0,0,0,.2);
+}
+/**************************************/

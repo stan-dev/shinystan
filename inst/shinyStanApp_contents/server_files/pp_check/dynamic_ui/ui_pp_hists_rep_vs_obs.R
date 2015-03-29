@@ -1,0 +1,33 @@
+# This file is part of shinyStan
+# Copyright (C) 2015 Jonah Sol Gabry & Stan Development Team
+#
+# shinyStan is free software; you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 3 of the License, or (at your option) any later
+# version.
+# 
+# shinyStan is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along with
+# this program; if not, see <http://www.gnu.org/licenses/>.
+
+
+
+output$ui_pp_hists_rep_vs_obs <- renderUI({
+  div(
+    br(),
+    h4(withMathJax(plot_descriptions["plot_hists_rep_vs_obs"])),
+    fluidRow(
+      column(5, radioButtons("pp_hists_rep_vs_obs_type", label = "", choices = list(Histograms = "histogram", Densities = "density"), inline = TRUE)),
+      column(4, 
+             conditionalPanel(condition = "input.pp_hists_rep_vs_obs_type == 'density'",
+                              radioButtons("pp_hists_rep_vs_obs_overlay", label = "", choices = list(Separate = FALSE, Overlay = TRUE), selected = FALSE, inline = TRUE)
+             ))
+    ),
+    plotOutput("pp_hists_rep_vs_obs_out"),
+    actionButton("resample_hist_go", label = "Show different replications", icon = icon("refresh")),
+    br()
+  )
+})
