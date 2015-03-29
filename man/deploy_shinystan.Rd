@@ -4,25 +4,20 @@
 \alias{deploy_shinystan}
 \title{Deploy to shinyapps.io}
 \usage{
-deploy_shinystan(sso, account, appName, Dir = getwd(), ppcheck_data,
-  ppcheck_yrep)
+deploy_shinystan(sso, account, appName, ppcheck_data, ppcheck_yrep)
 }
 \arguments{
 \item{sso}{The \code{shinystan} object for the model you want to use.}
 
 \item{account}{ShinyApps account username. Not required if only one
-ShinyApps account is configured on the system.
-See \code{\link[shinyapps]{deployApp}} and \code{\link[shinyapps]{accounts}}.}
+ShinyApps account is configured on the system.}
 
-\item{appName}{The name to use for the application as a character string. Application
-names must be at least four characters long and may only contain letters, numbers,
-dashes and underscores.}
+\item{appName}{The name to use for the application as a character string.
+Application names must be at least four characters long and may only contain
+letters, numbers, dashes and underscores.}
 
-\item{Dir}{Directory where app folder should be created. Defaults to working directory.
-The folder \code{Dir/appName} will be created to store the contents of the app required for deployment.}
-
-\item{ppcheck_data}{Optional vector of observations to use for graphical posterior
-predictive checking.}
+\item{ppcheck_data}{Optional vector of observations to use for
+graphical posterior predictive checking.}
 
 \item{ppcheck_yrep}{Optional character string naming the parameter in \code{sso}
 containing the posterior predictive simulations/replications. This is only used to
@@ -31,11 +26,11 @@ This can also be set interactively while using the app.}
 }
 \description{
 Requires a ShinyApps account. Visit http://www.shinyapps.io/ to sign up.
-Also see the \code{shinyStan: Deploying to shinyapps.io} vignette for a
+Also see the 'Deploying to shinyapps.io' vignette for a
 step-by-step guide.
 }
 \note{
-See the \code{shinyStan: Deploying to shinyapps.io} vignette for more detailed
+See the 'Deploying to shinyapps.io' vignette for more detailed
 examples.
 }
 \examples{
