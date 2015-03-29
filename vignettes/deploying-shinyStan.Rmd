@@ -13,7 +13,7 @@ vignette: >
 
 Create a shinyStan app unique to your model and host it online with RStudio's ShinyApps service (shinyapps.io). Each app you deploy will have a unique url.  
 
-Note: R users who don't use RStudio's IDE can still deploy shinyStan apps to shinyapps.io. 
+*Note: R users who don't use RStudio's IDE can still deploy shinyStan apps to shinyapps.io.* 
 
 ### Step 1: ShinyApps account
 
@@ -58,13 +58,15 @@ deploy_shinystan(my_sso, appName = "MyModel")
 If you have a vector of observations `y` that you want to use for shinyStan's graphical posterior predictive checks then you can also specify the optional `ppcheck_data` argument
 
 ```r
-deploy_shinystan(my_sso, appName = "MyModel", ppcheck_data = y)
+deploy_shinystan(my_sso, appName = "MyModel", 
+                 ppcheck_data = y)
 ```
 
 If you've specified the `ppcheck_data` argument you can also use the `ppcheck_yrep` argument to tell shinyStan the name of the parameter/quantity in your model containing the posterior predictive simulations/replications so that it is preselected as the parameter to use for doing the graphical posterior predictive checks. This is never required because you can also set this manually while using the app, but it is helpful if you want other people to view your model online because it avoids the need to communicate to them which parameter they need to select. If this parameter/quantity containing the posterior predictive replications is named `yRep` then you would use
 
 ```r
-deploy_shinystan(my_sso, appName = "MyModel", ppcheck_data = y, ppcheck_yrep = "yRep")
+deploy_shinystan(my_sso, appName = "MyModel", 
+                 ppcheck_data = y, ppcheck_yrep = "yRep")
 ```
 
 
