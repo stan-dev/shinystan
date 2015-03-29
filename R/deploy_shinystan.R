@@ -21,7 +21,7 @@
 #' Also see the 'Deploying to shinyapps.io' vignette for a 
 #' step-by-step guide.  
 #' 
-#' @param sso The \code{shinystan} object for the model you want to use. 
+#' @param sso The \code{shinystan} object (\code{sso}) for the model you want to use. 
 #' @param account ShinyApps account username. Not required if only one 
 #' ShinyApps account is configured on the system. 
 #' @param appName The name to use for the application as a character string. 
@@ -45,12 +45,12 @@
 #' # the model you want to use. Assume also that you want to name your app 
 #' # 'my-model' and that your ShinyApps username is 'username'. 
 #'
-#' deploy_shinystan(my_sso, appName = "my-model", account = "username") 
+#' deploy_shinystan(sso = my_sso, appName = "my-model", account = "username") 
 #'
 #' # If you only have one ShinyApps account configured then you also omit 
 #' # the 'account' argument. 
 #'
-#' deploy_shinystan(my_sso, appName = "my-model")
+#' deploy_shinystan(sso = my_sso, appName = "my-model")
 #' }
 #' 
 
@@ -67,7 +67,7 @@ deploy_shinystan <- function(sso, account, appName, ppcheck_data, ppcheck_yrep) 
   if (missing(appName)) stop("Please specify a name for your app using the 'appName' argument", call. = FALSE)
   if (missing(account)) account <- NULL
   
-  # create directory and copy contents from shinyStanApp_contents
+  # copy from shinyStanApp_contents to temporary directory
   appDir <- tempdir()
   contents <- system.file("shinyStanApp_contents", package = "shinyStan")
   file.copy(from = contents, to = appDir, recursive = TRUE)

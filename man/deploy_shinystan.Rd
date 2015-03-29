@@ -7,7 +7,7 @@
 deploy_shinystan(sso, account, appName, ppcheck_data, ppcheck_yrep)
 }
 \arguments{
-\item{sso}{The \code{shinystan} object for the model you want to use.}
+\item{sso}{The \code{shinystan} object (\code{sso}) for the model you want to use.}
 
 \item{account}{ShinyApps account username. Not required if only one
 ShinyApps account is configured on the system.}
@@ -39,12 +39,12 @@ examples.
 # the model you want to use. Assume also that you want to name your app
 # 'my-model' and that your ShinyApps username is 'username'.
 
-deploy_shinystan(my_sso, appName = "my-model", account = "username")
+deploy_shinystan(sso = my_sso, appName = "my-model", account = "username")
 
 # If you only have one ShinyApps account configured then you also omit
 # the 'account' argument.
 
-deploy_shinystan(my_sso, appName = "my-model")
+deploy_shinystan(sso = my_sso, appName = "my-model")
 }
 }
 \seealso{
