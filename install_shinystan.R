@@ -13,7 +13,7 @@
 
 install_shinystan <- function() {
   
-  if (getRversion() < '3.1.2') stop("shinyStan requires R version 3.1.2 or greater.")
+  if (getRversion() < '3.1.1') stop("shinyStan requires R version 3.1.1 or greater.")
   
   msg <- "Note: this will install or update packages needed to run shinyStan. Do you want to continue?"
   continue <- select.list(choices = c("Yes", "No"), title = msg, graphics = FALSE)
