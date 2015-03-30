@@ -15,6 +15,12 @@
 
 
 
+# throw error if object is not shinystan object
+sso_check <- function(sso) {
+  if (!is.shinystan(sso)) stop("Please specify a shinystan object", call. = FALSE)
+  else return(invisible(TRUE))
+}
+
 # checks if an object is a stanfit object ---------------------------------
 is_stan <- function(X) inherits(X, "stanfit")
 
@@ -169,5 +175,10 @@ set_ppcheck_defaults <- function(appDir, yrep_name, y_name = "y") {
     files = c(y_file, yrep_file), 
     lines = c(y_lines(y_name), yrep_lines(yrep_name))
   )
+}
+
+# wrapper for grepl with ignore.case = TRUE
+grepl_ic <- function(pattern, x, ignore.case = TRUE) {
+  grepl(pattern = pattern, x = x, ignore.case = ignore.case)
 }
 
