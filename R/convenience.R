@@ -28,7 +28,7 @@ retrieve_neff <- function(sso, pars) {
   sso@summary[pars,"n_eff"]
 }
 
-retrieve_mcse <- function(stanfit, pars) {
+retrieve_mcse <- function(sso, pars) {
   if (missing(pars)) {
     return(sso@summary[,"se_mean"])
   }
