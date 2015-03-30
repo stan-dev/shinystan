@@ -244,7 +244,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                tags$textarea(id="model_code", style="background: transparent; border-width: .5px;", object@model_code)
                       ), # END TAB: Model Code
                       #### TAB: Notes ####
-                      tabPanel(title = "Notes",
+                      tabPanel(title = "Notepad",
                                helpText(strong("Use this space to store notes about your model")),
                                helpText("The text will be saved in the", code("user_model_info"),
                                         "slot of your", code("shinystan"), "object and displayed here
