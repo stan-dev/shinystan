@@ -34,8 +34,6 @@ coda_check <- function() {
 }
 
 
-
-
 # gets names of all shinystan objects in user's global environment --------
 get_sso_names <- function() {
   Filter(function(x) "shinystan" %in% class(get(x)), objects(envir = .GlobalEnv))
