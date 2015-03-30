@@ -1,3 +1,4 @@
+
 # This file is part of shinyStan
 # Copyright (C) 2015 Jonah Sol Gabry & Stan Development Team
 #
@@ -15,23 +16,25 @@
 
 
 
-#' Change the model name associated with a \code{shinystan} object
-#' 
-#' 
-#' @param sso The \code{shinystan} object (\code{sso}) you want to edit. 
-#' @param new_model_name Character string giving the new model name to use. 
-#' 
-#' @seealso \code{\link[shinyStan]{as.shinystan}}
+#' Print summary of \code{shinystan} object
+#'
+#' Prints basic summary info including number of parameters, chains, iterations, 
+#' warmup iterations, etc. 
+#'
+#' @param sso A \code{shinystan} object. 
 #' @export
-#' @examples
-#' \dontrun{
-#' # Assume X is a shinystan object
-#' X <- rename_model(X, "Any character string")
-#' }
-#' 
+#'
 
-rename_model <- function(sso, new_model_name) {
+sso_info <- function(sso) {
   sso_check(sso)
-  sso@model_name <- new_model_name
-  sso
+  
+  cat(
+    paste("Model name:", sso@model_name),
+    paste("Parameters:", length(sso@param_names)),
+    paste("Parameter groups:", length(sso@param_groups)),
+    paste("Chains:", sso@nChains),
+    paste("Iterations:", sso@nIter),
+    paste("Warmup:", sso@nWarmup),
+    sep = "\n"
+  )
 }

@@ -37,8 +37,7 @@
 mcmc2shinystan <- function(X, model_name = "unnamed model", burnin = 0, param_dims = list(),
                            model_code) {
 
-  stopifnot(requireNamespace("coda", quietly = TRUE))
-
+  coda_check()
   Xname <- deparse(substitute(X))
   if (!inherits(X, "mcmc.list")) {
     stop (paste(Xname, "is not an mcmc.list."))

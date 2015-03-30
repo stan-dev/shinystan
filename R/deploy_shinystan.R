@@ -55,6 +55,7 @@
 #' 
 
 deploy_shinystan <- function(sso, account, appName, ppcheck_data, ppcheck_yrep) {
+  sso_check(sso)
   
   # check for possible problems
   has_shinyapps <- requireNamespace("shinyapps", quietly = TRUE)
@@ -62,8 +63,6 @@ deploy_shinystan <- function(sso, account, appName, ppcheck_data, ppcheck_yrep) 
                            To download the package use devtools::install_github('rstudio/shinyapps')", 
                            call. = FALSE)
   
-  sso_name <- deparse(substitute(sso))
-  if (!is.shinystan(sso)) stop(paste(sso_name, "is not a shinystan object"), call. = FALSE)
   if (missing(appName)) stop("Please specify a name for your app using the 'appName' argument", call. = FALSE)
   if (missing(account)) account <- NULL
   

@@ -15,17 +15,16 @@
 
 
 
-#' Convenience function for \code{stanfit} objects
+#' Get summary statistics from \code{shinystan} object
 #'
-#' From a \code{stanfit} object get rhat, effective sample size,
-#' total sample size, posterior quantiles, means, standard deviations,
+#' From a \code{shinystan} object get rhat, effective sample size,
+#' posterior quantiles, means, standard deviations,
 #' sampler diagnostics, etc.
 #'
-#' @param stanfit A \code{stanfit} object
+#' @param sso A \code{shinystan} object
 #' @param what What do you want to get? See \strong{Details}, below.
 #' @param ... Optional arguments, in particular \code{pars} to specify parameter
-#' names (by default all parameters will be used) and \code{probs} to
-#' specify which quantiles should be returned. For NUTS sampler parameters
+#' names (by default all parameters will be used). For NUTS sampler parameters
 #' only (e.g. stepsize, treedepth) \code{inc_warmup} can also be specified to
 #' include/exclude warmup iterations (the default is \code{TRUE}, i.e. to
 #' include warmup iterations). See \strong{Details}, below.
@@ -35,72 +34,68 @@
 #' \describe{
 #'   \item{\code{"rhat", "Rhat", "r_hat", or "R_hat"}}{returns: Rhat statistics. Args: \code{pars}}
 #'   \item{\code{"N_eff","n_eff", "neff", "Neff", "ess", or "ESS"}}{returns: Effective sample sizes. Args: \code{pars}}
-#'   \item{\code{"N", "nsamples", "nSamples", "samplesize", "nsamps", "Nsamps", or "nSamps"}}{returns: Total sample size. Args: \code{pars}}
 #'   \item{\code{"mean"}}{returns: Posterior means. Args: \code{pars}}
 #'   \item{\code{"sd"}}{returns: Posterior standard deviations. Args: \code{pars}}
 #'   \item{\code{"se_mean" or "mcse"}}{returns: Monte carlo standard error. Args: \code{pars}}
 #'   \item{\code{"median"}}{returns: Posterior medians. Args: \code{pars}.}
-#'   \item{\code{"quantile" or any string with "quant" in it (not case sensitive)}}{returns: Posterior quantiles. Args: \code{pars}, \code{probs}.}
+#'   \item{\code{"quantiles" or any string with "quant" in it (not case sensitive)}}{returns: 2.5\%, 25\%, 50\%, 75\%, 97.5\% posterior quantiles. Args: \code{pars}.}
 #'   \item{\code{"avg_accept_stat" or any string with "accept" in it (not case sensitive)}}{returns: Average value of "accept_stat" (which itself is the average acceptance probability over the NUTS subtree). Args: \code{inc_warmup}}
 #'   \item{\code{"prop_divergent" or any string with "diverg" in it (not case sensitive)}}{returns: Proportion of divergent iterations for each chain. Args: \code{inc_warmup}}
 #'   \item{\code{"max_treedepth" or any string with "tree" or "depth" in it (not case sensitive)}}{returns: Maximum treedepth for each chain. Args: \code{inc_warmup}}
 #'   \item{\code{"avg_stepsize" or any string with "step" in it (not case sensitive)}}{returns: Average stepsize for each chain. Args: \code{inc_warmup}}
 #' }
+#' 
+#' @note Sampler diagnostics (e.g. \code{"avg_accept_stat"}) only available for models originally fit using Stan.
+#' 
 #' @export
 #' @examples
 #' \dontrun{
-#' # assume 'X' is a stanfit object with parameters
+#' # assume 'X' is a shinystan object with parameters
 #' # 'beta[1]', 'beta[2]', 'sigma[1]', 'sigma[2]'"
 #'
-#' stan_get(X, "rhat")
-#' stan_get(X, "mean", pars = c('beta[1]', 'sigma[1]'))
-#' stan_get(X, "quantile", probs = c(0.1, 0.9))
+#' retrieve(X, "rhat")
+#' retrieve(X, "mean", pars = c('beta[1]', 'sigma[1]'))
+#' retrieve(X, "quantiles")
 #'
-#' stan_get(X, "max_treedepth")  # equivalent to stan_get(X, "depth"), stan_get(X, "tree"), etc.
-#' stan_get(X, "prop_divergent", inc_warmup = FALSE)  # don't include warmup iterations
+#' retrieve(X, "max_treedepth")  # equivalent to retrieve(X, "depth"), retrieve(X, "tree"), etc.
+#' retrieve(X, "prop_divergent", inc_warmup = FALSE)  # don't include warmup iterations
 #' }
 #'
 
-stan_get <- function(stanfit, what, ...) {
-  my_grepl <- function(pattern, x, ignore.case = TRUE) {
-    grepl(pattern = pattern, x = x, ignore.case = ignore.case)
-  }
+retrieve <- function(sso, what, ...) {
+  sso_check(sso)
 
   if (what %in% c("rhat", "rhats", "Rhat", "Rhats", "r_hat", "R_hat")) {
-    return(stan_rhat(stanfit, ...))
+    return(retrieve_rhat(sso, ...))
   }
   if (what %in% c("N_eff","n_eff", "neff", "Neff", "ess","ESS")) {
-    return(stan_neff(stanfit, ...))
+    return(retrieve_neff(sso, ...))
   }
-  if (what %in% c("N", "nsamples", "nSamples", "samplesize",
-                  "nsamps", "Nsamps", "nSamps")) {
-    return(stan_nsamples(stanfit, ...))
+  if (grepl_ic("mean", what)) {
+    return(retrieve_mean(sso, ...))
   }
-  if (my_grepl("mean", what)) {
-    return(stan_mean(stanfit, ...))
-  }
-  if (my_grepl("sd", what)) {
-    return(stan_sd(stanfit, ...))
+  if (grepl_ic("sd", what)) {
+    return(retrieve_sd(sso, ...))
   }
   if (what %in% c("se_mean", "mcse")) {
-    return(stan_mcse(stanfit, ...))
+    return(retrieve_mcse(sso, ...))
   }
-  if (my_grepl("quant", what)) {
-    return(stan_quant(stanfit, ...))
+  if (grepl_ic("quant", what)) {
+    return(retrieve_quant(sso, ...))
   }
-  if (my_grepl("median", what)) {
-    return(stan_median(stanfit, ...))
+  if (grepl_ic("median", what)) {
+    return(retrieve_median(sso, ...))
   }
-  if (my_grepl("tree", what) | my_grepl("depth", what)) {
-    return(stan_max_treedepth(stanfit, ...))
+  if (grepl_ic("tree", what) | grepl_ic("depth", what)) {
+    return(retrieve_max_treedepth(sso, ...))
   }
-  if (my_grepl("step", what)) {
-    return(stan_avg_stepsize(stanfit, ...))
+  if (grepl_ic("step", what)) {
+    return(retrieve_avg_stepsize(sso, ...))
   }
-  if (my_grepl("diverg", what)) {
-    return(stan_prop_divergent(stanfit, ...))
+  if (grepl_ic("diverg", what)) {
+    return(retrieve_prop_divergent(sso, ...))
   }
-  if (my_grepl("accept", what)) {
-    return(stan_avg_accept(stanfit, ...))
+  if (grepl_ic("accept", what)) {
+    return(retrieve_avg_accept(sso, ...))
   }
 }
