@@ -63,9 +63,7 @@
 #'
 
 retrieve <- function(sso, what, ...) {
-  my_grepl <- function(pattern, x, ignore.case = TRUE) {
-    grepl(pattern = pattern, x = x, ignore.case = ignore.case)
-  }
+  sso_check(sso)
 
   if (what %in% c("rhat", "rhats", "Rhat", "Rhats", "r_hat", "R_hat")) {
     return(retrieve_rhat(sso, ...))
@@ -73,31 +71,31 @@ retrieve <- function(sso, what, ...) {
   if (what %in% c("N_eff","n_eff", "neff", "Neff", "ess","ESS")) {
     return(retrieve_neff(sso, ...))
   }
-  if (my_grepl("mean", what)) {
+  if (grepl_ic("mean", what)) {
     return(retrieve_mean(sso, ...))
   }
-  if (my_grepl("sd", what)) {
+  if (grepl_ic("sd", what)) {
     return(retrieve_sd(sso, ...))
   }
   if (what %in% c("se_mean", "mcse")) {
     return(retrieve_mcse(sso, ...))
   }
-  if (my_grepl("quant", what)) {
+  if (grepl_ic("quant", what)) {
     return(retrieve_quant(sso, ...))
   }
-  if (my_grepl("median", what)) {
+  if (grepl_ic("median", what)) {
     return(retrieve_median(sso, ...))
   }
-  if (my_grepl("tree", what) | my_grepl("depth", what)) {
+  if (grepl_ic("tree", what) | grepl_ic("depth", what)) {
     return(retrieve_max_treedepth(sso, ...))
   }
-  if (my_grepl("step", what)) {
+  if (grepl_ic("step", what)) {
     return(retrieve_avg_stepsize(sso, ...))
   }
-  if (my_grepl("diverg", what)) {
+  if (grepl_ic("diverg", what)) {
     return(retrieve_prop_divergent(sso, ...))
   }
-  if (my_grepl("accept", what)) {
+  if (grepl_ic("accept", what)) {
     return(retrieve_avg_accept(sso, ...))
   }
 }

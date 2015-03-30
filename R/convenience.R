@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-
+  
 retrieve_rhat <- function(sso, pars) {
   if (missing(pars)) {
     return(sso@summary[,"Rhat"])
@@ -43,14 +43,12 @@ retrieve_quant <- function(sso, pars) {
   sso@summary[pars, cols]
 }
 
-
 retrieve_median <- function(sso, pars) {
   if (missing(pars)) {
     return(retrieve_quant(sso)[,"50%"])
   }
   retrieve_quant(sso, pars)[,"50%"]
 }
-
 
 retrieve_mean <- function(sso, pars) {
   if (missing(pars)) {
@@ -59,13 +57,13 @@ retrieve_mean <- function(sso, pars) {
   sso@summary[pars,"mean"]
 }
 
-
 retrieve_sd <- function(sso, pars) {
   if (missing(pars)) {
     return(sso@summary[, "sd"])
   }
   sso@summary[pars, "sd"]
 }
+
 
 sp_check <- function(sso) {
   if (is.na(sso@sampler_params[[1]])) stop("Only available for Stan models.")
