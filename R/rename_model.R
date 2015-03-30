@@ -31,8 +31,7 @@
 #' 
 
 rename_model <- function(sso, new_model_name) {
-  sso_name <- deparse(substitute(sso))
-  if (!is.shinystan(sso)) stop(paste0(sso_name, "is not a shinystan object"))
+  sso_check(sso)
   sso@model_name <- new_model_name
   sso
 }

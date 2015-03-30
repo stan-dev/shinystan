@@ -26,6 +26,8 @@
 #'
 
 sso_info <- function(sso) {
+  sso_check(sso)
+  
   cat(
     paste("Model name:", sso@model_name),
     paste("Parameters:", length(sso@param_names)),

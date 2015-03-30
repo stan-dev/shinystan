@@ -52,13 +52,14 @@
 #'}
 
 include_model_code <- function(sso, code) {
-  sso_name <- deparse(substitute(sso))
-  if (!is.shinystan(sso)) stop(paste(sso_name, "is not a shinystan object."))
+  sso_check(sso)
   if (!is.character(code)) stop("'code' should be a character string.")
   
   sso@model_code <- code
   
-  message(paste0("Successfully added code to ", sso_name, 
-                 ". \nYou can view the added code in the shinyStan GUI on the 'Model Code' page."))
+  message(
+    paste0("Successfully added code.", 
+           "\nYou can view the added code in the shinyStan GUI on the 'Model Code' page.")
+  )
   sso
 }
