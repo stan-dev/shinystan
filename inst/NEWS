@@ -1,0 +1,21 @@
+Version 1.1.0 (Mon Mar 30 2015)
+
+1. New features/functions in shinyStan package 
+* deploy_shinystan function for easily deploying custom apps to RStudio's shinyapps.io
+* retrieve function for accessing summary stats and sampler diagnostics stored in shinystan object (e.g. rhat, neff, posterior sd, etc.)
+* sso_info function for printing brief description of a shinystan object (e.g. number of iterations, chains, parameters, etc.)
+
+2. New features in shinyStan app 
+* Specify arbitrary transformations (e.g. log, logit, sqrt, etc.) for density, histogram, bivariate and trivariate plots ('Explore' page)
+* Basic graphical posterior predictive checking ('Diagnose' page, 'PPcheck' tab)
+* Plots of divergent iterations and treedepth ('Diagnose' page, 'HMC/NUTS' tab)
+* Standard deviations of HMC/NUTS sampler statistics ('Diagnose' page, 'HMC/NUTS' tab)
+* Option to change display to partial autocorrelations  ('Diagnose' page, 'Autocorrelation' tab)
+* Change background and font ('More' menu, 'Appearance' tab)
+* Slight design improvements to GUI
+
+3. Bug fixes
+* Reading from CmdStan via rstan::read_stan_csv (issue 21)
+* Cooperation with dplyr (issue 28) 
+* Multiparameter traceplots y-axis limits (issue 17)
+* Multiview default parameter (issue 19)
