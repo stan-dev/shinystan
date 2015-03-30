@@ -47,7 +47,7 @@ deploy_shinystan(my_sso, appName = "MyModel", account = "username")
 
 **When to specify the `account` argument**
 
-If you have multiple ShinyApps accounts configured on your local system the the `account` argument is required. If you have only a single account configured on your local system then you can also omit `account`
+If you have multiple ShinyApps accounts configured on your local system then the `account` argument is required. If you only have a single account then you can omit `account`
 
 ```r
 deploy_shinystan(my_sso, appName = "MyModel")
