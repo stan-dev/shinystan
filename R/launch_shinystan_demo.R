@@ -50,8 +50,7 @@ launch_shinystan_demo <- function(...) {
     on.exit(cleanup_shinystan(get("shinystan_object"), out_name, is_stanfit_object = FALSE))
     launch_demo(get(demo_name))
   } else {
-    has_rstan <- requireNamespace("rstan", quietly = TRUE)
-    if(!has_rstan) stop("You need to have the RStan package installed to use this option. Try runnning the default shinyStan demo instead.", call. = FALSE)
+    rstan_check()
     rstan_demo <- rstan::stan_demo(...)
     launch_shinystan(rstan_demo)
   }

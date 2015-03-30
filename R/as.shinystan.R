@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-#' \code{shinystan} Objects
+#' Create and test \code{shinystan} objects
 #'
 #' @param X An object to be converted to a \code{shinystan} object. Can be
 #' one of the following:

@@ -3,7 +3,7 @@
 \name{as.shinystan}
 \alias{as.shinystan}
 \alias{is.shinystan}
-\title{\code{shinystan} Objects}
+\title{Create and test \code{shinystan} objects}
 \usage{
 as.shinystan(X, ...)
 
@@ -33,7 +33,7 @@ be used with \code{\link[shinyStan]{launch_shinystan}}. For
 is a \code{shinystan} object.
 }
 \description{
-\code{shinystan} Objects
+Create and test \code{shinystan} objects
 }
 \details{
 If \code{X} is a \code{stanfit} object then no additional arguments

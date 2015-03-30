@@ -20,7 +20,7 @@
 stan2shinystan <- function(stanfit, model_name, notes) {
   # notes: text to add to user_model_info slot
   
-  stopifnot(requireNamespace("rstan", quietly = TRUE))
+  rstan_check()
   
   if (!inherits(stanfit, "stanfit")) {
     name <- deparse(substitute(stanfit))

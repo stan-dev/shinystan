@@ -18,6 +18,23 @@
 # checks if an object is a stanfit object ---------------------------------
 is_stan <- function(X) inherits(X, "stanfit")
 
+# checks for rstan package 
+rstan_check <- function() {
+  msg <- paste("You need to have the RStan package installed to use this option.",
+               "\nTry runnning the default shinyStan demo instead.")
+  has_rstan <- requireNamespace("rstan", quietly = TRUE)  
+  if (!has_rstan) stop(msg, call. = FALSE)
+}
+
+# checks for coda package 
+coda_check <- function() {
+  msg <- paste("You need to have the coda package installed to use this option.")
+  has_coda <- requireNamespace("coda", quietly = TRUE)  
+  if (!has_coda) stop(msg, call. = FALSE)
+}
+
+
+
 
 # gets names of all shinystan objects in user's global environment --------
 get_sso_names <- function() {
