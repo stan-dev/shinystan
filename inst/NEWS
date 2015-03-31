@@ -14,8 +14,9 @@ Version 1.1.0 (Mon Mar 30 2015)
 * Change background and font ('More' menu, 'Appearance' tab)
 * Slight design improvements to GUI
 
-3. Bug fixes
+3. Bug fixes (GitHub issue number in parentheses)
 * Reading from CmdStan via rstan::read_stan_csv (issue 21)
 * Cooperation with dplyr (issue 28) 
 * Multiparameter traceplots y-axis limits (issue 17)
 * Multiview default parameter (issue 19)
+* Latex table decimal places (issue 69)
