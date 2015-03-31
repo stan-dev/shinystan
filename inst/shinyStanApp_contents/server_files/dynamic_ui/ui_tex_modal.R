@@ -18,8 +18,14 @@
 output$ui_tex_modal <- renderUI({
   bsModal("tex", title = withMathJax("\\(\\LaTeX\\)"), trigger = "tex_options",
           helpText(style = "color: #337ab7;","The table will print in the R console and can be pasted seamlessly into a .tex file."),
-          selectizeInput("tex_params", width = "100%", label = h5("Select or enter parameter names"), choices = .make_param_list_with_groups(object), multiple = TRUE,
+          br(),
+          selectizeInput("tex_params", width = "100%", label = strong("Select or enter parameter names"), choices = .make_param_list_with_groups(object), multiple = TRUE,
                          options = list(placeholder = "Leave blank for all parameters")),
+          
+          fluidRow(
+            column(3, numericInput("tex_digits", label = "Digits", value = 1, min = 0)),
+            column(8, offset = 1, textInput("tex_caption", label = "Caption"))
+          ),
           flowLayout(checkboxInput("tex_booktabs", strong("Booktabs"), value = TRUE),
                      helpText("Use toprule, midrule, and bottomrule tags from LaTex package 'booktabs'.")),
           flowLayout(checkboxInput("tex_long", strong("Longtable"), value = FALSE),

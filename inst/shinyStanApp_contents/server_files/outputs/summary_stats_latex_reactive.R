@@ -26,17 +26,19 @@ summary_stats_latex <- reactive({
       summary     = fit_summary
     ))
   } else {
-    x <- do.call(".all_summary", args = list(
+    x <- do.call(".tex_summary", args = list(
       summary     = fit_summary[params, ],
-      digits      = input$stats_digits,
       cols        = input$stats_columns
     ))
   }
 
   
   tab_env <- if (input$tex_long) "longtable" else getOption("xtable.tabular.environment", "tabular")
-  
-  xtable::print.xtable(xtable::xtable(x), 
+  caption <- if (nzchar(input$tex_caption)) input$tex_caption else NULL
+  xt <- xtable::xtable(x, caption = caption)
+  xtable::digits(xt) <- input$tex_digits
+  if ("n_eff" %in% colnames(xt)) xtable::display(xt)[1+which(colnames(xt) == "n_eff")] <- "d"
+  xtable::print.xtable(xt, 
                        booktabs = input$tex_booktabs,
                        tabular.environment = tab_env,
                        include.rownames = FALSE
