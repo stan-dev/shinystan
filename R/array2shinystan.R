@@ -57,7 +57,7 @@ array2shinystan <- function(X, model_name = "unnamed model", burnin = 0, param_d
   if (length(param_dims) == 0) {
     param_dims <- list()
     param_dims[1:length(param_names)] <- NA
-    names(param_dims) <- param_groups <- param_names
+    names(param_dims) <- param_names
     for(i in 1:length(param_names)) {
       param_dims[[i]] <- numeric(0)
     }
@@ -68,8 +68,6 @@ array2shinystan <- function(X, model_name = "unnamed model", burnin = 0, param_d
     for (i in which(zeros)) {
       param_dims[[i]] <- numeric(0)
     }
-
-    param_groups <- names(param_dims)
   }
 
   slots <- list()
@@ -77,7 +75,6 @@ array2shinystan <- function(X, model_name = "unnamed model", burnin = 0, param_d
   slots$model_name <- model_name
   slots$param_names <- param_names
   slots$param_dims <- param_dims
-  slots$param_groups <- param_groups
   slots$samps_all <- X
   slots$summary <- shinystan_monitor(X, warmup = burnin)
   slots$sampler_params <- list(NA)

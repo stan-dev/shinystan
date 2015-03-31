@@ -17,16 +17,17 @@
 # make_param_list ------------------------------------------------------
 # generate list of parameter names (formatted for shiny::selectInput)
 .make_param_list <- function(object) {
+  param_groups <- names(object@param_dims)
   choices <- list()
   ll <- length(object@param_dims)
   choices[1:ll] <- ""
-  names(choices) <- object@param_groups
+  names(choices) <- param_groups
   for(i in 1:ll) {
     if (length(object@param_dims[[i]]) == 0) {
-      choices[[i]] <- list(object@param_groups[i])
+      choices[[i]] <- list(param_groups[i])
     }
     else {
-      temp <- paste0(object@param_groups[i],"\\[")
+      temp <- paste0(param_groups[i],"\\[")
       choices[[i]] <- object@param_names[grep(temp, object@param_names)]
     }
   }
@@ -37,16 +38,17 @@
 # generate list of parameter names  and include parameter groups (formatted for shiny::selectInput)
 .make_param_list_with_groups <- function(object, sort_j = FALSE) {
   choices <- list()
+  param_groups <- names(object@param_dims)
   ll <- length(object@param_dims)
   LL <- sapply(1:ll, function(i) length(object@param_dims[[i]]))
   
   choices[1:ll] <- ""
-  names(choices) <- object@param_groups
+  names(choices) <- param_groups
   for(i in 1:ll) {
     if (LL[i] == 0) {
-      choices[[i]] <- list(object@param_groups[i])
+      choices[[i]] <- list(param_groups[i])
     } else {
-      group <- object@param_groups[i]
+      group <- param_groups[i]
       temp <- paste0("^",group,"\\[")
       ch <- object@param_names[grep(temp, object@param_names)]
       

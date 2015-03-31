@@ -44,6 +44,23 @@ grepl_ic <- function(pattern, x, ignore.case = TRUE) {
   grepl(pattern = pattern, x = x, ignore.case = ignore.case)
 }
 
+# remove slot -------------------------------------------------------------
+remove_slot <- function(sso, slot_name) {
+  sso_new <- new("shinystan")
+  for (sn in slotNames("shinystan")) {
+    slot(sso_new, sn) <- slot(sso, sn)
+  }
+  sso_new
+}
+
+# check or remove slot ----------------------------------------------------
+check_or_remove_slot <- function(sso, slot_name) {
+  sso_check(sso)
+  pass <- !.hasSlot(sso, slot_name)
+  if (pass) return(sso)
+  remove_slot(sso, slot_name)
+}
+
 # gets names of all shinystan objects in user's global environment --------
 get_sso_names <- function() {
   Filter(function(x) "shinystan" %in% class(get(x)), objects(envir = .GlobalEnv))

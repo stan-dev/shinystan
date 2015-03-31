@@ -81,7 +81,6 @@ mcmc2shinystan <- function(X, model_name = "unnamed model", burnin = 0, param_di
   slots$model_name <- model_name
   slots$param_names <- param_names
   slots$param_dims <- param_dims
-  slots$param_groups <- param_groups
   slots$samps_all <- samps_array
   slots$summary <- shinystan_monitor(samps_array, warmup = burnin)
   slots$sampler_params <- list(NA)

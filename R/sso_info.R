@@ -31,7 +31,7 @@ sso_info <- function(sso) {
   cat(
     paste("Model name:", sso@model_name),
     paste("Parameters:", length(sso@param_names)),
-    paste("Parameter groups:", length(sso@param_groups)),
+    paste("Parameter groups:", length(names(sso@param_dims))),
     paste("Chains:", sso@nChains),
     paste("Iterations:", sso@nIter),
     paste("Warmup:", sso@nWarmup),

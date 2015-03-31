@@ -1,5 +1,6 @@
-# This file is part of shinyStan
+
 # Copyright (C) 2015 Jonah Sol Gabry & Stan Development Team
+# This file is part of shinyStan
 #
 # shinyStan is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
@@ -20,17 +21,18 @@ make_param_list_with_groups_sort <- reactive({
   validate(need(!is.null(input$param_plot_sort_j), message = "Loading..."))
   sort_j <- input$param_plot_sort_j
   choices <- list()
+  param_groups <- names(object@param_dims)
   ll <- length(object@param_dims)
   LL <- sapply(1:ll, function(i) length(object@param_dims[[i]]))
 
   choices[1:ll] <- ""
-  names(choices) <- object@param_groups
+  names(choices) <- param_groups
   for(i in 1:ll) {
     if (LL[i] == 0) {
-      choices[[i]] <- list(object@param_groups[i])
+      choices[[i]] <- list(param_groups[i])
     }
     else {
-      group <- object@param_groups[i]
+      group <- param_groups[i]
       temp <- paste0("^",group,"\\[")
       ch <- object@param_names[grep(temp, object@param_names)]
       # the next line avoids parameters whose names include the group name of a

@@ -85,6 +85,9 @@ launch_shinystan <- function(object, ...) {
 
   if (!is_stanfit_object & !is.shinystan(object)) stop(paste(name, "is not a shinystan or stanfit object."))
 
+  # remove redundant "param_groups" slot from v1.0.0 sso
+  if (is.shinystan(object)) check_or_remove_slot(object, "param_groups")
+  
   out_name <- if (is_stanfit_object) paste0(name,"_shinystan") else name
   if (no_name) out_name <- "unnamed_shinystan"
   
