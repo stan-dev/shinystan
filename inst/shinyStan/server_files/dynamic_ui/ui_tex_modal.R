@@ -23,7 +23,7 @@ output$ui_tex_modal <- renderUI({
                          options = list(placeholder = "Leave blank for all parameters")),
           
           fluidRow(
-            column(3, numericInput("tex_digits", label = "Digits", value = 1, min = 0)),
+            column(3, numericInput("tex_digits", label = "Digits", value = input$stats_digits, min = 0)),
             column(8, offset = 1, textInput("tex_caption", label = "Caption"))
           ),
           flowLayout(checkboxInput("tex_booktabs", strong("Booktabs"), value = TRUE),
