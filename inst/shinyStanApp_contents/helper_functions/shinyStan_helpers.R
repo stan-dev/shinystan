@@ -133,6 +133,15 @@ strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "
   out
 }
 
+# tex_summary -------------------------------------------------------------
+# prep for latex table
+.tex_summary <- function(summary, params, cols) {
+  df <- as.data.frame(summary[, cols])
+  if ("n_eff" %in% cols) df[, "n_eff"] <- round(df[, "n_eff"])
+  out <- cbind(Parameter = rownames(df), df)
+  out
+}
+
 # sampler_summary ---------------------------------------------------------
 .sampler_stuff <- function(X, param, inc_warmup, report) {
   sapply_funs <- function(x, fun_name) {
