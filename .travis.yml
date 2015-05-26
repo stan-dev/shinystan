@@ -1,4 +1,4 @@
-# Sample .travis.yml for R projects from https://github.com/craigcitro/r-travis
+# Based on sample .travis.yml for R projects from https://github.com/craigcitro/r-travis
 language: c
 
 sudo: required
@@ -11,6 +11,7 @@ before_install:
 install:
   - ./travis-tool.sh install_github jgabry/shinyBS@shinyBS_for_shinyStan 
   - ./travis-tool.sh install_github bwlewis/rthreejs
+  - ./travis-tool.sh install_github rstudio/DT
   - ./travis-tool.sh install_github rstudio/shinyapps
   - ./travis-tool.sh install_deps
 

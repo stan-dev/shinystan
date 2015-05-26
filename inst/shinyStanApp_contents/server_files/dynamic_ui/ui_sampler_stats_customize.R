@@ -21,7 +21,7 @@ output$ui_sampler_stats_customize <- renderUI({
                            choices = list(Include = "include", Omit = "omit"),
                            inline = TRUE
     )),
-    column(5, radioButtons("sampler_report", label = h5("Report average, maximum, or minimum values"),
+    column(5, radioButtons("sampler_report", label = h5("Report average, sd, max, or min"),
                            choices = list(Mean = "average", SD = "sd", Maximum = "maximum", Minimum = "minimum"),
                            inline = TRUE
     )),

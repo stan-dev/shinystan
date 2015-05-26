@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-pkgs <- c("shiny", "shinyBS", "ggplot2", "gtools", "plyr", "reshape2", "dygraphs", "xts", "xtable", "gridExtra", "markdown")
+pkgs <- c("shiny", "shinyBS", "ggplot2", "gtools", "plyr", "reshape2", "DT", "dygraphs", "xts", "xtable", "gridExtra", "markdown", "threejs")
 invisible(lapply(X = pkgs, FUN = require, character.only = TRUE))
 
 
@@ -69,7 +69,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                           )
                                         )
                                  ),
-                                 column(9, dataTableOutput("all_summary_out"))
+                                 column(9, DT::dataTableOutput("all_summary_out"))
                                )
                       )
                     ) # End tabsetPanel
@@ -84,7 +84,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                uiOutput("glossary_modal_nuts"),
                                h2("Summary of sampler parameters"),
                                uiOutput("ui_sampler_stats_customize"),
-                               dataTableOutput("sampler_summary"),
+                               DT::dataTableOutput("sampler_summary"),
                                hr(),
                                splitLayout(
                                  h4("n_divergent (post-warmup)"),
@@ -159,10 +159,10 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
            tabPanel(title = "Explore", icon = icon("eye-open", lib = "glyphicon"),
                     fluidRow(
                       column(3, selectizeInput(inputId = "param", label = h4("Select parameter"), choices = .make_param_list(object), selected = .make_param_list(object)[1], multiple = FALSE)),
-                      column(7, offset = 1, dataTableOutput("parameter_summary_out"))
+                      column(7, offset = 1, DT::dataTableOutput("parameter_summary_out"))
                     ),
                     hr(),
-                    navlistPanel(well = FALSE, 
+                    navlistPanel(well = FALSE,
                                  #### multiview ####
                                  tabPanel("Multiview", icon = icon("th-large", lib = "glyphicon"),
                                           bsCollapse(
@@ -212,7 +212,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                           br()
                                  ),
                                  #### trivariate plot #####
-                                 tabPanel("Dynamic 3D scatterplot", value = "threejs",
+                                 tabPanel("Dynamic 3D scatterplot", 
                                           uiOutput("ui_triviariate_customize"),
                                           uiOutput("ui_trivariate_select"),
                                           fluidRow(
@@ -248,11 +248,11 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                tags$textarea(id="model_code", style="background: transparent; border-width: .5px;", object@model_code)
                       ), # END TAB: Model Code
                       #### TAB: Notes ####
-                      tabPanel(title = "Notes",
+                      tabPanel(title = "Notepad",
                                helpText(strong("Use this space to store notes about your model")),
                                helpText("The text will be saved in the", code("user_model_info"),
                                         "slot of your", code("shinystan"), "object and displayed here
-                                    each time you launch the app for this model.",
+                                        each time you launch the app for this model.",
                                         bsButton("btn_user_model_info_why", label = "Read more about the 'Notes' tab", style = "link", size = "mini")
                                ),
                                h4("Notes"),
@@ -293,7 +293,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                uiOutput("ui_background_texture"),
                                uiOutput("ui_body_font")
                       )
-           ), # END navbarMenu MORE
+                      ), # END navbarMenu MORE
            
            #### QUIT ####
            tabPanel(strong(style = "color: #f9dd67;", "Quit"), value = "quit", icon = icon("close"),

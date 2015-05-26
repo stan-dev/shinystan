@@ -16,7 +16,7 @@ Depends:
     R (>= 3.1.1),
     ggplot2 (>= 1.0.0),
     methods,
-    shiny (>= 0.11.1),
+    shiny (>= 0.11.2),
     shinyBS (>= 0.50)
 License: GPL (>=3)
 LazyData: true
@@ -26,7 +26,8 @@ Suggests:
     knitr (>= 1.9),
     shinyapps,
     testthat
-Imports: 
+Imports:
+    DT (>= 0.0.4),
     dygraphs (>= 0.4.1),
     gridExtra,
     gtools,

@@ -65,7 +65,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                           )
                                         )
                                  ),
-                                 column(9, dataTableOutput("all_summary_out"))
+                                 column(9, DT::dataTableOutput("all_summary_out"))
                                )
                       )
                     ) # End tabsetPanel
@@ -80,7 +80,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                uiOutput("glossary_modal_nuts"),
                                h2("Summary of sampler parameters"),
                                uiOutput("ui_sampler_stats_customize"),
-                               dataTableOutput("sampler_summary"),
+                               DT::dataTableOutput("sampler_summary"),
                                hr(),
                                splitLayout(
                                  h4("n_divergent (post-warmup)"),
@@ -155,7 +155,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
            tabPanel(title = "Explore", icon = icon("eye-open", lib = "glyphicon"),
                     fluidRow(
                       column(3, selectizeInput(inputId = "param", label = h4("Select parameter"), choices = .make_param_list(object), selected = .make_param_list(object)[1], multiple = FALSE)),
-                      column(7, offset = 1, dataTableOutput("parameter_summary_out"))
+                      column(7, offset = 1, DT::dataTableOutput("parameter_summary_out"))
                     ),
                     hr(),
                     navlistPanel(well = FALSE,
