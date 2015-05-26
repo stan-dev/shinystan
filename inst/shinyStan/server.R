@@ -90,6 +90,7 @@ function(input, output, session) {
     processing = TRUE,
     scrollX = TRUE,
     scrollY = "200px",
+    # autoWidth = TRUE,
     scrollCollapse = TRUE,
     paging = FALSE,
     # pageLength = 3,
@@ -209,6 +210,7 @@ function(input, output, session) {
   rownames = FALSE,
   options = list(
     paging = FALSE, searching = FALSE, info = FALSE, ordering = FALSE,
+    autoWidth = TRUE,
     columnDefs = list(list(sClass="alignRight", targets ="_all")),
     initComplete = htmlwidgets::JS( # change background color of table header
       'function(settings, json) {
