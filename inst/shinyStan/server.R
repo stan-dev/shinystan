@@ -44,7 +44,9 @@ function(input, output, session) {
   DT::datatable({
     summary_stats()
   },
+  filter = 'bottom',
   options = list(
+    searchHighlight = TRUE,
     search = list(regex = input$user_regex), # allow regular expression when searching for parameter names
     processing = TRUE,
     pagingType = "full", # show only first, previous, next, last buttons (no page numbers)
@@ -52,8 +54,9 @@ function(input, output, session) {
     lengthMenu = list(c(5, 10, 20, 50, -1), c('5', '10', '20', '50', 'All')),
     scrollY = 400,
     scrollX = TRUE,
+    autoWidth = TRUE,
     scrollCollapse = FALSE,
-    columnDefs = list(list(targets = "_all", searchable = FALSE), list(width="85px", targets=list(0)), list(sClass="alignRight", targets ="_all")),
+    columnDefs = list(list(width="85px", targets=list(0)), list(sClass="alignRight", targets ="_all")),
     initComplete = htmlwidgets::JS( # change text color of column titles
             'function(settings, json) {
           $(this.api().table().header()).css({"color": "#337ab7"});
@@ -202,7 +205,9 @@ function(input, output, session) {
   output$parameter_summary_out <- DT::renderDataTable({
     DT::datatable({
     as.data.frame(round(parameter_summary(), 2))
-  }, options = list(
+  }, 
+  rownames = FALSE,
+  options = list(
     paging = FALSE, searching = FALSE, info = FALSE, ordering = FALSE,
     columnDefs = list(list(sClass="alignRight", targets ="_all")),
     initComplete = htmlwidgets::JS( # change background color of table header
