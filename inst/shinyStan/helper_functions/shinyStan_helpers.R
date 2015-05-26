@@ -129,8 +129,7 @@ strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "
   df <- as.data.frame(summary[, cols])
   df <- round(df, digits)
   if ("n_eff" %in% cols) df[, "n_eff"] <- round(df[, "n_eff"])
-  out <- cbind(Parameter = rownames(df), df)
-  out
+  df
 }
 
 # tex_summary -------------------------------------------------------------
@@ -178,7 +177,7 @@ strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "
     out <- rbind("All chains" = colMeans(out), out)
     colnames(out) <- gsub("__","",colnames(out))
     out <- formatC(round(out, digits), format='f', digits=digits)
-    out <- cbind(Chain = rownames(out), out)
+    # out <- cbind(Chain = rownames(out), out)
   } else { # if only 1 chain
     names(out) <- gsub("__.chain1", "", names(out))
     out <- t(out)
