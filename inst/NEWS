@@ -1,7 +1,7 @@
 Version 1.1.0 (Mon Mar 30 2015)
 
-1. New R functions in shinyStan package 
-* 'deploy_shinystan' function for easily deploying custom apps to RStudio's shinyapps.io
+1. New functions in shinyStan R package 
+* 'deploy_shinystan' function for easily deploying custom apps to RStudio's shinyapps.io. Each of your apps/models will have a unique url. 
 * 'retrieve' function for accessing summary stats and sampler diagnostics stored in shinystan object (e.g. rhat, neff, posterior sd, etc.)
 * 'sso_info' function for printing brief description of a shinystan object (e.g. number of iterations, chains, parameters, etc.)
 

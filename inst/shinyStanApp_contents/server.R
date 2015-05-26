@@ -34,7 +34,7 @@ function(input, output, session) {
   # source all files from server_files directory and subdirectories
   files <- list.files("server_files", full.names = TRUE, recursive = TRUE)
   for (f in files) source(f, local = TRUE)
-
+  
   # tooltips
   for (id in seq_along(tooltip_ids)) {
     addTooltip(session, id = tooltip_ids[id], trigger = "hover", placement = tooltip_placements[id],
@@ -42,32 +42,35 @@ function(input, output, session) {
   }
   
   #### DATATABLE: summary stats (all parameters) ####
-  output$all_summary_out <- renderDataTable({
-    summary_stats()
-  }, options = function() {
-    list(
+  output$all_summary_out <- DT::renderDataTable({
+    DT::datatable({
+      summary_stats()
+    },
+    filter = 'bottom',
+    options = list(
+      searchHighlight = TRUE,
       search = list(regex = input$user_regex), # allow regular expression when searching for parameter names
       processing = TRUE,
       pagingType = "full", # show only first, previous, next, last buttons (no page numbers)
       pageLength = 10,
       lengthMenu = list(c(5, 10, 20, 50, -1), c('5', '10', '20', '50', 'All')),
-      orderClasses = TRUE,
       scrollY = 400,
       scrollX = TRUE,
+      autoWidth = TRUE,
       scrollCollapse = FALSE,
-      columnDefs = list(list(targets = "_all", searchable = FALSE), list(width="85px", targets=list(0)), list(sClass="alignRight", targets ="_all")),
-      initComplete = I( # change text color of column titles
+      columnDefs = list(list(width="85px", targets=list(0)), list(sClass="alignRight", targets ="_all")),
+      initComplete = htmlwidgets::JS( # change text color of column titles
         'function(settings, json) {
-      $(this.api().table().header()).css({"color": "#337ab7"});
-      }'),
-      rowCallback = I(
-        'function(row, data) {
-        // Bold cells in the first column
-          $("td:eq(0)", row).css("font-weight", "bold");
-      }')
-    )
-  }
+        $(this.api().table().header()).css({"color": "#337ab7"});
+  }'),
+    rowCallback = htmlwidgets::JS(
+      'function(row, data) {
+      // Bold cells in the first column
+      $("td:eq(0)", row).css("font-weight", "bold");
+}')
   )
+    )
+  })
   # download the table
   output$download_all_summary <- downloadHandler(
     filename = paste0('shinystan_summary_stats.RData'),
@@ -81,29 +84,34 @@ function(input, output, session) {
     summary_stats_latex()
   })
   #### DATATABLE: summary stats (sampler) ####
-  output$sampler_summary <- renderDataTable({
-    summary_stats_sampler()
-  }, options = list(
-    processing = TRUE,
-    scrollX = TRUE,
-    scrollY = "200px",
-    scrollCollapse = TRUE,
-    paging = FALSE,
-    # pageLength = 3,
-    searching = FALSE,
-    info = FALSE,
-    aoColumnDefs = list(list(sClass="alignRight", aTargets = "_all")),
-    orderClasses = TRUE,
-    initComplete = I( # change text color of column titles
-      'function(settings, json) {
-      $(this.api().table().header()).css({"color": "#337ab7"});
-      }'),
-    rowCallback = I(
+  output$sampler_summary <- DT::renderDataTable({
+    DT::datatable({
+      summary_stats_sampler()
+    }, options = list(
+      rownames = FALSE,
+      processing = TRUE,
+      scrollX = TRUE,
+      scrollY = "200px",
+      # autoWidth = TRUE,
+      scrollCollapse = TRUE,
+      paging = FALSE,
+      # pageLength = 3,
+      searching = FALSE,
+      info = FALSE,
+      aoColumnDefs = list(list(sClass="alignRight", aTargets = "_all")),
+      orderClasses = TRUE,
+      initComplete = htmlwidgets::JS( # change text color of column titles
+        'function(settings, json) {
+        $(this.api().table().header()).css({"color": "#337ab7"});
+  }'),
+    rowCallback = htmlwidgets::JS(
       'function(row, data) {
-        // Bold cells in the first column
-          $("td:eq(0)", row).css("font-weight", "bold");
-      }')
-  ))
+      // Bold cells in the first column
+      $("td:eq(0)", row).css("font-weight", "bold");
+  }')
+  )
+    )
+  })
   #### PLOT: sampler params ####
   output$sampler_plot_treedepth_out <- renderPlot({
     sampler_plot_treedepth()
@@ -197,16 +205,21 @@ function(input, output, session) {
     input$param
   })
   #### TABLE: summary stats (single parameter) ####
-  output$parameter_summary_out <- renderDataTable({
-    as.data.frame(round(parameter_summary(), 2))
-  }, options = list(
-    paging = FALSE, searching = FALSE, info = FALSE, ordering = FALSE,
-    columnDefs = list(list(sClass="alignRight", targets ="_all")),
-    initComplete = I( # change background color of table header
-      'function(settings, json) {
-      $(this.api().table().header()).css({"background-color": "transparent", "color": "black"});
-      }')
+  output$parameter_summary_out <- DT::renderDataTable({
+    DT::datatable({
+      as.data.frame(round(parameter_summary(), 2))
+    }, 
+    rownames = FALSE,
+    options = list(
+      paging = FALSE, searching = FALSE, info = FALSE, ordering = FALSE,
+      autoWidth = TRUE,
+      columnDefs = list(list(sClass="alignRight", targets ="_all")),
+      initComplete = htmlwidgets::JS( # change background color of table header
+        'function(settings, json) {
+        $(this.api().table().header()).css({"background-color": "transparent", "color": "black"});
+  }')
   ))
+  })
   #### PLOT: Multiview ####
   output$multiview_param_name <- renderUI(strong(style = "font-size: 250%; color: #f9dd67;", input$param))
   output$multiview_trace <- renderPlot(trace_plot_multiview(), bg = "transparent")
@@ -317,7 +330,7 @@ function(input, output, session) {
   output$pp_y_vs_avg_rep_out <- renderPlot({
     pp_y_vs_avg_rep()
   }, bg = "transparent")
-
-
-} # End shinyServer
+  
+  
+  } # End shinyServer
 
