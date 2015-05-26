@@ -36,6 +36,7 @@ install_shinystan <- function() {
   
   # install needed packages from GitHub
   devtools::install_github("jgabry/shinyBS", ref = "shinyBS_for_shinyStan")
+  devtools::install_github("rstudio/DT")
   devtools::install_github("bwlewis/rthreejs", dependencies = TRUE)
   
   # install shinyapps package for deploying to shinyapps.io
