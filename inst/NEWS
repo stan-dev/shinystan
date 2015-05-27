@@ -6,7 +6,7 @@ Version 1.1.0 (Wed May 27 2015)
 * 'sso_info' function for printing brief description of a shinystan object (e.g. number of iterations, chains, parameters, etc.)
 
 2. New features in shinyStan app 
-* Specify arbitrary transformations (e.g. log, logit, sqrt, etc.) for density, histogram, bivariate and trivariate plots ('Explore' page)
+* Specify arbitrary transformations (e.g. log, logit, sqrt, etc.) for density, histogram, bivariate and trivariate plots (on 'Explore' page)
 * Basic graphical posterior predictive checking ('Diagnose' page, 'PPcheck' tab)
 * Plots of divergent iterations and treedepth ('Diagnose' page, 'HMC/NUTS' tab)
 * Standard deviations of HMC/NUTS sampler statistics ('Diagnose' page, 'HMC/NUTS' tab)
