@@ -201,10 +201,11 @@ strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "
   colnames(msp) <- c("iteration", "value", "chain")
   
   nDivergent <- sum(msp$value == 1)
-  graph <- ggplot(msp, aes(x = iteration, y = value, fill = chain))
+  graph <- ggplot(msp, aes(x = iteration, xend = iteration,
+                           y = 0, yend = value, 
+                           color = chain))
   graph <- graph + 
-    geom_bar(stat = "identity") + 
-    scale_y_continuous(breaks = NULL) +
+    geom_segment(size = 1/3) + 
     labs(x = "Iteration", y = "") + 
     ggtitle(paste(nDivergent, "divergent post-warmup iterations")) + 
     theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + plot_title + lgnd_left + transparent)

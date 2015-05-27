@@ -1,5 +1,5 @@
 #######################################################
-# shinyStan Installation instructions: 
+# shinyStan Installation Instructions: 
 
 # 1) Restart R
 # 2) Run install_shinystan(), included below, to install
@@ -37,7 +37,7 @@ install_shinystan <- function() {
   # install needed packages from GitHub
   devtools::install_github("jgabry/shinyBS", ref = "shinyBS_for_shinyStan")
   devtools::install_github("rstudio/DT")
-  devtools::install_github("bwlewis/rthreejs", dependencies = TRUE)
+  # devtools::install_github("bwlewis/rthreejs", dependencies = TRUE)
   
   # install shinyapps package for deploying to shinyapps.io
   devtools::install_github("rstudio/shinyapps")
