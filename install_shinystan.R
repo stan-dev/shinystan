@@ -31,16 +31,14 @@ install_shinystan <- function(branch = "master", build_vignettes = TRUE) {
     install.packages("devtools")
   } 
   
-  # install needed packages from CRAN
   install.packages(c("shiny", "knitr", "markdown", "htmlwidgets", "maps"), dependencies = TRUE)
-  
-  # install needed packages from GitHub
-  devtools::install_github("jgabry/shinyBS", ref = "shinyBS_for_shinyStan")
   devtools::install_github("rstudio/DT")
   devtools::install_github("rstudio/shinyapps")
-  
-  # install shinyStan
   devtools::install_github("stan-dev/shinystan", ref = branch, build_vignettes = build_vignettes)
+  
+  # stable version of shinyBS for use with shinyStan 
+  devtools::install_github("jgabry/shinyBS", ref = "shinyBS_for_shinyStan")
+
   
   message("\n All set. \n You might need to restart R before using shinyStan. \n")
   return(invisible(NULL))
