@@ -37,12 +37,9 @@ install_shinystan <- function(branch = "master", build_vignettes = TRUE) {
   # install needed packages from GitHub
   devtools::install_github("jgabry/shinyBS", ref = "shinyBS_for_shinyStan")
   devtools::install_github("rstudio/DT")
-  # devtools::install_github("bwlewis/rthreejs", dependencies = TRUE)
-  
-  # install shinyapps package for deploying to shinyapps.io
   devtools::install_github("rstudio/shinyapps")
   
-  # install latest shinyStan release from GitHub
+  # install shinyStan
   devtools::install_github("stan-dev/shinystan", ref = branch, build_vignettes = build_vignettes)
   
   message("\n All set. \n You might need to restart R before using shinyStan. \n")
