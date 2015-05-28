@@ -11,7 +11,7 @@
 # Ask on Stan users google group      https://groups.google.com/forum/#!forum/stan-users
 #######################################################
 
-install_shinystan <- function() {
+install_shinystan <- function(branch = "master", build_vignettes = TRUE) {
   
   if (getRversion() < '3.1.1') stop("shinyStan requires R version 3.1.1 or greater.")
   
@@ -43,7 +43,7 @@ install_shinystan <- function() {
   devtools::install_github("rstudio/shinyapps")
   
   # install latest shinyStan release from GitHub
-  devtools::install_github("stan-dev/shinystan", build_vignettes = TRUE)
+  devtools::install_github("stan-dev/shinystan", ref = branch, build_vignettes = build_vignettes)
   
   message("\n All set. \n You might need to restart R before using shinyStan. \n")
   return(invisible(NULL))
