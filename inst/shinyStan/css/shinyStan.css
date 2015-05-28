@@ -117,7 +117,7 @@ body {
   box-shadow: 0 0 10px #84afd3; 
 } 
 
-#multi_trace_plot_out:hover, #autocorr_plot_out:hover, #plot_param_vertical_out:hover, #multiview_density:hover, #multiview_trace:hover, #multiview_autocorr:hover, #mcse_over_sd_plot_out:hover, #n_eff_plot_out:hover, #rhat_plot_out:hover, #hist_plot_out:hover, #density_plot_out:hover, #trace_plot_out:hover, #bivariate_plot_out:hover, #sampler_plot_treedepth_out:hover, #sampler_plot_treedepth0_out:hover, #sampler_plot_treedepth1_out:hover, #sampler_plot_divergent_out:hover { 
+#multi_trace_plot_out:hover, #autocorr_plot_out:hover, #multiview_density:hover, #multiview_trace:hover, #multiview_autocorr:hover, #mcse_over_sd_plot_out:hover, #n_eff_plot_out:hover, #rhat_plot_out:hover, #hist_plot_out:hover, #density_plot_out:hover, #trace_plot_out:hover, #bivariate_plot_out:hover, #sampler_plot_treedepth_out:hover, #sampler_plot_treedepth0_out:hover, #sampler_plot_treedepth1_out:hover, #sampler_plot_divergent_out:hover { 
   
   -moz-box-shadow: 0 0 10px #84afd3; 
   -webkit-box-shadow: 0 0 10px #84afd3; 
