@@ -14,7 +14,9 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 # load the helper functions
-source("helper_functions/shinyStan_helpers.R", local = TRUE)
+source("helper_functions/utils.R", local=TRUE)
+source("helper_functions/summary_stats.R", local=TRUE)
+source("helper_functions/shinyStan_helpers.R", local=TRUE)
 
 # load pp_check plot_names and plot_descriptions
 source("server_files/pp_check/plot_names_descriptions.R", local = TRUE)
