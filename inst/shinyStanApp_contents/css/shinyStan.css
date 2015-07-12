@@ -2,11 +2,11 @@
 
 .navbar {
   background-image: url("textures/binding_dark.png");
-  margin-bottom: 0px;
+  margin-bottom: 0;
   /*margin-top: 50px;*/
   font-size: 15px ;
   opacity: 0.9;
-  border-radius: 0px;
+  border-radius: 0;
   /*border-color: #222222;*/
   border-color: transparent;
   -moz-box-shadow: 0 0 10px #222222; 
@@ -28,8 +28,8 @@
     text-shadow: none;
     color: #337ab7;
     text-decoration: none;
-    -webkit-border-radius: 0px 0px 4px 4px;
-    -moz-border-radius: 0px 0px 4px 4px;
+    -webkit-border-radius: 0 0 4px 4px;
+    -moz-border-radius: 0 0 4px 4px;
     -webkit-transform: scale(1.075);
     -moz-transform: scale(1.075);
     transform: scale(1.075);
@@ -64,7 +64,7 @@ body {
 
 .well {
   padding-top: 5px;
-  padding-bottom: 0px;
+  padding-bottom: 0;
 }
 
 .panel-body {
@@ -183,10 +183,10 @@ body {
   opacity: 1; color: white; padding 2px;
 }
 #bivariate_lines_collapse .panel-body{
-  opacity: 1; color: white; padding-top: 0px;
+  opacity: 1; color: white; padding-top: 0;
 }
 #bivariate_ellipse_collapse .panel-body{
-  opacity: 1; color: white; padding-top: 0px;
+  opacity: 1; color: white; padding-top: 0;
 }
 
 #stats_table_options_collapse .panel-body{
@@ -278,7 +278,7 @@ opacity: 0;
 #multiparam_options + label, #ac_options + label, #multi_trace_options + label, #warnings_options + label {
 display: block;
 position: relative;
-box-shadow: inset 0 0 0px 1px #d5d5d5;
+box-shadow: inset 0 0 0 1px #d5d5d5;
 text-indent: -5000px;
 height: 20px;
 width: 50px;
@@ -312,7 +312,7 @@ display: block;
 height: 20px;
 width: 30px;
 top: 0;
-left: 0px;
+left: 0;
 border-radius: 15px;
 background: white;
 box-shadow: inset 0 0 0 1px rgba(0,0,0,.2), 0 2px 4px rgba(0,0,0,.2);
