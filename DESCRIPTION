@@ -2,13 +2,13 @@ Package: shinyStan
 Title: shinyStan: Explore your MCMC
 Version: 1.1.0
 Authors@R: as.person(c(
-    "Jonah Gabry <jgabry@gmail.com> [aut, cre]",
+    "Jonah Gabry <jsg2201@columbia.edu> [aut, cre]",
     "Stan Development Team [aut]",
     "Michael Andreae [ctb]",
     "Yuanjun Gao [ctb]",
     "Dongying Song [ctb]"
   ))
-Maintainer: Jonah Gabry <jgabry@gmail.com>
+Maintainer: Jonah Gabry <jsg2201@columbia.edu>
 Description: Explore MCMC output through interactive visualizations and tables.
 URL: http://mc-stan.org, https://github.com/stan-dev/shinystan 
 BugReports: https://github.com/stan-dev/shinystan/issues
@@ -26,7 +26,7 @@ Suggests:
     knitr (>= 1.9),
     shinyapps,
     testthat
-Imports:
+Imports: 
     DT (>= 0.0.4),
     dygraphs (>= 0.4.1),
     gridExtra,
@@ -36,5 +36,6 @@ Imports:
     reshape2,
     threejs,
     xtable,
-    xts (>= 0.9-7)
+    xts (>= 0.9-7),
+    stats
 VignetteBuilder: knitr

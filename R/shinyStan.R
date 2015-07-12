@@ -46,7 +46,7 @@
 #' \code{\link[shinyStan]{launch_shinystan_demo}} or try it with one of 
 #' your own models using \code{\link[shinyStan]{launch_shinystan}}. 
 #'    
-#' 
+#' @import stats
 #' @import dygraphs
 #' @import ggplot2
 #' @import methods
@@ -54,6 +54,7 @@
 #' @import shinyBS
 #' @import threejs
 #' @import xts
+#' @import DT
 #' @importFrom gridExtra arrangeGrob grid.arrange
 #' @importFrom gtools mixedsort
 #' @importFrom markdown markdownToHTML
