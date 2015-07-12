@@ -27,18 +27,29 @@ install_shinystan <- function(branch = "master", build_vignettes = TRUE) {
   try(remove.packages("shinyBS"), silent = TRUE)
   
   # check for devtools
-  if (!requireNamespace("devtools", quietly = TRUE)) {
+  if (!requireNamespace("devtools", quietly = TRUE))
     install.packages("devtools")
-  } 
+  dpkgs <- list(ggplot2 = "1.0.0", shiny = "0.11.2", DT = "0.1", gridExtra = "0.0",
+               gtools = "0.0", htmlwidgets = "0.0", knitr = "0.0", maps = "0.0",
+               markdown = "0.7.4", plyr = "0.0", reshape2 = "0.0", threejs = "0.0",
+               xtable = "0.0", xts = "0.9-7")
+  pkgs <- names(dpkgs)
+  for (i in seq_along(pkgs)) {
+    has <- requireNamespace(pkgs[i], quietly = TRUE)
+    inst <- if (!has) TRUE else {
+      a <- as.character(packageVersion(pkgs[i]))
+      b <- dpkgs[[i]]
+      0  > compareVersion(a,b)
+    }
+    if (inst) install.packages(pkgs[i], dependencies = TRUE)
+  }
   
-  install.packages(c("shiny", "knitr", "markdown", "htmlwidgets", "maps"), dependencies = TRUE)
-  devtools::install_github("rstudio/DT")
   devtools::install_github("rstudio/shinyapps")
-  devtools::install_github("stan-dev/shinystan", ref = branch, build_vignettes = build_vignettes)
-  
   # stable version of shinyBS for use with shinyStan 
   devtools::install_github("jgabry/shinyBS", ref = "shinyBS_for_shinyStan")
-
+  devtools::install_github("stan-dev/shinystan", ref = branch, 
+                           dependencies = FALSE,
+                           build_vignettes = build_vignettes)
   
   message("\n All set. \n You might need to restart R before using shinyStan. \n")
   return(invisible(NULL))

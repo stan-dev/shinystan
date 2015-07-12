@@ -13,8 +13,6 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-
-
 #' shinyStan: Explore your MCMC
 #'
 #' @description Most applied Bayesian data analysis requires employing a Markov chain 
@@ -54,7 +52,7 @@
 #' @import shinyBS
 #' @import threejs
 #' @import xts
-#' @import DT
+#' @importFrom DT datatable
 #' @importFrom gridExtra arrangeGrob grid.arrange
 #' @importFrom gtools mixedsort
 #' @importFrom markdown markdownToHTML
