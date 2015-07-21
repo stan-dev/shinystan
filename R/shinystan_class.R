@@ -30,7 +30,8 @@ shinystan <- setClass("shinystan",
                                       nWarmup         = "numeric",
                                       user_model_info = "character",
                                       model_code      = "character",
-                                      stan_algorithm  = "character" # either NUTS or HMC
+                                      stan_algorithm  = "character", # either NUTS or HMC
+                                      misc            = "list"
                                       ),
                       # Prototype
                          prototype = list(model_name = "No name",
@@ -44,6 +45,7 @@ shinystan <- setClass("shinystan",
                                       nWarmup = 0,
                                       user_model_info = "Use this space to store notes about your model",
                                       model_code = "No code found. After closing shinyStan you can use the include_model_code function in R to add your code.",
-                                      stan_algorithm  = "NUTS"
+                                      stan_algorithm  = "NUTS",
+                                      misc = list()
                                       )
                            )

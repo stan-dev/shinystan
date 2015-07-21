@@ -74,23 +74,24 @@
 #' }
 #'
 launch_shinystan <- function(object, ...) {
-  message("\n Loading... \n For large models shinyStan may take a few moments to launch.")
-  
   name <- deparse(substitute(object))
   no_name <- substr(name, 1, 12) == "as.shinystan"
-
-  if (missing(object)) stop("Please specify a shinystan or stanfit object.")
-  
+  if (missing(object)) 
+    stop("Please specify a shinystan or stanfit object.")
   is_stanfit_object <- is_stan(object)
-
-  if (!is_stanfit_object & !is.shinystan(object)) stop(paste(name, "is not a shinystan or stanfit object."))
+  if (!is_stanfit_object & !is.shinystan(object)) 
+    stop(paste(name, "is not a shinystan or stanfit object."))
 
   # remove redundant "param_groups" slot from v1.0.0 sso
-  if (is.shinystan(object)) object <- check_or_remove_slot(object, "param_groups")
+  if (is.shinystan(object)) {
+    object <- check_slot(object, "param_groups", which = "remove")
+    object <- check_slot(object, "misc", which = "add")
+  }
   
   out_name <- if (is_stanfit_object) paste0(name,"_shinystan") else name
   if (no_name) out_name <- "unnamed_shinystan"
-  
+  message(paste("\n Loading... \n", 
+                "For large models shinyStan may take a few moments to launch."))
   on.exit(cleanup_shinystan(get("shinystan_object"), out_name, is_stanfit_object))
   launch(object, ...)
 }

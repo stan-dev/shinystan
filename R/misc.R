@@ -26,8 +26,7 @@ is_stan <- function(X) inherits(X, "stanfit")
 
 # checks for rstan package ------------------------------------------------
 rstan_check <- function() {
-  msg <- paste("You need to have the RStan package installed to use this option.",
-               "\nTry runnning the default shinyStan demo instead.")
+  msg <- paste("You need to have the RStan package installed to use this option.")
   has_rstan <- requireNamespace("rstan", quietly = TRUE)  
   if (!has_rstan) stop(msg, call. = FALSE)
 }
@@ -44,21 +43,29 @@ grepl_ic <- function(pattern, x, ignore.case = TRUE) {
   grepl(pattern = pattern, x = x, ignore.case = ignore.case)
 }
 
-# remove slot -------------------------------------------------------------
-remove_slot <- function(sso, slot_name) {
-  sso_new <- new("shinystan")
-  for (sn in slotNames("shinystan")) {
-    slot(sso_new, sn) <- slot(sso, sn)
-  }
-  sso_new
-}
-
-# check or remove slot ----------------------------------------------------
-check_or_remove_slot <- function(sso, slot_name) {
+# check slot ----------------------------------------------------
+check_slot <- function(sso, slot_name, which = c("remove","add")) {
   sso_check(sso)
-  pass <- !.hasSlot(sso, slot_name)
-  if (pass) return(sso)
-  remove_slot(sso, slot_name)
+  slotnames_all <- slotNames("shinystan")
+  if (which == "remove") {
+    pass <- !.hasSlot(sso, slot_name)
+    if (pass) return(sso) else {
+      sso_new <- new("shinystan")
+      for (sn in slotnames_all) {
+        slot(sso_new, sn) <- slot(sso, sn)
+      }
+      return(sso_new)
+    }
+  } else { # which == "add"
+    pass <- .hasSlot(sso, slot_name)
+    if (pass) return(sso) else {
+      sso_new <- new("shinystan")
+      for (sn in setdiff(slotnames_all, slot_name)) {
+        slot(sso_new, sn) <- slot(sso, sn)
+      }
+      return(sso_new)
+    }
+  }
 }
 
 # gets names of all shinystan objects in user's global environment --------

@@ -34,6 +34,15 @@ stan2shinystan <- function(stanfit, model_name, notes) {
   warmup <- if (from_cmdstan_csv) stanfit@sim$warmup2 else stanfit@sim$warmup
   nWarmup <- if (from_cmdstan_csv) warmup else floor(warmup / stanfit@sim$thin)
   
+  max_td <- stanfit@stan_args[[1]]$control
+  if (is.null(max_td)) 
+    max_td <- 11
+  else {
+    max_td <- max_td$max_treedepth
+    if (is.null(max_td)) 
+      max_td <- 11
+  }
+  
   samps_all <- rstan::extract(stanfit, permuted = FALSE, inc_warmup = TRUE)
   param_names <- dimnames(samps_all)[[3]] # stanfit@sim$fnames_oi
   param_dims <- stanfit@sim$dims_oi
@@ -60,6 +69,6 @@ stan2shinystan <- function(stanfit, model_name, notes) {
   slots$stan_algorithm <- stan_algorithm
   if (!missing(notes)) slots$user_model_info <- notes
   if (length(mcode) > 0) slots$model_code <- mcode
-  
+  slots$misc <- list(max_td = max_td)
   do.call("new", slots)
 }
