@@ -18,7 +18,9 @@
 output$ui_help <- renderUI({
   tags$div(
   br(),
-  a(style = "color: maroon; font-size: 15px;", "Click here to report a bug, request a new feature, or ask us a question.", href = "https://github.com/stan-dev/shinystan/issues"),
+  a(style = "color: maroon; font-size: 15px;", 
+    "Click here to report a bug, request a new feature, or ask a question.", 
+    href = "https://github.com/stan-dev/shinystan/issues"),
   br(),br(),
   h3("shinyStan help"),
   p("More coming soon."),

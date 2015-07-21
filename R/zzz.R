@@ -15,8 +15,7 @@
 
 .onAttach <- function(...) {
   ver <- utils::packageVersion("shinyStan")
-  msg <- paste0("\nThis is shinyStan version ", ver, 
-                "\nTo check if a newer version is available visit github.com/stan-dev/shinystan/releases. \n")
+  msg <- paste0("\nThis is shinyStan version ", ver,"\n")
   # check shinyBS version
   sbs_version <- utils::packageVersion("shinyBS") 
   if (sbs_version != "0.50.1") {

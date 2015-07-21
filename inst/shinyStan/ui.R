@@ -100,42 +100,42 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                ),
                                br()
                       ),
-#                       tabPanel("HMC/NUTS (stats)",
-#                                actionLink("btn_open_nuts_glossary", "Open glossary", icon = icon("book", lib = "glyphicon")),
-#                                uiOutput("nuts_glossary_modal"),
-#                                h2("Summary of sampler parameters"),
-#                                uiOutput("ui_sampler_stats_customize"),
-#                                DT::dataTableOutput("sampler_summary"),
-#                                br()
-#                       ),
-#                       tabPanel("HMC/NUTS (plots)",
-#                                # br(),
-#                                h4(textOutput("diagnostic_chain_text")),
-#                                div(style = "width: 100px;", numericInput("diagnostic_chain", label = NULL, value = 0, min = 0, max = object@nChains)),
-#                                navlistPanel(id = "diagnostics_navlist",
-#                                             tabPanel("Sample information",
-#                                                      h2("Sample information"),
-#                                                      uiOutput("ui_diagnostics_sample")
-#                                             ),
-#                                             tabPanel("N divergent information",
-#                                                      h2("N divergent information"),
-#                                                      uiOutput("ui_diagnostics_ndivergent")
-#                                             ),
-#                                             tabPanel("Tree depth information",
-#                                                      h2("Tree depth information"),
-#                                                      uiOutput("ui_diagnostics_treedepth")
-#                                                      ),
-#                                             tabPanel("Step size information",
-#                                                      h2("Step size information"),
-#                                                      uiOutput("ui_diagnostics_stepsize")
-#                                                      ),
-#                                             tabPanel("wtf?",
-#                                                      uiOutput("ui_diagnostics_help")
-#                                                      ),
-#                                             well = FALSE,
-#                                             widths = c(2, 10)
-#                                )
-#                       ),
+                      #                       tabPanel("HMC/NUTS (stats)",
+                      #                                actionLink("btn_open_nuts_glossary", "Open glossary", icon = icon("book", lib = "glyphicon")),
+                      #                                uiOutput("nuts_glossary_modal"),
+                      #                                h2("Summary of sampler parameters"),
+                      #                                uiOutput("ui_sampler_stats_customize"),
+                      #                                DT::dataTableOutput("sampler_summary"),
+                      #                                br()
+                      #                       ),
+                      #                       tabPanel("HMC/NUTS (plots)",
+                      #                                # br(),
+                      #                                h4(textOutput("diagnostic_chain_text")),
+                      #                                div(style = "width: 100px;", numericInput("diagnostic_chain", label = NULL, value = 0, min = 0, max = object@nChains)),
+                      #                                navlistPanel(id = "diagnostics_navlist",
+                      #                                             tabPanel("Sample information",
+                      #                                                      h2("Sample information"),
+                      #                                                      uiOutput("ui_diagnostics_sample")
+                      #                                             ),
+                      #                                             tabPanel("N divergent information",
+                      #                                                      h2("N divergent information"),
+                      #                                                      uiOutput("ui_diagnostics_ndivergent")
+                      #                                             ),
+                      #                                             tabPanel("Tree depth information",
+                      #                                                      h2("Tree depth information"),
+                      #                                                      uiOutput("ui_diagnostics_treedepth")
+                      #                                                      ),
+                      #                                             tabPanel("Step size information",
+                      #                                                      h2("Step size information"),
+                      #                                                      uiOutput("ui_diagnostics_stepsize")
+                      #                                                      ),
+                      #                                             tabPanel("wtf?",
+                      #                                                      uiOutput("ui_diagnostics_help")
+                      #                                                      ),
+                      #                                             well = FALSE,
+                      #                                             widths = c(2, 10)
+                      #                                )
+                      #                       ),
                       #### Rhat, ESS, MCSE, diagnostics ####
                       tabPanel("\\(\\hat{R}, n_{eff}, \\text{se}_{mean}\\)", # icon = icon("bar-chart-o", "fa-2x"),
                                fluidRow(
@@ -183,6 +183,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                       #### PPcheck ####
                       tabPanel(title = "PPcheck", # icon = icon("bar-chart-o", "fa-2x"),
                                h2("Graphical posterior predictive checks"),
+                               h6("Experimental feature"),
                                uiOutput("ui_ppcheck_navlist")
                       ) # End PPCHECK
                       
@@ -267,6 +268,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                             column(3, textInput("bivariate_transform_x", label = strong(style = "font-size: 11px;","Transform x"), value = "x"))
                                           ),
                                           plotOutput("bivariate_plot_out"),
+                                          helpText("Note: points in red correspond to iterations that encountered a divergent transition"),
                                           br()
                                  )
                                  

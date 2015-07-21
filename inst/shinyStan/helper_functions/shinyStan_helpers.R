@@ -84,7 +84,7 @@
   }
    
   graph <- ggplot(msp_td, aes(x = factor(value)), na.rm = TRUE) + 
-    stat_bin(aes(y=..count../sum(..count..)), fill = "gray35", color = "black", width=1) + 
+    stat_bin(aes(y=..count../sum(..count..)), fill = "gray20", color = "black", width=1) + 
     plot_labs + 
     plot_theme
   
@@ -218,7 +218,7 @@
 # histogram for a single parameter
 .param_hist <- function(param, dat, chain, binwd,
                         transform_x = "x",
-                        fill_color = "gray35", line_color = "gray35",
+                        fill_color = "gray20", line_color = "gray35",
                         title = TRUE) {
   
   ttl <- "Histogram of Posterior Draws (post-warmup) \n"
@@ -379,7 +379,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
   
   graph <- ggplot(ac_dat, aes(x = lag, y = ac))
   graph <- graph +
-    geom_bar(position = "identity", stat = "identity", fill = "gray35") +
+    geom_bar(position = "identity", stat = "identity", fill = "gray20") +
     y_scale + ac_theme
   graph
 }
@@ -441,7 +441,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
   if (combine_chains) {
     graph <- ggplot(ac_dat, aes(x= lag, y = ac))
     graph <- graph +
-      geom_bar(position = "identity", stat = "identity", fill = "gray35") +
+      geom_bar(position = "identity", stat = "identity", fill = "gray20") +
       y_scale + 
       ac_labs + 
       ac_theme
@@ -454,7 +454,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
   graph <- ggplot(ac_dat, aes(x = lag, y = ac, fill = factor(chains)))
   graph <- graph +
     geom_bar(position = "identity", stat = "identity") +
-    scale_fill_manual(values = rep("gray35", object@nChains)) +
+    scale_fill_manual(values = rep("gray20", object@nChains)) +
     y_scale +
     ac_labs +
     ac_theme
@@ -646,7 +646,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
     dat <- data.frame(parameter = names(dat), x = dat)
     my_labs <- labs(y = "", x = "Monte Carlo se / posterior sd")
   }
-  graph <- qplot(x = x, data = dat, color = I("black"), fill = I("gray35"))
+  graph <- qplot(x = x, data = dat, color = I("black"), fill = I("gray20"))
   graph <- graph + 
     my_labs + 
     theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + transparent)
@@ -771,7 +771,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
 
 
 # bivariate plot ----------------------------------------------------------
-.bivariate_plot <- function(samps, param, param2,
+.bivariate_plot <- function(samps, sp, 
+                            param, param2,
                             pt_alpha = 0.10,
                             pt_size = 2,
                             pt_shape = 10,
@@ -805,23 +806,29 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
   t_y <- eval(parse(text = paste0("function(y) {", transform_y,"}")))
   
   dat <- data.frame(x = t_x(samps_use[,param]), y = t_y(samps_use[,param2]))
+  dat$divergent <- factor(c(sapply(sp, FUN = function(y) y[, "n_divergent__"])))
 
   x_lab <- if (transform_x != "x") gsub("x", param, transform_x) else param
   y_lab <- if (transform_y != "y") gsub("y", param2, transform_y) else param2
   param_labs <- labs(x = x_lab, y = y_lab)
   
-  graph <- ggplot(dat, aes(x = x, y = y, xend=c(tail(x, n=-1), NA), yend=c(tail(y, n=-1), NA)))
+  graph <- ggplot(dat, aes(x = x, y = y, xend=c(tail(x, n=-1), NA), 
+                           yend=c(tail(y, n=-1), NA)))
   
   if (lines == "hide") {
-    graph <- graph + geom_point(alpha = pt_alpha, size = pt_size, shape = shape_translator(pt_shape), color = pt_color)
+    graph <- graph + geom_point(alpha = pt_alpha, size = pt_size, 
+                                shape = shape_translator(pt_shape), 
+                                color = pt_color)
   } else { # if lines = "back" or "front"
     if (lines == "back") {
       graph <- graph + 
         geom_path(alpha = lines_alpha, color = lines_color) + 
-        geom_point(alpha = pt_alpha, size = pt_size, shape = shape_translator(pt_shape), color = pt_color)
+        geom_point(alpha = pt_alpha, size = pt_size, 
+                   shape = shape_translator(pt_shape), color = pt_color)
     } else { # lines = "front"
       graph <- graph + 
-        geom_point(alpha = pt_alpha, size = pt_size, shape = shape_translator(pt_shape), color = pt_color) +
+        geom_point(alpha = pt_alpha, size = pt_size, 
+                   shape = shape_translator(pt_shape), color = pt_color) +
         geom_path(alpha = lines_alpha, color = lines_color)
     }
   }
@@ -829,8 +836,10 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
   if (ellipse_lev != "None") {
     graph <- graph + stat_ellipse(level = as.numeric(ellipse_lev), color = ellipse_color, linetype = ellipse_lty, size = ellipse_lwd, alpha = ellipse_alpha)
   }
-
+  
   graph +
+    geom_point(data = subset(dat, divergent == 1), aes(x,y), size = pt_size,
+               color = "red") + 
     param_labs + 
     theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)
 }
