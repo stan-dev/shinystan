@@ -35,7 +35,8 @@
     geom_segment(size = 1/3) + 
     labs(x = "Iteration", y = "") + 
     ggtitle(paste(nDivergent, "divergent post-warmup iterations")) + 
-    theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + plot_title + lgnd_left + transparent)
+    theme_classic() %+replace% (axis_color + axis_labs + fat_axis + 
+                                  no_yaxs + plot_title + lgnd_left + transparent)
   
   graph
 }
@@ -746,16 +747,17 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
 # trivariate_plot ---------------------------------------------------------
 .param_trivariate <- function(samps, params, 
                               transform_x = "x", transform_y = "y", transform_z = "z",
-                              pt_size = 1, pt_color = "gray35", show_grid = TRUE, flip_y = TRUE) {
+                              pt_size = 1, pt_color = "gray35", show_grid = TRUE, 
+                              flip_y = TRUE) {
   nParams <- 3
   dim_samps <- dim(samps)
   nIter <- dim_samps[1] * dim_samps[2]
-  samps_use <- array(samps[,,params], c(nIter, nParams))
+  samps_use <- array(samps[,, params], c(nIter, nParams))
   colnames(samps_use) <- params
   
-  t_x <- eval(parse(text = paste0("function(x) {", transform_x,"}")))
-  t_y <- eval(parse(text = paste0("function(y) {", transform_y,"}")))
-  t_z <- eval(parse(text = paste0("function(z) {", transform_z,"}")))
+  t_x <- eval(parse(text = paste("function(x)", transform_x)))
+  t_y <- eval(parse(text = paste("function(y)", transform_y)))
+  t_z <- eval(parse(text = paste("function(z)", transform_z)))
   
   if (transform_x != "x") samps_use[,1] <- t_x(samps_use[,1])
   if (transform_y != "y") samps_use[,2] <- t_y(samps_use[,2])
@@ -765,8 +767,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
   if (transform_y != "y") colnames(samps_use)[2] <- gsub("y", params[2], transform_y) 
   if (transform_z != "z") colnames(samps_use)[3] <- gsub("z", params[3], transform_z) 
   
-  labels <- rep("xyz", nrow(samps_use))
-  threejs::scatterplot3js(samps_use, size = pt_size, color = pt_color, grid = show_grid, flip.y = flip_y)
+  threejs::scatterplot3js(samps_use, size = pt_size, color = pt_color, 
+                          grid = show_grid, flip.y = flip_y)
 }
 
 
@@ -802,8 +804,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
   colnames(samps_use) <- params
   
   
-  t_x <- eval(parse(text = paste0("function(x) {", transform_x,"}")))
-  t_y <- eval(parse(text = paste0("function(y) {", transform_y,"}")))
+  t_x <- eval(parse(text = paste("function(x)", transform_x)))
+  t_y <- eval(parse(text = paste("function(y)", transform_y)))
   
   dat <- data.frame(x = t_x(samps_use[,param]), y = t_y(samps_use[,param2]))
   dat$divergent <- factor(c(sapply(sp, FUN = function(y) y[, "n_divergent__"])))
