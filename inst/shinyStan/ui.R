@@ -76,66 +76,69 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
            #### TAB: DIAGNOSE ####
            tabPanel(title = "Diagnose", icon = icon("medkit"),
                     tabsetPanel(
-                      #### sampler parameters ####
-                      tabPanel("HMC/NUTS", icon = icon("table", "fa-2x"),
-                               actionLink("btn_open_glossary_nuts", "Open glossary", icon = icon("book", lib = "glyphicon")),
-                               uiOutput("glossary_modal_nuts"),
+                      ### sampler parameters ####
+                      tabPanel("HMC/NUTS (stats)",
+                               actionLink("btn_open_nuts_glossary", "Open glossary", icon = icon("book", lib = "glyphicon")),
+                               uiOutput("nuts_glossary_modal"),
                                h2("Summary of sampler parameters"),
                                uiOutput("ui_sampler_stats_customize"),
                                DT::dataTableOutput("sampler_summary"),
-                               hr(),
-                               splitLayout(
-                                 h4("n_divergent (post-warmup)"),
-                                 h4("treedepth (post-warmup)"),
-                                 cellWidths = c("33%", "67%")
-                               ),
-                               splitLayout(
-                                 plotOutput("sampler_plot_divergent_out", height = "150px"),
-                                 splitLayout(plotOutput("sampler_plot_treedepth_out", height = "150px"),
-                                             plotOutput("sampler_plot_treedepth0_out", height = "150px"),
-                                             plotOutput("sampler_plot_treedepth1_out", height = "150px")
-                                 ),
-                                 cellWidths = c("33%", "67%"),
-                                 cellArgs = list(class = "plot_hover_shadow")
-                               ),
                                br()
                       ),
-                      #                       tabPanel("HMC/NUTS (stats)",
-                      #                                actionLink("btn_open_nuts_glossary", "Open glossary", icon = icon("book", lib = "glyphicon")),
-                      #                                uiOutput("nuts_glossary_modal"),
-                      #                                h2("Summary of sampler parameters"),
-                      #                                uiOutput("ui_sampler_stats_customize"),
-                      #                                DT::dataTableOutput("sampler_summary"),
-                      #                                br()
-                      #                       ),
-                      #                       tabPanel("HMC/NUTS (plots)",
-                      #                                # br(),
-                      #                                h4(textOutput("diagnostic_chain_text")),
-                      #                                div(style = "width: 100px;", numericInput("diagnostic_chain", label = NULL, value = 0, min = 0, max = object@nChains)),
-                      #                                navlistPanel(id = "diagnostics_navlist",
-                      #                                             tabPanel("Sample information",
-                      #                                                      h2("Sample information"),
-                      #                                                      uiOutput("ui_diagnostics_sample")
-                      #                                             ),
-                      #                                             tabPanel("N divergent information",
-                      #                                                      h2("N divergent information"),
-                      #                                                      uiOutput("ui_diagnostics_ndivergent")
-                      #                                             ),
-                      #                                             tabPanel("Tree depth information",
-                      #                                                      h2("Tree depth information"),
-                      #                                                      uiOutput("ui_diagnostics_treedepth")
-                      #                                                      ),
-                      #                                             tabPanel("Step size information",
-                      #                                                      h2("Step size information"),
-                      #                                                      uiOutput("ui_diagnostics_stepsize")
-                      #                                                      ),
-                      #                                             tabPanel("wtf?",
-                      #                                                      uiOutput("ui_diagnostics_help")
-                      #                                                      ),
-                      #                                             well = FALSE,
-                      #                                             widths = c(2, 10)
-                      #                                )
-                      #                       ),
+                      tabPanel("HMC/NUTS (plots)",
+                               wellPanel(
+                                 fluidRow(
+                                   column(3, h4(textOutput("diagnostic_chain_text"))),
+                                   column(4, conditionalPanel(condition = "input.diagnostics_navlist == 'By model parameter'", 
+                                                              h5("Parameter"))),
+                                   column(4, conditionalPanel(condition = "input.diagnostics_navlist == 'By model parameter'", 
+                                                              h5("Transformation f(x) =")))
+                                 ),
+                                 fluidRow(
+                                   column(3, div(style = "width: 100px;", numericInput("diagnostic_chain", label = NULL, value = 0, min = 0, max = object@nChains))),
+                                   column(4, conditionalPanel(condition = "input.diagnostics_navlist == 'By model parameter'", 
+                                                              selectizeInput(inputId = "diagnostic_param", 
+                                                                             label = NULL, 
+                                                                             choices = .make_param_list(object), 
+                                                                             selected = .make_param_list(object)[1], 
+                                                                             multiple = FALSE))),
+                                   column(3, conditionalPanel(condition = "input.diagnostics_navlist == 'By model parameter'", 
+                                                              textInput("diagnostic_param_transform", 
+                                                                        label = NULL, 
+                                                                        value = "x"))),
+                                   column(2, conditionalPanel(condition = "input.diagnostics_navlist == 'By model parameter'", 
+                                                              actionButton("diagnostic_param_transform_go", "Transform")
+                                   )
+                                   )
+                                 )
+                               ),
+                               navlistPanel(id = "diagnostics_navlist",
+                                            tabPanel("Sample information",
+                                                     h2("Sample information"),
+                                                     uiOutput("ui_diagnostics_sample")
+                                            ),
+                                            tabPanel("N divergent information",
+                                                     h2("N divergent information"),
+                                                     uiOutput("ui_diagnostics_ndivergent")
+                                            ),
+                                            tabPanel("Tree depth information",
+                                                     h2("Tree depth information"),
+                                                     uiOutput("ui_diagnostics_treedepth")
+                                            ),
+                                            tabPanel("Step size information",
+                                                     h2("Step size information"),
+                                                     uiOutput("ui_diagnostics_stepsize")
+                                            ),
+                                            tabPanel("By model parameter",
+                                                     uiOutput("ui_diagnostics_parameter")
+                                            ),
+                                            tabPanel("Help",
+                                                     uiOutput("ui_diagnostics_help")
+                                            ),
+                                            well = FALSE,
+                                            widths = c(2, 10)
+                               )
+                      ),
                       #### Rhat, ESS, MCSE, diagnostics ####
                       tabPanel("\\(\\hat{R}, n_{eff}, \\text{se}_{mean}\\)", # icon = icon("bar-chart-o", "fa-2x"),
                                fluidRow(
