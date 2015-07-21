@@ -773,12 +773,12 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
 
 
 # bivariate plot ----------------------------------------------------------
-.bivariate_plot <- function(samps, sp, 
+.bivariate_plot <- function(samps, sp = NULL, max_td = NULL,
                             param, param2,
                             pt_alpha = 0.10,
                             pt_size = 2,
                             pt_shape = 10,
-                            pt_color = "firebrick",
+                            pt_color = "gray20",
                             ellipse_color = "black",
                             ellipse_lev = "None",
                             ellipse_lty = 1,
@@ -808,7 +808,14 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
   t_y <- eval(parse(text = paste("function(y)", transform_y)))
   
   dat <- data.frame(x = t_x(samps_use[,param]), y = t_y(samps_use[,param2]))
-  dat$divergent <- factor(c(sapply(sp, FUN = function(y) y[, "n_divergent__"])))
+  if (!is.null(sp)) {
+    dat$divergent <- c(sapply(sp, FUN = function(y) y[, "n_divergent__"]))
+    dat$hit_max_td <- if (is.null(max_td)) 0 else 
+      c(sapply(sp, FUN = function(y) as.numeric(y[, "treedepth__"] == max_td))) 
+  } else {
+    dat$divergent <- 0
+    dat$hit_max_td <- 0
+  }
 
   x_lab <- if (transform_x != "x") gsub("x", param, transform_x) else param
   y_lab <- if (transform_y != "y") gsub("y", param2, transform_y) else param2
@@ -839,9 +846,15 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
     graph <- graph + stat_ellipse(level = as.numeric(ellipse_lev), color = ellipse_color, linetype = ellipse_lty, size = ellipse_lwd, alpha = ellipse_alpha)
   }
   
+  if (!all(dat$divergent == 0)) {
+    graph <- graph + geom_point(data = subset(dat, divergent == 1), aes(x,y), 
+                                size = pt_size, color = "red")
+  }
+  if (!all(dat$hit_max_td == 0)) {
+    graph <- graph + geom_point(data = subset(dat, hit_max_td == 1), aes(x,y), 
+                                size = pt_size, color = "yellow")
+  }
   graph +
-    geom_point(data = subset(dat, divergent == 1), aes(x,y), size = pt_size,
-               color = "red") + 
     param_labs + 
     theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)
 }
