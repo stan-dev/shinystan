@@ -16,6 +16,8 @@
 
 
 # options(shiny.trace=TRUE)
+source("helper_functions/utils.R", local=TRUE)
+source("helper_functions/summary_stats.R", local=TRUE)
 source("helper_functions/shinyStan_helpers.R", local=TRUE)
 source("server_files/pp_check/plot_names_descriptions.R", local = TRUE)
 source("server_files/utilities/extract_shinystan_object.R", local=TRUE)

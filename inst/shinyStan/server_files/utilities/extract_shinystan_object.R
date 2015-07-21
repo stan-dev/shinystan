@@ -24,6 +24,12 @@ nIter <- object@nIter
 nChains <- object@nChains
 warmup_val <- object@nWarmup
 samps_post_warmup <- samps_all[(warmup_val + 1):nIter,, ,drop = FALSE]
+sampler_params_post_warmup <- lapply(1:length(sampler_params), function(i) {
+  out <- sampler_params[[i]]
+  out <- if (warmup_val == 0) out else out[-(1:warmup_val), ]
+  rownames(out) <- (warmup_val + 1):(warmup_val + nrow(out))
+  out
+})
 fit_summary <- object@summary
 param_names <- object@param_names
 stan_algorithm <- object@stan_algorithm

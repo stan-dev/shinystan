@@ -41,6 +41,7 @@ bivariate_plot <- reactive({
 
   do.call(".bivariate_plot", args = list(
     samps       = samps_post_warmup,
+    sp          = sampler_params_post_warmup,
     param       = input$param,
     param2      = input$bivariate_param_y,
     pt_alpha    = input$bivariate_pt_alpha,

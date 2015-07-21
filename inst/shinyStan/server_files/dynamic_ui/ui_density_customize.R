@@ -18,7 +18,7 @@
 output$ui_density_customize <- renderUI({
   
   my_point_est <- "None"
-  my_fill_color <- "gray35"
+  my_fill_color <- "gray20"
   my_line_color <- "lightgray"
   #   my_y_breaks <- "None"
   my_x_breaks <- "Some"

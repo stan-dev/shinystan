@@ -13,12 +13,9 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-
-
 .onAttach <- function(...) {
-  version <- "1.1.0"
-  msg <- paste0("\nshinyStan version ", version, ". \nTo check if a newer version is available visit github.com/stan-dev/shinystan/releases. \n")
-  
+  ver <- utils::packageVersion("shinyStan")
+  msg <- paste0("\nThis is shinyStan version ", ver,"\n")
   # check shinyBS version
   sbs_version <- utils::packageVersion("shinyBS") 
   if (sbs_version != "0.50.1") {

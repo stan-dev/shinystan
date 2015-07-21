@@ -41,17 +41,22 @@
 #'
 
 launch_shinystan_demo <- function(...) {
-  choices <- c("Default shinyStan demo (launches immediately)",
-               "Select a Stan demo (first runs RStan, then launches)")
-  choice <- select.list(choices)
-  if (choice == choices[1]) {
-    demo_name <- "eight_schools"
-    out_name <- paste0("shinystan_demo_object")
-    on.exit(cleanup_shinystan(get("shinystan_object"), out_name, is_stanfit_object = FALSE))
-    launch_demo(get(demo_name))
-  } else {
-    rstan_check()
-    rstan_demo <- rstan::stan_demo(...)
-    launch_shinystan(rstan_demo)
-  }
+  demo_name <- "eight_schools"
+  out_name <- paste0("shinystan_demo_object")
+  on.exit(cleanup_shinystan(get("shinystan_object"), out_name, is_stanfit_object = FALSE))
+  launch_demo(get(demo_name))
+  
+#   choices <- c("Default shinyStan demo (launches immediately)",
+#                "Select a Stan demo (first runs RStan, then launches)")
+#   choice <- select.list(choices)
+#   if (choice == choices[1]) {
+#     demo_name <- "eight_schools"
+#     out_name <- paste0("shinystan_demo_object")
+#     on.exit(cleanup_shinystan(get("shinystan_object"), out_name, is_stanfit_object = FALSE))
+#     launch_demo(get(demo_name))
+#   } else {
+#     rstan_check()
+#     rstan_demo <- rstan::stan_demo(...)
+#     launch_shinystan(rstan_demo)
+#   }
 }
