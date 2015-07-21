@@ -13,7 +13,14 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-
+bivariate_transform_x <- eventReactive(
+  input$bivariate_transform_go > 0,
+  input$bivariate_transform_x
+)
+bivariate_transform_y <- eventReactive(
+  input$bivariate_transform_go > 0,
+  input$bivariate_transform_y
+)
 
 # bivariate_plot
 bivariate_plot <- reactive({
@@ -41,10 +48,11 @@ bivariate_plot <- reactive({
       )
     }
   }
-
+  
   do.call(".bivariate_plot", args = list(
     samps       = samps_post_warmup,
-    sp          = sampler_params_post_warmup,
+    sp          = if (has_sampler_params) sampler_params_post_warmup else NULL,
+    max_td      = if ("max_td" %in% names(MISC)) MISC$max_td else NULL,
     param       = input$param,
     param2      = input$bivariate_param_y,
     pt_alpha    = input$bivariate_pt_alpha,
@@ -59,7 +67,7 @@ bivariate_plot <- reactive({
     lines            = input$bivariate_lines,
     lines_color      = input$bivariate_lines_color,
     lines_alpha      = input$bivariate_lines_alpha,
-    transform_x      = input$bivariate_transform_x,
-    transform_y      = input$bivariate_transform_y
+    transform_x      = bivariate_transform_x(),
+    transform_y      = bivariate_transform_y()
   ))
 })

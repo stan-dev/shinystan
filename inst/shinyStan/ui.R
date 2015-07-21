@@ -236,24 +236,32 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                           radioButtons("distribution", label = "", choices = c("Density", "Histogram"), inline = TRUE),
                                           conditionalPanel(condition = "input.distribution == 'Density'",
                                                            uiOutput("ui_density_customize"),
-                                                           textInput("dens_transform_x", strong(style = "font-size: 11px;","Transform"), value = "x"),
-                                                           plotOutput("density_plot_out")
+                                                           fluidRow(
+                                                             column(4, textInput("dens_transform_x", strong(style = "font-size: 11px;","Transform"), value = "x")),
+                                                             column(2, actionButton("dens_transform_x_go", label = strong(style = "font-size: 11px;","Transform")))
+                                                           ),
+                                                           plotOutput("density_plot_out", height = "250px")
                                           ),
                                           conditionalPanel(condition = "input.distribution == 'Histogram'",
                                                            uiOutput("ui_hist_customize"),
-                                                           textInput("hist_transform_x", strong(style = "font-size: 11px;","Transform"), value = "x"),
-                                                           plotOutput("hist_plot_out")
+                                                           fluidRow(
+                                                             column(4, textInput("hist_transform_x", strong(style = "font-size: 11px;","Transform"), value = "x")),
+                                                             column(2, actionButton("hist_transform_x_go", label = strong(style = "font-size: 11px;","Transform")))
+                                                           ),
+                                                           plotOutput("hist_plot_out", height = "250px")
                                           ),
                                           br()
                                  ),
                                  #### trivariate plot #####
-                                 tabPanel("Dynamic 3D scatterplot", 
+                                 tabPanel("Trivariate", 
                                           uiOutput("ui_triviariate_customize"),
                                           uiOutput("ui_trivariate_select"),
+                                          withMathJax(),
                                           fluidRow(
                                             column(3, textInput("trivariate_transform_x", label = strong(style = "font-size: 11px;","Transform x"), value = "x")),
                                             column(3, textInput("trivariate_transform_y", label = strong(style = "font-size: 11px;", "Transform y"), value = "y")),
-                                            column(3, textInput("trivariate_transform_z", label = strong(style = "font-size: 11px;", "Transform z"), value = "z"))
+                                            column(3, textInput("trivariate_transform_z", label = strong(style = "font-size: 11px;", "Transform z"), value = "z")),
+                                            column(2, actionButton("trivariate_transform_go", label = strong(style = "font-size: 11px;","Transform")))
                                           ),
                                           br(),
                                           threejs::scatterplotThreeOutput("trivariate_plot_out"),
@@ -264,11 +272,14 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                           uiOutput("ui_bivariate_customize"),
                                           fluidRow(
                                             column(4, selectizeInput("bivariate_param_y", label = strong(style = "color: #337ab7;", "y-axis"), choices = rev(.make_param_list(object)), selected = rev(.make_param_list(object))[1], multiple = FALSE)),
-                                            column(3, offset = 2, textInput("bivariate_transform_y", label = strong(style = "font-size: 11px;","Transform y"), value = "y")),
-                                            column(3, textInput("bivariate_transform_x", label = strong(style = "font-size: 11px;","Transform x"), value = "x"))
+                                            column(3, textInput("bivariate_transform_y", label = strong(style = "font-size: 11px;","Transform y"), value = "y")),
+                                            column(3, textInput("bivariate_transform_x", label = strong(style = "font-size: 11px;","Transform x"), value = "x")),
+                                            column(2, actionButton("bivariate_transform_go", label = strong(style = "font-size: 11px;","Transform")))
                                           ),
-                                          plotOutput("bivariate_plot_out"),
-                                          helpText("Note: points in red correspond to iterations that encountered a divergent transition"),
+                                          plotOutput("bivariate_plot_out", height = "350px"),
+                                          helpText(style = "font-size: 11px", "For Stan models using the NUTS algorithm, red points indicate iterations that encountered a divergent transition.",  
+                                                   "Yellow points indicate a transition that hit the maximum treedepth",
+                                                   "rather than terminated its evolution normally."),
                                           br()
                                  )
                                  

@@ -13,9 +13,10 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-
-
-# two functions: density_plot
+dens_transform_x <- eventReactive(
+  input$dens_transform_x_go > 0,
+  input$dens_transform_x
+)
 
 density_plot <- reactive({
 
@@ -59,6 +60,6 @@ density_plot <- reactive({
     x_lim = if (xzoom) eval(parse(text = input$dens_xzoom)) else NULL,
     prior_fam   = prior_fam,
     prior_params = prior_params,
-    transform_x = input$dens_transform_x
+    transform_x = dens_transform_x()
   ))
 })

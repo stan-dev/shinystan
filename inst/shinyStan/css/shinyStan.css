@@ -95,9 +95,15 @@ body {
 #bivariate_transform_x, #bivariate_transform_y,
 #trivariate_transform_x, #trivariate_transform_y, #trivariate_transform_z,
 #dens_transform_x, #hist_transform_x {
-  height: 25px;
+  /*height: 25px;*/
   padding: 1px 6px;
   font-family: monospace;
+}
+
+/* buttons to trigger transformations*/
+#trivariate_transform_go, #bivariate_transform_go, #dens_transform_x_go,
+#hist_transform_x_go {
+  margin-top: 25px;
 }
 /**************************************/
 
