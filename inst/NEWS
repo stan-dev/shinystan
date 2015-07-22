@@ -7,10 +7,10 @@ Version 1.2.0 (July 12, 2015)
 
 2. New features in shinyStan app 
 * Specify arbitrary transformations (e.g. log, logit, sqrt, etc.) for density, histogram, bivariate and trivariate plots (on 'Explore' page)
-* Basic graphical posterior predictive checking ('Diagnose' page, 'PPcheck' tab)
-* Plots of divergent iterations and treedepth ('Diagnose' page, 'HMC/NUTS' tab)
+* HMC/NUTS diagnostic plots ('Diagnose' page, 'HMC/NUTS (plots)' tab)
 * Bivariate scatterplot plot also shows divergent iterations (on 'Explore' page)
-* Standard deviations of HMC/NUTS sampler statistics ('Diagnose' page, 'HMC/NUTS' tab)
+* Basic graphical posterior predictive checking ('Diagnose' page, 'PPcheck' tab)
+* Standard deviations of HMC/NUTS sampler statistics ('Diagnose' page, 'HMC/NUTS (stats)' tab)
 * Option to change display to partial autocorrelations  ('Diagnose' page, 'Autocorrelation' tab)
 * Better filtering for posterior summary statistics table
 * Change background and font ('More' menu, 'Appearance' tab)

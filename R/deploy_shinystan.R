@@ -68,10 +68,16 @@ deploy_shinystan <- function(sso, account, appName, ppcheck_data, ppcheck_yrep) 
   
   # copy from shinyStanApp_contents to temporary directory
   appDir <- tempdir()
-  contents <- system.file("shinyStanApp_contents", package = "shinyStan")
+  deployDir <- file.path(appDir, "shinyStan")
+  contents <- system.file("shinyStan", package = "shinyStan")
   file.copy(from = contents, to = appDir, recursive = TRUE)
-  deployDir <- file.path(appDir, "shinyStanApp_contents")
-  
+  rmv <- c("ui", "server", "global")
+  file.remove(file.path(deployDir, paste0(rmv,".R")))
+  oldnames <- paste0(rmv, "_for_shinyapps.R")
+  for (j in seq_along(oldnames)) {
+    file.rename(from = file.path(deployDir, oldnames[j]), to = file.path(deployDir, paste0(rmv[j],".R")))
+  }
+
   # save shinystan_object to shinyStanApp_contents
   shinystan_object <- sso
   save(shinystan_object, file = file.path(deployDir, "shinystan_object.RData"))
