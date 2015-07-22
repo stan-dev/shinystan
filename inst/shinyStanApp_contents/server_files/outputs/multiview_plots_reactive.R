@@ -77,7 +77,7 @@ density_plot_multiview <- reactive({
     dat         = samps,
     chain       = 0,
     chain_split = FALSE,
-    fill_color  = "gray35",
+    fill_color  = "gray20",
     line_color  = "lightgray",
     point_est   = "None",
     CI          = "None",

@@ -25,7 +25,22 @@ output$help_navlist <- renderUI({
              code("load"), "function in R. You can then make changes to
                                     the plot using the functions in the ggplot2 package."
            )
-  )
+  ),
+  tabPanel("Performance",
+           h4("Launch speed with large stanfit objects"),
+           p("When used with a large stanfit object",
+            strong("shinyStan"), "may launch very slowly because first a", 
+            "shinystan object is created from the specified", 
+            "stanfit object. When", strong("shinyStan"),"is closed you will",
+            "have access to this object in the",
+            "global environment and next time you use shinyStan for the",
+            "same model you can launch it quicker by using the", 
+            "shinystan object rather than the original", 
+            "stanfit object."),
+           p("Alternatively, a shinystan object can be",
+             "created before launching the app by using the", 
+             code("as.shinystan"), "function.")
+           )
 #   tabPanel("Appearance settings",
 #            h4("Saving and loading appearance settings"),
 #            

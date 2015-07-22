@@ -14,6 +14,19 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 
+trivariate_transform_x <- eventReactive(
+  input$trivariate_transform_go > 0,
+  input$trivariate_transform_x
+)
+trivariate_transform_y <- eventReactive(
+  input$trivariate_transform_go > 0,
+  input$trivariate_transform_y
+)
+trivariate_transform_z <- eventReactive(
+  input$trivariate_transform_go > 0,
+  input$trivariate_transform_z
+)
+
 
 trivariate_plot <- reactive({
   
@@ -37,9 +50,9 @@ trivariate_plot <- reactive({
     pt_size = input$trivariate_pt_size,
     show_grid = input$trivariate_grid == "show",
     flip_y = input$trivariate_flip == "flip",
-    transform_x      = input$trivariate_transform_x,
-    transform_y      = input$trivariate_transform_y,
-    transform_z      = input$trivariate_transform_z
+    transform_x      = trivariate_transform_x(),
+    transform_y      = trivariate_transform_y(),
+    transform_z      = trivariate_transform_z()
   ))
 
 })

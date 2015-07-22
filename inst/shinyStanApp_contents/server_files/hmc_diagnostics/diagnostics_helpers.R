@@ -58,10 +58,10 @@ stepsize_pw <- reactive({
       graph <- base + geom_point(alpha = 0.5)
       if (!is.null(divergent))
         graph <- graph + geom_point(data = subset(df, divergent == 1), aes(sp,p), 
-                                    color = "red", size = 3)
+                                    color = "red", size = 2.5)
       if (!is.null(hit_max_td))
         graph <- graph + geom_point(data = subset(df, hit_max_td == 1), aes(sp,p), 
-                                    color = "yellow2", size = 3)
+                                    color = "yellow", size = 2.5)
     }
     return(graph)
   }
@@ -80,10 +80,10 @@ stepsize_pw <- reactive({
     geom_point(data = chain_data, aes(sp,p), color = "skyblue", alpha = 0.5)
   if (!is.null(divergent))
     graph <- graph + geom_point(data = subset(chain_data, div == 1), aes(sp,p), 
-                                color = "red", size = 3)
+                                color = "red", size = 2.5)
   if (!is.null(hit_max_td))
     graph <- graph + geom_point(data = subset(chain_data, hit == 1), aes(sp,p), 
-                                color = "yellow2", size = 3)
+                                color = "yellow", size = 2.5)
   graph
 }
 
@@ -265,7 +265,7 @@ stepsize_pw <- reactive({
     geom_segment(size = 0.25) + 
     geom_segment(data = chain_data, 
                  aes(x = iterations, xend = iterations, y = 0, yend = value), size = 0.5, 
-                 color = "red") + 
+                 color = "skyblue") + 
     ggtitle(paste(n_divergent, "divergent post-warmup iterations in Chain", chain)) 
 }
 
@@ -371,10 +371,13 @@ stepsize_pw <- reactive({
   if (chain == 0) {
     graph <- ggplot(mdf, aes(x = iterations, y = value, group = variable)) +
       geom_path(aes(color = variable), size = 0.5) 
+    
     return(graph + xy_labs + thm)
   }
+  
   chain_data <- subset(mdf, variable == paste0("chain:",chain))
   graph <- ggplot(chain_data, aes(x = iterations, y = value)) +
     geom_path(color = "black")
+  
   graph + xy_labs + thm
 }

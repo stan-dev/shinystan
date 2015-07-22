@@ -14,6 +14,7 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 
+# load shinystan object and ppcheck data for shinyapps --------------------
 load("shinystan_object.RData")
 if (file.exists("y.RData")) load("y.RData")
 

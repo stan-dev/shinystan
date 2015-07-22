@@ -17,18 +17,17 @@
 
 #' Get summary statistics from \code{shinystan} object
 #'
-#' From a \code{shinystan} object get rhat, effective sample size,
-#' posterior quantiles, means, standard deviations,
-#' sampler diagnostics, etc.
-#'
+#' From a \code{shinystan} object get rhat, effective sample size, posterior
+#' quantiles, means, standard deviations, sampler diagnostics, etc.
+#' 
 #' @param sso A \code{shinystan} object
 #' @param what What do you want to get? See \strong{Details}, below.
 #' @param ... Optional arguments, in particular \code{pars} to specify parameter
-#' names (by default all parameters will be used). For NUTS sampler parameters
-#' only (e.g. stepsize, treedepth) \code{inc_warmup} can also be specified to
-#' include/exclude warmup iterations (the default is \code{TRUE}, i.e. to
-#' include warmup iterations). See \strong{Details}, below.
-#'
+#'   names (by default all parameters will be used). For NUTS sampler parameters
+#'   only (e.g. stepsize, treedepth) \code{inc_warmup} can also be specified to 
+#'   include/exclude warmup iterations (the default is \code{FALSE}). See
+#'   \strong{Details}, below.
+#'   
 #' @details The argument \code{what} can take on the values below. Args: \code{arg}
 #' means that \code{arg} can be specified in \code{...} for this value of \code{what}.
 #' \describe{
@@ -45,7 +44,8 @@
 #'   \item{\code{"avg_stepsize" or any string with "step" in it (not case sensitive)}}{returns: Average stepsize for each chain. Args: \code{inc_warmup}}
 #' }
 #' 
-#' @note Sampler diagnostics (e.g. \code{"avg_accept_stat"}) only available for models originally fit using Stan.
+#' @note Sampler diagnostics (e.g. \code{"avg_accept_stat"}) only available for
+#'   models originally fit using Stan.
 #' 
 #' @export
 #' @examples

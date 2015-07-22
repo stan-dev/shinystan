@@ -69,7 +69,7 @@ sp_check <- function(sso) {
   if (is.na(sso@sampler_params[[1]])) stop("Only available for Stan models.")
 }
 
-retrieve_max_treedepth <- function(sso, inc_warmup = TRUE) {
+retrieve_max_treedepth <- function(sso, inc_warmup = FALSE) {
   sp_check()
   rows <- if (inc_warmup) 1:sso@nIter else (sso@nWarmup+1):sso@nIter
   max_td <- sapply(sso@sampler_params,
@@ -78,7 +78,7 @@ retrieve_max_treedepth <- function(sso, inc_warmup = TRUE) {
   max_td
 }
 
-retrieve_prop_divergent <- function(sso, inc_warmup = TRUE) {
+retrieve_prop_divergent <- function(sso, inc_warmup = FALSE) {
   sp_check()
   rows <- if (inc_warmup) 1:sso@nIter else (sso@nWarmup+1):sso@nIter
   prop_div <- sapply(sso@sampler_params,
@@ -87,7 +87,7 @@ retrieve_prop_divergent <- function(sso, inc_warmup = TRUE) {
   prop_div
 }
 
-retrieve_avg_stepsize <- function(sso, inc_warmup = TRUE) {
+retrieve_avg_stepsize <- function(sso, inc_warmup = FALSE) {
   sp_check()
   rows <- if (inc_warmup) 1:sso@nIter else (sso@nWarmup+1):sso@nIter
   avg_ss <- sapply(sso@sampler_params,
@@ -96,7 +96,7 @@ retrieve_avg_stepsize <- function(sso, inc_warmup = TRUE) {
   avg_ss
 }
 
-retrieve_avg_accept <- function(sso, inc_warmup = TRUE) {
+retrieve_avg_accept <- function(sso, inc_warmup = FALSE) {
   sp_check()
   rows <- if (inc_warmup) 1:sso@nIter else (sso@nWarmup+1):sso@nIter
   avg_accept <- sapply(sso@sampler_params,

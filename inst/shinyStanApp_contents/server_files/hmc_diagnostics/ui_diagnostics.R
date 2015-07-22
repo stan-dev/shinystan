@@ -1,7 +1,7 @@
 help_interval <- helpText(style = "font-size: 11px;","Highlighted interval shows \\(\\bar{x} \\pm sd(x)\\)")
 help_lines <- helpText(style = "font-size: 11px;","Lines are mean (solid) and median (dashed)")
 help_max_td <- helpText(style = "font-size: 11px;", "Red line indicates the max_treedepth setting")
-help_points <- helpText(style = "font-size: 11px;", "Red indicates which (if any) iterations encountered a divergent transition.",
+help_points <- helpText(style = "font-size: 11px;", "Red indicates a divergent transition.",
                         "Yellow indicates a transition hitting the maximum treedepth.")  
 output$ui_diagnostics_parameter <- renderUI({
   div(

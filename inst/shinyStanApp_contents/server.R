@@ -13,11 +13,14 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-library(shiny)
-library(shinyBS)
+# load packages needed for shinyapps
+library(shiny) 
+library(shinyBS) 
 library(markdown)
 
 # options(shiny.trace=TRUE)
+source("helper_functions/utils.R", local=TRUE)
+source("helper_functions/summary_stats.R", local=TRUE)
 source("helper_functions/shinyStan_helpers.R", local=TRUE)
 source("server_files/pp_check/plot_names_descriptions.R", local = TRUE)
 source("server_files/utilities/extract_shinystan_object.R", local=TRUE)
@@ -34,7 +37,7 @@ function(input, output, session) {
   # source all files from server_files directory and subdirectories
   files <- list.files("server_files", full.names = TRUE, recursive = TRUE)
   for (f in files) source(f, local = TRUE)
-  
+
   # tooltips
   for (id in seq_along(tooltip_ids)) {
     addTooltip(session, id = tooltip_ids[id], trigger = "hover", placement = tooltip_placements[id],
@@ -43,33 +46,33 @@ function(input, output, session) {
   
   #### DATATABLE: summary stats (all parameters) ####
   output$all_summary_out <- DT::renderDataTable({
-    DT::datatable({
-      summary_stats()
-    },
-    filter = 'bottom',
-    options = list(
-      searchHighlight = TRUE,
-      search = list(regex = input$user_regex), # allow regular expression when searching for parameter names
-      processing = TRUE,
-      pagingType = "full", # show only first, previous, next, last buttons (no page numbers)
-      pageLength = 10,
-      lengthMenu = list(c(5, 10, 20, 50, -1), c('5', '10', '20', '50', 'All')),
-      scrollY = 400,
-      scrollX = TRUE,
-      autoWidth = TRUE,
-      scrollCollapse = FALSE,
-      columnDefs = list(list(width="85px", targets=list(0)), list(sClass="alignRight", targets ="_all")),
-      initComplete = htmlwidgets::JS( # change text color of column titles
-        'function(settings, json) {
-        $(this.api().table().header()).css({"color": "#337ab7"});
-  }'),
+  DT::datatable({
+    summary_stats()
+  },
+  filter = 'bottom',
+  options = list(
+    searchHighlight = TRUE,
+    search = list(regex = input$user_regex), # allow regular expression when searching for parameter names
+    processing = TRUE,
+    pagingType = "full", # show only first, previous, next, last buttons (no page numbers)
+    pageLength = 10,
+    lengthMenu = list(c(5, 10, 20, 50, -1), c('5', '10', '20', '50', 'All')),
+    scrollY = 400,
+    scrollX = TRUE,
+    autoWidth = TRUE,
+    scrollCollapse = FALSE,
+    columnDefs = list(list(width="85px", targets=list(0)), list(sClass="alignRight", targets ="_all")),
+    initComplete = htmlwidgets::JS( # change text color of column titles
+            'function(settings, json) {
+          $(this.api().table().header()).css({"color": "#337ab7"});
+          }'),
     rowCallback = htmlwidgets::JS(
-      'function(row, data) {
-      // Bold cells in the first column
-      $("td:eq(0)", row).css("font-weight", "bold");
-}')
+            'function(row, data) {
+            // Bold cells in the first column
+              $("td:eq(0)", row).css("font-weight", "bold");
+          }')
   )
-    )
+  )
   })
   # download the table
   output$download_all_summary <- downloadHandler(
@@ -85,47 +88,33 @@ function(input, output, session) {
   })
   #### DATATABLE: summary stats (sampler) ####
   output$sampler_summary <- DT::renderDataTable({
-    DT::datatable({
-      summary_stats_sampler()
-    }, options = list(
-      rownames = FALSE,
-      processing = TRUE,
-      scrollX = TRUE,
-      scrollY = "200px",
-      # autoWidth = TRUE,
-      scrollCollapse = TRUE,
-      paging = FALSE,
-      # pageLength = 3,
-      searching = FALSE,
-      info = FALSE,
-      aoColumnDefs = list(list(sClass="alignRight", aTargets = "_all")),
-      orderClasses = TRUE,
-      initComplete = htmlwidgets::JS( # change text color of column titles
-        'function(settings, json) {
-        $(this.api().table().header()).css({"color": "#337ab7"});
-  }'),
+  DT::datatable({
+    summary_stats_sampler()
+  }, options = list(
+    rownames = FALSE,
+    processing = TRUE,
+    scrollX = TRUE,
+    scrollY = "200px",
+    # autoWidth = TRUE,
+    scrollCollapse = TRUE,
+    paging = FALSE,
+    # pageLength = 3,
+    searching = FALSE,
+    info = FALSE,
+    aoColumnDefs = list(list(sClass="alignRight", aTargets = "_all")),
+    orderClasses = TRUE,
+    initComplete = htmlwidgets::JS( # change text color of column titles
+      'function(settings, json) {
+      $(this.api().table().header()).css({"color": "#337ab7"});
+      }'),
     rowCallback = htmlwidgets::JS(
       'function(row, data) {
-      // Bold cells in the first column
-      $("td:eq(0)", row).css("font-weight", "bold");
-  }')
+        // Bold cells in the first column
+          $("td:eq(0)", row).css("font-weight", "bold");
+      }')
   )
-    )
+  )
   })
-  #### PLOT: sampler params ####
-  output$sampler_plot_treedepth_out <- renderPlot({
-    sampler_plot_treedepth()
-  }, bg = "transparent")
-  output$sampler_plot_treedepth0_out <- renderPlot({
-    sampler_plot_treedepth0()
-  }, bg = "transparent")
-  output$sampler_plot_treedepth1_out <- renderPlot({
-    sampler_plot_treedepth1()
-  }, bg = "transparent")
-  output$sampler_plot_divergent_out <- renderPlot({
-    x <- sampler_plot_divergent()
-    suppress_and_print(x)
-  }, bg = "transparent")
   
   #### PLOT: multiple parameters ####
   output$plot_param_vertical_out <- renderPlot({
@@ -207,17 +196,17 @@ function(input, output, session) {
   #### TABLE: summary stats (single parameter) ####
   output$parameter_summary_out <- DT::renderDataTable({
     DT::datatable({
-      as.data.frame(round(parameter_summary(), 2))
-    }, 
-    rownames = FALSE,
-    options = list(
-      paging = FALSE, searching = FALSE, info = FALSE, ordering = FALSE,
-      autoWidth = TRUE,
-      columnDefs = list(list(sClass="alignRight", targets ="_all")),
-      initComplete = htmlwidgets::JS( # change background color of table header
-        'function(settings, json) {
-        $(this.api().table().header()).css({"background-color": "transparent", "color": "black"});
-  }')
+    as.data.frame(round(parameter_summary(), 2))
+  }, 
+  rownames = FALSE,
+  options = list(
+    paging = FALSE, searching = FALSE, info = FALSE, ordering = FALSE,
+    autoWidth = TRUE,
+    columnDefs = list(list(sClass="alignRight", targets ="_all")),
+    initComplete = htmlwidgets::JS( # change background color of table header
+      'function(settings, json) {
+      $(this.api().table().header()).css({"background-color": "transparent", "color": "black"});
+      }')
   ))
   })
   #### PLOT: Multiview ####
@@ -332,5 +321,30 @@ function(input, output, session) {
   }, bg = "transparent")
   
   
-  } # End shinyServer
+  # HMC/NUTS diagnostic plots
+  output$diagnostic_chain_text <- renderText({
+    chain <- diagnostic_chain()
+    if (chain == 0) return("All chains")
+    paste("Chain", chain)
+  })
+  hmc_plots <- c("accept_stat_trace", "accept_stat_hist","accept_stat_vs_lp",
+                 "lp_trace", "lp_hist", "ndivergent_trace", "treedepth_trace",
+                 "treedepth_ndivergent_hist","treedepth_ndivergent0_hist", 
+                 "treedepth_ndivergent1_hist", "treedepth_vs_lp", "ndivergent_vs_lp", 
+                 "treedepth_vs_accept_stat", "ndivergent_vs_accept_stat", 
+                 "stepsize_vs_lp", "stepsize_vs_accept_stat", "stepsize_trace", 
+                 "param_vs_lp", "param_vs_accept_stat", "param_vs_stepsize", 
+                 "param_vs_treedepth", "p_trace", "p_hist")
+  for (i in seq_along(hmc_plots)) {
+    local({
+    fn <- hmc_plots[i] 
+    output[[paste0(fn,"_out")]] <- renderPlot({
+      x <- suppressMessages(do.call(fn, list()))
+      suppress_and_print(x)
+    })
+    })
+  }
+
+
+} # End shinyServer
 

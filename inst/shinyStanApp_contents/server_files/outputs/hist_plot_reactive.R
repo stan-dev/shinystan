@@ -13,7 +13,10 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-
+hist_transform_x <- eventReactive(
+  input$hist_transform_x_go > 0,
+  input$hist_transform_x
+)
 
 # two functions: hist_plot, hist_plot_multiview
 hist_plot <- reactive({
@@ -34,7 +37,7 @@ hist_plot <- reactive({
     binwd       = binwd,
     fill_color  = input$hist_fill_color,
     line_color  = input$hist_line_color,
-    transform_x = input$hist_transform_x
+    transform_x = hist_transform_x()
   ))
 })
 

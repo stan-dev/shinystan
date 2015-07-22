@@ -142,12 +142,13 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                       #### Rhat, ESS, MCSE, diagnostics ####
                       tabPanel("\\(\\hat{R}, n_{eff}, \\text{se}_{mean}\\)", # icon = icon("bar-chart-o", "fa-2x"),
                                fluidRow(
-                                 column(2, 
-                                        actionLink("btn_open_glossary_copy", "Open glossary", icon = icon("book", lib = "glyphicon"))
+                                 column(2, actionLink("btn_open_glossary_copy", "Open glossary", 
+                                                      icon = icon("book", lib = "glyphicon"))
                                  )
                                ),
                                fluidRow(
-                                 column(3, splitLayout(includeHTML("html/warnings_options.html"), span("Customize"), cellWidths = c("25%","75%")))
+                                 column(3, splitLayout(includeHTML("html/warnings_options.html"), 
+                                                       span("Customize"), cellWidths = c("25%","75%")))
                                ),
                                uiOutput("glossary_modal_copy"),
                                uiOutput("ui_rhat_neff_mcse"),
@@ -163,7 +164,8 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                ),
                                wellPanel(
                                  fluidRow(
-                                   column(6, selectizeInput("ac_params", width = "100%", label = h5("Select or enter parameter names"), choices = .make_param_list_with_groups(object), multiple = TRUE)),
+                                   column(6, selectizeInput("ac_params", width = "100%", label = h5("Select or enter parameter names"), 
+                                                            choices = .make_param_list_with_groups(object), multiple = TRUE)),
                                    column(2, offset = 4, tags$div(h5("Customize"),includeHTML("html/ac_options.html")))
                                  )
                                ),
@@ -173,8 +175,12 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                       tabPanel("Trace", # icon = icon("bar-chart-o", "fa-2x"),
                                wellPanel(
                                  fluidRow(
-                                   column(6, selectizeInput("multi_trace_params", width = '100%', label = h5("Select or enter parameter names"), choices = .make_param_list_with_groups(object), multiple = TRUE)),
-                                   column(3, offset = 1, sliderInput("multi_xzoom", width = "75%",label = h5("Iterations"), min = 1, max = object@nIter, step = 1, value = c(object@nWarmup + 1, object@nIter), ticks = FALSE)),
+                                   column(6, selectizeInput("multi_trace_params", width = '100%', 
+                                                            label = h5("Select or enter parameter names"), 
+                                                            choices = .make_param_list_with_groups(object), multiple = TRUE)),
+                                   column(3, offset = 1, sliderInput("multi_xzoom", width = "75%",
+                                                                     label = h5("Iterations"), min = 1, max = object@nIter, 
+                                                                     step = 1, value = c(object@nWarmup + 1, object@nIter), ticks = FALSE)),
                                    column(2, tags$div(h5("Customize"),includeHTML("html/multi_trace_options.html")))
                                  )
                                ),
