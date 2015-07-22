@@ -1,5 +1,5 @@
 Package: shinyStan
-Title: shinyStan: Explore your MCMC
+Title: Explore your MCMC
 Version: 1.2.0
 Authors@R: as.person(c(
     "Jonah Gabry <jsg2201@columbia.edu> [aut, cre]",
