@@ -1,8 +1,8 @@
 help_interval <- helpText(style = "font-size: 11px;","Highlighted interval shows \\(\\bar{x} \\pm sd(x)\\)")
 help_lines <- helpText(style = "font-size: 11px;","Lines are mean (solid) and median (dashed)")
-help_max_td <- helpText(style = "font-size: 11px;", "Red line indicates the max_treedepth setting")
-help_points <- helpText(style = "font-size: 11px;", "Red indicates which (if any) iterations encountered a divergent transition.",
-                        "Yellow indicates a transition hitting the maximum treedepth.")  
+help_max_td <- helpText(style = "font-size: 11px;", "Horizontal line indicates the max_treedepth setting")
+help_points <- helpText(style = "font-size: 11px;", "Green indicates which (if any) iterations encountered a divergent transition.",
+                        "Orange indicates a transition hitting the maximum treedepth.")  
 output$ui_diagnostics_parameter <- renderUI({
   div(
     withMathJax(),
@@ -35,19 +35,19 @@ output$ui_diagnostics_sample <- renderUI({
              fluidRow(
                column(6,
                       help_interval,
-                      plotOutput("lp_trace_out", height = "150px"),
-                      plotOutput("accept_stat_trace_out", height = "150px")
+                      plotOutput("lp_trace_out", height = "200px"),
+                      plotOutput("accept_stat_trace_out", height = "200px")
                ),
                column(6, 
                       help_lines,
-                      plotOutput("lp_hist_out", height = "150px"),
-                      plotOutput("accept_stat_hist_out", height = "150px")
+                      plotOutput("lp_hist_out", height = "200px"),
+                      plotOutput("accept_stat_hist_out", height = "200px")
                )
              )
       ),
       column(5,
              help_points,
-             plotOutput("accept_stat_vs_lp_out", height = "300px"))
+             plotOutput("accept_stat_vs_lp_out", height = "400px"))
     )
   )
 })
@@ -73,7 +73,7 @@ output$ui_diagnostics_treedepth <- renderUI({
              plotOutput("treedepth_trace_out", height = "150px"),
              plotOutput("treedepth_vs_lp_out", height = "150px")
       ),
-      column(5, plotOutput("treedepth_vs_accept_stat_out", height = "300px"))
+      column(5, plotOutput("treedepth_vs_accept_stat_out", height = "400px"))
     ),
     br(),br(),
     splitLayout( 

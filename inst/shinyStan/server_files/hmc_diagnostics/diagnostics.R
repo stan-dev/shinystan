@@ -25,12 +25,16 @@ stepsize_vs_accept_stat <- reactive({
   df_ss <- stepsize_pw()[,-1L] # drop iterations column
   df_as <- accept_stat_pw()[,-1L] 
   chain <- diagnostic_chain()
-  .stepsize_vs_accept_stat(df_ss, df_as, chain)
+  .sampler_param_vs_sampler_param_violin(round(df_ss, 4), df_as, 
+                                         lab_x = "Sampled Step Size",
+                                         lab_y = "Mean Metrop. Acceptance",
+                                         chain = chain)
 })
 stepsize_trace <- reactive({
   df <- stepsize_pw()
   chain <- diagnostic_chain()
   .stepsize_trace(df, chain)
+  # .p_trace(df, lab = "Sampled Step Size", chain)
 })
 
 lp_hist <- reactive({
@@ -49,12 +53,12 @@ lp_trace <- reactive({
 accept_stat_hist <- reactive({
   df <- accept_stat_pw()
   chain <- diagnostic_chain()
-  .accept_stat_hist(df, chain)
+  .p_hist(df, lab = "Mean Metrop. Acceptance", chain) + xlim(0,1)
 })
 accept_stat_trace <- reactive({
   df <- accept_stat_pw()
   chain <- diagnostic_chain()
-  .accept_stat_trace(df, chain)
+  .p_trace(df, lab = "Mean Metrop. Acceptance", chain)
 }) 
 accept_stat_vs_lp <- reactive({
   metrop <- accept_stat_pw()[,-1L] # drop iterations column
@@ -79,7 +83,8 @@ treedepth_trace <- reactive({
   df <- treedepth_pw()
   chain <- diagnostic_chain()
   max_td <- MISC$max_td
-  .treedepth_trace(df, max_td, chain)
+  .p_trace(df, lab = "Treedepth", chain) + 
+    geom_hline(yintercept = max_td, size = 1)
 })
 treedepth_ndivergent_hist <- reactive({
   df_td <- treedepth_pw()
@@ -121,13 +126,19 @@ treedepth_vs_accept_stat <- reactive({
   df_td <- treedepth_pw()[,-1L] # drop iterations column
   df_as <- accept_stat_pw()[,-1L] 
   chain <- diagnostic_chain()
-  .treedepth_vs_accept_stat(df_td, df_as, chain)
+  .sampler_param_vs_sampler_param_violin(df_td, df_as, 
+                                         lab_x = "Treedepth",
+                                         lab_y = "Mean Metrop. Acceptance",
+                                         chain = chain)
 })
 ndivergent_vs_accept_stat <- reactive({
   df_nd <- ndivergent_pw()[,-1L] # drop iterations column
   df_as <- accept_stat_pw()[,-1L] 
   chain <- diagnostic_chain()
-  .ndivergent_vs_accept_stat(df_nd, df_as, chain)
+  .sampler_param_vs_sampler_param_violin(df_nd, df_as, 
+                                         lab_x = "N Divergent",
+                                         lab_y = "Mean Metrop. Acceptance",
+                                         chain = chain)
 })
 
 param_vs_lp <- reactive({
@@ -191,8 +202,8 @@ param_vs_treedepth <- reactive({
   samps <- samps_post_warmup[,, param]
   if (transform_x != "x") samps <- t_x(samps)
   lab <- if (transform_x != "x") gsub("x", param, transform_x) else param
-  .sampler_param_vs_param(p = samps, sp = treedepth, p_lab = param,
-                          sp_lab = lab, chain = chain, violin = TRUE)
+  .sampler_param_vs_param(p = samps, sp = treedepth, p_lab = lab,
+                          sp_lab = "Treedepth", chain = chain, violin = TRUE)
 })
 p_hist <- reactive({
   chain <- diagnostic_chain()

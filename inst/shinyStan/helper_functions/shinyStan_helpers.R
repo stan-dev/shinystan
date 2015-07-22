@@ -839,20 +839,18 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
     }
   }
   
-  if (ellipse_lev != "None") {
-    graph <- graph + stat_ellipse(level = as.numeric(ellipse_lev), color = ellipse_color, linetype = ellipse_lty, size = ellipse_lwd, alpha = ellipse_alpha)
-  }
-  
-  if (!all(dat$divergent == 0)) {
+  if (ellipse_lev != "None")
+    graph <- graph + stat_ellipse(level = as.numeric(ellipse_lev), color = ellipse_color, 
+                                  linetype = ellipse_lty, size = ellipse_lwd, alpha = ellipse_alpha)
+  if (!all(dat$divergent == 0))
     graph <- graph + geom_point(data = subset(dat, divergent == 1), aes(x,y), 
-                                size = pt_size + 0.5, color = "red")
-  }
-  if (!all(dat$hit_max_td == 0)) {
+                                size = pt_size + 0.5,
+                                shape = 21, color = "#40b28e", fill = "#5cffcc")
+  if (!all(dat$hit_max_td == 0))
     graph <- graph + geom_point(data = subset(dat, hit_max_td == 1), aes(x,y), 
-                                size = pt_size + 0.5, color = "yellow")
-  }
-  graph +
-    param_labs + 
+                                size = pt_size + 0.5, 
+                                shape = 21, color = "#b28e40", fill = "#ffcc5c")
+  graph + param_labs + 
     theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)
 }
 
