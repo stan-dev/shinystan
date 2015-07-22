@@ -60,7 +60,12 @@ accept_stat_vs_lp <- reactive({
   metrop <- accept_stat_pw()[,-1L] # drop iterations column
   lp <- samps_post_warmup[,,"lp__"]
   chain <- input$diagnostic_chain
-  .sampler_param_vs_param(p = lp, sp = metrop, 
+  divergent <- ndivergent_pw()[,-1L]
+  td <- treedepth_pw()[,-1L]
+  hit_max_td <- apply(td, 2L, function(y) as.numeric(y == MISC$max_td))
+  .sampler_param_vs_param(p = lp, sp = metrop,
+                          divergent = divergent, 
+                          hit_max_td = as.data.frame(hit_max_td),
                           p_lab = "Log Posterior",
                           sp_lab = "Mean Metropolis Acceptance", 
                           chain = chain)
@@ -135,7 +140,12 @@ param_vs_lp <- reactive({
   if (transform_x != "x") samps <- t_x(samps)
   samps <- as.data.frame(samps)
   lab <- if (transform_x != "x") gsub("x", param, transform_x) else param
+  divergent <- ndivergent_pw()[,-1L]
+  td <- treedepth_pw()[,-1L]
+  hit_max_td <- apply(td, 2L, function(y) as.numeric(y == MISC$max_td))
   .sampler_param_vs_param(p = lp, sp = samps, 
+                          divergent = divergent, 
+                          hit_max_td = as.data.frame(hit_max_td),
                           p_lab = "Log Posterior",
                           sp_lab = lab, 
                           chain = chain, violin = FALSE)
@@ -149,7 +159,12 @@ param_vs_accept_stat <- reactive({
   samps <- samps_post_warmup[,, param]
   if (transform_x != "x") samps <- t_x(samps)
   lab <- if (transform_x != "x") gsub("x", param, transform_x) else param
-  graph <- .sampler_param_vs_param(p = samps, sp = metrop, 
+  divergent <- ndivergent_pw()[,-1L]
+  td <- treedepth_pw()[,-1L]
+  hit_max_td <- apply(td, 2L, function(y) as.numeric(y == MISC$max_td))
+  graph <- .sampler_param_vs_param(p = samps, sp = metrop,
+                                   divergent = divergent, 
+                                   hit_max_td = as.data.frame(hit_max_td),
                                    p_lab = lab,
                                    sp_lab = "Mean Metropolis Acceptance", 
                                    chain = chain)

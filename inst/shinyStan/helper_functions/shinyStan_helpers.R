@@ -803,9 +803,11 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
   samps_use <- array(samps[,,params], c(nIter, nParams))
   colnames(samps_use) <- params
   
-  
   t_x <- eval(parse(text = paste("function(x)", transform_x)))
   t_y <- eval(parse(text = paste("function(y)", transform_y)))
+  x_lab <- if (transform_x != "x") gsub("x", param, transform_x) else param
+  y_lab <- if (transform_y != "y") gsub("y", param2, transform_y) else param2
+  param_labs <- labs(x = x_lab, y = y_lab)
   
   dat <- data.frame(x = t_x(samps_use[,param]), y = t_y(samps_use[,param2]))
   if (!is.null(sp)) {
@@ -816,11 +818,6 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
     dat$divergent <- 0
     dat$hit_max_td <- 0
   }
-
-  x_lab <- if (transform_x != "x") gsub("x", param, transform_x) else param
-  y_lab <- if (transform_y != "y") gsub("y", param2, transform_y) else param2
-  param_labs <- labs(x = x_lab, y = y_lab)
-  
   graph <- ggplot(dat, aes(x = x, y = y, xend=c(tail(x, n=-1), NA), 
                            yend=c(tail(y, n=-1), NA)))
   
@@ -848,11 +845,11 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
   
   if (!all(dat$divergent == 0)) {
     graph <- graph + geom_point(data = subset(dat, divergent == 1), aes(x,y), 
-                                size = pt_size, color = "red")
+                                size = pt_size + 0.5, color = "red")
   }
   if (!all(dat$hit_max_td == 0)) {
     graph <- graph + geom_point(data = subset(dat, hit_max_td == 1), aes(x,y), 
-                                size = pt_size, color = "yellow")
+                                size = pt_size + 0.5, color = "yellow")
   }
   graph +
     param_labs + 

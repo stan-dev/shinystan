@@ -223,9 +223,17 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                           bsCollapse(
                                             bsCollapsePanel(title = "View Options", id = "dynamic_trace_collapse",
                                                             fluidRow(
-                                                              column(3, numericInput("dynamic_trace_chain", label = strong("Chain (0 = all)"), min = 0, max = object@nChains, step = 1, value = 0)),
-                                                              column(4, radioButtons("dynamic_trace_stack", label = strong("Lines"), choices = list(Normal = "normal", Stacked = "stacked"), selected = "normal", inline = TRUE)),
-                                                              column(3, radioButtons("dynamic_trace_grid", label = strong("Grid"), choices = list(Show = "show", Hide = "hide"), selected = "hide", inline = TRUE))
+                                                              column(3, numericInput("dynamic_trace_chain", 
+                                                                                     label = strong("Chain (0 = all)"), 
+                                                                                     min = 0, max = object@nChains, step = 1, value = 0)),
+                                                              column(4, radioButtons("dynamic_trace_stack", 
+                                                                                     label = strong("Lines"), 
+                                                                                     choices = list(Normal = "normal", Stacked = "stacked"), 
+                                                                                     selected = "normal", inline = TRUE)),
+                                                              column(3, radioButtons("dynamic_trace_grid", 
+                                                                                     label = strong("Grid"), 
+                                                                                     choices = list(Show = "show", Hide = "hide"), 
+                                                                                     selected = "hide", inline = TRUE))
                                                             ),
                                                             hr(),
                                                             uiOutput("ui_dynamic_trace_helptext")
@@ -274,10 +282,15 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                  tabPanel("Bivariate",
                                           uiOutput("ui_bivariate_customize"),
                                           fluidRow(
-                                            column(4, selectizeInput("bivariate_param_y", label = strong(style = "color: #337ab7;", "y-axis"), choices = rev(.make_param_list(object)), selected = rev(.make_param_list(object))[1], multiple = FALSE)),
-                                            column(3, textInput("bivariate_transform_y", label = strong(style = "font-size: 11px;","Transform y"), value = "y")),
-                                            column(3, textInput("bivariate_transform_x", label = strong(style = "font-size: 11px;","Transform x"), value = "x")),
-                                            column(2, actionButton("bivariate_transform_go", label = strong(style = "font-size: 11px;","Transform")))
+                                            column(4, selectizeInput("bivariate_param_y", label = strong(style = "color: #337ab7;", "y-axis"), 
+                                                                     choices = rev(.make_param_list(object)), 
+                                                                     selected = rev(.make_param_list(object))[1], multiple = FALSE)),
+                                            column(3, textInput("bivariate_transform_y", 
+                                                                label = strong(style = "font-size: 11px;","Transform y"), value = "y")),
+                                            column(3, textInput("bivariate_transform_x", 
+                                                                label = strong(style = "font-size: 11px;","Transform x"), value = "x")),
+                                            column(2, actionButton("bivariate_transform_go", 
+                                                                   label = strong(style = "font-size: 11px;","Transform")))
                                           ),
                                           plotOutput("bivariate_plot_out", height = "350px"),
                                           helpText(style = "font-size: 11px", "For Stan models using the NUTS algorithm, red points indicate iterations that encountered a divergent transition.",  
@@ -295,18 +308,23 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                       #### TAB: Model Code ####
                       tabPanel(title = "Model Code", 
                                h4("Model Code"),
-                               tags$textarea(id="model_code", style="background: transparent; border-width: .5px;", object@model_code)
+                               tags$textarea(id="model_code", 
+                                             style="background: transparent; border-width: .5px;", 
+                                             object@model_code)
                       ), # END TAB: Model Code
                       #### TAB: Notes ####
                       tabPanel(title = "Notepad",
                                helpText(strong("Use this space to store notes about your model")),
                                helpText("The text will be saved in the", code("user_model_info"),
-                                        "slot of your", code("shinystan"), "object and displayed here
-                                    each time you launch the app for this model.",
-                                        bsButton("btn_user_model_info_why", label = "Read more about the 'Notes' tab", style = "link", size = "mini")
+                                        "slot of your", code("shinystan"), 
+                                        "object and displayed here each time you launch the app for this model.",
+                                        bsButton("btn_user_model_info_why", label = "Read more about the 'Notes' tab", 
+                                                 style = "link", size = "mini")
                                ),
                                h4("Notes"),
-                               tags$textarea(id="user_model_info", style="background: transparent; border-width: .5px; border-color: #222222", rows=20, cols=60, object@user_model_info),
+                               tags$textarea(id="user_model_info", 
+                                             style="background: transparent; border-width: .5px; border-color: #222222", 
+                                             rows=20, cols=60, object@user_model_info),
                                br(),
                                fluidRow(
                                  column(3, actionButton("save_user_model_info", label = "Save notes", icon = icon("download"))),
@@ -328,7 +346,12 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                       tabPanel("Appearance",
                                h3("Appearance settings"),
                                br(),br(),
-                               selectInput("background_texture", "Background texture", choices = c("Plain (white)" = "default", "Subtle" = "subtle",  "Concrete" = "concrete", "White brick" = "whitebrick", "Vignette" = "vignette", "Sweater" = "sweater", "Stucco" = "stucco", "Crumpled paper" = "crumpled", "Green cup" = "greencup"), selected = "default"),
+                               selectInput("background_texture", "Background texture", 
+                                           choices = c("Plain (white)" = "default", "Subtle" = "subtle",  
+                                                       "Concrete" = "concrete", "White brick" = "whitebrick", 
+                                                       "Vignette" = "vignette", "Sweater" = "sweater", 
+                                                       "Stucco" = "stucco", "Crumpled paper" = "crumpled", 
+                                                       "Green cup" = "greencup"), selected = "default"),
                                br(),br(),
                                selectInput("body_font", "Font family", 
                                            choices = c(Default = "default", 

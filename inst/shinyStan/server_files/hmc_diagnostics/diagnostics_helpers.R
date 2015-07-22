@@ -12,7 +12,6 @@ sp_nuts_check <- reactive({
 .sampler_param_pw <- function(sp, which = "accept_stat__", warmup_val) {
   sp_pw <- lapply(1:length(sp), function(i) {
     out <- sp[[i]][, which]
-    if (warmup_val == 0) out else out[-(1:warmup_val)]
   })
   sp_mat <- do.call("cbind", sp_pw)
   colnames(sp_mat) <- paste0("chain:", 1:ncol(sp_mat))
@@ -23,40 +22,52 @@ sp_nuts_check <- reactive({
 
 accept_stat_pw <- reactive({
   sp_nuts_check()
-  .sampler_param_pw(sampler_params, which = "accept_stat__", 
+  .sampler_param_pw(sampler_params_post_warmup, which = "accept_stat__", 
                     warmup_val = warmup_val)
 })
 treedepth_pw <- reactive({
   sp_nuts_check()
-  .sampler_param_pw(sampler_params, which = "treedepth__", 
+  .sampler_param_pw(sampler_params_post_warmup, which = "treedepth__", 
                     warmup_val = warmup_val)
 })
 ndivergent_pw <- reactive({
   sp_nuts_check()
-  .sampler_param_pw(sampler_params, which = "n_divergent__", 
+  .sampler_param_pw(sampler_params_post_warmup, which = "n_divergent__", 
                     warmup_val = warmup_val)
 })
 stepsize_pw <- reactive({
   sp_nuts_check()
-  .sampler_param_pw(sampler_params, which = "stepsize__", 
+  .sampler_param_pw(sampler_params_post_warmup, which = "stepsize__", 
                     warmup_val = warmup_val)
 })
 
-.sampler_param_vs_param <- function(p, sp, p_lab, sp_lab, chain = 0, violin = FALSE) {
+.sampler_param_vs_param <- function(p, sp, divergent = NULL, hit_max_td = NULL, 
+                                    p_lab, sp_lab, chain = 0, violin = FALSE) {
   thm <- theme_classic() %+replace% (no_lgnd + axis_color + small_axis_labs + fat_axis + transparent)
   xy_labs <- labs(y = if (missing(p_lab)) NULL else p_lab, 
                   x = if (missing(sp_lab)) NULL else sp_lab)
   df <- data.frame(sp = do.call("c", sp), p = c(p))
-  
   if (violin) df$sp <- as.factor(round(df$sp, 4))
+  if (!is.null(divergent)) df$divergent <- do.call("c", divergent)
+  if (!is.null(hit_max_td)) df$hit_max_td <- do.call("c", hit_max_td)
   
   base <- ggplot(df, aes(sp,p)) + xy_labs + thm 
-  
   if (chain == 0) {
-    graph <- base + if (violin) geom_violin(fill = "black") else geom_point(alpha = 0.5)
+    if (violin) graph <- base + geom_violin(fill = "black") 
+    else {
+      graph <- base + geom_point(alpha = 0.5)
+      if (!is.null(divergent))
+        graph <- graph + geom_point(data = subset(df, divergent == 1), aes(sp,p), 
+                                    color = "red", size = 2.5)
+      if (!is.null(hit_max_td))
+        graph <- graph + geom_point(data = subset(df, hit_max_td == 1), aes(sp,p), 
+                                    color = "yellow", size = 2.5)
+    }
     return(graph)
   }
   chain_data <- data.frame(sp = sp[, chain], p = p[, chain])
+  if (!is.null(divergent)) chain_data$div <- divergent[, chain]
+  if (!is.null(hit_max_td)) chain_data$hit <- hit_max_td[, chain]
   if (violin) {
     chain_data$sp <- as.factor(round(chain_data$sp, 4))
     graph <- base + 
@@ -64,10 +75,16 @@ stepsize_pw <- reactive({
       geom_violin(data = chain_data, aes(sp, p), color = "skyblue", fill = "skyblue", alpha = 0.5)
     return(graph)
   }
-  
-  base + 
+  graph <- base + 
     geom_point(alpha = 0.5) + 
     geom_point(data = chain_data, aes(sp,p), color = "skyblue", alpha = 0.5)
+  if (!is.null(divergent))
+    graph <- graph + geom_point(data = subset(chain_data, div == 1), aes(sp,p), 
+                                color = "red", size = 2.5)
+  if (!is.null(hit_max_td))
+    graph <- graph + geom_point(data = subset(chain_data, hit == 1), aes(sp,p), 
+                                color = "yellow", size = 2.5)
+  graph
 }
 
 .p_hist <- function(df, lab, chain = 0) {
@@ -77,32 +94,24 @@ stepsize_pw <- reactive({
     geom_histogram(binwidth = diff(range(mdf$value))/30) + 
     labs(x = if(missing(lab)) NULL else lab, y = "") + 
     thm
-  
-  all_mean <- mean(mdf$value)
-  all_med <- median(mdf$value)
   if (chain == 0) {
     graph <- base + 
-      geom_vline(xintercept = all_mean, color = "red") + 
-      geom_vline(xintercept = all_med, color = "red", lty = 2)
+      geom_vline(xintercept = mean(mdf$value), color = "red") + 
+      geom_vline(xintercept = median(mdf$value), color = "red", lty = 2)
     return(graph)
   }
   chain_data <- subset(mdf, variable == paste0("chain:",chain))
   base + thm + geom_histogram(data = chain_data,
                               binwidth = diff(range(chain_data$value))/30,
                               fill = "skyblue", alpha = 0.5) +
-    geom_vline(xintercept = all_mean, color = "red") + 
-    geom_vline(xintercept = all_med, color = "red", lty = 2) +
-    geom_vline(xintercept = mean(chain_data$value), color = "skyblue2") + 
-    geom_vline(xintercept = median(chain_data$value), color = "skyblue2", lty = 2)
+    geom_vline(xintercept = mean(chain_data$value), color = "red") + 
+    geom_vline(xintercept = median(chain_data$value), color = "red", lty = 2)
 }
 
 .p_trace <- function(df, lab, chain = 0) {
-  
   thm <- theme_classic() %+replace% (no_lgnd + axis_color + small_axis_labs + fat_axis + transparent)
   xy_labs <- labs(x = "Iteration", y = if(missing(lab)) NULL else lab)
-  
   mdf <- reshape2::melt(df, id.vars = "iterations")
-  
   if (chain == 0) {
     xbar <- mean(mdf$value, na.rm = TRUE)
     sigma <- sd(mdf$value, na.rm = TRUE)
@@ -135,31 +144,24 @@ stepsize_pw <- reactive({
 
 .accept_stat_hist <- function(df, chain = 0) {
   thm <- theme_classic() %+replace% (no_lgnd + axis_color + small_axis_labs + fat_axis + no_yaxs + transparent)
-  
   mdf <- reshape2::melt(df, id.vars = "iterations")
-  
   base <- ggplot(mdf, aes(x = value)) + 
     geom_histogram(binwidth = diff(range(mdf$value))/30) + 
     labs(x = "Mean Metropolis Acceptance", y = "") + 
     xlim(0,1) +
     thm
-  
-  all_mean <- mean(mdf$value)
-  all_med <- median(mdf$value)
   if (chain == 0) {
     graph <- base + 
-      geom_vline(xintercept = all_mean, color = "red") + 
-      geom_vline(xintercept = all_med, color = "red", lty = 2)
+      geom_vline(xintercept = mean(mdf$value), color = "red") + 
+      geom_vline(xintercept = median(mdf$value), color = "red", lty = 2)
     return(graph)
   }
-  chain_data <- subset(mdf, variable == paste0("chain:",chain))
+  chain_data <- subset(mdf, variable == paste0("chain:", chain))
   base + thm + geom_histogram(data = chain_data,
                               binwidth = diff(range(chain_data$value))/30,
                               fill = "skyblue", alpha = 0.5) + 
-    geom_vline(xintercept = all_mean, color = "red") + 
-    geom_vline(xintercept = all_med, color = "red", lty = 2) +
-    geom_vline(xintercept = mean(chain_data$value), color = "skyblue2") + 
-    geom_vline(xintercept = median(chain_data$value), color = "skyblue2", lty = 2)
+    geom_vline(xintercept = mean(chain_data$value), color = "red") + 
+    geom_vline(xintercept = median(chain_data$value), color = "red", lty = 2)
 }
 
 .accept_stat_trace <- function(df, chain = 0) {
