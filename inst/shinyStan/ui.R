@@ -86,32 +86,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                br()
                       ),
                       tabPanel("HMC/NUTS (plots)",
-                               wellPanel(
-                                 fluidRow(
-                                   column(3, h4(textOutput("diagnostic_chain_text"))),
-                                   column(4, conditionalPanel(condition = "input.diagnostics_navlist == 'By model parameter'", 
-                                                              h5("Parameter"))),
-                                   column(4, conditionalPanel(condition = "input.diagnostics_navlist == 'By model parameter'", 
-                                                              h5("Transformation f(x) =")))
-                                 ),
-                                 fluidRow(
-                                   column(3, div(style = "width: 100px;", numericInput("diagnostic_chain", label = NULL, value = 0, min = 0, max = object@nChains))),
-                                   column(4, conditionalPanel(condition = "input.diagnostics_navlist == 'By model parameter'", 
-                                                              selectizeInput(inputId = "diagnostic_param", 
-                                                                             label = NULL, 
-                                                                             choices = .make_param_list(object), 
-                                                                             selected = .make_param_list(object)[1],
-                                                                             multiple = FALSE))),
-                                   column(3, conditionalPanel(condition = "input.diagnostics_navlist == 'By model parameter'", 
-                                                              textInput("diagnostic_param_transform", 
-                                                                        label = NULL, 
-                                                                        value = "x"))),
-                                   column(2, conditionalPanel(condition = "input.diagnostics_navlist == 'By model parameter'", 
-                                                              actionButton("diagnostic_param_transform_go", "Transform")
-                                   )
-                                   )
-                                 )
-                               ),
+                               uiOutput("ui_diagnostics_customize"),
                                navlistPanel(id = "diagnostics_navlist",
                                             tabPanel("Sample information",
                                                      uiOutput("ui_diagnostics_sample")

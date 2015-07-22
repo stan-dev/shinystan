@@ -13,92 +13,6 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-
-# sampler plots --------------------------------------------------
-.sampler_plot_divergent <- function(sampler_params, warmup_val) {
-  plot_title <- theme(plot.title = element_text(size = 11, hjust = 0))
-  sp <- lapply(1:length(sampler_params), function(i) {
-    out <- sampler_params[[i]][, "n_divergent__"]
-    out <- if (warmup_val == 0) out else out[-(1:warmup_val)]
-    names(out) <- ((warmup_val + 1):(warmup_val + length(out)))
-    t(out)
-  })
-  names(sp) <- paste0(1:length(sp))
-  msp <- reshape2::melt(sp)[,-1]
-  colnames(msp) <- c("iteration", "value", "chain")
-  
-  nDivergent <- sum(msp$value == 1)
-  graph <- ggplot(msp, aes(x = iteration, xend = iteration,
-                           y = 0, yend = value, 
-                           color = chain))
-  graph <- graph + 
-    geom_segment(size = 1/3) + 
-    labs(x = "Iteration", y = "") + 
-    ggtitle(paste(nDivergent, "divergent post-warmup iterations")) + 
-    theme_classic() %+replace% (axis_color + axis_labs + fat_axis + 
-                                  no_yaxs + plot_title + lgnd_left + transparent)
-  
-  graph
-}
-
-.sampler_plot_treedepth <- function(sampler_params, warmup_val, divergent = c("All", 0, 1)) {
-  plot_title <- theme(plot.title = element_text(size = 11, hjust = 0))
-  plot_labs <- labs(x = "Treedepth", y = "") 
-  plot_theme <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + plot_title + lgnd_right + transparent) 
-    
-  sp_td <- lapply(1:length(sampler_params), function(i) {
-    out <- sampler_params[[i]][, "treedepth__"]
-    out <- if (warmup_val == 0) out else out[-(1:warmup_val)]
-    names(out) <- ((warmup_val + 1):(warmup_val + length(out)))
-    t(out)
-  })
-  
-  msp_td <- cbind(reshape2::melt(sp_td)[,-1])
-  names(sp_td) <- paste0(1:length(sp_td))
-  colnames(msp_td) <- c("iteration", "value", "chain")
-  
-  sp_div <- lapply(1:length(sampler_params), function(i) {
-    out <- sampler_params[[i]][, "n_divergent__"]
-    out <- if (warmup_val == 0) out else out[-(1:warmup_val)]
-    names(out) <- ((warmup_val + 1):(warmup_val + length(out)))
-    t(out)
-  })
-  n_divergent <- reshape2::melt(sp_div)[,"value"]
-  msp_td <- cbind(msp_td, n_divergent = n_divergent)
-  
-  if (divergent == 0) {
-    msp_td <- subset(msp_td, n_divergent == divergent) 
-  }
-  
-  if (divergent == 1) {
-    if (any(msp_td$n_divergent == 1)) {
-      msp_td <- subset(msp_td, n_divergent == divergent) 
-    } else {
-      df <- data.frame(x = msp_td$value, y = rep(0, nrow(msp_td)))
-      blank_plot <- ggplot(df, aes(x,y)) + 
-        geom_bar(stat = "identity") + 
-        plot_labs +
-        plot_theme +
-        ggtitle("n_divergent = 1") 
-      return(blank_plot)
-    } 
-  }
-   
-  graph <- ggplot(msp_td, aes(x = factor(value)), na.rm = TRUE) + 
-    stat_bin(aes(y=..count../sum(..count..)), fill = "gray20", color = "black", width=1) + 
-    plot_labs + 
-    plot_theme
-  
-  graph <- graph + 
-    if (divergent == 0) ggtitle("n_divergent = 0") 
-    else if (divergent == 1) ggtitle("n_divergent = 1") 
-    else ggtitle("All")
-  
-  graph
-}
-
-
-
 # param_trace -------------------------------------------------------------
 # trace plot for a single parameter
 .param_trace <- function(param, dat,
@@ -838,17 +752,16 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
         geom_path(alpha = lines_alpha, color = lines_color)
     }
   }
-  
   if (ellipse_lev != "None")
     graph <- graph + stat_ellipse(level = as.numeric(ellipse_lev), color = ellipse_color, 
                                   linetype = ellipse_lty, size = ellipse_lwd, alpha = ellipse_alpha)
   if (!all(dat$divergent == 0))
     graph <- graph + geom_point(data = subset(dat, divergent == 1), aes(x,y), 
-                                size = pt_size + 0.5,
+                                size = pt_size + 0.5, alpha = min(1, pt_alpha + 0.25),
                                 shape = 21, color = "#40b28e", fill = "#5cffcc")
   if (!all(dat$hit_max_td == 0))
     graph <- graph + geom_point(data = subset(dat, hit_max_td == 1), aes(x,y), 
-                                size = pt_size + 0.5, 
+                                size = pt_size + 0.5, alpha = min(1, pt_alpha + 0.25),
                                 shape = 21, color = "#b28e40", fill = "#ffcc5c")
   graph + param_labs + 
     theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)

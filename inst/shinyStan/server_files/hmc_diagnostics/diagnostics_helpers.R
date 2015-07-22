@@ -1,4 +1,6 @@
 small_axis_labs <- theme(axis.title = element_text(face = "bold", size = 11))
+diagnostics_fat_axis <- theme(axis.line.x = element_line(size = 3, color = "black"), 
+                  axis.line.y = element_line(size = 0.5, color = "black"))
 base_fill <- "#79b9d3"
 overlay_fill <- "maroon"
 vline_base_clr <- "#436775"
@@ -53,7 +55,7 @@ stepsize_pw <- reactive({
 
 .sampler_param_vs_param <- function(p, sp, divergent = NULL, hit_max_td = NULL, 
                                     p_lab, sp_lab, chain = 0, violin = FALSE) {
-  thm <- theme_classic() %+replace% (no_lgnd + axis_color + small_axis_labs + fat_axis + transparent)
+  thm <- theme_classic() %+replace% (no_lgnd + diagnostics_fat_axis + small_axis_labs + transparent)
   xy_labs <- labs(y = if (missing(p_lab)) NULL else p_lab, 
                   x = if (missing(sp_lab)) NULL else sp_lab)
   df <- data.frame(sp = do.call("c", sp), p = c(p))
@@ -107,7 +109,7 @@ stepsize_pw <- reactive({
 }
 
 .p_hist <- function(df, lab, chain = 0) {
-  thm <- theme_classic() %+replace% (no_lgnd + axis_color + small_axis_labs + fat_axis + no_yaxs + transparent)
+  thm <- theme_classic() %+replace% (no_lgnd + diagnostics_fat_axis + small_axis_labs + no_yaxs + transparent)
   mdf <- reshape2::melt(df, id.vars = "iterations")
   base <- ggplot(mdf, aes(x = value)) + 
     geom_histogram(binwidth = diff(range(mdf$value))/30, fill = base_fill) + 
@@ -129,7 +131,7 @@ stepsize_pw <- reactive({
 }
 
 .p_trace <- function(df, lab, chain = 0) {
-  thm <- theme_classic() %+replace% (no_lgnd + axis_color + small_axis_labs + fat_axis + transparent)
+  thm <- theme_classic() %+replace% (no_lgnd + diagnostics_fat_axis + small_axis_labs + transparent)
   xy_labs <- labs(x = "Iteration", y = if(missing(lab)) NULL else lab)
   mdf <- reshape2::melt(df, id.vars = "iterations")
   base <- ggplot(mdf, aes(x = iterations, y = value, group = variable))
@@ -177,7 +179,7 @@ stepsize_pw <- reactive({
 }
 
 .accept_stat_corr_lp <- function(metrop, lp, chain = 0) {
-  thm <- theme_classic() %+replace% (no_lgnd + axis_color + small_axis_labs + fat_axis + transparent)
+  thm <- theme_classic() %+replace% (no_lgnd + diagnostics_fat_axis + small_axis_labs + transparent)
   xy_labs <- labs(x = "Mean Metropolis Acceptance", y = "Log Posterior")
   df <- data.frame(metrop = do.call("c", metrop), lp = c(lp))
   
@@ -193,7 +195,7 @@ stepsize_pw <- reactive({
 
 .treedepth_ndivergent_hist <- function(df_td, df_nd, chain = 0, divergent = c("All", 0, 1)) {
   plot_title <- theme(plot.title = element_text(size = 11, hjust = 0))
-  plot_theme <- theme_classic() %+replace% (axis_color + small_axis_labs + fat_axis + no_yaxs + plot_title + lgnd_right + transparent) 
+  plot_theme <- theme_classic() %+replace% (diagnostics_fat_axis + small_axis_labs + no_yaxs + plot_title + lgnd_right + transparent) 
   x_lab <- if (divergent == "All") "Treedepth (All)" else paste0("Treedepth (N Divergent = ", divergent,")")
   plot_labs <- labs(x = x_lab, y = "") 
   
@@ -214,7 +216,7 @@ stepsize_pw <- reactive({
 }
 
 .ndivergent_trace <- function(df, chain = 0) {
-  thm <- theme_classic() %+replace% (no_lgnd + axis_color + small_axis_labs + fat_axis + transparent)
+  thm <- theme_classic() %+replace% (no_lgnd + diagnostics_fat_axis + small_axis_labs + transparent)
   xy_labs <- labs(x = "Iteration", y = "N Divergent")
   y_scale <- scale_y_continuous(breaks = c(0,1))
   
@@ -241,7 +243,7 @@ stepsize_pw <- reactive({
 }
 
 .stepsize_trace <- function(df, chain = 0) {
-  thm <- theme_classic() %+replace% (no_lgnd + axis_color + small_axis_labs + fat_axis + transparent)
+  thm <- theme_classic() %+replace% (no_lgnd + diagnostics_fat_axis + small_axis_labs + transparent)
   xy_labs <- labs(x = "Iteration", y = "Sampled Step Size")
   
   mdf <- reshape2::melt(df, id.vars = "iterations")
@@ -256,7 +258,7 @@ stepsize_pw <- reactive({
 
 .sampler_param_vs_sampler_param_violin <- function(df_x, df_y, lab_x, lab_y, 
                                                    chain = 0) {
-  thm <- theme_classic() %+replace% (no_lgnd + axis_color + small_axis_labs + fat_axis + transparent)
+  thm <- theme_classic() %+replace% (no_lgnd + diagnostics_fat_axis + small_axis_labs + transparent)
   xy_labs <- labs(y = lab_y, x = lab_x)
   df <- data.frame(x = do.call("c", df_x), y = do.call("c", df_y))
   df$x <- as.factor(df$x)
