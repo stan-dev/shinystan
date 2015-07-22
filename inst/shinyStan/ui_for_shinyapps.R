@@ -136,9 +136,9 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                             tabPanel("By model parameter",
                                                      uiOutput("ui_diagnostics_parameter")
                                             ),
-                                            tabPanel("Help",
-                                                     uiOutput("ui_diagnostics_help")
-                                            ),
+#                                             tabPanel("Help",
+#                                                      uiOutput("ui_diagnostics_help")
+#                                             ),
                                             well = FALSE,
                                             widths = c(2, 10)
                                )

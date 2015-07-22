@@ -192,7 +192,7 @@ param_vs_treedepth <- reactive({
   if (transform_x != "x") samps <- t_x(samps)
   lab <- if (transform_x != "x") gsub("x", param, transform_x) else param
   .sampler_param_vs_param(p = samps, sp = treedepth, p_lab = param,
-                          sp_lab = "Tree Depth", chain = chain, violin = TRUE)
+                          sp_lab = lab, chain = chain, violin = TRUE)
 })
 p_hist <- reactive({
   chain <- diagnostic_chain()

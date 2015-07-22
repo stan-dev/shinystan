@@ -100,7 +100,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                                               selectizeInput(inputId = "diagnostic_param", 
                                                                              label = NULL, 
                                                                              choices = .make_param_list(object), 
-                                                                             selected = .make_param_list(object)[1], 
+                                                                             selected = .make_param_list(object)[1],
                                                                              multiple = FALSE))),
                                    column(3, conditionalPanel(condition = "input.diagnostics_navlist == 'By model parameter'", 
                                                               textInput("diagnostic_param_transform", 
@@ -114,27 +114,23 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                ),
                                navlistPanel(id = "diagnostics_navlist",
                                             tabPanel("Sample information",
-                                                     h2("Sample information"),
                                                      uiOutput("ui_diagnostics_sample")
                                             ),
                                             tabPanel("N divergent information",
-                                                     h2("N divergent information"),
                                                      uiOutput("ui_diagnostics_ndivergent")
                                             ),
                                             tabPanel("Tree depth information",
-                                                     h2("Tree depth information"),
                                                      uiOutput("ui_diagnostics_treedepth")
                                             ),
                                             tabPanel("Step size information",
-                                                     h2("Step size information"),
                                                      uiOutput("ui_diagnostics_stepsize")
                                             ),
                                             tabPanel("By model parameter",
                                                      uiOutput("ui_diagnostics_parameter")
                                             ),
-                                            tabPanel("Help",
-                                                     uiOutput("ui_diagnostics_help")
-                                            ),
+#                                             tabPanel("Help",
+#                                                      uiOutput("ui_diagnostics_help")
+#                                             ),
                                             well = FALSE,
                                             widths = c(2, 10)
                                )
