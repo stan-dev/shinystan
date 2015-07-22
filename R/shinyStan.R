@@ -60,5 +60,5 @@
 #' @importFrom xtable xtable print.xtable
 #'
 #' @docType package
-#' @name shinyStan
+#' @name shinyStan-package
 NULL
