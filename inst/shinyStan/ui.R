@@ -88,6 +88,9 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                       tabPanel("HMC/NUTS (plots)",
                                uiOutput("ui_diagnostics_customize"),
                                navlistPanel(id = "diagnostics_navlist",
+                                            tabPanel("By model parameter",
+                                                     uiOutput("ui_diagnostics_parameter")
+                                            ),
                                             tabPanel("Sample information",
                                                      uiOutput("ui_diagnostics_sample")
                                             ),
@@ -99,9 +102,6 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                             ),
                                             tabPanel("Step size information",
                                                      uiOutput("ui_diagnostics_stepsize")
-                                            ),
-                                            tabPanel("By model parameter",
-                                                     uiOutput("ui_diagnostics_parameter")
                                             ),
 #                                             tabPanel("Help",
 #                                                      uiOutput("ui_diagnostics_help")
@@ -270,7 +270,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                                                    label = strong(style = "font-size: 11px;","Transform")))
                                           ),
                                           plotOutput("bivariate_plot_out", height = "350px"),
-                                          helpText(style = "font-size: 11px", "For Stan models using the NUTS algorithm, green points indicate iterations that encountered a divergent transition.",  
+                                          helpText(style = "font-size: 11px", "For Stan models using the NUTS algorithm, red points indicate iterations that encountered a divergent transition.",  
                                                    "Orange points indicate a transition that hit the maximum treedepth",
                                                    "rather than terminated its evolution normally."),
                                           br()
@@ -318,31 +318,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                       #### TAB: Help ####
                       tabPanel(title = "Help",
                                uiOutput("ui_help")
-                      ), # END Help
-                      #### TAB: Appearance ####
-                      tabPanel("Appearance",
-                               h3("Appearance settings"),
-                               br(),br(),
-                               selectInput("background_texture", "Background texture", 
-                                           choices = c("Plain (white)" = "default", "Subtle" = "subtle",  
-                                                       "Concrete" = "concrete", "White brick" = "whitebrick", 
-                                                       "Vignette" = "vignette", "Sweater" = "sweater", 
-                                                       "Stucco" = "stucco", "Crumpled paper" = "crumpled", 
-                                                       "Green cup" = "greencup"), selected = "default"),
-                               br(),br(),
-                               selectInput("body_font", "Font family", 
-                                           choices = c(Default = "default", 
-                                                       Arial = "Arial, Helvetica, sans-serif", 
-                                                       Corbel = "'Corbel'", 
-                                                       Georgia = "Georgia, serif",
-                                                       "Palatino Linotype" = "'Palatino Linotype', 'Book Antiqua', Palatino, serif", 
-                                                       Tahoma = "Tahoma, Geneva, sans-serif",
-                                                       "Times New Roman" = "'Times New Roman', Times, serif", 
-                                                       Trebuchet = "'Trebuchet MS', Helvetica, sans-serif",
-                                                       Verdana = "Verdana, Geneva, sans-serif")),
-                               uiOutput("ui_background_texture"),
-                               uiOutput("ui_body_font")
-                      )
+                      ) # END Help
            ), # END navbarMenu MORE
            
            #### QUIT ####

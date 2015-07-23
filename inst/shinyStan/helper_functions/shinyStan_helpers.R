@@ -605,7 +605,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
 
 
 # dynamic trace plot ------------------------------------------------------
-.param_trace_dynamic <- function(param_samps, param_name, chain,
+.param_trace_dynamic <- function(param_samps, param_name=NULL, chain,
                                  warmup_val, warmup_shade = TRUE,
                                  stack = FALSE, grid = FALSE) {
 #   get_gg_colors <- function(nColors) {
@@ -641,7 +641,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
   # shade_to <- if (warmup_shade) paste0(warmup_val,"-01-01") else "0001-01-01"
   `%>%` <- dygraphs::`%>%`
   y_axis_label_remove <- if (stack) "white" else NULL
-  dygraphs::dygraph(param_chains, xlab = "Iteration", ylab = param_name) %>%
+  dygraphs::dygraph(param_chains, xlab = "Iteration", 
+                    ylab = if (is.null(param_name)) "Value" else param_name) %>%
     dygraphs::dyAxis("y", rangePad = "5", axisLabelColor = y_axis_label_remove) %>%
     dygraphs::dyAxis("x", rangePad = "3") %>%
     dygraphs::dyOptions(stackedGraph = stack, drawGrid = grid, animatedZooms = TRUE, axisLineColor = axis_line_color) %>%
@@ -757,11 +758,11 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
                                   linetype = ellipse_lty, size = ellipse_lwd, alpha = ellipse_alpha)
   if (!all(dat$divergent == 0))
     graph <- graph + geom_point(data = subset(dat, divergent == 1), aes(x,y), 
-                                size = pt_size + 0.5, alpha = min(1, pt_alpha + 0.25),
-                                shape = 21, color = "#40b28e", fill = "#5cffcc")
+                                size = pt_size + 0.5, alpha = min(1, pt_alpha + 1/3),
+                                shape = 21, color = "maroon4", fill = "maroon")
   if (!all(dat$hit_max_td == 0))
     graph <- graph + geom_point(data = subset(dat, hit_max_td == 1), aes(x,y), 
-                                size = pt_size + 0.5, alpha = min(1, pt_alpha + 0.25),
+                                size = pt_size + 0.5, alpha = min(1, pt_alpha + 1/3),
                                 shape = 21, color = "#b28e40", fill = "#ffcc5c")
   graph + param_labs + 
     theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)

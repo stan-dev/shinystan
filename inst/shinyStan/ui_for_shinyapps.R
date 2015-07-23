@@ -117,24 +117,20 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                  )
                                ),
                                navlistPanel(id = "diagnostics_navlist",
+                                            tabPanel("By model parameter",
+                                                     uiOutput("ui_diagnostics_parameter")
+                                            ),
                                             tabPanel("Sample information",
-                                                     h2("Sample information"),
                                                      uiOutput("ui_diagnostics_sample")
                                             ),
                                             tabPanel("N divergent information",
-                                                     h2("N divergent information"),
                                                      uiOutput("ui_diagnostics_ndivergent")
                                             ),
                                             tabPanel("Tree depth information",
-                                                     h2("Tree depth information"),
                                                      uiOutput("ui_diagnostics_treedepth")
                                             ),
                                             tabPanel("Step size information",
-                                                     h2("Step size information"),
                                                      uiOutput("ui_diagnostics_stepsize")
-                                            ),
-                                            tabPanel("By model parameter",
-                                                     uiOutput("ui_diagnostics_parameter")
                                             ),
 #                                             tabPanel("Help",
 #                                                      uiOutput("ui_diagnostics_help")
