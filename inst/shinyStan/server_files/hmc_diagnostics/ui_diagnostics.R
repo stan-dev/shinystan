@@ -1,7 +1,7 @@
 help_interval <- helpText(style = "font-size: 11px;","Highlighted interval shows \\(\\bar{x} \\pm sd(x)\\)")
 help_lines <- helpText(style = "font-size: 11px;","Lines are mean (solid) and median (dashed)")
 help_max_td <- helpText(style = "font-size: 11px;", "Horizontal line indicates the max_treedepth setting")
-help_points <- helpText(style = "font-size: 11px;", "Green indicates which (if any) iterations encountered a divergent transition.",
+help_points <- helpText(style = "font-size: 11px;", "Red indicates which (if any) iterations encountered a divergent transition.",
                         "Orange indicates a transition hitting the maximum treedepth.")  
 help_dynamic <- helpText(style = "font-size: 11px;", "Use your mouse to highlight areas in the plot to zoom into. You can also use the sliders. Double-click to reset.")
 output$diagnostics_warnings_text <- renderText({
@@ -42,7 +42,7 @@ output$ui_diagnostics_customize <- renderUI({
     ),
     fluidRow(
       column(1, strong(style = "color: red;", "Warnings:")),
-      column(6, helpText(style = "color: red; font-size: 12px;", 
+      column(6, helpText(style = "color: red; font-size: 13px;", 
                          textOutput("diagnostics_warnings_text")))
     )
   )

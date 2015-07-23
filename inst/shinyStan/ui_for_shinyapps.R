@@ -300,7 +300,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                           ),
                                           plotOutput("bivariate_plot_out", height = "350px"),
                                           helpText(style = "font-size: 11px", "For Stan models using the NUTS algorithm, red points indicate iterations that encountered a divergent transition.",  
-                                                   "Yellow points indicate a transition that hit the maximum treedepth",
+                                                   "Orange points indicate a transition that hit the maximum treedepth",
                                                    "rather than terminated its evolution normally."),
                                           br()
                                  )
