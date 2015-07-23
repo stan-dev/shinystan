@@ -2,12 +2,12 @@ small_axis_labs <- theme(axis.title = element_text(face = "bold", size = 11))
 diagnostics_fat_axis <- theme(axis.line.x = element_line(size = 3, color = "black"), 
                   axis.line.y = element_line(size = 0.5, color = "black"))
 base_fill <- "#79b9d3"
-overlay_fill <- "maroon"
+overlay_fill <- "gray35"
 vline_base_clr <- "#436775"
-vline_overlay_clr <- "maroon4"
+vline_overlay_clr <- "gray20"
 single_trace_clr <- overlay_fill
-divergent_fill <- "#5cffcc"
-divergent_clr <- "#40b28e"
+divergent_fill <- "maroon" # "#5cffcc"
+divergent_clr <- "maroon4" # "#40b28e"
 hit_max_td_fill <- "#ffcc5c"
 hit_max_td_clr <- "#b28e40"
 div_and_hit_shape <- 21
@@ -269,4 +269,46 @@ stepsize_pw <- reactive({
   chain_data <- data.frame(x = as.factor(df_x[, chain]), y = df_y[, chain])
   graph + geom_violin(data = chain_data, aes(x,y), color = vline_overlay_clr, 
                       fill = overlay_fill, alpha = 0.5)
+}
+
+
+.dynamic_trace_diagnostics <- function(param_samps, param_name, chain = 0,
+                                       stack = FALSE, grid = FALSE) {
+  dim_samps <- dim(param_samps)
+  if (is.null(dim_samps)) {
+    nChains <- 1
+  } else {
+    nChains <- dim_samps[2]
+  }
+  if (nChains == 1) {
+    param_chains <- xts::as.xts(ts(param_samps, start = 1))
+  } else {
+    
+    if (chain != 0) {
+      param_samps <- param_samps[, chain]
+      param_chains <- xts::as.xts(ts(param_samps, start = 1))
+    } else {
+      param_chains <- xts::as.xts(ts(param_samps[,1], start = 1))
+      for (i in 2:nChains) {
+        param_chains <- cbind(param_chains, xts::as.xts(ts(param_samps[,i], start = 1)))
+      }
+      colnames(param_chains) <- paste0("Chain", 1:nChains)
+    }
+  }
+  `%>%` <- dygraphs::`%>%`
+  y_axis_label_remove <- if (stack) "white" else NULL
+  dygraphs::dygraph(param_chains, xlab = paste("Parameter:", param_name), 
+                    ylab = NULL) %>%
+    dygraphs::dyOptions(colors = if (chain == 0) NULL else single_trace_clr,
+                        stackedGraph = stack, drawGrid = grid, 
+                        animatedZooms = TRUE, 
+                        drawXAxis = TRUE,
+                        drawYAxis = TRUE, 
+                        drawAxesAtZero = TRUE,
+                        axisLineColor = "black") %>%
+    dygraphs::dyAxis("x", pixelsPerLabel = 1e4, axisLineWidth = 3) %>%
+    dygraphs::dyAxis("y", pixelsPerLabel = 20) %>%
+    dygraphs::dyRangeSelector(height = 1, retainDateWindow = TRUE) %>%
+    dygraphs::dyLegend(show = "never") %>%
+    dygraphs::dyCSS(css = "css/shinyStan_dygraphs.css")
 }

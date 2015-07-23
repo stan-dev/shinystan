@@ -3,38 +3,32 @@ help_lines <- helpText(style = "font-size: 11px;","Lines are mean (solid) and me
 help_max_td <- helpText(style = "font-size: 11px;", "Horizontal line indicates the max_treedepth setting")
 help_points <- helpText(style = "font-size: 11px;", "Green indicates which (if any) iterations encountered a divergent transition.",
                         "Orange indicates a transition hitting the maximum treedepth.")  
-
-output$divergent_warnings_text <- renderText({
+help_dynamic <- helpText(style = "font-size: 11px;", "Use your mouse to highlight areas in the plot to zoom into. You can also use the sliders. Double-click to reset.")
+output$diagnostics_warnings_text <- renderText({
   divs <- sum(ndivergent_pw()[,-1])
-  if (divs == 0) return("None")
-  else paste("Diverging error:", divs, "iterations")
-})
-output$treedepth_warnings_text <- renderText({
   hits <- sum(treedepth_pw()[,-1] == MISC$max_td)
-  if (hits == 0) return("None")
-  else paste("Maximum treedepth reached:", hits, "iterations")
+  d <- divs > 0
+  h <- hits > 0
+  if (d && h) msg <- paste("Diverging error:", divs, "iterations.",
+                           "Maximum treedepth reached:", hits, "iterations.")
+  else if (d && !h) msg <- paste("Diverging error:", divs, "iterations.")
+  else if (!d && h) msg <- paste("Maximum treedepth reached:", hits, "iterations.")
+  else msg <- NULL
+  msg
 })
 
 output$ui_diagnostics_customize <- renderUI({
   wellPanel(
     fluidRow(
       column(3, h4(textOutput("diagnostic_chain_text"))),
-      column(4, 
-             conditionalPanel(condition = "input.diagnostics_navlist != 'By model parameter' && output.treedepth_warnings_text != 'None'", 
-                              helpText(style = "color: red;", strong("WARNING"), textOutput("treedepth_warnings_text"))
-             ),
-             conditionalPanel(condition = "input.diagnostics_navlist == 'By model parameter'", 
+      column(4, conditionalPanel(condition = "input.diagnostics_navlist == 'By model parameter'", 
                                  h5("Parameter"))),
       column(4, conditionalPanel(condition = "input.diagnostics_navlist == 'By model parameter'", 
                                  h5("Transformation f(x) =")))
     ),
     fluidRow(
       column(3, div(style = "width: 100px;", numericInput("diagnostic_chain", label = NULL, value = 0, min = 0, max = object@nChains))),
-      column(4,
-             conditionalPanel(condition = "input.diagnostics_navlist != 'By model parameter' && output.divergent_warnings_text != 'None'", 
-                              helpText(style = "color: red;", strong("WARNING"), textOutput("divergent_warnings_text"))
-                              ),
-             conditionalPanel(condition = "input.diagnostics_navlist == 'By model parameter'", 
+      column(4, conditionalPanel(condition = "input.diagnostics_navlist == 'By model parameter'", 
                                  selectizeInput(inputId = "diagnostic_param", 
                                                 label = NULL, multiple = FALSE,
                                                 choices = .make_param_list(object), 
@@ -43,9 +37,13 @@ output$ui_diagnostics_customize <- renderUI({
       column(3, conditionalPanel(condition = "input.diagnostics_navlist == 'By model parameter'", 
                                  textInput("diagnostic_param_transform", label = NULL, value = "x"))),
       column(2, conditionalPanel(condition = "input.diagnostics_navlist == 'By model parameter'", 
-                                 actionButton("diagnostic_param_transform_go", "Transform")
+                                 actionButton("diagnostic_param_transform_go", "Transform"))
       )
-      )
+    ),
+    fluidRow(
+      column(1, strong(style = "color: red;", "Warnings:")),
+      column(6, helpText(style = "color: red; font-size: 12px;", 
+                         textOutput("diagnostics_warnings_text")))
     )
   )
 })
@@ -56,11 +54,14 @@ output$ui_diagnostics_parameter <- renderUI({
     withMathJax(),
     fluidRow(
       column(7, 
-             help_interval,
-             plotOutput("p_trace_out", height = "150px")),
+             help_dynamic,
+             # plotOutput("p_trace_out", height = "150px")
+             dygraphs::dygraphOutput("dynamic_trace_plot_diagnostic_out", 
+                                     height = "150px")
+             ),
       column(5, 
              help_lines,
-             plotOutput("p_hist_out", height = "150px"))
+             plotOutput("p_hist_out", height = "200px"))
     ),
     help_points,
     fluidRow(
@@ -138,10 +139,8 @@ output$ui_diagnostics_stepsize <- renderUI({
     column(7,
            plotOutput("stepsize_trace_out", height = "200px"),
            plotOutput("stepsize_vs_lp_out", height = "200px")
-           
     ),
-    column(5, 
-           plotOutput("stepsize_vs_accept_stat_out", height = "400px")
+    column(5, plotOutput("stepsize_vs_accept_stat_out", height = "400px")
     )
   )
 })
