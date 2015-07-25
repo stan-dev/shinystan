@@ -67,9 +67,9 @@ diagnostic_param_transform <- eventReactive(
   input$diagnostic_param_transform)
 
 stepsize_vs_lp <- reactive({
+  chain <- diagnostic_chain()
   stepsize <- stepsize_pw()[,-1L] # drop iterations column
   lp <- samps_post_warmup[,,"lp__"]
-  chain <- diagnostic_chain()
   .sampler_param_vs_param(p = lp, sp = stepsize, 
                           p_lab = "Log Posterior",
                           sp_lab = "Sampled Step Size", 
@@ -92,16 +92,17 @@ stepsize_trace <- reactive({
 })
 
 lp_hist <- reactive({
-  validate(need(input$diagnostic_chain, message = "Loading..."))
+  sp_nuts_check()
   chain <- diagnostic_chain()
   lp <- samps_post_warmup[,,"lp__"]
   df <- as.data.frame(cbind(iterations = 1:nrow(lp), lp))
   .p_hist(df, lab = "Log Posterior", chain)
 })
 lp_trace <- reactive({
+  sp_nuts_check()
+  chain <- diagnostic_chain()
   lp <- samps_post_warmup[,,"lp__"]
   df <- as.data.frame(cbind(iterations = (warmup_val+1):(warmup_val+nrow(lp)), lp))
-  chain <- diagnostic_chain()
   .p_trace(df, lab = "Log Posterior", chain)
 })
 accept_stat_hist <- reactive({
@@ -290,6 +291,7 @@ param_vs_treedepth <- reactive({
                           sp_lab = "Treedepth", chain = chain, violin = TRUE)
 })
 p_hist <- reactive({
+  sp_nuts_check()
   chain <- diagnostic_chain()
   param <- diagnostic_param()
   transform_x <- diagnostic_param_transform() # diagnostic_param_transform()
