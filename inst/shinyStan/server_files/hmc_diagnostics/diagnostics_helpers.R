@@ -1,21 +1,24 @@
 small_axis_labs <- theme(axis.title = element_text(face = "bold", size = 11))
 diagnostics_fat_axis <- theme(axis.line.x = element_line(size = 3, color = "black"), 
                   axis.line.y = element_line(size = 0.5, color = "black"))
-base_fill <- "#79b9d3"
-overlay_fill <- "gray35"
-vline_base_clr <- "#436775"
-vline_overlay_clr <- "gray20"
+thm <- theme_classic() %+replace% (no_lgnd + diagnostics_fat_axis + small_axis_labs + transparent)
+thm_no_yaxs <- thm + no_yaxs
+
+base_fill <- "skyblue"
+overlay_fill <- "skyblue4"
+vline_base_clr <- "black"
+vline_overlay_clr <- "black"
 single_trace_clr <- overlay_fill
-divergent_fill <- "maroon" # "#5cffcc"
-divergent_clr <- "maroon4" # "#40b28e"
-hit_max_td_fill <- "#ffcc5c"
-hit_max_td_clr <- "#b28e40"
+divergent_fill <- "#ae0001" # "#5cffcc"
+divergent_clr <-  "black" #"#772000" # "#40b28e"
+hit_max_td_fill <- "#eeba30"
+hit_max_td_clr <- "black" # "#473600"
 div_and_hit_shape <- 21
 
 # post-warmup sampler parameters ------------------------------------------
 sp_nuts_check <- reactive({
   validate(
-    need(sampler_params[[1]] != "Not Stan", message = "Only available for Stan models"),
+    need(sampler_params[[1L]] != "Not Stan", message = "Only available for Stan models"),
     need(stan_algorithm == "NUTS", message = "Only available for algorithm = NUTS"),
     need(input$diagnostic_chain, message = "Loading...")
   )
@@ -55,7 +58,6 @@ stepsize_pw <- reactive({
 
 .sampler_param_vs_param <- function(p, sp, divergent = NULL, hit_max_td = NULL, 
                                     p_lab, sp_lab, chain = 0, violin = FALSE) {
-  thm <- theme_classic() %+replace% (no_lgnd + diagnostics_fat_axis + small_axis_labs + transparent)
   xy_labs <- labs(y = if (missing(p_lab)) NULL else p_lab, 
                   x = if (missing(sp_lab)) NULL else sp_lab)
   df <- data.frame(sp = do.call("c", sp), p = c(p))
@@ -70,13 +72,11 @@ stepsize_pw <- reactive({
       graph <- base + geom_point(alpha = 0.5, color = base_fill)
       if (!is.null(divergent))
         graph <- graph + geom_point(data = subset(df, divergent == 1), aes(sp,p), 
-                                    color = divergent_clr, 
-                                    fill = divergent_fill,
+                                    color = divergent_clr, fill = divergent_fill,
                                     size = 3, shape = div_and_hit_shape)
       if (!is.null(hit_max_td))
         graph <- graph + geom_point(data = subset(df, hit_max_td == 1), aes(sp,p), 
-                                    color = hit_max_td_clr, 
-                                    fill = hit_max_td_fill, 
+                                    color = hit_max_td_clr, fill = hit_max_td_fill, 
                                     size = 3, shape = div_and_hit_shape)
     }
     return(graph)
@@ -97,19 +97,17 @@ stepsize_pw <- reactive({
     geom_point(data = chain_data, aes(sp,p), color = overlay_fill, alpha = 0.5)
   if (!is.null(divergent))
     graph <- graph + geom_point(data = subset(chain_data, div == 1), aes(sp,p), 
-                                color = divergent_clr, 
-                                fill = divergent_fill,
+                                color = divergent_clr, fill = divergent_fill,
                                 size = 3, shape = div_and_hit_shape)
   if (!is.null(hit_max_td))
     graph <- graph + geom_point(data = subset(chain_data, hit == 1), aes(sp,p), 
-                                color = hit_max_td_clr, 
-                                fill = hit_max_td_fill, 
+                                color = hit_max_td_clr, fill = hit_max_td_fill, 
                                 size = 3, shape = div_and_hit_shape)
   graph
 }
 
 .p_hist <- function(df, lab, chain = 0) {
-  thm <- theme_classic() %+replace% (no_lgnd + diagnostics_fat_axis + small_axis_labs + no_yaxs + transparent)
+  thm <- thm_no_yaxs
   mdf <- reshape2::melt(df, id.vars = "iterations")
   base <- ggplot(mdf, aes(x = value)) + 
     geom_histogram(binwidth = diff(range(mdf$value))/30, fill = base_fill) + 
@@ -131,7 +129,6 @@ stepsize_pw <- reactive({
 }
 
 .p_trace <- function(df, lab, chain = 0) {
-  thm <- theme_classic() %+replace% (no_lgnd + diagnostics_fat_axis + small_axis_labs + transparent)
   xy_labs <- labs(x = "Iteration", y = if(missing(lab)) NULL else lab)
   mdf <- reshape2::melt(df, id.vars = "iterations")
   base <- ggplot(mdf, aes(x = iterations, y = value, group = variable))
@@ -139,11 +136,8 @@ stepsize_pw <- reactive({
   yrange <- range(mdf$value)
   if (yrange[1] > interval1[1]) yrange[1] <- interval1[1]
   if (yrange[2] < interval1[2]) yrange[2] <- interval1[2]
-  interval1_rect <- annotate("rect", 
-                             xmin = -Inf, 
-                             xmax = Inf,
-                             ymin = interval1[1], 
-                             ymax = interval1[2],
+  interval1_rect <- annotate("rect", xmin = -Inf, xmax = Inf,
+                             ymin = interval1[1], ymax = interval1[2],
                              fill = base_fill)
   if (chain == 0) {
     graph <- base + interval1_rect +
@@ -178,24 +172,9 @@ stepsize_pw <- reactive({
   graph + xy_labs + thm
 }
 
-.accept_stat_corr_lp <- function(metrop, lp, chain = 0) {
-  thm <- theme_classic() %+replace% (no_lgnd + diagnostics_fat_axis + small_axis_labs + transparent)
-  xy_labs <- labs(x = "Mean Metropolis Acceptance", y = "Log Posterior")
-  df <- data.frame(metrop = do.call("c", metrop), lp = c(lp))
-  
-  base <- ggplot(df, aes(metrop,lp)) + xy_labs + thm 
-  
-  if (chain == 0) return(base + geom_point(alpha = 0.5))
-  chain_data <- data.frame(metrop = metrop[, chain], lp = lp[, chain])
-  base + 
-    geom_point(alpha = 0.5) + 
-    geom_point(data = chain_data, aes(metrop,lp), color = "skyblue", alpha = 0.5)
-}
-
-
 .treedepth_ndivergent_hist <- function(df_td, df_nd, chain = 0, divergent = c("All", 0, 1)) {
   plot_title <- theme(plot.title = element_text(size = 11, hjust = 0))
-  plot_theme <- theme_classic() %+replace% (diagnostics_fat_axis + small_axis_labs + no_yaxs + plot_title + lgnd_right + transparent) 
+  plot_theme <- thm + plot_title
   x_lab <- if (divergent == "All") "Treedepth (All)" else paste0("Treedepth (N Divergent = ", divergent,")")
   plot_labs <- labs(x = x_lab, y = "") 
   
@@ -216,7 +195,6 @@ stepsize_pw <- reactive({
 }
 
 .ndivergent_trace <- function(df, chain = 0) {
-  thm <- theme_classic() %+replace% (no_lgnd + diagnostics_fat_axis + small_axis_labs + transparent)
   xy_labs <- labs(x = "Iteration", y = "N Divergent")
   y_scale <- scale_y_continuous(breaks = c(0,1))
   
@@ -237,13 +215,12 @@ stepsize_pw <- reactive({
   base +
     geom_segment(size = 0.25, color = "gray") + 
     geom_segment(data = chain_data, 
-                 aes(x = iterations, xend = iterations, y = 0, yend = value), size = 0.5, 
-                 color = vline_overlay_clr) + 
+                 aes(x = iterations, xend = iterations, y = 0, yend = value), 
+                 size = 0.5, color = vline_overlay_clr) + 
     ggtitle(paste(n_divergent, "divergent post-warmup iterations in Chain", chain)) 
 }
 
 .stepsize_trace <- function(df, chain = 0) {
-  thm <- theme_classic() %+replace% (no_lgnd + diagnostics_fat_axis + small_axis_labs + transparent)
   xy_labs <- labs(x = "Iteration", y = "Sampled Step Size")
   
   mdf <- reshape2::melt(df, id.vars = "iterations")
@@ -251,14 +228,14 @@ stepsize_pw <- reactive({
     xy_labs + thm
   if (chain == 0) return(base + geom_path(size = 0.5))
   chain_data <- subset(mdf, variable == paste0("chain:",chain))
-  base + geom_path(size = 0.5, color = "gray") + 
+  base + 
+    geom_path(size = 0.5, color = "gray") + 
     geom_path(data = chain_data, aes(x = iterations, y = value), 
               color = vline_overlay_clr)
 }
 
 .sampler_param_vs_sampler_param_violin <- function(df_x, df_y, lab_x, lab_y, 
                                                    chain = 0) {
-  thm <- theme_classic() %+replace% (no_lgnd + diagnostics_fat_axis + small_axis_labs + transparent)
   xy_labs <- labs(y = lab_y, x = lab_x)
   df <- data.frame(x = do.call("c", df_x), y = do.call("c", df_y))
   df$x <- as.factor(df$x)
@@ -290,7 +267,8 @@ stepsize_pw <- reactive({
     } else {
       param_chains <- xts::as.xts(ts(param_samps[,1], start = 1))
       for (i in 2:nChains) {
-        param_chains <- cbind(param_chains, xts::as.xts(ts(param_samps[,i], start = 1)))
+        param_chains <- cbind(param_chains, 
+                              xts::as.xts(ts(param_samps[,i], start = 1)))
       }
       colnames(param_chains) <- paste0("Chain", 1:nChains)
     }

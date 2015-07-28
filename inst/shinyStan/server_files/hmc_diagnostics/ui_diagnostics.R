@@ -2,17 +2,18 @@ help_interval <- helpText(style = "font-size: 11px;","Highlighted interval shows
 help_lines <- helpText(style = "font-size: 11px;","Lines are mean (solid) and median (dashed)")
 help_max_td <- helpText(style = "font-size: 11px;", "Horizontal line indicates the max_treedepth setting")
 help_points <- helpText(style = "font-size: 11px;", "Red indicates which (if any) iterations encountered a divergent transition.",
-                        "Orange indicates a transition hitting the maximum treedepth.")  
+                        "Yellow indicates a transition hitting the maximum treedepth.")  
 help_dynamic <- helpText(style = "font-size: 11px;", "Use your mouse to highlight areas in the plot to zoom into. You can also use the sliders. Double-click to reset.")
+help_violin <- helpText("The violin plot shows the estimated shape of the density of y")
 output$diagnostics_warnings_text <- renderText({
   divs <- sum(ndivergent_pw()[,-1])
   hits <- sum(treedepth_pw()[,-1] == MISC$max_td)
   d <- divs > 0
   h <- hits > 0
-  if (d && h) msg <- paste("Diverging error:", divs, "iterations.",
+  if (d && h) msg <- paste("WARNINGS -- Diverging error:", divs, "iterations.",
                            "Maximum treedepth reached:", hits, "iterations.")
-  else if (d && !h) msg <- paste("Diverging error:", divs, "iterations.")
-  else if (!d && h) msg <- paste("Maximum treedepth reached:", hits, "iterations.")
+  else if (d && !h) msg <- paste("WARNINGS -- Diverging error:", divs, "iterations.")
+  else if (!d && h) msg <- paste("WARNINGS -- Maximum treedepth reached:", hits, "iterations.")
   else msg <- NULL
   msg
 })
@@ -40,11 +41,7 @@ output$ui_diagnostics_customize <- renderUI({
                                  actionButton("diagnostic_param_transform_go", "Transform"))
       )
     ),
-    fluidRow(
-      column(1, strong(style = "color: red;", "Warnings:")),
-      column(6, helpText(style = "color: red; font-size: 13px;", 
-                         textOutput("diagnostics_warnings_text")))
-    )
+    helpText(style = "color: red; font-size: 13px;", textOutput("diagnostics_warnings_text"))
   )
 })
 
