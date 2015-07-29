@@ -41,7 +41,7 @@ output$ui_diagnostics_customize <- renderUI({
                                  actionButton("diagnostic_param_transform_go", "Transform"))
       )
     ),
-    helpText(style = "color: red; font-size: 13px;", textOutput("diagnostics_warnings_text"))
+    helpText(strong(style = "color: red; font-size: 13px;", textOutput("diagnostics_warnings_text")))
   )
 })
 
@@ -53,8 +53,8 @@ output$ui_diagnostics_parameter <- renderUI({
       column(7, 
              help_dynamic,
              # plotOutput("p_trace_out", height = "150px")
-             dygraphs::dygraphOutput("dynamic_trace_plot_diagnostic_out", 
-                                     height = "150px")
+             dygraphs::dygraphOutput("dynamic_trace_diagnostic_parameter_out", 
+                                     height = "175px")
              ),
       column(5, 
              help_lines,
@@ -80,9 +80,14 @@ output$ui_diagnostics_sample <- renderUI({
       column(7,
              fluidRow(
                column(6,
-                      help_interval,
-                      plotOutput("lp_trace_out", height = "200px"),
-                      plotOutput("accept_stat_trace_out", height = "200px")
+                      help_dynamic,
+                      # plotOutput("lp_trace_out", height = "200px"),
+                      # plotOutput("accept_stat_trace_out", height = "200px")
+                      dygraphs::dygraphOutput("dynamic_trace_diagnostic_lp_out", 
+                                              height = "175px"),
+                      br(),
+                      dygraphs::dygraphOutput("dynamic_trace_diagnostic_accept_stat_out", 
+                                              height = "175px")
                ),
                column(6, 
                       help_lines,
@@ -115,11 +120,14 @@ output$ui_diagnostics_treedepth <- renderUI({
     withMathJax(),
     fluidRow(
       column(7,
-             help_max_td, help_interval,
-             plotOutput("treedepth_trace_out", height = "150px"),
+             help_dynamic,
+#              help_max_td, help_interval,
+#              plotOutput("treedepth_trace_out", height = "150px"),
+             dygraphs::dygraphOutput("dynamic_trace_diagnostic_treedepth_out", 
+                                     height = "175px"),
              plotOutput("treedepth_vs_lp_out", height = "150px")
       ),
-      column(5, plotOutput("treedepth_vs_accept_stat_out", height = "400px"))
+      column(5, plotOutput("treedepth_vs_accept_stat_out", height = "350px"))
     ),
     br(),br(),
     splitLayout( 

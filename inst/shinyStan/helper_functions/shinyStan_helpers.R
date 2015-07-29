@@ -759,11 +759,11 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
   if (!all(dat$divergent == 0))
     graph <- graph + geom_point(data = subset(dat, divergent == 1), aes(x,y), 
                                 size = pt_size + 0.5, alpha = min(1, pt_alpha + 1/3),
-                                shape = 21, color = "maroon4", fill = "maroon")
+                                shape = 21, color = "black", fill = "#ae0001")
   if (!all(dat$hit_max_td == 0))
     graph <- graph + geom_point(data = subset(dat, hit_max_td == 1), aes(x,y), 
                                 size = pt_size + 0.5, alpha = min(1, pt_alpha + 1/3),
-                                shape = 21, color = "#b28e40", fill = "#ffcc5c")
+                                shape = 21, color = "black", fill = "#eeba30")
   graph + param_labs + 
     theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)
 }

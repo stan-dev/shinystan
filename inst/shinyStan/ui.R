@@ -94,11 +94,11 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                             tabPanel("Sample information",
                                                      uiOutput("ui_diagnostics_sample")
                                             ),
+                                            tabPanel("Treedepth information",
+                                                     uiOutput("ui_diagnostics_treedepth")
+                                            ),
                                             tabPanel("N divergent information",
                                                      uiOutput("ui_diagnostics_ndivergent")
-                                            ),
-                                            tabPanel("Tree depth information",
-                                                     uiOutput("ui_diagnostics_treedepth")
                                             ),
                                             tabPanel("Step size information",
                                                      uiOutput("ui_diagnostics_stepsize")
@@ -271,7 +271,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                           ),
                                           plotOutput("bivariate_plot_out", height = "350px"),
                                           helpText(style = "font-size: 11px", "For Stan models using the NUTS algorithm, red points indicate iterations that encountered a divergent transition.",  
-                                                   "Orange points indicate a transition that hit the maximum treedepth",
+                                                   "Yellow points indicate a transition that hit the maximum treedepth",
                                                    "rather than terminated its evolution normally."),
                                           br()
                                  )

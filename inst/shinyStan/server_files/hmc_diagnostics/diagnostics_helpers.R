@@ -10,8 +10,8 @@ vline_base_clr <- "black"
 vline_overlay_clr <- "black"
 single_trace_clr <- overlay_fill
 divergent_fill <- "#ae0001" # "#5cffcc"
-divergent_clr <-  "black" #"#772000" # "#40b28e"
 hit_max_td_fill <- "#eeba30"
+divergent_clr <-  "black" #"#772000" # "#40b28e"
 hit_max_td_clr <- "black" # "#473600"
 div_and_hit_shape <- 21
 
@@ -110,7 +110,8 @@ stepsize_pw <- reactive({
   thm <- thm_no_yaxs
   mdf <- reshape2::melt(df, id.vars = "iterations")
   base <- ggplot(mdf, aes(x = value)) + 
-    geom_histogram(binwidth = diff(range(mdf$value))/30, fill = base_fill) + 
+    geom_histogram(binwidth = diff(range(mdf$value))/30, fill = base_fill, 
+                   color = vline_base_clr, size = 0.05) + 
     labs(x = if(missing(lab)) NULL else lab, y = "") + 
     thm
   if (chain == 0) {
@@ -250,7 +251,14 @@ stepsize_pw <- reactive({
 
 
 .dynamic_trace_diagnostics <- function(param_samps, param_name, chain = 0,
-                                       stack = FALSE, grid = FALSE) {
+                                       stack = FALSE, grid = FALSE, 
+                                       group = NULL) {
+  color_vector <- function(n) {
+    hues = seq(15, 375, length=n+1)
+    # hcl(h=hues, l=65, c=100)[1:n]
+    hcl(h=hues, l=50, c=50)[1:n]
+  }
+  
   dim_samps <- dim(param_samps)
   if (is.null(dim_samps)) {
     nChains <- 1
@@ -260,7 +268,6 @@ stepsize_pw <- reactive({
   if (nChains == 1) {
     param_chains <- xts::as.xts(ts(param_samps, start = 1))
   } else {
-    
     if (chain != 0) {
       param_samps <- param_samps[, chain]
       param_chains <- xts::as.xts(ts(param_samps, start = 1))
@@ -275,15 +282,14 @@ stepsize_pw <- reactive({
   }
   `%>%` <- dygraphs::`%>%`
   y_axis_label_remove <- if (stack) "white" else NULL
-  dygraphs::dygraph(param_chains, xlab = paste("Parameter:", param_name), 
-                    ylab = NULL) %>%
-    dygraphs::dyOptions(colors = if (chain == 0) NULL else single_trace_clr,
-                        stackedGraph = stack, drawGrid = grid, 
-                        animatedZooms = TRUE, 
-                        drawXAxis = TRUE,
-                        drawYAxis = TRUE, 
-                        drawAxesAtZero = TRUE,
-                        axisLineColor = "black") %>%
+  clrs <- color_vector(nChains) 
+  if (chain != 0) clrs <- clrs[chain]
+  dygraphs::dygraph(param_chains, xlab = param_name, ylab = NULL, 
+                    group = group) %>%
+    dygraphs::dyOptions(colors = clrs, stackedGraph = stack, drawGrid = grid, 
+                        strokeWidth = 0.75, animatedZooms = TRUE, 
+                        drawXAxis = TRUE, drawYAxis = TRUE, 
+                        drawAxesAtZero = TRUE, axisLineColor = "black") %>%
     dygraphs::dyAxis("x", pixelsPerLabel = 1e4, axisLineWidth = 3) %>%
     dygraphs::dyAxis("y", pixelsPerLabel = 20) %>%
     dygraphs::dyRangeSelector(height = 1, retainDateWindow = TRUE) %>%

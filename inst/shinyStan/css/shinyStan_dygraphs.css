@@ -10,7 +10,8 @@
   line-height: 26px;
 }
 .dygraph-label.dygraph-xlabel{
-  font-size: 14px;
+  font-size: 12px;
+  font-weight: bold;
 }
 .dygraph-label.dygraph-ylabel{
   font-size: 18px;
