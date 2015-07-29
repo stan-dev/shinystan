@@ -79,36 +79,20 @@ selected_range <- debounce({
 }, millis = 100)
 
 # stepsize ----------------------------------------------------------------
-stepsize_vs_lp <- reactive({
-  chain <- diagnostic_chain()
-  stepsize <- stepsize_pw()[,-1L] # drop iterations column
-  lp <- samps_post_warmup[,,"lp__"]
-  .sampler_param_vs_param(p = lp, sp = stepsize, 
-                          p_lab = "Log Posterior",
-                          sp_lab = "Sampled Step Size", 
-                          chain = chain, violin = TRUE)
-})
-stepsize_vs_accept_stat <- reactive({
-  df_ss <- stepsize_pw()[,-1L] # drop iterations column
-  df_as <- accept_stat_pw()[,-1L] 
-  chain <- diagnostic_chain()
-  .sampler_param_vs_sampler_param_violin(round(df_ss, 4), df_as, 
-                                         lab_x = "Sampled Step Size",
-                                         lab_y = "Mean Metrop. Acceptance",
-                                         chain = chain)
-})
 dynamic_trace_diagnostic_stepsize <- reactive({
   chain <- diagnostic_chain()
   samps <- stepsize_pw()[, -1]
   lab <- "Sampled Step Size"
   stack <- FALSE  
-  do.call(".dynamic_trace_diagnostics", args = list(
+  `%>%` <- dygraphs::`%>%`
+  graph <- do.call(".dynamic_trace_diagnostics", args = list(
     param_samps = samps,
     param_name = lab,
     chain = chain,
     stack = stack,
-    group = "stepsize_information")
-  )
+    group = "stepsize_information")) 
+  graph %>% 
+    dygraphs::dyAxis("y", pixelsPerLabel = 40)
 })
 # stepsize_trace <- reactive({
 #   df <- stepsize_pw()
@@ -116,7 +100,26 @@ dynamic_trace_diagnostic_stepsize <- reactive({
 #   .stepsize_trace(df, chain)
 #   # .p_trace(df, lab = "Sampled Step Size", chain)
 # })
-
+stepsize_vs_lp <- reactive({
+  chain <- diagnostic_chain()
+  sel <- selected_range()
+  stepsize <- stepsize_pw()[if (!is.null(sel)) sel, -1L] # drop iterations column
+  lp <- samps_post_warmup[if (!is.null(sel)) sel,,"lp__"]
+  .sampler_param_vs_param(p = lp, sp = stepsize, 
+                          p_lab = "Log Posterior",
+                          sp_lab = "Sampled Step Size", 
+                          chain = chain, violin = TRUE)
+})
+stepsize_vs_accept_stat <- reactive({
+  chain <- diagnostic_chain()
+  sel <- selected_range()
+  df_ss <- stepsize_pw()[if (!is.null(sel)) sel, -1L] # drop iterations column
+  df_as <- accept_stat_pw()[if (!is.null(sel)) sel, -1L] 
+  .sampler_param_vs_sampler_param_violin(round(df_ss, 4), df_as, 
+                                         lab_x = "Sampled Step Size",
+                                         lab_y = "Mean Metrop. Acceptance",
+                                         chain = chain)
+})
 
 
 # sample (accept_stat, lp) ------------------------------------------------
@@ -209,7 +212,6 @@ dynamic_trace_diagnostic_treedepth <- reactive({
   graph %>% 
     dygraphs::dyLimit(limit = max_td, label = "max_treedepth", labelLoc = "right",
                       color = "#eeba30", strokePattern = "solid") %>%
-    # dygraphs::dyOptions(stepPlot = TRUE) %>%
     dygraphs::dyAxis("y", valueRange = c(0, max_td * 8/7), 
                      pixelsPerLabel = 20, drawGrid = FALSE)
 })
@@ -278,8 +280,7 @@ dynamic_trace_diagnostic_ndivergent <- reactive({
   )
   `%>%` <- dygraphs::`%>%`
   graph %>% 
-    # dygraphs::dyOptions(stepPlot = TRUE) %>%
-    dygraphs::dyAxis("y", valueRange = c(0, 1.2), pixelsPerLabel = 1e4, 
+    dygraphs::dyAxis("y", valueRange = c(0, 1.1), pixelsPerLabel = 1e4, 
                      drawGrid = FALSE)
 })
 # ndivergent_trace <- reactive({
@@ -288,24 +289,25 @@ dynamic_trace_diagnostic_ndivergent <- reactive({
 #   .ndivergent_trace(df, chain)
 # })
 ndivergent_vs_lp <- reactive({
-  ndivergent <- ndivergent_pw()[,-1L] # drop iterations column
-  lp <- samps_post_warmup[,,"lp__"]
   chain <- diagnostic_chain()
+  sel <- selected_range()
+  ndivergent <- ndivergent_pw()[if (!is.null(sel)) sel, -1L] # drop iterations column
+  lp <- samps_post_warmup[if (!is.null(sel)) sel,,"lp__"]
   .sampler_param_vs_param(p = lp, sp = ndivergent, 
                           p_lab = "Log Posterior",
                           sp_lab = "N Divergent", 
                           chain = chain, violin = TRUE)
 })
 ndivergent_vs_accept_stat <- reactive({
-  df_nd <- ndivergent_pw()[,-1L] # drop iterations column
-  df_as <- accept_stat_pw()[,-1L] 
   chain <- diagnostic_chain()
+  sel <- selected_range()
+  df_nd <- ndivergent_pw()[if (!is.null(sel)) sel, -1L] # drop iterations column
+  df_as <- accept_stat_pw()[if (!is.null(sel)) sel, -1L] 
   .sampler_param_vs_sampler_param_violin(df_nd, df_as, 
                                          lab_x = "N Divergent",
                                          lab_y = "Mean Metrop. Acceptance",
                                          chain = chain)
 })
-
 
 
 # model parameter ---------------------------------------------------------

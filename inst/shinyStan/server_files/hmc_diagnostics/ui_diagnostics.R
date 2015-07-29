@@ -106,10 +106,11 @@ output$ui_diagnostics_treedepth <- renderUI({
   div(withMathJax(),
     fluidRow(
       column(7, help_dynamic,
-             dygraphOutput_175px("dynamic_trace_diagnostic_treedepth_out"), 
+             dygraphOutput_175px("dynamic_trace_diagnostic_treedepth_out"),
+             br(),br(),
              plotOutput("treedepth_vs_lp_out", height = "150px")
       ),
-      column(5, plotOutput("treedepth_vs_accept_stat_out", height = "350px"))
+      column(5, plotOutput("treedepth_vs_accept_stat_out", height = "400px"))
     ),
     br(),br(),
     splitLayout( 
@@ -127,7 +128,7 @@ output$ui_diagnostics_ndivergent <- renderUI({
     column(7, #plotOutput_200px("ndivergent_trace_out"),
            help_dynamic,
            dygraphOutput_175px("dynamic_trace_diagnostic_ndivergent_out"), 
-           br(),
+           br(),br(),
            plotOutput("ndivergent_vs_lp_out", height = "150px")),
     column(5, plotOutput("ndivergent_vs_accept_stat_out", height = "400px"))
   )
@@ -139,8 +140,9 @@ output$ui_diagnostics_stepsize <- renderUI({
     column(7, help_dynamic,
            dygraphOutput_175px("dynamic_trace_diagnostic_stepsize_out"), 
            br(),
+           br(),
            plotOutput("stepsize_vs_lp_out", height = "150px")),
-    column(5, plotOutput("stepsize_vs_accept_stat_out", height = "375px"))
+    column(5, plotOutput("stepsize_vs_accept_stat_out", height = "400px"))
   )
 })
 

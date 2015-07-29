@@ -200,13 +200,16 @@ stepsize_pw <- reactive({
   if (nrow(plot_data) == 0) return(NULL)
   
   graph <- ggplot(plot_data, aes(x = factor(value)), na.rm = TRUE) + 
-    stat_bin(aes(y=..count../sum(..count..)), width=1, fill = base_fill) + 
+    stat_bin(aes(y=..count../sum(..count..)), width=1, fill = base_fill,
+             color = vline_base_clr, size = 0.05) + 
     plot_labs + 
     plot_theme
   if (chain == 0) return(graph)
+  chain_clr <- color_vector(ncol(df_td) - 1)[chain]
+  chain_fill <- chain_clr
   chain_data <- subset(plot_data, variable == paste0("chain:",chain))
   graph + stat_bin(data = chain_data, aes(y=..count../sum(..count..)), 
-                   fill = overlay_fill, alpha = 0.5, width = 1)
+                   fill = chain_fill, alpha = 0.5, width = 1)
 }
 
 .ndivergent_trace <- function(df, chain = 0) {
@@ -308,7 +311,7 @@ stepsize_pw <- reactive({
                         stepPlot = step_plot, 
                         fillGraph = fill_graph, fillAlpha = 0.5,
                         strokeWidth = 0.75, animatedZooms = TRUE, 
-                        drawXAxis = TRUE, drawYAxis = TRUE, 
+                        drawXAxis = TRUE, drawYAxis = !fill_graph, 
                         drawAxesAtZero = TRUE, axisLineColor = "black") %>%
     dygraphs::dyAxis("x", pixelsPerLabel = 1e4, axisLineWidth = 3) %>%
     dygraphs::dyAxis("y", pixelsPerLabel = 20) %>%
