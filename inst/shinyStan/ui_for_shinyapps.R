@@ -90,32 +90,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                br()
                       ),
                       tabPanel("HMC/NUTS (plots)",
-                               wellPanel(
-                                 fluidRow(
-                                   column(3, h4(textOutput("diagnostic_chain_text"))),
-                                   column(4, conditionalPanel(condition = "input.diagnostics_navlist == 'By model parameter'", 
-                                                              h5("Parameter"))),
-                                   column(4, conditionalPanel(condition = "input.diagnostics_navlist == 'By model parameter'", 
-                                                              h5("Transformation f(x) =")))
-                                 ),
-                                 fluidRow(
-                                   column(3, div(style = "width: 100px;", numericInput("diagnostic_chain", label = NULL, value = 0, min = 0, max = object@nChains))),
-                                   column(4, conditionalPanel(condition = "input.diagnostics_navlist == 'By model parameter'", 
-                                                              selectizeInput(inputId = "diagnostic_param", 
-                                                                             label = NULL, 
-                                                                             choices = .make_param_list(object), 
-                                                                             selected = .make_param_list(object)[1], 
-                                                                             multiple = FALSE))),
-                                   column(3, conditionalPanel(condition = "input.diagnostics_navlist == 'By model parameter'", 
-                                                              textInput("diagnostic_param_transform", 
-                                                                        label = NULL, 
-                                                                        value = "x"))),
-                                   column(2, conditionalPanel(condition = "input.diagnostics_navlist == 'By model parameter'", 
-                                                              actionButton("diagnostic_param_transform_go", "Transform")
-                                   )
-                                   )
-                                 )
-                               ),
+                               uiOutput("ui_diagnostics_customize"),
                                navlistPanel(id = "diagnostics_navlist",
                                             tabPanel("By model parameter",
                                                      uiOutput("ui_diagnostics_parameter")
@@ -123,18 +98,18 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                             tabPanel("Sample information",
                                                      uiOutput("ui_diagnostics_sample")
                                             ),
+                                            tabPanel("Treedepth information",
+                                                     uiOutput("ui_diagnostics_treedepth")
+                                            ),
                                             tabPanel("N divergent information",
                                                      uiOutput("ui_diagnostics_ndivergent")
-                                            ),
-                                            tabPanel("Tree depth information",
-                                                     uiOutput("ui_diagnostics_treedepth")
                                             ),
                                             tabPanel("Step size information",
                                                      uiOutput("ui_diagnostics_stepsize")
                                             ),
-#                                             tabPanel("Help",
-#                                                      uiOutput("ui_diagnostics_help")
-#                                             ),
+                                            #                                             tabPanel("Help",
+                                            #                                                      uiOutput("ui_diagnostics_help")
+                                            #                                             ),
                                             well = FALSE,
                                             widths = c(2, 10)
                                )
@@ -300,7 +275,7 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                           ),
                                           plotOutput("bivariate_plot_out", height = "350px"),
                                           helpText(style = "font-size: 11px", "For Stan models using the NUTS algorithm, red points indicate iterations that encountered a divergent transition.",  
-                                                   "Orange points indicate a transition that hit the maximum treedepth",
+                                                   "Yellow points indicate a transition that hit the maximum treedepth",
                                                    "rather than terminated its evolution normally."),
                                           br()
                                  )
