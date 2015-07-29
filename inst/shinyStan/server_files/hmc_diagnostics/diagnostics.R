@@ -67,7 +67,9 @@ selected_range <- debounce({
   nm <- switch(panel, 
                "By model parameter" = "parameter",
                "Sample information" = "lp",
-               "Treedepth information" = "treedepth")
+               "Treedepth information" = "treedepth",
+               "Step size information" = "stepsize",
+               "N divergent information" = "ndivergent")
   input_nm <- paste0("dynamic_trace_diagnostic_", nm, "_out_date_window")
   validate(need(input[[input_nm]], "Loading"))
   sel <- input[[input_nm]]
@@ -95,13 +97,25 @@ stepsize_vs_accept_stat <- reactive({
                                          lab_y = "Mean Metrop. Acceptance",
                                          chain = chain)
 })
-stepsize_trace <- reactive({
-  df <- stepsize_pw()
+dynamic_trace_diagnostic_stepsize <- reactive({
   chain <- diagnostic_chain()
-  .stepsize_trace(df, chain)
-  # .p_trace(df, lab = "Sampled Step Size", chain)
+  samps <- stepsize_pw()[, -1]
+  lab <- "Sampled Step Size"
+  stack <- FALSE  
+  do.call(".dynamic_trace_diagnostics", args = list(
+    param_samps = samps,
+    param_name = lab,
+    chain = chain,
+    stack = stack,
+    group = "stepsize_information")
+  )
 })
-
+# stepsize_trace <- reactive({
+#   df <- stepsize_pw()
+#   chain <- diagnostic_chain()
+#   .stepsize_trace(df, chain)
+#   # .p_trace(df, lab = "Sampled Step Size", chain)
+# })
 
 
 
@@ -116,8 +130,7 @@ dynamic_trace_diagnostic_lp <- reactive({
     param_name = lab,
     chain = chain,
     stack = stack,
-    group = "sample_information"
-  )
+    group = "sample_information")
   )
 })
 dynamic_trace_diagnostic_accept_stat <- reactive({
@@ -130,8 +143,7 @@ dynamic_trace_diagnostic_accept_stat <- reactive({
     param_name = lab,
     chain = chain,
     stack = stack,
-    group = "sample_information"
-  )
+    group = "sample_information")
   )
 })
 
@@ -197,7 +209,7 @@ dynamic_trace_diagnostic_treedepth <- reactive({
   graph %>% 
     dygraphs::dyLimit(limit = max_td, label = "max_treedepth", labelLoc = "right",
                       color = "#eeba30", strokePattern = "solid") %>%
-    dygraphs::dyOptions(stepPlot = TRUE) %>%
+    # dygraphs::dyOptions(stepPlot = TRUE) %>%
     dygraphs::dyAxis("y", valueRange = c(0, max_td * 8/7), 
                      pixelsPerLabel = 20, drawGrid = FALSE)
 })
@@ -251,13 +263,30 @@ treedepth_vs_accept_stat <- reactive({
 })
 
 
-
 # N divergent -------------------------------------------------------------
-ndivergent_trace <- reactive({
-  df <- ndivergent_pw()
+dynamic_trace_diagnostic_ndivergent <- reactive({
   chain <- diagnostic_chain()
-  .ndivergent_trace(df, chain)
+  samps <- ndivergent_pw()[, -1]
+  lab <- "N Divergent"
+  stack <- FALSE  
+  graph <- do.call(".dynamic_trace_diagnostics", args = list(
+    param_samps = samps,
+    param_name = lab,
+    chain = chain,
+    stack = stack,
+    group = "ndivergent_information")
+  )
+  `%>%` <- dygraphs::`%>%`
+  graph %>% 
+    # dygraphs::dyOptions(stepPlot = TRUE) %>%
+    dygraphs::dyAxis("y", valueRange = c(0, 1.2), pixelsPerLabel = 1e4, 
+                     drawGrid = FALSE)
 })
+# ndivergent_trace <- reactive({
+#   df <- ndivergent_pw()
+#   chain <- diagnostic_chain()
+#   .ndivergent_trace(df, chain)
+# })
 ndivergent_vs_lp <- reactive({
   ndivergent <- ndivergent_pw()[,-1L] # drop iterations column
   lp <- samps_post_warmup[,,"lp__"]
@@ -404,4 +433,9 @@ output$dynamic_trace_diagnostic_accept_stat_out <- dygraphs::renderDygraph({
 output$dynamic_trace_diagnostic_treedepth_out <- dygraphs::renderDygraph({
   dynamic_trace_diagnostic_treedepth()
 })
-
+output$dynamic_trace_diagnostic_stepsize_out <- dygraphs::renderDygraph({
+  dynamic_trace_diagnostic_stepsize()
+})
+output$dynamic_trace_diagnostic_ndivergent_out <- dygraphs::renderDygraph({
+  dynamic_trace_diagnostic_ndivergent()
+})

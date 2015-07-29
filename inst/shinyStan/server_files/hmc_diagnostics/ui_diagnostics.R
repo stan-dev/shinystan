@@ -124,8 +124,11 @@ output$ui_diagnostics_treedepth <- renderUI({
 # N divergent -------------------------------------------------------------
 output$ui_diagnostics_ndivergent <- renderUI({
   fluidRow(
-    column(7, plotOutput_200px("ndivergent_trace_out"),
-           plotOutput_200px("ndivergent_vs_lp_out")),
+    column(7, #plotOutput_200px("ndivergent_trace_out"),
+           help_dynamic,
+           dygraphOutput_175px("dynamic_trace_diagnostic_ndivergent_out"), 
+           br(),
+           plotOutput("ndivergent_vs_lp_out", height = "150px")),
     column(5, plotOutput("ndivergent_vs_accept_stat_out", height = "400px"))
   )
 })
@@ -133,9 +136,11 @@ output$ui_diagnostics_ndivergent <- renderUI({
 # stepsize ----------------------------------------------------------------
 output$ui_diagnostics_stepsize <- renderUI({
   fluidRow(
-    column(7, plotOutput_200px("stepsize_trace_out"),
-           plotOutput_200px("stepsize_vs_lp_out")),
-    column(5, plotOutput("stepsize_vs_accept_stat_out", height = "400px"))
+    column(7, help_dynamic,
+           dygraphOutput_175px("dynamic_trace_diagnostic_stepsize_out"), 
+           br(),
+           plotOutput("stepsize_vs_lp_out", height = "150px")),
+    column(5, plotOutput("stepsize_vs_accept_stat_out", height = "375px"))
   )
 })
 
