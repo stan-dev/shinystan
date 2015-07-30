@@ -182,10 +182,10 @@ write_files <- function(files, lines) {
 }
 
 set_ppcheck_defaults <- function(appDir, yrep_name, y_name = "y") {
-  fileDir <- file.path(appDir, "server_files", "pages", "Diagnose", 
-                       "ppcheck", "dynamic_ui")
-  y_file <- file.path(fileDir, "ui_pp_y_from_r.R")
-  yrep_file <- file.path(fileDir, "ui_pp_yrep_from_sso.R")
+  fileDir <- file.path(appDir, "server_files", "pages", "diagnose", 
+                       "ppcheck", "ui")
+  y_file <- file.path(fileDir, "pp_y_from_r.R")
+  yrep_file <- file.path(fileDir, "pp_yrep_from_sso.R")
   for (file in c("y_file", "yrep_file")) {
     f <- get(file)
     if (file.exists(f)) {

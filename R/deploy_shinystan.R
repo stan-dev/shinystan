@@ -17,9 +17,9 @@
 
 #' Deploy to shinyapps.io
 #' 
-#' Requires a ShinyApps account. Visit http://www.shinyapps.io/ to sign up. 
-#' Also see the 'Deploying to shinyapps.io' vignette for a 
-#' step-by-step guide.  
+#' Requires a ShinyApps account. Visit \url{http://www.shinyapps.io/} to sign
+#' up. Also see the 'Deploying to shinyapps.io' vignette for a step-by-step
+#' guide.
 #' 
 #' @param sso The \code{shinystan} object to use.
 #' @param appName The name to use for the application. Application names must be
@@ -30,7 +30,7 @@
 #'   \code{\link[shinyapps]{accounts}}.
 #' @param ... Optional arguments. See Details.
 #' 
-#' @details In \code{...} the arguments \code{ppcheck_data} and 
+#' @details In \code{...}, the arguments \code{ppcheck_data} and 
 #'   \code{ppcheck_yrep} can be specified. \code{ppcheck_data} should be a
 #'   vector of observations to use for graphical posterior predictive checking
 #'   and \code{ppcheck_yrep} should be a character string naming the parameter
@@ -93,7 +93,7 @@ deploy_shinystan <- function(sso, appName, account = NULL, ...) {
     close(fconn) 
   }
 
-  # save shinystan_object to shinyStanApp_contents
+  # save shinystan_object to deployDir
   shinystan_object <- sso
   save(shinystan_object, file = file.path(deployDir, "shinystan_object.RData"))
   
