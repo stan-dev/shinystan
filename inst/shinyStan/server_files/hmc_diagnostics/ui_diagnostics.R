@@ -1,6 +1,6 @@
-conditionalPanel_parameter <- function(content) {
+conditionalPanel_parameter <- function(...) {
   cond <- "input.diagnostics_navlist == 'By model parameter'"
-  conditionalPanel(cond, content)
+  conditionalPanel(cond, ...)
 }
 dygraphOutput_175px <- function(id) {
   dygraphs::dygraphOutput(id, height = "175px")
@@ -8,6 +8,7 @@ dygraphOutput_175px <- function(id) {
 plotOutput_200px <- function(id, ...) {
   plotOutput(id, height = "200px")
 }
+
 help_interval <- helpText(style = "font-size: 11px;",
                           "Highlighted interval shows \\(\\bar{x} \\pm sd(x)\\)")
 help_lines <- helpText(style = "font-size: 11px;",
@@ -39,6 +40,7 @@ output$diagnostics_warnings_text <- renderText({
 })
 
 output$ui_diagnostics_customize <- renderUI({
+  # fixedPanel(
   wellPanel(
     fluidRow(
       column(3, h4(textOutput("diagnostic_chain_text"))),
@@ -54,13 +56,15 @@ output$ui_diagnostics_customize <- renderUI({
         choices = .make_param_list(object), 
         selected = .make_param_list(object)[1]))),
       column(3, conditionalPanel_parameter(
-        textInput("diagnostic_param_transform", label = NULL, value = "x"))),
+        textInput("diagnostic_param_transform", label = NULL, value = "x")
+        )),
       column(2, conditionalPanel_parameter(
         actionButton("diagnostic_param_transform_go", "Transform")))
     ),
     helpText(strong(style = "color: red; font-size: 13px;", 
                     textOutput("diagnostics_warnings_text")))
   )
+  # )
 })
 
 # model parameter ---------------------------------------------------------
@@ -112,7 +116,6 @@ output$ui_diagnostics_treedepth <- renderUI({
       ),
       column(5, plotOutput("treedepth_vs_accept_stat_out", height = "400px"))
     ),
-    br(),br(),
     splitLayout( 
       plotOutput("treedepth_ndivergent_hist_out", height = "125px"),
       plotOutput("treedepth_ndivergent0_hist_out", height = "125px"),
@@ -124,6 +127,7 @@ output$ui_diagnostics_treedepth <- renderUI({
 
 # N divergent -------------------------------------------------------------
 output$ui_diagnostics_ndivergent <- renderUI({
+  div(
   fluidRow(
     column(7, #plotOutput_200px("ndivergent_trace_out"),
            help_dynamic,
@@ -132,17 +136,19 @@ output$ui_diagnostics_ndivergent <- renderUI({
            plotOutput("ndivergent_vs_lp_out", height = "150px")),
     column(5, plotOutput("ndivergent_vs_accept_stat_out", height = "400px"))
   )
+  )
 })
 
 # stepsize ----------------------------------------------------------------
 output$ui_diagnostics_stepsize <- renderUI({
+  div(
   fluidRow(
     column(7, help_dynamic,
            dygraphOutput_175px("dynamic_trace_diagnostic_stepsize_out"), 
-           br(),
-           br(),
+           br(),br(),
            plotOutput("stepsize_vs_lp_out", height = "150px")),
     column(5, plotOutput("stepsize_vs_accept_stat_out", height = "400px"))
+  )
   )
 })
 

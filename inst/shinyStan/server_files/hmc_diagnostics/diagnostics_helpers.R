@@ -63,7 +63,8 @@ stepsize_pw <- reactive({
 })
 
 .sampler_param_vs_param <- function(p, sp, divergent = NULL, hit_max_td = NULL, 
-                                    p_lab, sp_lab, chain = 0, violin = FALSE) {
+                                    p_lab, sp_lab, chain = 0, violin = FALSE, 
+                                    smoother = FALSE) {
   xy_labs <- labs(y = if (missing(p_lab)) NULL else p_lab, 
                   x = if (missing(sp_lab)) NULL else sp_lab)
   df <- data.frame(sp = do.call("c", sp), p = c(p))
@@ -75,7 +76,8 @@ stepsize_pw <- reactive({
   if (chain == 0) {
     if (violin) graph <- base + geom_violin(color = vline_base_clr, fill = base_fill) 
     else {
-      graph <- base + geom_point(alpha = 0.5, color = base_fill)
+      graph <- base + geom_point(alpha = 0.5, color = base_fill) 
+      if (smoother) graph <- graph + stat_smooth(color = overlay_fill, se = FALSE)
       if (!is.null(divergent))
         graph <- graph + geom_point(data = subset(df, divergent == 1), aes(sp,p), 
                                     color = divergent_clr, fill = divergent_fill,
@@ -92,10 +94,6 @@ stepsize_pw <- reactive({
   if (!is.null(hit_max_td)) chain_data$hit <- hit_max_td[, chain]
   chain_clr <- color_vector(ncol(sp))[chain]
   chain_fill <- chain_clr
-#   chain_clr <- if (sp_lab != "Sampled Step Size") 
-#     vline_overlay_clr else color_vector(ncol(sp))[chain]
-#   chain_fill <- if (sp_lab != "Sampled Step Size") 
-#     overlay_fill else color_vector(ncol(sp))[chain]
   if (violin) {
     chain_data$sp <- as.factor(round(chain_data$sp, 4))
     graph <- base + 
@@ -104,9 +102,13 @@ stepsize_pw <- reactive({
                   fill = chain_fill, alpha = 0.5)
     return(graph)
   }
-  graph <- base + 
-    geom_point(alpha = 0.5, color = base_fill) + 
+  graph <- base + geom_point(alpha = 0.5, color = base_fill)
+  if (smoother) graph <- graph + 
+    stat_smooth(color = overlay_fill, se = FALSE)
+  graph <- graph + 
     geom_point(data = chain_data, aes(sp,p), color = chain_fill, alpha = 0.5)
+  if (smoother) graph <- graph + 
+    stat_smooth(data = chain_data, aes(sp,p), color = chain_fill, se = FALSE)
   if (!is.null(divergent))
     graph <- graph + geom_point(data = subset(chain_data, div == 1), aes(sp,p), 
                                 color = divergent_clr, fill = divergent_fill,
@@ -124,12 +126,12 @@ stepsize_pw <- reactive({
   base <- ggplot(mdf, aes(x = value)) + 
     geom_histogram(binwidth = diff(range(mdf$value))/30, fill = base_fill, 
                    color = vline_base_clr, size = 0.05) + 
-    labs(x = if(missing(lab)) NULL else lab, y = "") + 
+    labs(x = if (missing(lab)) NULL else lab, y = "") + 
     thm
   if (chain == 0) {
     graph <- base + 
-      geom_vline(xintercept = mean(mdf$value), color = vline_base_clr) + 
-      geom_vline(xintercept = median(mdf$value), color = vline_base_clr, lty = 2)
+      geom_vline(xintercept = mean(mdf$value), color = vline_base_clr, size = .8) + 
+      geom_vline(xintercept = median(mdf$value), color = vline_base_clr, lty = 2, size = 1)
     return(graph)
   }
   chain_data <- subset(mdf, variable == paste0("chain:",chain))
@@ -138,9 +140,9 @@ stepsize_pw <- reactive({
   base + thm + geom_histogram(data = chain_data,
                               binwidth = diff(range(chain_data$value))/30,
                               fill = chain_fill, alpha = 0.5) +
-    geom_vline(xintercept = mean(chain_data$value), color = vline_overlay_clr) + 
+    geom_vline(xintercept = mean(chain_data$value), color = chain_clr, size = .8) + 
     geom_vline(xintercept = median(chain_data$value), 
-               color = vline_overlay_clr, lty = 2)
+               color = chain_clr, lty = 2, size = 1)
 }
 
 .p_trace <- function(df, lab, chain = 0) {
@@ -264,10 +266,6 @@ stepsize_pw <- reactive({
   if (chain == 0) return(graph)
   chain_clr <- color_vector(ncol(df_x))[chain]
   chain_fill <- chain_clr
-#   chain_clr <- if (lab_x != "Sampled Step Size") 
-#     vline_overlay_clr else color_vector(ncol(df_x))[chain]
-#   chain_fill <- if (lab_x != "Sampled Step Size") 
-#     overlay_fill else color_vector(ncol(df_x))[chain]
   chain_data <- data.frame(x = as.factor(df_x[, chain]), y = df_y[, chain])
   graph + geom_violin(data = chain_data, aes(x,y), color = chain_clr, 
                       fill = chain_fill, alpha = 0.5)
@@ -300,10 +298,10 @@ stepsize_pw <- reactive({
   }
   `%>%` <- dygraphs::`%>%`
   y_axis_label_remove <- if (stack) "white" else NULL
-  clrs <- color_vector(nChains) 
   step_plot <- param_name %in% c("Treedepth", "N Divergent")
   fill_graph <- param_name == "N Divergent"
   stroke_width <- if (step_plot) 0.33 else 0.75
+  clrs <- color_vector(nChains) 
   if (chain != 0) clrs <- clrs[chain]
   dygraphs::dygraph(param_chains, xlab = param_name, ylab = NULL, 
                     group = group) %>%

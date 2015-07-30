@@ -616,36 +616,33 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
 #   clrs <- get_gg_colors(nChains)
 
   dim_samps <- dim(param_samps)
-  if (is.null(dim_samps)) {
-    nChains <- 1
-  } else {
-    nChains <- dim_samps[2]
-  }
-
+  if (is.null(dim_samps)) nChains <- 1
+  else nChains <- dim_samps[2]
   if (nChains == 1) {
     param_chains <- xts::as.xts(ts(param_samps, start = 1))
   } else {
-  
-  if (chain != 0) {
-    param_samps <- param_samps[, chain]
-    param_chains <- xts::as.xts(ts(param_samps, start = 1))
-  } else {
-    param_chains <- xts::as.xts(ts(param_samps[,1], start = 1))
-    for (i in 2:nChains) {
-      param_chains <- cbind(param_chains, xts::as.xts(ts(param_samps[,i], start = 1)))
+    if (chain != 0) {
+      param_samps <- param_samps[, chain]
+      param_chains <- xts::as.xts(ts(param_samps, start = 1))
+    } else {
+      param_chains <- xts::as.xts(ts(param_samps[,1], start = 1))
+      for (i in 2:nChains) {
+        param_chains <- cbind(param_chains, xts::as.xts(ts(param_samps[,i], start = 1)))
+      }
+      colnames(param_chains) <- paste0("Chain", 1:nChains)
     }
-    colnames(param_chains) <- paste0("Chain", 1:nChains)
-  }
   }
 
   # shade_to <- if (warmup_shade) paste0(warmup_val,"-01-01") else "0001-01-01"
   `%>%` <- dygraphs::`%>%`
   y_axis_label_remove <- if (stack) "white" else NULL
+  clrs <- color_vector(nChains) 
+  if (chain != 0) clrs <- clrs[chain]
   dygraphs::dygraph(param_chains, xlab = "Iteration", 
                     ylab = if (is.null(param_name)) "Value" else param_name) %>%
     dygraphs::dyAxis("y", rangePad = "5", axisLabelColor = y_axis_label_remove) %>%
     dygraphs::dyAxis("x", rangePad = "3") %>%
-    dygraphs::dyOptions(stackedGraph = stack, drawGrid = grid, animatedZooms = TRUE, axisLineColor = axis_line_color) %>%
+    dygraphs::dyOptions(colors = clrs, stackedGraph = stack, drawGrid = grid, animatedZooms = TRUE, axisLineColor = axis_line_color) %>%
     dygraphs::dyRangeSelector(height = 40, strokeColor = blue_color, fillColor = "#d9e7f4") %>%
     dygraphs::dyLegend(show = "auto", width = 400) %>%
     #     dygraphs::dyEvent(date = as.Date(warmup_val),

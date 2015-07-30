@@ -81,14 +81,6 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
            tabPanel(title = "Diagnose", icon = icon("medkit"),
                     tabsetPanel(
                       ### sampler parameters ####
-                      tabPanel("HMC/NUTS (stats)",
-                               actionLink("btn_open_nuts_glossary", "Open glossary", icon = icon("book", lib = "glyphicon")),
-                               uiOutput("nuts_glossary_modal"),
-                               h2("Summary of sampler parameters"),
-                               uiOutput("ui_sampler_stats_customize"),
-                               DT::dataTableOutput("sampler_summary"),
-                               br()
-                      ),
                       tabPanel("HMC/NUTS (plots)",
                                uiOutput("ui_diagnostics_customize"),
                                navlistPanel(id = "diagnostics_navlist",
@@ -113,6 +105,14 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                             well = FALSE,
                                             widths = c(2, 10)
                                )
+                      ),
+                      tabPanel("HMC/NUTS (stats)",
+                               actionLink("btn_open_nuts_glossary", "Open glossary", icon = icon("book", lib = "glyphicon")),
+                               uiOutput("nuts_glossary_modal"),
+                               h2("Summary of sampler parameters"),
+                               uiOutput("ui_sampler_stats_customize"),
+                               DT::dataTableOutput("sampler_summary"),
+                               br()
                       ),
                       #### Rhat, ESS, MCSE, diagnostics ####
                       tabPanel("\\(\\hat{R}, n_{eff}, \\text{se}_{mean}\\)", # icon = icon("bar-chart-o", "fa-2x"),
