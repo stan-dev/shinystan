@@ -14,30 +14,24 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-
-
-trace_plot_multiview <- reactive({
-  validate(need(input$param, message = FALSE),
-           need(!is.null(input$multiview_warmup), message = "Loading..."))
+dynamic_trace_plot_multiview <- reactive({
+  if (input$param == "") {
+    return()
+  }
   
-  do.call(".param_trace", args = list(
-    param       = input$param,
-    dat         = par_samps_all(),
-    chain       = 0,
-    warmup_val  = warmup_val,
-    inc_warmup  = input$multiview_warmup, # input$multiview_warmup == "include",
-    palette     = "Default",
-    style       = "line",
-    rect        = "None",
-    rect_color  = "#d9e7f4",
-    rect_alpha  = 0.5,
-    x1          = NA,
-    x2          = NA,
-    y1          = NA,
-    y2          = NA
-  ))
+  stack <- FALSE  # stack <- input$dynamic_trace_stack
+  chain <- 0      # input$dynamic_trace_chain
+  
+  do.call(".param_trace_dynamic", args = list(
+    param_samps = if (input$multiview_warmup) 
+      par_samps_all() else par_samps_post_warmup(),
+    chain = chain,
+    stack = stack)
+  )
 })
-
+output$dynamic_trace_plot_multiview_out <- dygraphs::renderDygraph(
+  dynamic_trace_plot_multiview()
+)
 
 autocorr_plot_multiview <- reactive({
   validate(need(input$param, message = FALSE),

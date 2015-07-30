@@ -13,9 +13,6 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-
-
-
 dynamic_trace_plot <- reactive({
 
   validate(need(input$param, message = FALSE),
@@ -29,29 +26,7 @@ dynamic_trace_plot <- reactive({
     param_samps = par_samps_all(),
     param_name = input$param,
     chain = chain,
-#     warmup_val = warmup_val,
-#     warmup_shade = (input$dynamic_trace_warmup_shade == "show"),
     stack = stack,
     grid = (input$dynamic_trace_grid == "show")
   ))
 })
-
-dynamic_trace_plot_multiview <- reactive({
-  if (input$param == "") {
-    return()
-  }
-
-  stack <- FALSE  # stack <- input$dynamic_trace_stack
-  chain <- 0      # input$dynamic_trace_chain
-
-  do.call(".param_trace_dynamic", args = list(
-    param_samps = if (input$multiview_warmup) 
-      par_samps_all() else par_samps_post_warmup(),
-    chain = chain,
-    stack = stack)
-  )
-})
-
-output$dynamic_trace_plot_multiview_out <- dygraphs::renderDygraph(
-  dynamic_trace_plot_multiview()
-)
