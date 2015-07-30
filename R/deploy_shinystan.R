@@ -75,7 +75,8 @@ deploy_shinystan <- function(sso, account, appName, ppcheck_data, ppcheck_yrep) 
   file.remove(file.path(deployDir, paste0(rmv,".R")))
   oldnames <- paste0(rmv, "_for_shinyapps.R")
   for (j in seq_along(oldnames)) {
-    file.rename(from = file.path(deployDir, oldnames[j]), to = file.path(deployDir, paste0(rmv[j],".R")))
+    file.rename(from = file.path(deployDir, "shinyapps", oldnames[j]), 
+                to = file.path(deployDir, paste0(rmv[j],".R")))
   }
 
   # save shinystan_object to shinyStanApp_contents

@@ -13,6 +13,11 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
+pkgs <- c("shiny", "shinyBS", "ggplot2", "gtools", "plyr", "reshape2", "dygraphs", 
+          "xts", "xtable", "gridExtra", "markdown", "DT", "threejs")
+invisible(lapply(pkgs, FUN = require, character.only = TRUE))
+
+
 
 source("global_utils.R", local = TRUE)
 helpers <- list.files("helper_functions", full.names = TRUE, recursive = TRUE)
@@ -37,7 +42,7 @@ tagList(
              windowTitle = "shinyStan", collapsible = FALSE, id = "nav",
              inverse = TRUE, header = show_model_name, position = "fixed-top",
              
-             #### PAGE: ESTIMATE ####
+             #### TAB: ESTIMATE ####
              tabPanel(title = "Estimate", icon = icon("stats", lib = "glyphicon"),
                       withMathJax(),
                       
@@ -49,7 +54,7 @@ tagList(
                                                   uiOutput("ui_multiparam_customize")),
                                  plotOutput("plot_param_vertical_out", width = "90%")
                         ),
-                        #### posterior summary statistics ####
+                        #### Posterior summary statistics ####
                         tabPanel("Posterior summary statistics", icon = icon("table", "fa-2x"),
                                  br(),
                                  fluidRow(
@@ -77,25 +82,35 @@ tagList(
                       ) # End tabsetPanel
              ), # End ESTIMATE
              
-             #### PAGE: DIAGNOSE ####
+             #### TAB: DIAGNOSE ####
              tabPanel(title = "Diagnose", icon = icon("medkit"),
                       tabsetPanel(
-                        
-                        #### hmc/nuts plots ####
+                        ### sampler parameters ####
                         tabPanel("HMC/NUTS (plots)",
                                  uiOutput("ui_diagnostics_customize"),
                                  navlistPanel(id = "diagnostics_navlist",
-                                              tabPanel("By model parameter", uiOutput("ui_diagnostics_parameter")),
-                                              tabPanel("Sample information", uiOutput("ui_diagnostics_sample")),
-                                              tabPanel("Treedepth information", uiOutput("ui_diagnostics_treedepth")),
-                                              tabPanel("N divergent information", uiOutput("ui_diagnostics_ndivergent")),
-                                              tabPanel("Step size information", uiOutput("ui_diagnostics_stepsize")),
-                                              # tabPanel("Help", uiOutput("ui_diagnostics_help")),
+                                              tabPanel("By model parameter",
+                                                       uiOutput("ui_diagnostics_parameter")
+                                              ),
+                                              tabPanel("Sample information",
+                                                       uiOutput("ui_diagnostics_sample")
+                                              ),
+                                              tabPanel("Treedepth information",
+                                                       uiOutput("ui_diagnostics_treedepth")
+                                              ),
+                                              tabPanel("N divergent information",
+                                                       uiOutput("ui_diagnostics_ndivergent")
+                                              ),
+                                              tabPanel("Step size information",
+                                                       uiOutput("ui_diagnostics_stepsize")
+                                              ),
+                                              #                                             tabPanel("Help",
+                                              #                                                      uiOutput("ui_diagnostics_help")
+                                              #                                             ),
                                               well = FALSE,
                                               widths = c(2, 10)
-                                 ) # End navlistPanel
+                                 )
                         ),
-                        #### hmc/nuts stats ####
                         tabPanel("HMC/NUTS (stats)",
                                  actionLink("btn_open_nuts_glossary", "Open glossary", icon = icon("book", lib = "glyphicon")),
                                  uiOutput("nuts_glossary_modal"),
@@ -104,12 +119,17 @@ tagList(
                                  DT::dataTableOutput("sampler_summary"),
                                  br()
                         ),
-                        #### rhat, n_eff, mcse ####
+                        #### Rhat, ESS, MCSE, diagnostics ####
                         tabPanel("\\(\\hat{R}, n_{eff}, \\text{se}_{mean}\\)", # icon = icon("bar-chart-o", "fa-2x"),
-                                 fluidRow(column(2, actionLink("btn_open_glossary_copy", "Open glossary", 
-                                                        icon = icon("book", lib = "glyphicon")))),
-                                 fluidRow(column(3, splitLayout(includeHTML("html/warnings_options.html"), 
-                                                         span("Customize"), cellWidths = c("25%","75%")))),
+                                 fluidRow(
+                                   column(2, actionLink("btn_open_glossary_copy", "Open glossary", 
+                                                        icon = icon("book", lib = "glyphicon"))
+                                   )
+                                 ),
+                                 fluidRow(
+                                   column(3, splitLayout(includeHTML("html/warnings_options.html"), 
+                                                         span("Customize"), cellWidths = c("25%","75%")))
+                                 ),
                                  uiOutput("glossary_modal_copy"),
                                  uiOutput("ui_rhat_neff_mcse"),
                                  hr(),
@@ -117,10 +137,11 @@ tagList(
                                  conditionalPanel(condition = "input.warnings_options == true",
                                                   uiOutput("ui_warnings_customize"))
                         ),
-                        #### autocorrelation ####
+                        #### autocorrelation plot ####
                         tabPanel("Autocorrelation", # icon = icon("bar-chart-o", "fa-2x"),
                                  conditionalPanel(condition = "input.ac_options == true",
-                                                  uiOutput("ui_autocorr_customize")),
+                                                  uiOutput("ui_autocorr_customize")
+                                 ),
                                  wellPanel(
                                    fluidRow(
                                      column(6, selectizeInput("ac_params", width = "100%", label = h5("Select or enter parameter names"), 
@@ -130,7 +151,7 @@ tagList(
                                  ),
                                  plotOutput("autocorr_plot_out")
                         ),
-                        #### multiparameter traceplot ####
+                        #### multiparameter trace plots ####
                         tabPanel("Trace", # icon = icon("bar-chart-o", "fa-2x"),
                                  wellPanel(
                                    fluidRow(
@@ -148,17 +169,17 @@ tagList(
                                  plotOutput("multi_trace_plot_out"),
                                  br()
                         ),
-                        #### ppcheck ####
+                        #### PPcheck ####
                         tabPanel(title = "PPcheck", # icon = icon("bar-chart-o", "fa-2x"),
                                  h2("Graphical posterior predictive checks"),
                                  h6("Experimental feature"),
                                  uiOutput("ui_ppcheck_navlist")
-                        )
+                        ) # End PPCHECK
                         
                       ) # End tabsetPanel
              ), # End DIAGNOSE
              
-             #### PAGE: EXPLORE ####
+             #### TAB: EXPLORE ####
              tabPanel(title = "Explore", icon = icon("eye-open", lib = "glyphicon"),
                       fluidRow(
                         column(3, selectizeInput(inputId = "param", label = h4("Select parameter"), choices = .make_param_list(object), selected = .make_param_list(object)[1], multiple = FALSE)),
@@ -185,7 +206,7 @@ tagList(
                                             h5("Trace"),
                                             dygraphs::dygraphOutput("multiview_trace_out", height = "150px")
                                    ),
-                                   #### bivariate #####
+                                   #### bivariate plot #####
                                    tabPanel("Bivariate",
                                             uiOutput("ui_bivariate_customize"),
                                             fluidRow(
@@ -205,7 +226,7 @@ tagList(
                                                      "rather than terminated its evolution normally."),
                                             br()
                                    ),
-                                   #### trivariate #####
+                                   #### trivariate plot #####
                                    tabPanel("Trivariate", 
                                             uiOutput("ui_triviariate_customize"),
                                             uiOutput("ui_trivariate_select"),
@@ -220,7 +241,6 @@ tagList(
                                             threejs::scatterplotThreeOutput("trivariate_plot_out"),
                                             br()
                                    ),
-                                   #### density #####
                                    tabPanel("Density", 
                                             uiOutput("ui_density_customize"),
                                             fluidRow(
@@ -230,7 +250,6 @@ tagList(
                                             plotOutput("density_plot_out", height = "250px"),
                                             br()
                                    ),
-                                   #### histogram #####
                                    tabPanel("Histogram", 
                                             uiOutput("ui_hist_customize"),
                                             fluidRow(
@@ -240,22 +259,20 @@ tagList(
                                             plotOutput("hist_plot_out", height = "250px"),
                                             br()
                                    )
-                                   
                       ) # End navlist
              ), # End EXPLORE
              
              #### MENU: More ####
              navbarMenu(title = "More",
                         
-                        #### PAGE: Model Code ####
+                        #### TAB: Model Code ####
                         tabPanel(title = "Model Code", 
                                  h4("Model Code"),
                                  tags$textarea(id="model_code", 
                                                style="background: transparent; border-width: .5px;", 
                                                object@model_code)
-                        ), # End Model Code
-                        
-                        #### PAGE: Notepad ####
+                        ), # END TAB: Model Code
+                        #### TAB: Notes ####
                         tabPanel(title = "Notepad",
                                  helpText(strong("Use this space to store notes about your model")),
                                  helpText("The text will be saved in the", code("user_model_info"),
@@ -276,22 +293,47 @@ tagList(
                                  ),
                                  hr(),
                                  uiOutput("user_model_info_modal")
-                        ), # End Notepad
-                        
-                        #### PAGE: About ####
-                        tabPanel(title = "About", uiOutput("ui_about")), 
-                        
-                        #### PAGE: Help ####
-                        tabPanel(title = "Help", uiOutput("ui_help"))
-                        
-             ), # End navbarMenu
+                        ),  # END TAB: Notes
+                        #### TAB: About ####
+                        tabPanel(title = "About",
+                                 uiOutput("ui_about")
+                        ), # END TAB: About
+                        #### TAB: Help ####
+                        tabPanel(title = "Help",
+                                 uiOutput("ui_help")
+                        ), # END Help
+                        #### TAB: Appearance ####
+                        tabPanel("Appearance",
+                                 h3("Appearance settings"),
+                                 br(),br(),
+                                 selectInput("background_texture", "Background texture", 
+                                             choices = c("Plain (white)" = "default", "Subtle" = "subtle",  
+                                                         "Concrete" = "concrete", "White brick" = "whitebrick", 
+                                                         "Vignette" = "vignette", "Sweater" = "sweater", 
+                                                         "Stucco" = "stucco", "Crumpled paper" = "crumpled", 
+                                                         "Green cup" = "greencup"), selected = "default"),
+                                 br(),br(),
+                                 selectInput("body_font", "Font family", 
+                                             choices = c(Default = "default", 
+                                                         Arial = "Arial, Helvetica, sans-serif", 
+                                                         Corbel = "'Corbel'", 
+                                                         Georgia = "Georgia, serif",
+                                                         "Palatino Linotype" = "'Palatino Linotype', 'Book Antiqua', Palatino, serif", 
+                                                         Tahoma = "Tahoma, Geneva, sans-serif",
+                                                         "Times New Roman" = "'Times New Roman', Times, serif", 
+                                                         Trebuchet = "'Trebuchet MS', Helvetica, sans-serif",
+                                                         Verdana = "Verdana, Geneva, sans-serif")),
+                                 uiOutput("ui_background_texture"),
+                                 uiOutput("ui_body_font")
+                        )
+             ), # END navbarMenu MORE
              
              #### QUIT ####
-             tabPanel(strong(style = "color: #f9dd67;", "Quit"), 
-                      value = "quit", icon = icon("close"),
+             tabPanel(strong(style = "color: #f9dd67;", "Quit"), value = "quit", icon = icon("close"),
                       h1("Thanks for using shinyStan."),
                       br(),br(),
                       h5("It's safe to close this browser window.")
              )
-  ) # End navbarPage
-) # End tagList
+             
+  ) # END navbarPage
+) # END tagList

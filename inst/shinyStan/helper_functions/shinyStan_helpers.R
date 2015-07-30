@@ -136,7 +136,7 @@
                         fill_color = "gray20", line_color = "gray35",
                         title = TRUE) {
   
-  ttl <- "Histogram of Posterior Draws (post-warmup) \n"
+  ttl <- "Histogram of Posterior Draws \n"
 
   if (transform_x != "x") {
     t_x <- eval(parse(text = paste0("function(x) {", transform_x,"}")))
@@ -190,7 +190,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
                         transform_x = "x",
                         prior_fam = "None", prior_params) {
   
-  ttl <- "Kernel Density Estimate (post-warmup) \n"
+  ttl <- "Kernel Density Estimate \n"
 
   if (transform_x != "x") {
     t_x <- eval(parse(text = paste0("function(x) {", transform_x,"}")))
