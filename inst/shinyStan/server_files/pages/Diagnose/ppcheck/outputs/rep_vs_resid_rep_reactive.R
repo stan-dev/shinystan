@@ -13,15 +13,18 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
+pp_avg_rep_vs_avg_resid_rep <- reactive({
+  pp_tests()
+  y <- get(input$y_name)
+  y_rep <- y_rep()
+  rowMeans_resids <- rowMeans(y - y_rep)
+  rowMeans_y_rep <- rowMeans(y_rep)
+  do.call(".pp_avg_rep_vs_avg_resid_rep", args = list(
+    rowMeans_y_rep = rowMeans_y_rep,
+    rowMeans_resids = rowMeans_resids
+  ))
+})
 
-# probability distributions -----------------------------------------------
-
-# t distribution with location and scale
-.dt_loc_scale <- function(x, df, location, scale) {
-  1/scale * dt((x - location)/scale, df)
-}
-# inverse gamma distribution
-.dinversegamma <- function(x, shape, scale) {
-  logout <- log(scale)*shape - lgamma(shape) - (1+shape)*log(x) - (scale/x)
-  exp(logout)
-}
+output$pp_avg_rep_vs_avg_resid_rep_out <- renderPlot({
+  pp_avg_rep_vs_avg_resid_rep()
+}, bg = "transparent")

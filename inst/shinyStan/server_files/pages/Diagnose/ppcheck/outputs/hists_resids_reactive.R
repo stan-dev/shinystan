@@ -13,15 +13,19 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
+pp_hist_resids <- reactive({
+  pp_tests()
+  y <- get(input$y_name)
+  y_rep <- y_rep()
+  s <- sample_id_for_resids()
+  resids <- y - y_rep[s, ]
+  names(resids) <- paste0("resids(y_rep_",s,")")
+  do.call(".pp_hist_resids", args = list(
+    resids = resids
+  ))
+})
 
-# probability distributions -----------------------------------------------
-
-# t distribution with location and scale
-.dt_loc_scale <- function(x, df, location, scale) {
-  1/scale * dt((x - location)/scale, df)
-}
-# inverse gamma distribution
-.dinversegamma <- function(x, shape, scale) {
-  logout <- log(scale)*shape - lgamma(shape) - (1+shape)*log(x) - (scale/x)
-  exp(logout)
-}
+output$pp_hist_resids_out <- renderPlot({
+  x <- suppressMessages(pp_hist_resids())
+  suppress_and_print(x)
+}, bg = "transparent")

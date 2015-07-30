@@ -1,0 +1,60 @@
+# This file is part of shinyStan
+# Copyright (C) 2015 Jonah Sol Gabry & Stan Development Team
+#
+# shinyStan is free software; you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 3 of the License, or (at your option) any later
+# version.
+# 
+# shinyStan is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along with
+# this program; if not, see <http://www.gnu.org/licenses/>.
+
+
+
+# summary statistics for sampler parameters -------------------------------
+summary_stats_sampler <- reactive({
+  validate(need(sampler_params[[1]] != "Not Stan", 
+                message = "Only available for Stan models"),
+           need(input$sampler_warmup, message = "Loading..."))
+  do.call(".sampler_summary", args = list(
+    sampler_params  = sampler_params,
+    inc_warmup      = input$sampler_warmup == "include",
+    warmup_val      = warmup_val,
+    report          = input$sampler_report,
+    # algorithm       = stan_algorithm,
+    digits          = input$sampler_digits
+  ))
+})
+
+output$sampler_summary <- DT::renderDataTable({
+  DT::datatable({
+    summary_stats_sampler()
+  }, options = list(
+    rownames = FALSE,
+    processing = TRUE,
+    scrollX = TRUE,
+    scrollY = "200px",
+    # autoWidth = TRUE,
+    scrollCollapse = TRUE,
+    paging = FALSE,
+    # pageLength = 3,
+    searching = FALSE,
+    info = FALSE,
+    aoColumnDefs = list(list(sClass="alignRight", aTargets = "_all")),
+    orderClasses = TRUE,
+    initComplete = htmlwidgets::JS( # change text color of column titles
+      'function(settings, json) {
+      $(this.api().table().header()).css({"color": "#337ab7"});
+      }'),
+    rowCallback = htmlwidgets::JS(
+      'function(row, data) {
+      // Bold cells in the first column
+      $("td:eq(0)", row).css("font-weight", "bold");
+      }')
+  )
+  )
+})

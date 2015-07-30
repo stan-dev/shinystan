@@ -14,14 +14,27 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-# probability distributions -----------------------------------------------
 
-# t distribution with location and scale
-.dt_loc_scale <- function(x, df, location, scale) {
-  1/scale * dt((x - location)/scale, df)
-}
-# inverse gamma distribution
-.dinversegamma <- function(x, shape, scale) {
-  logout <- log(scale)*shape - lgamma(shape) - (1+shape)*log(x) - (scale/x)
-  exp(logout)
-}
+pp_dens_rep_vs_obs <- reactive({
+  pp_tests()
+  y <- get(input$y_name)
+  y_rep <- y_rep()
+  # sample_ids <- sample_ids_for_dens()
+  sample_ids <- sample_ids_for_hist()
+  y_rep_samp <- y_rep[sample_ids, ]
+  
+  max_y_rep_dens <- apply(y_rep, 1, function(x) density(x)$y)
+  y_lim <- c(0, max(density(y)$y, max_y_rep_dens))
+  x_lim <- range(c(y, y_rep))
+  do.call(".pp_dens_rep_vs_obs", args = list(
+    y = y, 
+    y_rep_samp = y_rep_samp,
+    y_lim = y_lim,
+    x_lim = x_lim
+  ))
+})
+
+output$pp_dens_rep_vs_obs_out <- renderPlot({
+  x <- suppressMessages(pp_dens_rep_vs_obs())
+  suppress_and_print(x)
+}, bg = "transparent")

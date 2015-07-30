@@ -13,22 +13,21 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-# load the helper functions
-source("helper_functions/shinyStan_helpers.R", local = TRUE)
-source("helper_functions/utils.R", local = TRUE)
-source("helper_functions/summary_stats.R", local = TRUE)
 
+source("global_utils.R", local = TRUE)
+helpers <- list.files("helper_functions", full.names = TRUE, recursive = TRUE)
+for (h in helpers) source(h, local = TRUE)
 # load pp_check plot_names and plot_descriptions
-source("server_files/pp_check/plot_names_descriptions.R", local = TRUE)
+source("server_files/utilities/ppcheck_names_descriptions.R", local = TRUE)
 
 # give shinystan_object shorter name
 object <- shinystan_object
-show_model_name <- h4(style = "padding: 0px 0px 10px 10px; color: #337ab7; opacity: 0.95; ", paste("Model name:", object@model_name))
+show_model_name <- 
+  h4(style = "padding: 0px 0px 10px 10px; color: #337ab7; opacity: 0.95; ", 
+     paste("Model name:", object@model_name))
 
 # Begin shinyUI -----------------------------------------------------------
 # _________________________________________________________________________
-
-
 navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
            windowTitle = "shinyStan", collapsible = FALSE, id = "nav",
            inverse = TRUE, header = show_model_name, position = "fixed-top",
@@ -184,19 +183,18 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                             bsCollapsePanel(title = "View Options", id = "multiview_collapse",
                                                             checkboxInput("multiview_warmup", label = strong(style = "color: white;", "Include warmup"), value = FALSE),
                                                             hr(),
-                                                            uiOutput("ui_dynamic_trace_helptext"),
-                                                            hr(),
-                                                            downloadButton("download_multiview", "Save as ggplot2 objects")
+                                                            uiOutput("ui_dynamic_trace_helptext")
+#                                                             hr(),
+#                                                             downloadButton("download_multiview", "Save as ggplot2 objects")
                                             )
                                           ),
                                           splitLayout(h5("Density"), h5("Autocorrelation")),
-                                          splitLayout(plotOutput("multiview_density", height = "150"), 
-                                                      plotOutput("multiview_autocorr", height = "150"),
+                                          splitLayout(plotOutput("multiview_density_out", height = "150"), 
+                                                      plotOutput("multiview_autocorr_out", height = "150"),
                                                       cellArgs = list(class = "plot_hover_shadow")
                                           ),
                                           h5("Trace"),
-                                          # plotOutput("multiview_trace", height = "150")
-                                          dygraphs::dygraphOutput("dynamic_trace_plot_multiview_out", height = "150px")
+                                          dygraphs::dygraphOutput("multiview_trace_out", height = "150px")
                                  ),
                                  #### bivariate plot #####
                                  tabPanel("Bivariate",

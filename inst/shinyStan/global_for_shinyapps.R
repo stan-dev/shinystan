@@ -16,7 +16,8 @@
 
 # load shinystan object and ppcheck data for shinyapps --------------------
 load("shinystan_object.RData")
-if (file.exists("y.RData")) load("y.RData")
+if (file.exists("y.RData")) 
+  load("y.RData")
 
 
 # probability distributions -----------------------------------------------

@@ -17,17 +17,17 @@ pkgs <- c("shiny", "shinyBS", "ggplot2", "gtools", "plyr", "reshape2", "dygraphs
           "xts", "xtable", "gridExtra", "markdown", "DT", "threejs")
 invisible(lapply(pkgs, FUN = require, character.only = TRUE))
 
-# load the helper functions
-source("helper_functions/shinyStan_helpers.R", local = TRUE)
-source("helper_functions/utils.R", local = TRUE)
-source("helper_functions/summary_stats.R", local = TRUE)
-
+source("global_utils.R", local = TRUE)
+helpers <- list.files("helper_functions", full.names = TRUE, recursive = TRUE)
+for (h in helpers) source(h, local = TRUE)
 # load pp_check plot_names and plot_descriptions
-source("server_files/pp_check/plot_names_descriptions.R", local = TRUE)
+source("server_files/utilities/ppcheck_names_descriptions.R", local = TRUE)
 
 # give shinystan_object shorter name
 object <- shinystan_object
-show_model_name <- h4(style = "padding: 0px 0px 10px 10px; color: #337ab7; opacity: 0.95; ", paste("Model name:", object@model_name))
+show_model_name <- 
+  h4(style = "padding: 0px 0px 10px 10px; color: #337ab7; opacity: 0.95; ", 
+     paste("Model name:", object@model_name))
 
 # Begin shinyUI -----------------------------------------------------------
 # _________________________________________________________________________

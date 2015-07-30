@@ -13,15 +13,20 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-
-# probability distributions -----------------------------------------------
-
-# t distribution with location and scale
-.dt_loc_scale <- function(x, df, location, scale) {
-  1/scale * dt((x - location)/scale, df)
-}
-# inverse gamma distribution
-.dinversegamma <- function(x, shape, scale) {
-  logout <- log(scale)*shape - lgamma(shape) - (1+shape)*log(x) - (scale/x)
-  exp(logout)
-}
+# dynamic_trace_plot <- reactive({
+# 
+#   validate(need(input$param, message = FALSE),
+#            need(input$dynamic_trace_chain, message = FALSE))
+# 
+#   stack <- input$dynamic_trace_stack == "stacked"
+#   chain <- input$dynamic_trace_chain
+#   if (is.na(chain)) chain <- 0 # set chain to zero (all chains) if input field is blank
+# 
+#   do.call(".param_trace_dynamic", args = list(
+#     param_samps = par_samps_all(),
+#     param_name = input$param,
+#     chain = chain,
+#     stack = stack,
+#     grid = (input$dynamic_trace_grid == "show")
+#   ))
+# })
