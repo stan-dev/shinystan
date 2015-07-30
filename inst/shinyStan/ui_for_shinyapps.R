@@ -188,6 +188,8 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                             bsCollapsePanel(title = "View Options", id = "multiview_collapse",
                                                             checkboxInput("multiview_warmup", label = strong(style = "color: white;", "Include warmup"), value = FALSE),
                                                             hr(),
+                                                            uiOutput("ui_dynamic_trace_helptext"),
+                                                            hr(),
                                                             downloadButton("download_multiview", "Save as ggplot2 objects")
                                             )
                                           ),
@@ -196,32 +198,44 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                                       plotOutput("multiview_autocorr", height = "150"),
                                                       cellArgs = list(class = "plot_hover_shadow")
                                           ),
-                                          h5("Trace: iterations vs. sampled values"),
-                                          plotOutput("multiview_trace", height = "150")
+                                          h5("Trace"),
+                                          # plotOutput("multiview_trace", height = "150")
+                                          dygraphs::dygraphOutput("dynamic_trace_plot_multiview_out", height = "150px")
                                  ),
-                                 #### dynamic trace plot ####
-                                 tabPanel("Dynamic trace", # icon = icon("line-chart"),
-                                          bsCollapse(
-                                            bsCollapsePanel(title = "View Options", id = "dynamic_trace_collapse",
-                                                            fluidRow(
-                                                              column(3, numericInput("dynamic_trace_chain", 
-                                                                                     label = strong("Chain (0 = all)"), 
-                                                                                     min = 0, max = object@nChains, step = 1, value = 0)),
-                                                              column(4, radioButtons("dynamic_trace_stack", 
-                                                                                     label = strong("Lines"), 
-                                                                                     choices = list(Normal = "normal", Stacked = "stacked"), 
-                                                                                     selected = "normal", inline = TRUE)),
-                                                              column(3, radioButtons("dynamic_trace_grid", 
-                                                                                     label = strong("Grid"), 
-                                                                                     choices = list(Show = "show", Hide = "hide"), 
-                                                                                     selected = "hide", inline = TRUE))
-                                                            ),
-                                                            hr(),
-                                                            uiOutput("ui_dynamic_trace_helptext")
-                                            )
+                                 #### bivariate plot #####
+                                 tabPanel("Bivariate",
+                                          uiOutput("ui_bivariate_customize"),
+                                          fluidRow(
+                                            column(4, selectizeInput("bivariate_param_y", label = strong(style = "color: #337ab7;", "y-axis"), 
+                                                                     choices = rev(.make_param_list(object)), 
+                                                                     selected = rev(.make_param_list(object))[1], multiple = FALSE)),
+                                            column(3, textInput("bivariate_transform_y", 
+                                                                label = strong(style = "font-size: 11px;","Transform y"), value = "y")),
+                                            column(3, textInput("bivariate_transform_x", 
+                                                                label = strong(style = "font-size: 11px;","Transform x"), value = "x")),
+                                            column(2, actionButton("bivariate_transform_go", 
+                                                                   label = strong(style = "font-size: 11px;","Transform")))
                                           ),
-                                          dygraphs::dygraphOutput("dynamic_trace_plot_out"),
-                                          br(), br()
+                                          plotOutput("bivariate_plot_out", height = "350px"),
+                                          helpText(style = "font-size: 11px", "For Stan models using the NUTS algorithm, red points indicate iterations that encountered a divergent transition.",  
+                                                   "Yellow points indicate a transition that hit the maximum treedepth",
+                                                   "rather than terminated its evolution normally."),
+                                          br()
+                                 ),
+                                 #### trivariate plot #####
+                                 tabPanel("Trivariate", 
+                                          uiOutput("ui_triviariate_customize"),
+                                          uiOutput("ui_trivariate_select"),
+                                          withMathJax(),
+                                          fluidRow(
+                                            column(3, textInput("trivariate_transform_x", label = strong(style = "font-size: 11px;","Transform x"), value = "x")),
+                                            column(3, textInput("trivariate_transform_y", label = strong(style = "font-size: 11px;", "Transform y"), value = "y")),
+                                            column(3, textInput("trivariate_transform_z", label = strong(style = "font-size: 11px;", "Transform z"), value = "z")),
+                                            column(2, actionButton("trivariate_transform_go", label = strong(style = "font-size: 11px;","Transform")))
+                                          ),
+                                          br(),
+                                          threejs::scatterplotThreeOutput("trivariate_plot_out"),
+                                          br()
                                  ),
                                  #### density/histogram ####
                                  tabPanel("Density & histogram", # icon = icon("area-chart"),
@@ -242,41 +256,6 @@ navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
                                                            ),
                                                            plotOutput("hist_plot_out", height = "250px")
                                           ),
-                                          br()
-                                 ),
-                                 #### trivariate plot #####
-                                 tabPanel("Trivariate", 
-                                          uiOutput("ui_triviariate_customize"),
-                                          uiOutput("ui_trivariate_select"),
-                                          withMathJax(),
-                                          fluidRow(
-                                            column(3, textInput("trivariate_transform_x", label = strong(style = "font-size: 11px;","Transform x"), value = "x")),
-                                            column(3, textInput("trivariate_transform_y", label = strong(style = "font-size: 11px;", "Transform y"), value = "y")),
-                                            column(3, textInput("trivariate_transform_z", label = strong(style = "font-size: 11px;", "Transform z"), value = "z")),
-                                            column(2, actionButton("trivariate_transform_go", label = strong(style = "font-size: 11px;","Transform")))
-                                          ),
-                                          br(),
-                                          threejs::scatterplotThreeOutput("trivariate_plot_out"),
-                                          br()
-                                 ),
-                                 #### bivariate plot #####
-                                 tabPanel("Bivariate",
-                                          uiOutput("ui_bivariate_customize"),
-                                          fluidRow(
-                                            column(4, selectizeInput("bivariate_param_y", label = strong(style = "color: #337ab7;", "y-axis"), 
-                                                                     choices = rev(.make_param_list(object)), 
-                                                                     selected = rev(.make_param_list(object))[1], multiple = FALSE)),
-                                            column(3, textInput("bivariate_transform_y", 
-                                                                label = strong(style = "font-size: 11px;","Transform y"), value = "y")),
-                                            column(3, textInput("bivariate_transform_x", 
-                                                                label = strong(style = "font-size: 11px;","Transform x"), value = "x")),
-                                            column(2, actionButton("bivariate_transform_go", 
-                                                                   label = strong(style = "font-size: 11px;","Transform")))
-                                          ),
-                                          plotOutput("bivariate_plot_out", height = "350px"),
-                                          helpText(style = "font-size: 11px", "For Stan models using the NUTS algorithm, red points indicate iterations that encountered a divergent transition.",  
-                                                   "Yellow points indicate a transition that hit the maximum treedepth",
-                                                   "rather than terminated its evolution normally."),
                                           br()
                                  )
                                  

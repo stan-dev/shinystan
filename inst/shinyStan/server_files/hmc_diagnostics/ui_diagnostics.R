@@ -19,9 +19,9 @@ help_lines <- helpText(style = "font-size: 11px;",
 help_max_td <- helpText(style = "font-size: 11px;", 
                         "Horizontal line indicates the max_treedepth setting")
 help_points <- helpText(style = "font-size: 11px;", 
-                        "Red indicates which (if any) iterations encountered a ",
-                        "divergent transition. Yellow indicates a transition",
-                        "hitting the maximum treedepth.")  
+                        "Large red points indicate which (if any) iterations",
+                        "encountered a divergent transition. Yellow indicates",
+                        "a transition hitting the maximum treedepth.")  
 help_dynamic <- helpText(style = "font-size: 11px;", 
                          "Use your mouse or the sliders to select areas in the",
                          "traceplot to zoom into. The other plots on the screen", 
@@ -96,11 +96,11 @@ output$ui_diagnostics_sample <- renderUI({
                       dygraphOutput_175px("dynamic_trace_diagnostic_lp_out"),
                       br(),
                       dygraphOutput_175px("dynamic_trace_diagnostic_accept_stat_out")),
-               column(6, help_lines, plotOutput_200px("lp_hist_out"),
+               column(6, help_lines, plotOutput_200px("lp_hist_out"), br(),
                       plotOutput_200px("accept_stat_hist_out"))
              )
       ),
-      column(5, help_points,
+      column(5, help_points, 
              plotOutput_400px("accept_stat_vs_lp_out"))
     )
   )

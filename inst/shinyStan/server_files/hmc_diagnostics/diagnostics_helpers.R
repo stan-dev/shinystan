@@ -120,6 +120,23 @@ stepsize_pw <- reactive({
   graph
 }
 
+.sampler_param_vs_sampler_param_violin <- function(df_x, df_y, lab_x, lab_y, 
+                                                   chain = 0) {
+  
+  xy_labs <- labs(y = lab_y, x = lab_x)
+  df <- data.frame(x = do.call("c", df_x), y = do.call("c", df_y))
+  df$x <- as.factor(df$x)
+  
+  base <- ggplot(df, aes(x,y)) + xy_labs + thm 
+  graph <- base + geom_violin(color = vline_base_clr, fill = base_fill) 
+  if (chain == 0) return(graph)
+  chain_clr <- color_vector(ncol(df_x))[chain]
+  chain_fill <- chain_clr
+  chain_data <- data.frame(x = as.factor(df_x[, chain]), y = df_y[, chain])
+  graph + geom_violin(data = chain_data, aes(x,y), color = chain_clr, 
+                      fill = chain_fill, alpha = 0.5)
+}
+
 .p_hist <- function(df, lab, chain = 0) {
   thm <- thm_no_yaxs
   mdf <- reshape2::melt(df, id.vars = "iterations")
@@ -143,50 +160,6 @@ stepsize_pw <- reactive({
     geom_vline(xintercept = mean(chain_data$value), color = chain_clr, size = .8) + 
     geom_vline(xintercept = median(chain_data$value), 
                color = chain_clr, lty = 2, size = 1)
-}
-
-.p_trace <- function(df, lab, chain = 0) {
-  xy_labs <- labs(x = "Iteration", y = if(missing(lab)) NULL else lab)
-  mdf <- reshape2::melt(df, id.vars = "iterations")
-  base <- ggplot(mdf, aes(x = iterations, y = value, group = variable))
-  interval1 <- mean(mdf$value, na.rm = TRUE) + c(-1,1) * sd(mdf$value, na.rm = TRUE)
-  yrange <- range(mdf$value)
-  if (yrange[1] > interval1[1]) yrange[1] <- interval1[1]
-  if (yrange[2] < interval1[2]) yrange[2] <- interval1[2]
-  interval1_rect <- annotate("rect", xmin = -Inf, xmax = Inf,
-                             ymin = interval1[1], ymax = interval1[2],
-                             fill = base_fill)
-  if (chain == 0) {
-    graph <- base + interval1_rect +
-      geom_path(aes(color = variable), size = 0.25) + 
-      scale_color_grey() + 
-      scale_y_continuous(limits = yrange)
-    return(graph + xy_labs + thm)
-  }
-  chain_data <- subset(mdf, variable == paste0("chain:",chain))
-  interval1_rect <- annotate("rect", 
-                             xmin = -Inf, 
-                             xmax = Inf,
-                             ymin = interval1[1], 
-                             ymax = interval1[2],
-                             fill = base_fill, alpha = 0.5)
-  interval2 <- mean(chain_data$value, na.rm = TRUE) + 
-    c(-1,1) * sd(chain_data$value, na.rm = TRUE)
-  interval2_rect <- annotate("rect", 
-                             xmin = -Inf, 
-                             xmax = Inf,
-                             ymin = interval2[1], 
-                             ymax = interval2[2],
-                             fill = overlay_fill, alpha = 0.25)
-  if (yrange[1] > interval2[1]) yrange[1] <- interval2[1]
-  if (yrange[2] < interval2[2]) yrange[2] <- interval2[2]
-  graph <- base + 
-    interval1_rect + interval2_rect + 
-    geom_path(data = chain_data, aes(x = iterations, y = value), 
-              color = single_trace_clr, size = 0.5) + 
-    scale_y_continuous(limits = yrange)
-  
-  graph + xy_labs + thm
 }
 
 .treedepth_ndivergent_hist <- function(df_td, df_nd, chain = 0, divergent = c("All", 0, 1)) {
@@ -213,64 +186,6 @@ stepsize_pw <- reactive({
   graph + stat_bin(data = chain_data, aes(y=..count../sum(..count..)), 
                    fill = chain_fill, alpha = 0.5, width = 1)
 }
-
-.ndivergent_trace <- function(df, chain = 0) {
-  xy_labs <- labs(x = "Iteration", y = "N Divergent")
-  y_scale <- scale_y_continuous(breaks = c(0,1))
-  
-  mdf <- reshape2::melt(df, id.vars = "iterations")
-  
-  base <- ggplot(mdf, aes(x = iterations, xend = iterations, y = 0, yend = value)) +
-    xy_labs + y_scale + thm
-  
-  if (chain == 0) {
-    n_divergent <- sum(mdf$value)
-    graph <- base + 
-      geom_segment(size = 0.25) + 
-      ggtitle(paste(n_divergent, "divergent post-warmup iterations")) 
-    return(graph)
-  }
-  chain_data <- subset(mdf, variable == paste0("chain:",chain))
-  n_divergent <- sum(chain_data$value)
-  base +
-    geom_segment(size = 0.25, color = "gray") + 
-    geom_segment(data = chain_data, 
-                 aes(x = iterations, xend = iterations, y = 0, yend = value), 
-                 size = 0.5, color = vline_overlay_clr) + 
-    ggtitle(paste(n_divergent, "divergent post-warmup iterations in Chain", chain)) 
-}
-
-.stepsize_trace <- function(df, chain = 0) {
-  xy_labs <- labs(x = "Iteration", y = "Sampled Step Size")
-  
-  mdf <- reshape2::melt(df, id.vars = "iterations")
-  base <- ggplot(mdf, aes(x = iterations, y = value, group = variable)) + 
-    xy_labs + thm
-  if (chain == 0) return(base + geom_path(size = 0.5))
-  chain_data <- subset(mdf, variable == paste0("chain:",chain))
-  base + 
-    geom_path(size = 0.5, color = "gray") + 
-    geom_path(data = chain_data, aes(x = iterations, y = value), 
-              color = vline_overlay_clr)
-}
-
-.sampler_param_vs_sampler_param_violin <- function(df_x, df_y, lab_x, lab_y, 
-                                                   chain = 0) {
-  
-  xy_labs <- labs(y = lab_y, x = lab_x)
-  df <- data.frame(x = do.call("c", df_x), y = do.call("c", df_y))
-  df$x <- as.factor(df$x)
-  
-  base <- ggplot(df, aes(x,y)) + xy_labs + thm 
-  graph <- base + geom_violin(color = vline_base_clr, fill = base_fill) 
-  if (chain == 0) return(graph)
-  chain_clr <- color_vector(ncol(df_x))[chain]
-  chain_fill <- chain_clr
-  chain_data <- data.frame(x = as.factor(df_x[, chain]), y = df_y[, chain])
-  graph + geom_violin(data = chain_data, aes(x,y), color = chain_clr, 
-                      fill = chain_fill, alpha = 0.5)
-}
-
 
 .dynamic_trace_diagnostics <- function(param_samps, param_name, chain = 0,
                                        stack = FALSE, grid = FALSE, 
@@ -312,7 +227,7 @@ stepsize_pw <- reactive({
                         drawXAxis = TRUE, drawYAxis = !fill_graph, 
                         drawAxesAtZero = TRUE, axisLineColor = "black") %>%
     dygraphs::dyAxis("x", pixelsPerLabel = 1e4, axisLineWidth = 3) %>%
-    dygraphs::dyAxis("y", pixelsPerLabel = 20, axisLabelWidth = 0) %>%
+    dygraphs::dyAxis("y", pixelsPerLabel = 20, axisLabelWidth = 20) %>%
     dygraphs::dyRangeSelector(height = 1, retainDateWindow = TRUE) %>%
     dygraphs::dyLegend(show = "never") %>%
     dygraphs::dyCSS(css = "css/shinyStan_dygraphs.css")

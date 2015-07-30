@@ -318,30 +318,5 @@ function(input, output, session) {
   }, bg = "transparent")
   
   
-  # HMC/NUTS diagnostic plots
-  output$diagnostic_chain_text <- renderText({
-    chain <- diagnostic_chain()
-    if (chain == 0) return("All chains")
-    paste("Chain", chain)
-  })
-  hmc_plots <- c("accept_stat_trace", "accept_stat_hist","accept_stat_vs_lp",
-                 "lp_trace", "lp_hist", "ndivergent_trace", "treedepth_trace",
-                 "treedepth_ndivergent_hist","treedepth_ndivergent0_hist", 
-                 "treedepth_ndivergent1_hist", "treedepth_vs_lp", "ndivergent_vs_lp", 
-                 "treedepth_vs_accept_stat", "ndivergent_vs_accept_stat", 
-                 "stepsize_vs_lp", "stepsize_vs_accept_stat", "stepsize_trace", 
-                 "param_vs_lp", "param_vs_accept_stat", "param_vs_stepsize", 
-                 "param_vs_treedepth", "p_trace", "p_hist")
-  for (i in seq_along(hmc_plots)) {
-    local({
-    fn <- hmc_plots[i] 
-    output[[paste0(fn,"_out")]] <- renderPlot({
-      x <- suppressMessages(do.call(fn, list()))
-      suppress_and_print(x)
-    })
-    })
-  }
-
-
 } # End shinyServer
 

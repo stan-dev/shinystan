@@ -606,7 +606,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
 
 # dynamic trace plot ------------------------------------------------------
 .param_trace_dynamic <- function(param_samps, param_name=NULL, chain,
-                                 warmup_val, warmup_shade = TRUE,
+                                 # warmup_val, warmup_shade = TRUE,
                                  stack = FALSE, grid = FALSE) {
   color_vector <- function(n) {
     hues = seq(15, 375, length=n+1)
@@ -636,21 +636,17 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
   y_axis_label_remove <- if (stack) "white" else NULL
   clrs <- color_vector(nChains) 
   if (chain != 0) clrs <- clrs[chain]
-  dygraphs::dygraph(param_chains, xlab = "Iteration", 
-                    ylab = if (is.null(param_name)) "Value" else param_name) %>%
+  dygraphs::dygraph(param_chains, xlab = "", ylab = "") %>%
     dygraphs::dyAxis("y", rangePad = "5", axisLabelColor = y_axis_label_remove) %>%
     dygraphs::dyAxis("x", rangePad = "3") %>%
     dygraphs::dyOptions(colors = clrs, stackedGraph = stack, drawGrid = grid, animatedZooms = TRUE, axisLineColor = axis_line_color) %>%
-    dygraphs::dyRangeSelector(height = 40, strokeColor = blue_color, fillColor = "#d9e7f4") %>%
-    dygraphs::dyLegend(show = "auto", width = 400) %>%
-    #     dygraphs::dyEvent(date = as.Date(warmup_val),
-    #             label = "", color = "gray35", strokePattern = "dotted") %>%
+    dygraphs::dyRangeSelector(height = 15, strokeColor = blue_color, fillColor = "#d9e7f4") %>%
+    dygraphs::dyLegend(show = "never") %>%
     dygraphs::dyHighlight(highlightCircleSize = 4,
                 highlightSeriesBackgroundAlpha = 1/3,
                 hideOnMouseOut = TRUE,
                 highlightSeriesOpts = list()) %>%
     dygraphs::dyRoller(rollPeriod = 1) %>%
-    # dygraphs::dyShading(from = "0001-01-01", to = shade_to, color = "#d9e7f4") %>%
     dygraphs::dyCSS(css = "css/shinyStan_dygraphs.css")
 }
 
@@ -753,12 +749,12 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
                                   linetype = ellipse_lty, size = ellipse_lwd, alpha = ellipse_alpha)
   if (!all(dat$divergent == 0))
     graph <- graph + geom_point(data = subset(dat, divergent == 1), aes(x,y), 
-                                size = pt_size + 0.5, alpha = min(1, pt_alpha + 1/3),
-                                shape = 21, color = "black", fill = "#ae0001")
+                                size = pt_size + 0.5, shape = 21, 
+                                color = "#570000", fill = "#ae0001")
   if (!all(dat$hit_max_td == 0))
     graph <- graph + geom_point(data = subset(dat, hit_max_td == 1), aes(x,y), 
-                                size = pt_size + 0.5, alpha = min(1, pt_alpha + 1/3),
-                                shape = 21, color = "black", fill = "#eeba30")
+                                size = pt_size + 0.5, shape = 21,
+                                color = "#5f4a13", fill = "#eeba30")
   graph + param_labs + 
     theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)
 }

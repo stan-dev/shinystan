@@ -29,8 +29,8 @@ dynamic_trace_plot <- reactive({
     param_samps = par_samps_all(),
     param_name = input$param,
     chain = chain,
-    warmup_val = warmup_val,
-    warmup_shade = (input$dynamic_trace_warmup_shade == "show"),
+#     warmup_val = warmup_val,
+#     warmup_shade = (input$dynamic_trace_warmup_shade == "show"),
     stack = stack,
     grid = (input$dynamic_trace_grid == "show")
   ))
@@ -45,9 +45,13 @@ dynamic_trace_plot_multiview <- reactive({
   chain <- 0      # input$dynamic_trace_chain
 
   do.call(".param_trace_dynamic", args = list(
-    param_samps = par_samps_all(),
+    param_samps = if (input$multiview_warmup) 
+      par_samps_all() else par_samps_post_warmup(),
     chain = chain,
-    warmup_val = warmup_val,
     stack = stack)
   )
 })
+
+output$dynamic_trace_plot_multiview_out <- dygraphs::renderDygraph(
+  dynamic_trace_plot_multiview()
+)
