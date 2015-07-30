@@ -608,12 +608,10 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
 .param_trace_dynamic <- function(param_samps, param_name=NULL, chain,
                                  warmup_val, warmup_shade = TRUE,
                                  stack = FALSE, grid = FALSE) {
-#   get_gg_colors <- function(nColors) {
-#     colors <- hcl(h = seq(15, 375, length = nColors+1), l = 65, c = 100)
-#     colors[1:nColors]
-#   }
-#
-#   clrs <- get_gg_colors(nChains)
+  color_vector <- function(n) {
+    hues = seq(15, 375, length=n+1)
+    hcl(h=hues, l=50, c=50)[1:n]
+  }
 
   dim_samps <- dim(param_samps)
   if (is.null(dim_samps)) nChains <- 1

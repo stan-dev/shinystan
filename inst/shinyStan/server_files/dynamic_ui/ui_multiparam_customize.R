@@ -24,7 +24,7 @@ output$ui_multiparam_customize <- renderUI({
   my_color_by_rhat <- FALSE
   my_show_density <- FALSE
   my_point_est <- "Median"
-  my_fill_color <- "gray35"
+  my_fill_color <- "gray20"
   my_outline_color <- "gray35"
   my_est_color <- "lightgray"
   my_rhat_palette <- "Oranges"

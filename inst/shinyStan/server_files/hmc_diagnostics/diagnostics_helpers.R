@@ -191,7 +191,7 @@ stepsize_pw <- reactive({
 
 .treedepth_ndivergent_hist <- function(df_td, df_nd, chain = 0, divergent = c("All", 0, 1)) {
   plot_title <- theme(plot.title = element_text(size = 11, hjust = 0))
-  plot_theme <- thm + plot_title
+  plot_theme <- thm_no_yaxs + plot_title
   x_lab <- if (divergent == "All") "Treedepth (All)" else paste0("Treedepth (N Divergent = ", divergent,")")
   plot_labs <- labs(x = x_lab, y = "") 
   
@@ -312,7 +312,7 @@ stepsize_pw <- reactive({
                         drawXAxis = TRUE, drawYAxis = !fill_graph, 
                         drawAxesAtZero = TRUE, axisLineColor = "black") %>%
     dygraphs::dyAxis("x", pixelsPerLabel = 1e4, axisLineWidth = 3) %>%
-    dygraphs::dyAxis("y", pixelsPerLabel = 20) %>%
+    dygraphs::dyAxis("y", pixelsPerLabel = 20, axisLabelWidth = 0) %>%
     dygraphs::dyRangeSelector(height = 1, retainDateWindow = TRUE) %>%
     dygraphs::dyLegend(show = "never") %>%
     dygraphs::dyCSS(css = "css/shinyStan_dygraphs.css")

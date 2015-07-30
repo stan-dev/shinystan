@@ -211,7 +211,7 @@ dynamic_trace_diagnostic_treedepth <- reactive({
   `%>%` <- dygraphs::`%>%`
   graph %>% 
     dygraphs::dyLimit(limit = max_td, label = "max_treedepth", labelLoc = "right",
-                      color = "#eeba30", strokePattern = "solid") %>%
+                      color = "black", strokePattern = "solid") %>%
     dygraphs::dyAxis("y", valueRange = c(0, max_td * 8/7), 
                      pixelsPerLabel = 20, drawGrid = FALSE)
 })

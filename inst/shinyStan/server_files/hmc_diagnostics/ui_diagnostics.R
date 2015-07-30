@@ -8,6 +8,9 @@ dygraphOutput_175px <- function(id) {
 plotOutput_200px <- function(id, ...) {
   plotOutput(id, height = "200px")
 }
+plotOutput_400px <- function(id, ...) {
+  plotOutput(id, height = "400px")
+}
 
 help_interval <- helpText(style = "font-size: 11px;",
                           "Highlighted interval shows \\(\\bar{x} \\pm sd(x)\\)")
@@ -20,9 +23,9 @@ help_points <- helpText(style = "font-size: 11px;",
                         "divergent transition. Yellow indicates a transition",
                         "hitting the maximum treedepth.")  
 help_dynamic <- helpText(style = "font-size: 11px;", 
-                         "Use your mouse to highlight",
-                         "areas in the plot to zoom into. You can also use the", 
-                         "sliders. Double-click to reset.")
+                         "Use your mouse or the sliders to select areas in the",
+                         "traceplot to zoom into. The other plots on the screen", 
+                         "will update accordingly. Double-click to reset.")
 # help_violin <- helpText("The violin plot ")
 output$diagnostics_warnings_text <- renderText({
   divs <- sum(ndivergent_pw()[,-1])
@@ -40,7 +43,6 @@ output$diagnostics_warnings_text <- renderText({
 })
 
 output$ui_diagnostics_customize <- renderUI({
-  # fixedPanel(
   wellPanel(
     fluidRow(
       column(3, h4(textOutput("diagnostic_chain_text"))),
@@ -64,16 +66,15 @@ output$ui_diagnostics_customize <- renderUI({
     helpText(strong(style = "color: red; font-size: 13px;", 
                     textOutput("diagnostics_warnings_text")))
   )
-  # )
 })
 
 # model parameter ---------------------------------------------------------
 output$ui_diagnostics_parameter <- renderUI({
-  div(withMathJax(),
+  div(
     fluidRow(
       column(7, help_dynamic,
              dygraphOutput_175px("dynamic_trace_diagnostic_parameter_out")),
-      column(5, help_lines, plotOutput("p_hist_out", height = "200px"))
+      column(5, help_lines, plotOutput_200px("p_hist_out"))
     ),
     help_points,
     fluidRow(
@@ -87,7 +88,7 @@ output$ui_diagnostics_parameter <- renderUI({
 
 # sample (accept_stat, lp) ------------------------------------------------
 output$ui_diagnostics_sample <- renderUI({
-  div(withMathJax(),
+  div(
     fluidRow(
       column(7,
              fluidRow(
@@ -100,21 +101,21 @@ output$ui_diagnostics_sample <- renderUI({
              )
       ),
       column(5, help_points,
-             plotOutput("accept_stat_vs_lp_out", height = "400px"))
+             plotOutput_400px("accept_stat_vs_lp_out"))
     )
   )
 })
 
 # treedepth ---------------------------------------------------------------
 output$ui_diagnostics_treedepth <- renderUI({
-  div(withMathJax(),
+  div(
     fluidRow(
       column(7, help_dynamic,
              dygraphOutput_175px("dynamic_trace_diagnostic_treedepth_out"),
              br(),br(),
              plotOutput("treedepth_vs_lp_out", height = "150px")
       ),
-      column(5, plotOutput("treedepth_vs_accept_stat_out", height = "400px"))
+      column(5, plotOutput_400px("treedepth_vs_accept_stat_out"))
     ),
     splitLayout( 
       plotOutput("treedepth_ndivergent_hist_out", height = "125px"),
@@ -127,28 +128,23 @@ output$ui_diagnostics_treedepth <- renderUI({
 
 # N divergent -------------------------------------------------------------
 output$ui_diagnostics_ndivergent <- renderUI({
-  div(
   fluidRow(
     column(7, #plotOutput_200px("ndivergent_trace_out"),
            help_dynamic,
            dygraphOutput_175px("dynamic_trace_diagnostic_ndivergent_out"), 
            br(),br(),
            plotOutput("ndivergent_vs_lp_out", height = "150px")),
-    column(5, plotOutput("ndivergent_vs_accept_stat_out", height = "400px"))
-  )
+    column(5, plotOutput_400px("ndivergent_vs_accept_stat_out"))
   )
 })
 
 # stepsize ----------------------------------------------------------------
 output$ui_diagnostics_stepsize <- renderUI({
-  div(
   fluidRow(
     column(7, help_dynamic,
            dygraphOutput_175px("dynamic_trace_diagnostic_stepsize_out"), 
            br(),br(),
            plotOutput("stepsize_vs_lp_out", height = "150px")),
-    column(5, plotOutput("stepsize_vs_accept_stat_out", height = "400px"))
-  )
+    column(5, plotOutput_400px("stepsize_vs_accept_stat_out"))
   )
 })
-
