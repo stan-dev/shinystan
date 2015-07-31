@@ -48,7 +48,7 @@ output$sampler_summary <- DT::renderDataTable({
     orderClasses = TRUE,
     initComplete = htmlwidgets::JS( # change text color of column titles
       'function(settings, json) {
-      $(this.api().table().header()).css({"color": "#337ab7"});
+      $(this.api().table().header()).css({"color": "#006DCC"});
       }'),
     rowCallback = htmlwidgets::JS(
       'function(row, data) {

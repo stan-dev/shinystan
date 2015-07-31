@@ -13,14 +13,16 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-
+span_gr <- function(...) {
+  span(style = "color: #222222; opacity: 1;", ...)
+}
 
 output$ui_bivariate_customize <- renderUI({
   my_ellipse_lev <- "None"
   my_pt_size     <- 3.5
   my_pt_shape    <- 10
-  my_pt_color    <- "gray20"
-  my_ellipse_color    <- "black"
+  my_pt_color    <- base_fill
+  my_ellipse_color    <- vline_base_clr
   my_ellipse_lty      <- 1
   my_ellipse_lwd      <- 1
   my_ellipse_alpha    <- 1
@@ -63,28 +65,29 @@ output$ui_bivariate_customize <- renderUI({
   bsCollapse(id = "bivariate_collapse_all",
     bsCollapsePanel(title = "View Options", id = "bivariate_collapse",
                     bsCollapse(
-                      bsCollapsePanel(title = span(style = "color:#337ab7;","Points"), id = "bivariate_points_collapse",
+                      bsCollapsePanel(title = span_gr("Points"), id = "bivariate_points_collapse",
                                       fluidRow(
-                                        column(4, selectInput("bivariate_pt_color", strong("Color"), choices = colors(), selected = my_pt_color)),
+                                        column(4, shinyjs::colourInput("bivariate_pt_color", strong("Color"), my_pt_color)),
                                         column(2, offset = 1, numericInput("bivariate_pt_size", strong("Size"), value = my_pt_size, min = 0, max = 10, step = 0.5)),
                                         column(2, numericInput("bivariate_pt_shape", strong("Shape"), value = my_pt_shape, min = 1, max = 10, step = 1)),
                                         column(2, sliderInput("bivariate_pt_alpha", strong("Opacity"), value = my_pt_alpha, min = 0, max = 1, step = 0.01, ticks = FALSE))
                                       )
                       ),
-                      bsCollapsePanel(title = span(style = "color:#337ab7;","Ellipse"), id = "bivariate_ellipse_collapse",
+                      bsCollapsePanel(title = span_gr("Ellipse"), id = "bivariate_ellipse_collapse",
                                       radioButtons("bivariate_ellipse_lev", label = "", selected = my_ellipse_lev, inline = TRUE,
                                                    choices = list("None" = "None", "50%" = 0.5, "80%" = 0.8, "95%" = 0.95, "99%" = 0.99)),
                                       fluidRow(
-                                        column(4, selectInput("bivariate_ellipse_color", strong("Color"), choices = colors(), selected = my_ellipse_color)),
+                                        column(4, shinyjs::colourInput("bivariate_ellipse_color", strong("Color"), my_ellipse_color)), 
                                         column(2, offset = 1, numericInput("bivariate_ellipse_lwd", strong("Size"), value = my_ellipse_lwd, min = 0, max = 5, step = 0.5)),
                                         column(2, numericInput("bivariate_ellipse_lty", strong("Shape"), value = my_ellipse_lty, min = 1, max = 6, step = 1)),
                                         column(2, sliderInput("bivariate_ellipse_alpha", strong("Opacity"), value = my_ellipse_alpha, min = 0, max = 1, step = 0.01, ticks = FALSE))
                                       )
                       ),
-                      bsCollapsePanel(title = span(style = "color:#337ab7;","Lines"), id = "bivariate_lines_collapse",
+                      bsCollapsePanel(title = span_gr("Lines"), id = "bivariate_lines_collapse",
                                       radioButtons("bivariate_lines", label = "", choices = c("Hide" = "hide", "Behind" = "back", "In front" = "front"), selected = "back", inline = TRUE),
                                       fluidRow(
-                                        column(4, selectInput("bivariate_lines_color", strong("Color"), choices = colors(), selected = my_lines_color)),
+                                        column(4, 
+                                               shinyjs::colourInput("bivariate_lines_color", strong("Color"), my_lines_color)), 
                                         column(2, offset = 1, sliderInput("bivariate_lines_alpha", label = strong("Opacity"), value = alpha_calc_lines(nIter), min = 0, max = 1, step = 0.01, ticks = FALSE))
                                       )
                       )

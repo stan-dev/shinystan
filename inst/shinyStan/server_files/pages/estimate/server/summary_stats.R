@@ -39,10 +39,11 @@ output$all_summary_out <- DT::renderDataTable({
     scrollX = TRUE,
     autoWidth = TRUE,
     scrollCollapse = FALSE,
-    columnDefs = list(list(width="85px", targets=list(0)), list(sClass="alignRight", targets ="_all")),
+    columnDefs = list(list(width="85px", targets=list(0)), 
+                      list(sClass="alignRight", targets ="_all")),
     initComplete = htmlwidgets::JS( # change text color of column titles
       'function(settings, json) {
-      $(this.api().table().header()).css({"color": "#337ab7"});
+      $(this.api().table().header()).css({"color": "#006DCC"});
       }'),
     rowCallback = htmlwidgets::JS(
       'function(row, data) {

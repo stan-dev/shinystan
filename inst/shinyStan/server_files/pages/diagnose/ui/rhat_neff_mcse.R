@@ -39,9 +39,9 @@ output$ui_rhat_neff_mcse_warnings <- renderUI({
     tags$style(type="text/css", "#n_eff_warnings_title, #rhat_warnings_title, #mcse_over_sd_warnings_title {font-size: 13px;}"),
     br(),
     fluidRow(
-      column(4, div(style = "color: #337ab7;", textOutput("n_eff_warnings"))),
-      column(4, div(style = "color: #337ab7;", textOutput("mcse_over_sd_warnings"))),
-      column(4, div(style = "color: #337ab7;", textOutput("rhat_warnings")))
+      column(4, div(style = "color: #006dcc;", textOutput("n_eff_warnings"))),
+      column(4, div(style = "color: #006dcc;", textOutput("mcse_over_sd_warnings"))),
+      column(4, div(style = "color: #006dcc;", textOutput("rhat_warnings")))
     ),
     tags$style(type="text/css", "#n_eff_warnings, #rhat_warnings, #mcse_over_sd_warnings {font-size: 12px;}")
   )

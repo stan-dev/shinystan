@@ -37,7 +37,7 @@ plot_param_vertical <- reactive({
   }
   
   customize <- !is.null(input$param_plot_show_density)
-  do.call(".plot_param_vertical_gg", args = list(
+  do.call(".multiparam_plot", args = list(
     samps           = samps_post_warmup,
     params          = input$params_to_plot,
     all_param_names = param_names,

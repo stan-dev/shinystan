@@ -13,13 +13,25 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-
+strong_w <- function(...) {
+  strong(style = "color: white;", ...)
+}
+span_gr <- function(...) {
+  span(style = "color: #222222; opacity: 1;", ...)
+}
+condPanel_together <- function(...) {
+  conditionalPanel(condition = "input.dens_chain_split == 'Together'", ...)
+}
+condPanel_prior <- function(dist, ...) {
+  cond <- paste0("input.dens_prior ==","'", dist,"'")
+  conditionalPanel(cond, ...)
+}
 
 output$ui_density_customize <- renderUI({
   
   my_point_est <- "None"
-  my_fill_color <- "gray20"
-  my_line_color <- "lightgray"
+  my_fill_color <- base_fill
+  my_line_color <- vline_base_clr
   #   my_y_breaks <- "None"
   my_x_breaks <- "Some"
   my_CI <- "None"
@@ -39,74 +51,72 @@ output$ui_density_customize <- renderUI({
   bsCollapse(
     bsCollapsePanel(title = "View Options", id = "density_collapse",
                     bsCollapse(
-                      bsCollapsePanel(title = span(style = "color:#337ab7;", "Options"), id = "density_options_collapse",
+                      bsCollapsePanel(title = span_gr("Options"), id = "density_options_collapse",
                                       fluidRow(
-                                        column(3,numericInput("dens_chain", label = strong(style = "color: white;", "Chain (0 = all)"), min = 0, max = object@nChains, step = 1, value = 0)),
+                                        column(3,numericInput("dens_chain", label = strong_w("Chain (0 = all)"), min = 0, max = object@nChains, step = 1, value = 0)),
                                         column(3, conditionalPanel(condition = "input.dens_chain == 0",
                                                                    radioButtons("dens_chain_split", label = strong("All chains"), choices = c("Together", "Separate"), selected = "Together", inline = FALSE))),
-                                        column(3, conditionalPanel(condition = "input.dens_chain_split == 'Together'", selectInput("dens_point_est", strong("Point est"), choices = c("None","Mean","Median","MAP"), selected = my_point_est))),
-                                        column(3, conditionalPanel(condition = "input.dens_chain_split == 'Together'", selectInput("dens_ci", strong("CI %"), choices = c("None" = "None", "50%" = 0.5, "80%" = 0.8, "95%" = 0.95), selected = my_CI)))
+                                        column(3, condPanel_together(selectInput("dens_point_est", strong("Point est"), choices = c("None","Mean","Median","MAP"), selected = my_point_est))),
+                                        column(3, condPanel_together(selectInput("dens_ci", strong("CI %"), choices = c("None" = "None", "50%" = 0.5, "80%" = 0.8, "95%" = 0.95), selected = my_CI)))
                                       )
                       ),
-                      bsCollapsePanel(title = span(style = "color:#337ab7;", "Aesthetics"), id = "density_collors_collapse",
+                      bsCollapsePanel(title = span_gr("Aesthetics"), id = "density_colors_collapse",
                                       fluidRow(
-                                        column(3, conditionalPanel(condition = "input.dens_chain_split == 'Together'", selectInput("dens_x_breaks", strong("x breaks"), choices = c("None", "Some", "Many"), selected = my_x_breaks))),
-                                        column(3, conditionalPanel(condition = "input.dens_chain_split == 'Together'", selectInput("dens_fill_color", strong(style = "color: white;", "Fill color"), choices = colors(), selected = my_fill_color, selectize = TRUE))),
-                                        column(3, conditionalPanel(condition = "input.dens_chain_split == 'Together' && (input.dens_point_est != 'None' || input.dens_ci != 'None')", selectInput("dens_line_color", strong(style = "color: white;", "Line color"), choices = colors(), selected = my_line_color, selectize = TRUE)))
+                                        column(3, condPanel_together(selectInput("dens_x_breaks", strong("x breaks"), choices = c("None", "Some", "Many"), selected = my_x_breaks))),
+                                        column(3, condPanel_together(shinyjs::colourInput("dens_fill_color", strong_w("Fill color"), my_fill_color))), 
+                                        column(3, condPanel_together(shinyjs::colourInput("dens_line_color", strong_w("Line color"), my_line_color))) 
                                       )
                       ),
-                      bsCollapsePanel(title = span(style = "color:#337ab7;", "Compare to density function"), id = "density_prior_collapse",
+                      bsCollapsePanel(title = span_gr("Compare to density function"), id = "density_prior_collapse",
                                       fluidRow(
                                         column(4, selectInput("dens_prior", "Family", choices = list("None", "Normal", "t", "Cauchy", "Exponential", "Gamma", "Inverse Gamma", "Beta"))),
-                                        column(2, conditionalPanel(condition = "input.dens_prior == 'Normal'",
-                                                                   numericInput("dens_prior_normal_mu", "Location", value = 0, step = 0.1)
+                                        column(2, condPanel_prior("Normal", numericInput("dens_prior_normal_mu", "Location", value = 0, step = 0.1)
                                         ),
-                                        conditionalPanel(condition = "input.dens_prior == 't'",
-                                                         numericInput("dens_prior_t_df", "df", value = 1, min = 0, step = 0.1)
+                                        condPanel_prior("t", numericInput("dens_prior_t_df", "df", value = 1, min = 0, step = 0.1)
                                         ),
-                                        conditionalPanel(condition = "input.dens_prior == 'Cauchy'",
-                                                         numericInput("dens_prior_cauchy_mu", "Location", value = 0, step = 0.1)
+                                        condPanel_prior("Cauchy", 
+                                                        numericInput("dens_prior_cauchy_mu", "Location", value = 0, step = 0.1)
                                         ),
-                                        conditionalPanel(condition = "input.dens_prior == 'Beta'",
-                                                         numericInput("dens_prior_beta_shape1", "Shape1", value = 1, min = 0, step = 0.1)
+                                        condPanel_prior("Beta", 
+                                                        numericInput("dens_prior_beta_shape1", "Shape1", value = 1, min = 0, step = 0.1)
                                         ),
-                                        conditionalPanel(condition = "input.dens_prior == 'Exponential'",
-                                                         numericInput("dens_prior_expo_rate", "Rate", value = 1, min = 0, step = 0.1)
+                                        condPanel_prior("Exponential", 
+                                                        numericInput("dens_prior_expo_rate", "Rate", value = 1, min = 0, step = 0.1)
                                         ),
-                                        conditionalPanel(condition = "input.dens_prior == 'Gamma'",
-                                                         numericInput("dens_prior_gamma_shape", "Shape", value = 1, min = 0, step = 0.1)
+                                        condPanel_prior("Gamma", 
+                                                        numericInput("dens_prior_gamma_shape", "Shape", value = 1, min = 0, step = 0.1)
                                         ),
-                                        conditionalPanel(condition = "input.dens_prior == 'Inverse Gamma'",
-                                                         numericInput("dens_prior_inversegamma_shape", "Shape", value = 1, min = 0, step = 0.1)
+                                        condPanel_prior("Inverse Gamma", 
+                                                        numericInput("dens_prior_inversegamma_shape", "Shape", value = 1, min = 0, step = 0.1)
                                         )
                                         ),
-                                        column(2, conditionalPanel(condition = "input.dens_prior == 'Normal'",
-                                                                   numericInput("dens_prior_normal_sigma", "Scale", value = 1, min = 0, step = 0.1)
+                                        column(2, condPanel_prior("Normal",
+                                                                  numericInput("dens_prior_normal_sigma", "Scale", value = 1, min = 0, step = 0.1)
                                         ),
-                                        conditionalPanel(condition = "input.dens_prior == 't'",
-                                                         numericInput("dens_prior_t_mu", "Location", value = 0, step = 0.1)
+                                        condPanel_prior("t",
+                                                        numericInput("dens_prior_t_mu", "Location", value = 0, step = 0.1)
                                         ),
-                                        conditionalPanel(condition = "input.dens_prior == 'Cauchy'",
-                                                         numericInput("dens_prior_cauchy_sigma", "Scale", value = 1, min = 0, step = 0.1)
+                                        condPanel_prior("Cauchy",
+                                                        numericInput("dens_prior_cauchy_sigma", "Scale", value = 1, min = 0, step = 0.1)
                                         ),
-                                        conditionalPanel(condition = "input.dens_prior == 'Beta'",
-                                                         numericInput("dens_prior_beta_shape2", "Shape2", value = 1, min = 0, step = 0.1)
+                                        condPanel_prior("Beta",
+                                                        numericInput("dens_prior_beta_shape2", "Shape2", value = 1, min = 0, step = 0.1)
                                         ),
-                                        conditionalPanel(condition = "input.dens_prior == 'Gamma'",
-                                                         numericInput("dens_prior_gamma_rate", "Rate", value = 1, min = 0, step = 0.1)
+                                        condPanel_prior("Gamma",
+                                                        numericInput("dens_prior_gamma_rate", "Rate", value = 1, min = 0, step = 0.1)
                                         ),
-                                        conditionalPanel(condition = "input.dens_prior == 'Inverse Gamma'",
-                                                         numericInput("dens_prior_inversegamma_scale", "Scale", value = 1, min = 0, step = 0.1)
+                                        condPanel_prior("Inverse Gamma",
+                                                        numericInput("dens_prior_inversegamma_scale", "Scale", value = 1, min = 0, step = 0.1)
                                         )
                                         ),
                                         column(2, 
-                                               conditionalPanel(condition = "input.dens_prior == 't'",
-                                                                numericInput("dens_prior_t_sigma", "Scale", value = 1, min = 0, step = 0.1)
+                                               condPanel_prior("t",
+                                                               numericInput("dens_prior_t_sigma", "Scale", value = 1, min = 0, step = 0.1)
                                                )
                                         )
                                       ),
-                                      conditionalPanel(condition = "input.dens_chain_split == 'Together'", 
-                                                       textInput("dens_xzoom", label = strong("x-axis limits (numeric vector c(min,max))"), value = "Auto")
+                                      condPanel_together(
+                                        textInput("dens_xzoom", label = strong("x-axis limits (numeric vector c(min,max))"), value = "Auto")
                                       )
                       )
                     ),

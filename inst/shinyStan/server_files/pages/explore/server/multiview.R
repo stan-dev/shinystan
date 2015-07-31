@@ -16,8 +16,8 @@
 
 dynamic_trace_plot_multiview <- reactive({
   if (input$param == "") return()
-  stack <- FALSE  # stack <- input$dynamic_trace_stack
-  chain <- 0      # input$dynamic_trace_chain
+  stack <- FALSE  
+  chain <- 0      
   do.call(".param_trace_dynamic", args = list(
     param_samps = if (input$multiview_warmup) 
       par_samps_all() else par_samps_post_warmup(),
@@ -51,8 +51,8 @@ density_plot_multiview <- reactive({
     dat         = samps,
     chain       = 0,
     chain_split = FALSE,
-    fill_color  = "gray20",
-    line_color  = "lightgray",
+    fill_color  = base_fill,
+    line_color  = vline_base_clr,
     point_est   = "None",
     CI          = "None",
     #     y_breaks    = "None",

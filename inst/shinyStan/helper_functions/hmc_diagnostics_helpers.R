@@ -1,25 +1,5 @@
-small_axis_labs <- theme(axis.title = element_text(face = "bold", size = 11))
-diagnostics_fat_axis <- theme(axis.line.x = element_line(size = 3, color = "black"), 
-                  axis.line.y = element_line(size = 0.5, color = "black"))
-thm <- theme_classic() %+replace% (no_lgnd + diagnostics_fat_axis + small_axis_labs + transparent)
+thm <- theme_classic() %+replace% (no_lgnd + fat_axis + axis_labs + transparent)
 thm_no_yaxs <- thm + no_yaxs
-
-base_fill <- "skyblue"
-overlay_fill <- "skyblue4"
-vline_base_clr <- "black"
-vline_overlay_clr <- "black"
-single_trace_clr <- overlay_fill
-divergent_fill <- "#ae0001" # "#5cffcc"
-hit_max_td_fill <- "#eeba30"
-divergent_clr <-  "black" #"#772000" # "#40b28e"
-hit_max_td_clr <- "black" # "#473600"
-div_and_hit_shape <- 21
-
-color_vector <- function(n) {
-  hues = seq(15, 375, length=n+1)
-  # hcl(h=hues, l=65, c=100)[1:n]
-  hcl(h=hues, l=50, c=50)[1:n]
-}
 
 .sampler_param_pw <- function(sp, which = "accept_stat__", warmup_val) {
   sp_pw <- lapply(1:length(sp), function(i) {
@@ -46,7 +26,7 @@ color_vector <- function(n) {
   if (chain == 0) {
     if (violin) graph <- base + geom_violin(color = vline_base_clr, fill = base_fill) 
     else {
-      graph <- base + geom_point(alpha = 0.5, color = base_fill) 
+      graph <- base + geom_point(alpha = 1/3, color = pt_outline_clr, fill = base_fill, shape = 19) 
       if (smoother) graph <- graph + stat_smooth(color = overlay_fill, se = FALSE)
       if (!is.null(divergent))
         graph <- graph + geom_point(data = subset(df, divergent == 1), aes(sp,p), 
@@ -62,7 +42,7 @@ color_vector <- function(n) {
   chain_data <- data.frame(sp = sp[, chain], p = p[, chain])
   if (!is.null(divergent)) chain_data$div <- divergent[, chain]
   if (!is.null(hit_max_td)) chain_data$hit <- hit_max_td[, chain]
-  chain_clr <- color_vector(ncol(sp))[chain]
+  chain_clr <- color_vector_chain(ncol(sp))[chain]
   chain_fill <- chain_clr
   if (violin) {
     chain_data$sp <- as.factor(round(chain_data$sp, 4))
@@ -72,7 +52,7 @@ color_vector <- function(n) {
                   fill = chain_fill, alpha = 0.5)
     return(graph)
   }
-  graph <- base + geom_point(alpha = 0.5, color = base_fill)
+  graph <- base + geom_point(alpha = 1/3, color = pt_outline_clr, fill = base_fill, shape = 19)
   if (smoother) graph <- graph + 
     stat_smooth(color = overlay_fill, se = FALSE)
   graph <- graph + 
@@ -100,7 +80,7 @@ color_vector <- function(n) {
   base <- ggplot(df, aes(x,y)) + xy_labs + thm 
   graph <- base + geom_violin(color = vline_base_clr, fill = base_fill) 
   if (chain == 0) return(graph)
-  chain_clr <- color_vector(ncol(df_x))[chain]
+  chain_clr <- color_vector_chain(ncol(df_x))[chain]
   chain_fill <- chain_clr
   chain_data <- data.frame(x = as.factor(df_x[, chain]), y = df_y[, chain])
   graph + geom_violin(data = chain_data, aes(x,y), color = chain_clr, 
@@ -112,7 +92,7 @@ color_vector <- function(n) {
   mdf <- reshape2::melt(df, id.vars = "iterations")
   base <- ggplot(mdf, aes(x = value)) + 
     geom_histogram(binwidth = diff(range(mdf$value))/30, fill = base_fill, 
-                   color = vline_base_clr, size = 0.05) + 
+                   color = vline_base_clr, size = 0.2) + 
     labs(x = if (missing(lab)) NULL else lab, y = "") + 
     thm
   if (chain == 0) {
@@ -122,7 +102,7 @@ color_vector <- function(n) {
     return(graph)
   }
   chain_data <- subset(mdf, variable == paste0("chain:",chain))
-  chain_clr <- color_vector(ncol(df) - 1)[chain]
+  chain_clr <- color_vector_chain(ncol(df) - 1)[chain]
   chain_fill <- chain_clr
   base + thm + geom_histogram(data = chain_data,
                               binwidth = diff(range(chain_data$value))/30,
@@ -146,11 +126,11 @@ color_vector <- function(n) {
   
   graph <- ggplot(plot_data, aes(x = factor(value)), na.rm = TRUE) + 
     stat_bin(aes(y=..count../sum(..count..)), width=1, fill = base_fill,
-             color = vline_base_clr, size = 0.05) + 
+             color = vline_base_clr, size = 0.2) + 
     plot_labs + 
     plot_theme
   if (chain == 0) return(graph)
-  chain_clr <- color_vector(ncol(df_td) - 1)[chain]
+  chain_clr <- color_vector_chain(ncol(df_td) - 1)[chain]
   chain_fill <- chain_clr
   chain_data <- subset(plot_data, variable == paste0("chain:",chain))
   graph + stat_bin(data = chain_data, aes(y=..count../sum(..count..)), 
@@ -196,9 +176,13 @@ color_vector <- function(n) {
                         strokeWidth = 0.75, animatedZooms = TRUE, 
                         drawXAxis = TRUE, drawYAxis = !fill_graph, 
                         drawAxesAtZero = TRUE, axisLineColor = "black") %>%
-    dygraphs::dyAxis("x", pixelsPerLabel = 1e4, axisLineWidth = 3) %>%
+    dygraphs::dyAxis("x", pixelsPerLabel = 1e6, axisLineWidth = 3) %>%
     dygraphs::dyAxis("y", pixelsPerLabel = 20, axisLabelWidth = 20) %>%
     dygraphs::dyRangeSelector(height = 1, retainDateWindow = TRUE) %>%
     dygraphs::dyLegend(show = "never") %>%
+    dygraphs::dyHighlight(highlightCircleSize = 2,
+                          highlightSeriesBackgroundAlpha = 1/3,
+                          hideOnMouseOut = TRUE,
+                          highlightSeriesOpts = list(strokeWidth = 1.5)) %>%
     dygraphs::dyCSS(css = "css/shinyStan_dygraphs.css")
 }

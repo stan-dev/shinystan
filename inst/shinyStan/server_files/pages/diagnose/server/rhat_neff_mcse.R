@@ -16,23 +16,29 @@
 
 # rhat, n_eff, mcse -------------------------------------------------------
 n_eff_plot <- reactive({
+  dat <- fit_summary[,"n_eff"]
+  N <- nrow(samps_post_warmup)
+  dat <- data.frame(parameter = names(dat), x = dat / N)
   do.call(".rhat_neff_mcse_hist", args = list(
-    summary = fit_summary,
-    samps = samps_post_warmup,
+    dat = dat,
+    N = nrow(samps_post_warmup),
     which = "n_eff"
   ))
 })
 rhat_plot <- reactive({
+  dat <- fit_summary[,"Rhat"]
+  dat <- data.frame(parameter = names(dat), x = dat)
   do.call(".rhat_neff_mcse_hist", args = list(
-    summary = fit_summary,
-    samps = samps_post_warmup,
+    dat = dat,
     which = "rhat"
   ))
 })
 mcse_over_sd_plot <- reactive({
+  dat <- fit_summary[, c("se_mean", "sd")]
+  dat <- dat[,1] / dat[,2]
+  dat <- data.frame(parameter = names(dat), x = dat)
   do.call(".rhat_neff_mcse_hist", args = list(
-    summary = fit_summary,
-    samps = samps_post_warmup,
+    dat = dat,
     which = "mcse"
   ))
 })

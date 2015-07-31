@@ -137,36 +137,30 @@
                         title = TRUE) {
   
   ttl <- "Histogram of Posterior Draws \n"
-
   if (transform_x != "x") {
     t_x <- eval(parse(text = paste0("function(x) {", transform_x,"}")))
     dat <- apply(dat, 2, t_x)
   }
   x_lab <- if (transform_x != "x") gsub("x", param, transform_x) else param
-  
   dat <- reshape2::melt(dat)
-
   if (!("chains" %in% colnames(dat))) { # fixes for if there's only 1 chain:
     dat$chains <- "chain:1"
     dat$iterations <- 1:nrow(dat)
   }
-
-  if (chain != 0) {
-    dat <- subset(dat, chains == paste0("chain:",chain))
-  }
-
+  if (chain != 0) dat <- subset(dat, chains == paste0("chain:",chain))
+  
   graph <- ggplot(dat, aes(x = value))
 
   if (binwd == 0) {
-    graph <- graph + geom_histogram(fill = fill_color, color = line_color)
+    graph <- graph + geom_histogram(fill = fill_color, color = line_color, size = 0.2)
   } else {
-    graph <- graph + geom_histogram(fill = fill_color, color = line_color, binwidth = binwd)
+    graph <- graph + geom_histogram(fill = fill_color, color = line_color, 
+                                    binwidth = binwd, size = 0.2)
   }
-
   graph <- graph +
     labs(x = x_lab, y = "") +
-    theme_classic() %+replace% (title_txt + axis_color + axis_labs + fat_axis + no_yaxs + transparent)
-
+    theme_classic() %+replace% 
+    (title_txt + axis_color + axis_labs + fat_axis + no_yaxs + transparent)
   if (title == TRUE) graph <- graph + ggtitle(ttl)
 
   graph
@@ -177,8 +171,10 @@
 # density plot for a single parameter
 
 # data.frame of prior families and function names
-priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", "Gamma", "Inverse Gamma"),
-                     fun = c("dnorm", ".dt_loc_scale", "dcauchy", "dbeta", "dexp", "dgamma", ".dinversegamma"))
+priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
+                                "Gamma", "Inverse Gamma"),
+                     fun = c("dnorm", ".dt_loc_scale", "dcauchy", "dbeta", 
+                             "dexp", "dgamma", ".dinversegamma"))
 
 .param_dens <- function(param, dat, chain,
                         fill_color = NULL, line_color = NULL,
@@ -191,7 +187,6 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
                         prior_fam = "None", prior_params) {
   
   ttl <- "Kernel Density Estimate \n"
-
   if (transform_x != "x") {
     t_x <- eval(parse(text = paste0("function(x) {", transform_x,"}")))
     dat <- apply(dat, 2, t_x)
@@ -199,15 +194,12 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
   x_lab <- if (transform_x != "x") gsub("x", param, transform_x) else param
   
   dat <- reshape2::melt(dat)
-  
   if (!("chains" %in% colnames(dat))) { # fixes for if there's only 1 chain:
     dat$chains <- "chain:1"
     dat$iterations <- 1:nrow(dat)
   }
-  
-  if (chain != 0) {
+  if (chain != 0) 
     dat <- subset(dat, chains == paste0("chain:",chain))
-  }
   
   Mean <- mean(dat$value)
   Median <- median(dat$value)
@@ -237,23 +229,23 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
       theme_classic() %+replace% (title_txt + axis_color + axis_labs + fat_axis + no_yaxs + transparent) 
       
     if (title == TRUE) graph <- graph + ggtitle(ttl)
-    
     return(graph)
   }
   
   graph <- ggplot(dens_dat, aes(x = x, ymax = y))
   if (prior_fam != "None") {
-    graph <- graph + stat_function(fun = as.character(priors$fun[priors$family==prior_fam]), args = prior_params)
+    graph <- graph + 
+      stat_function(fun = as.character(priors$fun[priors$family==prior_fam]), 
+                    args = prior_params)
   }
   graph <- graph +
     labs(x = param, y = "") +
     x_scale + # y_scale +
     labs(x = x_lab, y = "") +
-    geom_ribbon(ymin = 0, fill = fclr, color = fclr, alpha = if (prior_fam == "None") 1 else 0.85) +
+    geom_ribbon(ymin = 0, fill = fclr, color = lclr, alpha = if (prior_fam == "None") 1 else 0.85) +
     theme_classic() %+replace% (title_txt + axis_color + axis_labs + fat_axis + no_yaxs + transparent)
   
   if (title == TRUE) graph <- graph + ggtitle(ttl)
-  
   if (point_est != "None") {
     graph <- graph + annotate("segment",
                               x = get(point_est), xend = get(point_est),
@@ -267,7 +259,6 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
                 annotate("segment", x = quant, xend = quant, y = 0, yend = max(dens_dat$y), color = lclr, lty = rep(1:length(CI),2))
     )
   }
-  
   if (xzoom) graph <- graph + scale_x_continuous(limits = x_lim)
   graph
 }
@@ -276,9 +267,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
 # autocorr_single_plot ----------------------------------------------------
 # markov chain autocorrelation plot for single parameter (for multiview)
 .autocorr_single_plot <- function(samps, lags) {
-  
   dat <- reshape2::melt(samps)
-  
   if (!("chains" %in% colnames(dat))) { # fixes for if there's only 1 chain:
     dat$chains <- "chain:1"
     dat$iterations <- 1:nrow(dat)
@@ -287,14 +276,12 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
   ac_dat <- plyr::ddply(dat, "chains", plyr::here(plyr::summarise),
                         ac = acf(value, lag.max = lags, plot = FALSE)$acf[,,1],
                         lag = 0:lags)
-  
   ac_labs <- labs(x = "Lag", y = "Autocorrelation")
   ac_theme <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_lgnd + transparent)
   y_scale <- scale_y_continuous(breaks = seq(0, 1, 0.25), labels = c("0","","0.5","",""))
-  
   graph <- ggplot(ac_dat, aes(x = lag, y = ac))
   graph <- graph +
-    geom_bar(position = "identity", stat = "identity", fill = "gray20") +
+    geom_bar(position = "identity", stat = "identity", fill = base_fill) +
     y_scale + ac_theme
   graph
 }
@@ -326,37 +313,29 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
   ac_type <- if (partial) "partial" else "correlation"
   
   if (!partial) {
-    if (nParams == 1) {
-      ac_dat <- plyr::ddply(dat, "chains", plyr::here(plyr::summarise),
-                            ac = acf(value, lag.max = lags, plot = FALSE)$acf[,,1],
+      ac_dat <- plyr::ddply(dat, c(if (nParams > 1) "parameters", "chains"), 
+                            plyr::here(plyr::summarise),
+                            ac = acf(value, lag.max = lags, plot = FALSE)$acf[,,1L],
                             lag = 0:lags)
-    }
-    if (nParams > 1) {
-      ac_dat <- plyr::ddply(dat, c("parameters", "chains"), plyr::here(plyr::summarise),
-                            ac = acf(value, lag.max = lags, plot = FALSE)$acf[,,1],
-                            lag = 0:lags)
-    }
   } else {
-    if (nParams == 1) {
-      ac_dat <- plyr::ddply(dat, "chains", plyr::here(plyr::summarise),
-                            ac = pacf(value, lag.max = lags, plot = FALSE)$acf[,,1],
+      ac_dat <- plyr::ddply(dat, c(if (nParams > 1) "parameters", "chains"), 
+                            plyr::here(plyr::summarise),
+                            ac = pacf(value, lag.max = lags, plot = FALSE)$acf[,,1L],
                             lag = 1:lags)
-    }
-    if (nParams > 1) {
-      ac_dat <- plyr::ddply(dat, c("parameters", "chains"), plyr::here(plyr::summarise),
-                            ac = pacf(value, lag.max = lags, plot = FALSE)$acf[,,1],
-                            lag = 1:lags)
-    }
   }
    
-  ac_labs <- labs(x = "Lag", y = if (partial) "Partial autocorrelation" else "Autocorrelation")
-  ac_theme <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_lgnd + strip_txt + transparent)
-  y_scale <- scale_y_continuous(breaks = seq(0, 1, 0.25), labels = c("0","","0.5","",""))
+  ac_labs <- labs(x = "Lag", y = if (partial) 
+    "Partial autocorrelation" else "Autocorrelation")
+  ac_theme <- theme_classic() %+replace% 
+    (axis_color + axis_labs + fat_axis + no_lgnd + strip_txt + transparent)
+  y_scale <- scale_y_continuous(breaks = seq(0, 1, 0.25), 
+                                labels = c("0","","0.5","",""))
   title_theme <- theme(plot.title = element_text(face = "bold", size = 18))
   if (combine_chains) {
     graph <- ggplot(ac_dat, aes(x= lag, y = ac))
     graph <- graph +
-      geom_bar(position = "identity", stat = "identity", fill = "gray20") +
+      geom_bar(position = "identity", stat = "identity", 
+               fill = base_fill, size = 0.4) +
       y_scale + 
       ac_labs + 
       ac_theme
@@ -365,23 +344,26 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
     else return(graph + facet_wrap(~parameters))
   }
   
-  
-  graph <- ggplot(ac_dat, aes(x = lag, y = ac, fill = factor(chains)))
+  graph <- ggplot(ac_dat, aes(x = lag, y = ac, color = factor(chains), 
+                              fill = factor(chains)))
   graph <- graph +
-    geom_bar(position = "identity", stat = "identity") +
-    scale_fill_manual(values = rep("gray20", object@nChains)) +
+    geom_bar(position = "identity", stat = "identity", size = 0.4) +
+    scale_fill_manual(values = rep(base_fill, object@nChains)) +
+    scale_color_manual(values = rep(vline_base_clr, object@nChains)) +
     y_scale +
     ac_labs +
     ac_theme
   
   if (nParams == 1) {
-    graph <- graph + facet_wrap(~chains) + ggtitle(paste(params, "\n")) + title_theme
+    graph <- graph + 
+      facet_wrap(~chains) + ggtitle(paste(params, "\n")) + title_theme
     return(graph)
   } else { # nParams > 1
     
     while(is.null(flip)) return()
     
-    graph <- graph + if (flip) facet_grid(chains ~ parameters) else facet_grid(parameters ~ chains)
+    graph <- graph + 
+      if (flip) facet_grid(chains ~ parameters) else facet_grid(parameters ~ chains)
     return(graph)
   }
 }
@@ -392,20 +374,11 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
 
 # plot_param_vertical_gg --------------------------------------------------
 # main plot of multiple parameters
-.plot_param_vertical_gg <- function(samps,
-                                    params = NULL,
-                                    all_param_names,
-                                    show_density,
-                                    show_ci_line,
-                                    CI.level = 0.5,
-                                    show.level = 0.95,
-                                    point_est,
-                                    rhat_values,
-                                    color_by_rhat,
-                                    rhat_palette,
-                                    fill_color,
-                                    outline_color,
-                                    est_color) {
+.multiparam_plot <- function(samps, params = NULL, all_param_names,
+                             show_density, show_ci_line, CI.level = 0.5, 
+                             show.level = 0.95, point_est, rhat_values, 
+                             color_by_rhat, rhat_palette, fill_color, 
+                             outline_color, est_color) {
 
   params <- .update_params_with_groups(params, all_param_names)
   .e <- environment()
@@ -465,8 +438,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
                    axis.ticks.y = element_blank(),
                    axis.text=element_text(size=12),
                    axis.text.y=element_text(face = "bold"),
-                   axis.line=element_line(size = 4, color = blue_color),
-                   axis.line.y=element_line(size = 0.5),
+                   axis.line=element_line(size = 4, color = axis_line_color),
+                   axis.line.y=element_line(size = 0.5, color = axis_line_color),
                    legend.position = "none",
                    panel.grid.major = element_line(size = 0.4),
                    panel.grid.minor.y = element_blank())
@@ -541,27 +514,16 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
 
 
 # histogram of rhat, n_eff/N or mcse/sd -----------------------------------
-.rhat_neff_mcse_hist <- function(summary, samps, which) {
+.rhat_neff_mcse_hist <- function(dat, which, N) {
   # samps: post-warmup samples
-
-  if (which == "rhat") {
-    dat <- summary[,"Rhat"]
-    dat <- data.frame(parameter = names(dat), x = dat)
-    my_labs <- labs(y = "", x = "Rhat statistic")
-  }
-  if (which == "n_eff") {
-    N <- length(samps[,,1])
-    dat <- summary[,"n_eff"]
-    dat <- data.frame(parameter = names(dat), x = dat/N)
-    my_labs <- labs(y = "", x = "Effective sample size / iterations")
-  }
-  if (which == "mcse") {
-    dat <- summary[, c("se_mean", "sd")]
-    dat <- dat[,1] / dat[,2]
-    dat <- data.frame(parameter = names(dat), x = dat)
-    my_labs <- labs(y = "", x = "Monte Carlo se / posterior sd")
-  }
-  graph <- qplot(x = x, data = dat, color = I("black"), fill = I("gray20"))
+  xlab <- switch(which, 
+         rhat = "Rhat statistic",
+         n_eff = "Effective sample size / iterations",
+         mcse = "Monte Carlo se / posterior sd"
+         )
+  my_labs <- labs(y = "", x = xlab)
+  base_fill
+  graph <- qplot(x = x, data = dat, color = I(vline_base_clr), fill = I(base_fill), size = I(0.2))
   graph <- graph + 
     my_labs + 
     theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + transparent)
@@ -608,11 +570,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
 .param_trace_dynamic <- function(param_samps, param_name=NULL, chain,
                                  # warmup_val, warmup_shade = TRUE,
                                  stack = FALSE, grid = FALSE) {
-  color_vector <- function(n) {
-    hues = seq(15, 375, length=n+1)
-    hcl(h=hues, l=50, c=50)[1:n]
-  }
-
+  
   dim_samps <- dim(param_samps)
   if (is.null(dim_samps)) nChains <- 1
   else nChains <- dim_samps[2]
@@ -637,15 +595,18 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential", 
   clrs <- color_vector(nChains) 
   if (chain != 0) clrs <- clrs[chain]
   dygraphs::dygraph(param_chains, xlab = "", ylab = "") %>%
-    dygraphs::dyAxis("y", rangePad = "5", axisLabelColor = y_axis_label_remove) %>%
-    dygraphs::dyAxis("x", rangePad = "3") %>%
-    dygraphs::dyOptions(colors = clrs, stackedGraph = stack, drawGrid = grid, animatedZooms = TRUE, axisLineColor = axis_line_color) %>%
-    dygraphs::dyRangeSelector(height = 15, strokeColor = blue_color, fillColor = "#d9e7f4") %>%
+    dygraphs::dyAxis("y", axisLabelColor = y_axis_label_remove) %>%
+    dygraphs::dyAxis("x", axisLabelColor = "white") %>% 
+    dygraphs::dyOptions(colors = clrs, stackedGraph = stack, drawGrid = grid, 
+                        animatedZooms = TRUE, axisLineColor = axis_line_color) %>%
+    dygraphs::dyRangeSelector(height = 15, strokeColor = blue_color, 
+                              fillColor = base_fill, 
+                              retainDateWindow = TRUE) %>%
     dygraphs::dyLegend(show = "never") %>%
     dygraphs::dyHighlight(highlightCircleSize = 4,
                 highlightSeriesBackgroundAlpha = 1/3,
                 hideOnMouseOut = TRUE,
-                highlightSeriesOpts = list()) %>%
+                highlightSeriesOpts = list(strokeWidth = 1.75)) %>%
     dygraphs::dyRoller(rollPeriod = 1) %>%
     dygraphs::dyCSS(css = "css/shinyStan_dygraphs.css")
 }

@@ -24,9 +24,9 @@ output$ui_multiparam_customize <- renderUI({
   my_color_by_rhat <- FALSE
   my_show_density <- FALSE
   my_point_est <- "Median"
-  my_fill_color <- "gray20"
+  my_fill_color <- "#337ab7"
   my_outline_color <- "gray35"
-  my_est_color <- "lightgray"
+  my_est_color <- "#f9dd67"
   my_rhat_palette <- "Oranges"
 
   #   if (input$user_param_plot_customize == TRUE) {
@@ -62,10 +62,10 @@ output$ui_multiparam_customize <- renderUI({
                 bsCollapsePanel(title = "Aesthetics", id = "multiparam_colors_collapse",
                                 withMathJax(),
                                 checkboxInput("param_plot_color_by_rhat", label = "Color point est. by \\(\\hat{R}\\)", value = my_color_by_rhat),
-                                selectInput("param_plot_fill_color", span(style = "font-size: 12px", "Density/CI color"), choices = colors(), selected = my_fill_color, selectize = TRUE),
-                                selectInput("param_plot_outline_color", span(style = "font-size: 12px", "Outline color"), choices = colors(), selected = my_outline_color, selectize = TRUE),
+                                shinyjs::colourInput("param_plot_fill_color", span(style = "font-size: 12px", "Density/CI color"), my_fill_color),
+                                shinyjs::colourInput("param_plot_outline_color", span(style = "font-size: 12px", "Outline color"), my_outline_color),
                                 conditionalPanel(condition = "input.param_plot_color_by_rhat == false",
-                                                 selectInput("param_plot_est_color", span(style = "font-size: 12px", "Point estimate color"), choices = colors(), selected = my_est_color, selectize = TRUE)),
+                                                 shinyjs::colourInput("param_plot_est_color", span(style = "font-size: 12px", "Point estimate color"), my_est_color)),
                                 conditionalPanel(condition = "input.param_plot_color_by_rhat == true",
                                                  selectInput("param_plot_rhat_palette", span(style = "font-size: 12px", "Rhat palette"), choices = c("Blues", "Grays", "Greens", "Oranges", "Purples", "Reds"), selected = my_rhat_palette, selectize=TRUE))
                 ),

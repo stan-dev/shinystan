@@ -71,11 +71,20 @@ suppress_and_print <- function(x) suppressMessages(suppressWarnings(print(x)))
 }
 
 
+color_vector <- function(n) {
+  hues = seq(15, 375, length=n+1)
+  hcl(h=hues, l=50, c=50)[1:n]
+}
+color_vector_chain <- function(n) {
+  hues = seq(15, 375, length=n+1)
+  hcl(h=hues, l=80, c=50)[1:n]
+}
+
 # ggplot theme elements to be used as needed  -----------------------------
-blue_color <- "#346fa1"
+blue_color <- "#006dcc"
 theme <- function(...) ggplot2::theme(...)
 transparent <- theme(panel.background = element_blank(), plot.background = element_blank())
-axis_line_color <- blue_color
+axis_line_color <- "gray20"
 axis_color <- theme(axis.line = element_line(color = axis_line_color))
 axis_labs <- theme(axis.title = element_text(face = "bold", size = 13))
 title_txt <- theme(plot.title = element_text(face = "bold", size = 14))
@@ -92,6 +101,26 @@ lgnd_left <- theme(legend.position = "left", legend.background = element_blank()
 lgnd_right <- theme(legend.position = "right", legend.background = element_blank())
 no_yaxs <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), axis.text.y = element_blank())
 strip_txt <- theme(strip.text = element_text(size = 12, face = "bold", color = "white"),
-                   strip.background = element_rect(color = blue_color, fill = blue_color))
+                   strip.background = element_rect(color = axis_line_color, 
+                                                   fill = axis_line_color))
+
+base_fill <- "#66a7e0" 
+overlay_fill <- "#006dcc" 
+vline_base_clr <- "#006dcc"
+pt_outline_clr <- "#328ad6"
+# vline_overlay_clr <- "black"
+divergent_fill <- "#ae0001" # "#5cffcc"
+hit_max_td_fill <- "#eeba30"
+divergent_clr <-  "black" #"#772000" # "#40b28e"
+hit_max_td_clr <- "black" # "#473600"
+div_and_hit_shape <- 21
 
 
+
+# probability distributions -----------------------------------------------
+
+# other functions ---------------------------------------------------------
+inv_logit <- invlogit <- function(x) {
+  1/(1 + exp(-x))
+}
+logit <- function(x) log(x / (1-x))

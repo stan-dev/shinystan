@@ -23,16 +23,16 @@ source("server_files/utilities/ppcheck_names_descriptions.R", local = TRUE)
 # give shinystan_object shorter name
 object <- shinystan_object
 show_model_name <- 
-  h5(style = "padding: 0px 0px 10px 10px; color: #337ab7; opacity: 0.95; ", 
+  h5(style = "padding: 0px 0px 10px 10px; color: #006DCC; opacity: 0.95; ", 
      paste("Model name:", object@model_name))
 
 # Begin shinyUI -----------------------------------------------------------
 # _________________________________________________________________________
 tagList(
+  # shinyjs::useShinyjs(),
   includeCSS("css/shinyStan.css"),
   includeCSS("css/shinyStan_datatables.css"),
   includeCSS("css/shinyStan_dygraphs.css"),
-  
   navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
              windowTitle = "shinyStan", collapsible = FALSE, id = "nav",
              inverse = TRUE, header = show_model_name, position = "fixed-top",
@@ -97,7 +97,10 @@ tagList(
                         ),
                         #### hmc/nuts stats ####
                         tabPanel("HMC/NUTS (stats)",
-                                 actionLink("btn_open_nuts_glossary", "Open glossary", icon = icon("book", lib = "glyphicon")),
+                                 actionLink(style = "text-decoration: underline;", 
+                                            inputId = "btn_open_nuts_glossary", 
+                                            label = "Open glossary", 
+                                            icon = icon("book", lib = "glyphicon")),
                                  uiOutput("nuts_glossary_modal"),
                                  h2("Summary of sampler parameters"),
                                  uiOutput("ui_sampler_stats_customize"),
@@ -106,8 +109,10 @@ tagList(
                         ),
                         #### rhat, n_eff, mcse ####
                         tabPanel("\\(\\hat{R}, n_{eff}, \\text{se}_{mean}\\)", # icon = icon("bar-chart-o", "fa-2x"),
-                                 fluidRow(column(2, actionLink("btn_open_glossary_copy", "Open glossary", 
-                                                        icon = icon("book", lib = "glyphicon")))),
+                                 fluidRow(column(2, actionLink(style = "text-decoration: underline;", 
+                                                               inputId = "btn_open_glossary_copy", 
+                                                               label = "Open glossary", 
+                                                               icon = icon("book", lib = "glyphicon")))),
                                  fluidRow(column(3, splitLayout(includeHTML("html/warnings_options.html"), 
                                                          span("Customize"), cellWidths = c("25%","75%")))),
                                  uiOutput("glossary_modal_copy"),
@@ -161,35 +166,39 @@ tagList(
              #### PAGE: EXPLORE ####
              tabPanel(title = "Explore", icon = icon("eye-open", lib = "glyphicon"),
                       fluidRow(
-                        column(3, selectizeInput(inputId = "param", label = h4("Select parameter"), choices = .make_param_list(object), selected = .make_param_list(object)[1], multiple = FALSE)),
+                        column(3, selectizeInput(inputId = "param", label = h4("Select parameter"), 
+                                                 choices = .make_param_list(object), 
+                                                 selected = .make_param_list(object)[1], 
+                                                 multiple = FALSE)),
                         column(7, offset = 1, DT::dataTableOutput("parameter_summary_out"))
                       ),
-                      hr(),
                       navlistPanel(well = FALSE,
                                    #### multiview ####
                                    tabPanel("Multiview", icon = icon("th-large", lib = "glyphicon"),
-                                            bsCollapse(
-                                              bsCollapsePanel(title = "View Options", id = "multiview_collapse",
-                                                              checkboxInput("multiview_warmup", label = strong(style = "color: white;", "Include warmup"), value = FALSE),
-                                                              hr(),
-                                                              uiOutput("ui_dynamic_trace_helptext")
-                                                              # hr(),
-                                                              # downloadButton("download_multiview", "Save as ggplot2 objects")
-                                              )
-                                            ),
-                                            splitLayout(h5("Density"), h5("Autocorrelation")),
+                                            checkboxInput("multiview_warmup", label = strong("Include warmup"), value = FALSE),
+#                                             bsCollapse(
+#                                               bsCollapsePanel(title = "View Options", id = "multiview_collapse",
+#                                                               
+#                                                               hr(),
+#                                                               uiOutput("ui_dynamic_trace_helptext")
+#                                                               # hr(),
+#                                                               # downloadButton("download_multiview", "Save as ggplot2 objects")
+#                                               )
+#                                             ),
+                                            splitLayout(h5("Kernel Density Estimate"), h5("Autocorrelation")),
                                             splitLayout(plotOutput("multiview_density_out", height = "150"), 
                                                         plotOutput("multiview_autocorr_out", height = "150"),
                                                         cellArgs = list(class = "plot_hover_shadow")
                                             ),
                                             h5("Trace"),
-                                            dygraphs::dygraphOutput("multiview_trace_out", height = "150px")
+                                            dygraphs::dygraphOutput("multiview_trace_out", height = "200px"),
+                                            uiOutput("ui_dynamic_trace_helptext")
                                    ),
                                    #### bivariate #####
                                    tabPanel("Bivariate",
                                             uiOutput("ui_bivariate_customize"),
                                             fluidRow(
-                                              column(4, selectizeInput("bivariate_param_y", label = strong(style = "color: #337ab7;", "y-axis"), 
+                                              column(4, selectizeInput("bivariate_param_y", label = strong(style = "color: #006DCC;", "y-axis"), 
                                                                        choices = rev(.make_param_list(object)), 
                                                                        selected = rev(.make_param_list(object))[1], multiple = FALSE)),
                                               column(3, textInput("bivariate_transform_y", 

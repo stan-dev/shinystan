@@ -1,3 +1,9 @@
+metrop_lab <- "Mean Metrop. Acceptance"
+stepsize_lab <- "Sampled Step Size"
+lp_lab <- "Log Posterior"
+treedepth_lab <- "Treedepth"
+ndivergent_lab <- "N Divergent"
+
 sp_nuts_check <- reactive({
   validate(
     need(sampler_params[[1L]] != "Not Stan", 
@@ -78,8 +84,8 @@ stepsize_vs_lp <- reactive({
   stepsize <- stepsize_pw()[if (!is.null(sel)) sel, -1L] # drop iterations column
   lp <- samps_post_warmup[if (!is.null(sel)) sel,,"lp__"]
   .sampler_param_vs_param(p = lp, sp = stepsize, 
-                          p_lab = "Log Posterior",
-                          sp_lab = "Sampled Step Size", 
+                          p_lab = lp_lab,
+                          sp_lab = stepsize_lab, 
                           chain = chain, violin = TRUE)
 })
 stepsize_vs_accept_stat <- reactive({
@@ -88,8 +94,8 @@ stepsize_vs_accept_stat <- reactive({
   df_ss <- stepsize_pw()[if (!is.null(sel)) sel, -1L] # drop iterations column
   df_as <- accept_stat_pw()[if (!is.null(sel)) sel, -1L] 
   .sampler_param_vs_sampler_param_violin(round(df_ss, 4), df_as, 
-                                         lab_x = "Sampled Step Size",
-                                         lab_y = "Mean Metrop. Acceptance",
+                                         lab_x = stepsize_lab,
+                                         lab_y = metrop_lab,
                                          chain = chain)
 })
 
@@ -111,11 +117,10 @@ dynamic_trace_diagnostic_lp <- reactive({
 dynamic_trace_diagnostic_accept_stat <- reactive({
   chain <- diagnostic_chain()
   samps <- accept_stat_pw()[, -1]
-  lab <- "Mean Metropolis Acceptance"
   stack <- FALSE  
   do.call(".dynamic_trace_diagnostics", args = list(
     param_samps = samps,
-    param_name = lab,
+    param_name = metrop_lab,
     chain = chain,
     stack = stack,
     group = "sample_information")
@@ -127,13 +132,13 @@ lp_hist <- reactive({
   sel <- selected_range()
   lp <- samps_post_warmup[if (!is.null(sel)) sel,, "lp__"]
   df <- as.data.frame(cbind(iterations = 1:nrow(lp), lp))
-  .p_hist(df, lab = "Log Posterior", chain)
+  .p_hist(df, lab = lp_lab, chain)
 })
 accept_stat_hist <- reactive({
   sel <- selected_range()
   df <- accept_stat_pw()[if (!is.null(sel)) sel, ]
   chain <- diagnostic_chain()
-  .p_hist(df, lab = "Mean Metrop. Acceptance", chain) + xlim(0,1)
+  .p_hist(df, lab = metrop_lab, chain) + xlim(0,1)
 })
 accept_stat_vs_lp <- reactive({
   sel <- selected_range()
@@ -145,8 +150,8 @@ accept_stat_vs_lp <- reactive({
   hit_max_td <- apply(td, 2L, function(y) as.numeric(y == MISC$max_td))
   .sampler_param_vs_param(
     p = lp, sp = metrop, divergent = divergent, 
-    hit_max_td = as.data.frame(hit_max_td), p_lab = "Log Posterior",
-    sp_lab = "Mean Metropolis Acceptance", chain = chain)
+    hit_max_td = as.data.frame(hit_max_td), p_lab = lp_lab,
+    sp_lab = metrop_lab, chain = chain)
 })
 
 
@@ -155,7 +160,7 @@ dynamic_trace_diagnostic_treedepth <- reactive({
   chain <- diagnostic_chain()
   samps <- treedepth_pw()[, -1]
   max_td <- MISC$max_td
-  lab <- "Treedepth"
+  lab <- treedepth_lab
   stack <- FALSE  
   graph <- do.call(".dynamic_trace_diagnostics", args = list(
     param_samps = samps,
@@ -198,8 +203,8 @@ treedepth_vs_lp <- reactive({
   treedepth <- treedepth_pw()[if (!is.null(sel)) sel, -1L] # drop iterations column
   lp <- samps_post_warmup[if (!is.null(sel)) sel,,"lp__"]
   .sampler_param_vs_param(p = lp, sp = treedepth, 
-                          p_lab = "Log Posterior",
-                          sp_lab = "Tree Depth", 
+                          p_lab = lp_lab,
+                          sp_lab = treedepth_lab, 
                           chain = chain, violin = TRUE)
 })
 treedepth_vs_accept_stat <- reactive({
@@ -208,8 +213,8 @@ treedepth_vs_accept_stat <- reactive({
   df_td <- treedepth_pw()[if (!is.null(sel)) sel, -1L] # drop iterations column
   df_as <- accept_stat_pw()[if (!is.null(sel)) sel, -1L] 
   .sampler_param_vs_sampler_param_violin(df_td, df_as, 
-                                         lab_x = "Treedepth",
-                                         lab_y = "Mean Metrop. Acceptance",
+                                         lab_x = treedepth_lab,
+                                         lab_y = metrop_lab,
                                          chain = chain)
 })
 
@@ -218,11 +223,10 @@ treedepth_vs_accept_stat <- reactive({
 dynamic_trace_diagnostic_ndivergent <- reactive({
   chain <- diagnostic_chain()
   samps <- ndivergent_pw()[, -1]
-  lab <- "N Divergent"
   stack <- FALSE  
   graph <- do.call(".dynamic_trace_diagnostics", args = list(
     param_samps = samps,
-    param_name = lab,
+    param_name = ndivergent_lab,
     chain = chain,
     stack = stack,
     group = "ndivergent_information")
@@ -237,8 +241,8 @@ ndivergent_vs_lp <- reactive({
   ndivergent <- ndivergent_pw()[if (!is.null(sel)) sel, -1L] # drop iterations column
   lp <- samps_post_warmup[if (!is.null(sel)) sel,,"lp__"]
   .sampler_param_vs_param(p = lp, sp = ndivergent, 
-                          p_lab = "Log Posterior",
-                          sp_lab = "N Divergent", 
+                          p_lab = lp_lab,
+                          sp_lab = ndivergent_lab,
                           chain = chain, violin = TRUE)
 })
 ndivergent_vs_accept_stat <- reactive({
@@ -247,8 +251,8 @@ ndivergent_vs_accept_stat <- reactive({
   df_nd <- ndivergent_pw()[if (!is.null(sel)) sel, -1L] # drop iterations column
   df_as <- accept_stat_pw()[if (!is.null(sel)) sel, -1L] 
   .sampler_param_vs_sampler_param_violin(df_nd, df_as, 
-                                         lab_x = "N Divergent",
-                                         lab_y = "Mean Metrop. Acceptance",
+                                         lab_x = ndivergent_lab,
+                                         lab_y = metrop_lab,
                                          chain = chain)
 })
 
@@ -258,10 +262,13 @@ dynamic_trace_diagnostic_parameter <- reactive({
   chain <- diagnostic_chain()
   param <- diagnostic_param()
   transform_x <- diagnostic_param_transform()
-  t_x <- eval(parse(text = paste("function(x)", transform_x)))
   samps <- samps_post_warmup[,, param]
-  if (transform_x != "x") samps <- t_x(samps)
-  lab <- if (transform_x != "x") gsub("x", param, transform_x) else param
+  lab <- param
+  if (transform_x != "x") {
+    t_x <- eval(parse(text = paste("function(x)", transform_x)))
+    samps <- t_x(samps)
+    lab <- gsub("x", param, transform_x) 
+  }
   stack <- FALSE  
   do.call(".dynamic_trace_diagnostics", args = list(
     param_samps = samps,
@@ -278,6 +285,9 @@ param_vs_lp <- reactive({
   lp <- samps_post_warmup[if (!is.null(sel)) sel,, "lp__"]
   transform_x <- diagnostic_param_transform()
   samps <- samps_post_warmup[if (!is.null(sel)) sel,, param]
+  divergent <- ndivergent_pw()[if (!is.null(sel)) sel, -1L]
+  td <- treedepth_pw()[if (!is.null(sel)) sel, -1L]
+  hit_max_td <- apply(td, 2L, function(y) as.numeric(y == MISC$max_td))
   lab <- param
   if (transform_x != "x") {
     t_x <- eval(parse(text = paste("function(x)", transform_x)))
@@ -285,12 +295,9 @@ param_vs_lp <- reactive({
     lab <- gsub("x", param, transform_x)
   }
   samps <- as.data.frame(samps)
-  divergent <- ndivergent_pw()[if (!is.null(sel)) sel, -1L]
-  td <- treedepth_pw()[if (!is.null(sel)) sel, -1L]
-  hit_max_td <- apply(td, 2L, function(y) as.numeric(y == MISC$max_td))
   .sampler_param_vs_param(p = lp, sp = samps, divergent = divergent, 
                           hit_max_td = as.data.frame(hit_max_td),
-                          p_lab = "Log Posterior", sp_lab = lab, 
+                          p_lab = lp_lab, sp_lab = lab, 
                           chain = chain, violin = FALSE)
 })
 param_vs_accept_stat <- reactive({
@@ -299,18 +306,21 @@ param_vs_accept_stat <- reactive({
   sel <- selected_range()
   metrop <- accept_stat_pw()[if (!is.null(sel)) sel, -1L] # drop iterations column
   transform_x <- diagnostic_param_transform()
-  t_x <- eval(parse(text = paste("function(x)", transform_x)))
   samps <- samps_post_warmup[if (!is.null(sel)) sel,, param]
-  if (transform_x != "x") samps <- t_x(samps)
-  lab <- if (transform_x != "x") gsub("x", param, transform_x) else param
   divergent <- ndivergent_pw()[if (!is.null(sel)) sel, -1L]
   td <- treedepth_pw()[if (!is.null(sel)) sel, -1L]
   hit_max_td <- apply(td, 2L, function(y) as.numeric(y == MISC$max_td))
+  lab <- param
+  if (transform_x != "x") {
+    t_x <- eval(parse(text = paste("function(x)", transform_x)))
+    samps <- t_x(samps)
+    lab <- gsub("x", param, transform_x) 
+  }
   graph <- .sampler_param_vs_param(p = samps, sp = metrop,
                                    divergent = divergent, 
                                    hit_max_td = as.data.frame(hit_max_td),
                                    chain = chain, p_lab = lab,
-                                   sp_lab = "Mean Metropolis Acceptance")
+                                   sp_lab = metrop_lab)
   graph + coord_flip()
 })
 param_vs_stepsize <- reactive({
@@ -319,12 +329,15 @@ param_vs_stepsize <- reactive({
   sel <- selected_range()
   stepsize <- stepsize_pw()[if (!is.null(sel)) sel, -1L] # drop iterations column
   transform_x <- diagnostic_param_transform()
-  t_x <- eval(parse(text = paste("function(x)", transform_x)))
   samps <- samps_post_warmup[if (!is.null(sel)) sel,, param]
-  if (transform_x != "x") samps <- t_x(samps)
-  lab <- if (transform_x != "x") gsub("x", param, transform_x) else param
+  lab <- param
+  if (transform_x != "x") {
+    t_x <- eval(parse(text = paste("function(x)", transform_x)))
+    samps <- t_x(samps)
+    lab <- gsub("x", param, transform_x)
+  }
   .sampler_param_vs_param(p = samps, sp = stepsize, 
-                          p_lab = lab, sp_lab = "Sampled Step Size", 
+                          p_lab = lab, sp_lab = stepsize_lab, 
                           chain = chain, violin = TRUE)
 })
 param_vs_treedepth <- reactive({
@@ -333,12 +346,15 @@ param_vs_treedepth <- reactive({
   sel <- selected_range()
   treedepth <- treedepth_pw()[if (!is.null(sel)) sel, -1L] # drop iterations column
   transform_x <- diagnostic_param_transform()
-  t_x <- eval(parse(text = paste("function(x)", transform_x)))
   samps <- samps_post_warmup[if (!is.null(sel)) sel,, param]
-  if (transform_x != "x") samps <- t_x(samps)
-  lab <- if (transform_x != "x") gsub("x", param, transform_x) else param
+  lab <- param
+  if (transform_x != "x") {
+    t_x <- eval(parse(text = paste("function(x)", transform_x)))
+    samps <- t_x(samps)
+    lab <- gsub("x", param, transform_x) 
+  }
   .sampler_param_vs_param(p = samps, sp = treedepth, p_lab = lab,
-                          sp_lab = "Treedepth", chain = chain, violin = TRUE)
+                          sp_lab = treedepth_lab, chain = chain, violin = TRUE)
 })
 p_hist <- reactive({
   sp_nuts_check()
