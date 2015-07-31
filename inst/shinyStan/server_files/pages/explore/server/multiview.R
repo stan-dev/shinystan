@@ -55,7 +55,6 @@ density_plot_multiview <- reactive({
     line_color  = vline_base_clr,
     point_est   = "None",
     CI          = "None",
-    #     y_breaks    = "None",
     x_breaks    = "Some",
     title       = FALSE
   ))

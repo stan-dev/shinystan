@@ -49,7 +49,7 @@
 #' @import methods
 #' @import shiny
 #' @import shinyBS
-#' @importFrom shinyjs colourInput
+#' @importFrom shinyjs colourInput useShinyjs
 #' @import threejs
 #' @import xts
 #' @importFrom DT datatable

@@ -37,5 +37,6 @@ Imports:
     threejs,
     xtable,
     xts (>= 0.9-7),
-    stats
+    stats,
+    shinyjs (>= 0.0.7.0)
 VignetteBuilder: knitr

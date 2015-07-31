@@ -53,5 +53,9 @@ function(input, output, session) {
     }
   })
   
+  
+  shinyjs::onclick("density_options_show", shinyjs::toggle(id = "density_options", anim = TRUE, animType = "slide", time = 0.75))
+  shinyjs::onclick("hist_options_show", shinyjs::toggle(id = "hist_options", anim = TRUE, animType = "slide", time = 0.75))
+  
 } # End shinyServer
 

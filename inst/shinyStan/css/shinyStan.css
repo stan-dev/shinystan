@@ -83,6 +83,19 @@ a:active { /* selected link */
   padding-bottom: 0;
 }
 
+.optionswell {
+  padding-top: 20px;
+  background-color: #dadada;
+  border: 1px solid #222222;
+  border-radius: 4px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset;
+  margin-bottom: 20px;
+  min-height: 20px;
+  max-height: 300px;
+  overflow-y: scroll;
+  font-size: 13px;
+}
+
 .panel-body {
   background-color: #222222; 
 }
@@ -117,10 +130,11 @@ a:active { /* selected link */
 }
 
 /* buttons to trigger transformations*/
-#trivariate_transform_go, #bivariate_transform_go, #dens_transform_x_go,
+/*#trivariate_transform_go, #bivariate_transform_go, #dens_transform_x_go,
 #hist_transform_x_go {
   margin-top: 25px;
 }
+*/
 /**************************************/
 
 /**************************************/

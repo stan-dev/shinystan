@@ -29,7 +29,7 @@ show_model_name <-
 # Begin shinyUI -----------------------------------------------------------
 # _________________________________________________________________________
 tagList(
-  # shinyjs::useShinyjs(),
+  shinyjs::useShinyjs(),
   includeCSS("css/shinyStan.css"),
   includeCSS("css/shinyStan_datatables.css"),
   includeCSS("css/shinyStan_dygraphs.css"),
@@ -230,24 +230,29 @@ tagList(
                                             br()
                                    ),
                                    #### density #####
-                                   tabPanel("Density", 
-                                            uiOutput("ui_density_customize"),
-                                            fluidRow(
-                                              column(4, textInput("dens_transform_x", strong(style = "font-size: 11px;","Transform"), value = "x")),
-                                              column(2, actionButton("dens_transform_x_go", label = strong(style = "font-size: 11px;","Transform")))
-                                            ),
-                                            plotOutput("density_plot_out", height = "250px"),
-                                            br()
-                                   ),
+#                                    tabPanel("Density", 
+#                                             uiOutput("ui_density_customize"),
+#                                             fluidRow(
+#                                               column(4, textInput("dens_transform_x", strong(style = "font-size: 11px;","Transform"), value = "x")),
+#                                               column(2, actionButton("dens_transform_x_go", label = strong(style = "font-size: 11px;","Transform")))
+#                                             ),
+#                                             plotOutput("density_plot_out", height = "250px"),
+#                                             br()
+#                                    ),
+tabPanel("Density",
+         a_toggle(id = "density_options_show", "show/hide Options"),
+         uiOutput("ui_density_customize"),
+         plotOutput("density_plot_out", height = "250px"),
+         hr(),
+         downloadButton("download_density", "Save as ggplot2 object")
+),
                                    #### histogram #####
                                    tabPanel("Histogram", 
+                                            a_toggle(id = "hist_options_show", "show/hide Options"),
                                             uiOutput("ui_hist_customize"),
-                                            fluidRow(
-                                              column(4, textInput("hist_transform_x", strong(style = "font-size: 11px;","Transform"), value = "x")),
-                                              column(2, actionButton("hist_transform_x_go", label = strong(style = "font-size: 11px;","Transform")))
-                                            ),
                                             plotOutput("hist_plot_out", height = "250px"),
-                                            br()
+                                            hr(),
+                                            downloadButton("download_histogram", "Save as ggplot2 object")
                                    )
                                    
                       ) # End navlist
