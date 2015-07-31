@@ -54,6 +54,7 @@ function(input, output, session) {
   })
   
   
+  shinyjs::onclick("trivariate_options_show", shinyjs::toggle(id = "trivariate_options", anim = TRUE, animType = "slide", time = 0.75))
   shinyjs::onclick("density_options_show", shinyjs::toggle(id = "density_options", anim = TRUE, animType = "slide", time = 0.75))
   shinyjs::onclick("hist_options_show", shinyjs::toggle(id = "hist_options", anim = TRUE, animType = "slide", time = 0.75))
   

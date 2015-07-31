@@ -2,7 +2,8 @@ a_toggle <- function(...) a(style = "text-decoration: underline;", ...)
 transform_helpText <- function(var = "x") {
   div(
   helpText(style = "font-size: 13px;", 
-           "To apply a transformation, provide a function of",var, 
+           "To apply a transformation, provide a function of x",
+           if (var != "x") "(or y or z)",
            "in the box below and then click", code("Transform")),
   helpText(style = "font-size: 10px;", 
            "Most valid R expressions will work, e.g.,",

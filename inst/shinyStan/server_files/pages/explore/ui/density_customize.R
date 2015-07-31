@@ -13,8 +13,8 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-strong_w <- function(...) {
-  strong(style = "color: white;", ...)
+options_header <- function(...) {
+  helpText(style = "margin-top: 0; margin-bottom: 10px;", ...)
 }
 span_gr <- function(...) {
   span(style = "color: #222222; opacity: 1;", ...)
@@ -59,13 +59,15 @@ output$ui_density_customize <- renderUI({
             column(3, condPanel_together(selectInput("dens_point_est", "Point est", choices = c("None","Mean","Median","MAP"), selected = my_point_est))),
             column(3, condPanel_together(selectInput("dens_ci", "CI %", choices = c("None" = "None", "50%" = 0.5, "80%" = 0.8, "95%" = 0.95), selected = my_CI)))
           ),
+          hr(class = "hroptions"),
+          options_header("Aesthetics"),
           fluidRow(
             column(3, condPanel_together(selectInput("dens_x_breaks", "x breaks", choices = c("None", "Some", "Many"), selected = my_x_breaks))),
             column(3, condPanel_together(shinyjs::colourInput("dens_fill_color", "Fill color", my_fill_color))), 
             column(3, condPanel_together(shinyjs::colourInput("dens_line_color", "Line color", my_line_color))) 
           ),
-          hr(),
-          strong("Compare to density function"),
+          hr(class = "hroptions"),
+          options_header("Compare to density function"),
           fluidRow(
             column(4, selectInput("dens_prior", "Family", choices = list("None", "Normal", "t", "Cauchy", "Exponential", "Gamma", "Inverse Gamma", "Beta"))),
             column(2, condPanel_prior("Normal", numericInput("dens_prior_normal_mu", "Location", value = 0, step = 0.1)
@@ -116,8 +118,8 @@ output$ui_density_customize <- renderUI({
           condPanel_together(
             textInput("dens_xzoom", label = strong("x-axis limits (numeric vector c(min,max))"), value = "Auto")
           ),
-          hr(),
-          strong("Transform"),
+          hr(class = "hroptions"),
+          options_header("Transformation"),
           transform_helpText(),
           fluidRow(
             column(4, textInput("dens_transform_x", label = NULL, value = "x")),

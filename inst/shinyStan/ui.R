@@ -114,7 +114,7 @@ tagList(
                                                                label = "Open glossary", 
                                                                icon = icon("book", lib = "glyphicon")))),
                                  fluidRow(column(3, splitLayout(includeHTML("html/warnings_options.html"), 
-                                                         span("Customize"), cellWidths = c("25%","75%")))),
+                                                                span("Customize"), cellWidths = c("25%","75%")))),
                                  uiOutput("glossary_modal_copy"),
                                  uiOutput("ui_rhat_neff_mcse"),
                                  hr(),
@@ -176,15 +176,15 @@ tagList(
                                    #### multiview ####
                                    tabPanel("Multiview", icon = icon("th-large", lib = "glyphicon"),
                                             checkboxInput("multiview_warmup", label = strong("Include warmup"), value = FALSE),
-#                                             bsCollapse(
-#                                               bsCollapsePanel(title = "View Options", id = "multiview_collapse",
-#                                                               
-#                                                               hr(),
-#                                                               uiOutput("ui_dynamic_trace_helptext")
-#                                                               # hr(),
-#                                                               # downloadButton("download_multiview", "Save as ggplot2 objects")
-#                                               )
-#                                             ),
+                                            #                                             bsCollapse(
+                                            #                                               bsCollapsePanel(title = "View Options", id = "multiview_collapse",
+                                            #                                                               
+                                            #                                                               hr(),
+                                            #                                                               uiOutput("ui_dynamic_trace_helptext")
+                                            #                                                               # hr(),
+                                            #                                                               # downloadButton("download_multiview", "Save as ggplot2 objects")
+                                            #                                               )
+                                            #                                             ),
                                             splitLayout(h5("Kernel Density Estimate"), h5("Autocorrelation")),
                                             splitLayout(plotOutput("multiview_density_out", height = "150"), 
                                                         plotOutput("multiview_autocorr_out", height = "150"),
@@ -216,36 +216,21 @@ tagList(
                                    ),
                                    #### trivariate #####
                                    tabPanel("Trivariate", 
+                                            a_toggle(id = "trivariate_options_show", "show/hide Options"),
                                             uiOutput("ui_triviariate_customize"),
                                             uiOutput("ui_trivariate_select"),
-                                            withMathJax(),
-                                            fluidRow(
-                                              column(3, textInput("trivariate_transform_x", label = strong(style = "font-size: 11px;","Transform x"), value = "x")),
-                                              column(3, textInput("trivariate_transform_y", label = strong(style = "font-size: 11px;", "Transform y"), value = "y")),
-                                              column(3, textInput("trivariate_transform_z", label = strong(style = "font-size: 11px;", "Transform z"), value = "z")),
-                                              column(2, actionButton("trivariate_transform_go", label = strong(style = "font-size: 11px;","Transform")))
-                                            ),
                                             br(),
                                             threejs::scatterplotThreeOutput("trivariate_plot_out"),
-                                            br()
+                                            helpText(style = "color: white; font-size: 12px;", "Use your mouse or trackpad to rotate the plot and zoom in or out.")
                                    ),
                                    #### density #####
-#                                    tabPanel("Density", 
-#                                             uiOutput("ui_density_customize"),
-#                                             fluidRow(
-#                                               column(4, textInput("dens_transform_x", strong(style = "font-size: 11px;","Transform"), value = "x")),
-#                                               column(2, actionButton("dens_transform_x_go", label = strong(style = "font-size: 11px;","Transform")))
-#                                             ),
-#                                             plotOutput("density_plot_out", height = "250px"),
-#                                             br()
-#                                    ),
-tabPanel("Density",
-         a_toggle(id = "density_options_show", "show/hide Options"),
-         uiOutput("ui_density_customize"),
-         plotOutput("density_plot_out", height = "250px"),
-         hr(),
-         downloadButton("download_density", "Save as ggplot2 object")
-),
+                                   tabPanel("Density",
+                                            a_toggle(id = "density_options_show", "show/hide Options"),
+                                            uiOutput("ui_density_customize"),
+                                            plotOutput("density_plot_out", height = "250px"),
+                                            hr(),
+                                            downloadButton("download_density", "Save as ggplot2 object")
+                                   ),
                                    #### histogram #####
                                    tabPanel("Histogram", 
                                             a_toggle(id = "hist_options_show", "show/hide Options"),

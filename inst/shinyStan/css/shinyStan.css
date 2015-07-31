@@ -93,7 +93,10 @@ a:active { /* selected link */
   min-height: 20px;
   max-height: 300px;
   overflow-y: scroll;
-  font-size: 13px;
+}
+
+.hroptions {
+  margin-bottom: 0;
 }
 
 .panel-body {
