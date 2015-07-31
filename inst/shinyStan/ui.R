@@ -23,7 +23,7 @@ source("server_files/utilities/ppcheck_names_descriptions.R", local = TRUE)
 # give shinystan_object shorter name
 object <- shinystan_object
 show_model_name <- 
-  h4(style = "padding: 0px 0px 10px 10px; color: #337ab7; opacity: 0.95; ", 
+  h5(style = "padding: 0px 0px 10px 10px; color: #337ab7; opacity: 0.95; ", 
      paste("Model name:", object@model_name))
 
 # Begin shinyUI -----------------------------------------------------------

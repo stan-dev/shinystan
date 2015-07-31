@@ -1,7 +1,9 @@
 sp_nuts_check <- reactive({
   validate(
-    need(sampler_params[[1L]] != "Not Stan", message = "Only available for Stan models"),
-    need(stan_algorithm == "NUTS", message = "Only available for algorithm = NUTS"),
+    need(sampler_params[[1L]] != "Not Stan", 
+         message = "Only available for Stan models"),
+    need(stan_algorithm == "NUTS", 
+         message = "Only available for algorithm = NUTS"),
     need(input$diagnostic_chain, message = "Loading..."))
 })
 accept_stat_pw <- reactive({
@@ -26,7 +28,8 @@ stepsize_pw <- reactive({
 })
 
 diagnostic_chain <- reactive({
-  validate(need(input$diagnostic_chain, message = "Waiting for chain (0 for all)"))
+  validate(need(input$diagnostic_chain, 
+                message = "Waiting for chain (0 for all)"))
   input$diagnostic_chain
 })
 diagnostic_param <- reactive({
@@ -49,9 +52,10 @@ selected_range <- debounce({
   validate(need(input[[input_nm]], "Loading"))
   sel <- input[[input_nm]]
   high <- as.integer(strsplit(sel[[2]], "[-]")[[1]][1])
-  low <- as.integer(if (is.nan(sel[[1]])) "1" else strsplit(sel[[1]], "[-]")[[1]][1])
+  low <- as.integer(if (is.nan(sel[[1]])) "1" 
+                    else strsplit(sel[[1]], "[-]")[[1]][1])
   low:high
-}, millis = 100)
+}, millis = 125)
 
 # stepsize ----------------------------------------------------------------
 dynamic_trace_diagnostic_stepsize <- reactive({
@@ -66,8 +70,7 @@ dynamic_trace_diagnostic_stepsize <- reactive({
     chain = chain,
     stack = stack,
     group = "stepsize_information")) 
-  graph %>% 
-    dygraphs::dyAxis("y", pixelsPerLabel = 40)
+  graph %>% dygraphs::dyAxis("y", pixelsPerLabel = 40)
 })
 stepsize_vs_lp <- reactive({
   chain <- diagnostic_chain()
@@ -140,12 +143,10 @@ accept_stat_vs_lp <- reactive({
   divergent <- ndivergent_pw()[if (!is.null(sel)) sel,-1L]
   td <- treedepth_pw()[if (!is.null(sel)) sel,-1L]
   hit_max_td <- apply(td, 2L, function(y) as.numeric(y == MISC$max_td))
-  .sampler_param_vs_param(p = lp, sp = metrop,
-                          divergent = divergent, 
-                          hit_max_td = as.data.frame(hit_max_td),
-                          p_lab = "Log Posterior",
-                          sp_lab = "Mean Metropolis Acceptance", 
-                          chain = chain)
+  .sampler_param_vs_param(
+    p = lp, sp = metrop, divergent = divergent, 
+    hit_max_td = as.data.frame(hit_max_td), p_lab = "Log Posterior",
+    sp_lab = "Mean Metropolis Acceptance", chain = chain)
 })
 
 
@@ -165,8 +166,8 @@ dynamic_trace_diagnostic_treedepth <- reactive({
   )
   `%>%` <- dygraphs::`%>%`
   graph %>% 
-    dygraphs::dyLimit(limit = max_td, label = "max_treedepth", labelLoc = "right",
-                      color = "black", strokePattern = "solid") %>%
+    dygraphs::dyLimit(limit = max_td, label = "max_treedepth", color = "black",
+                      labelLoc = "right", strokePattern = "solid") %>%
     dygraphs::dyAxis("y", valueRange = c(0, max_td * 8/7), 
                      pixelsPerLabel = 20, drawGrid = FALSE)
 })
@@ -227,9 +228,8 @@ dynamic_trace_diagnostic_ndivergent <- reactive({
     group = "ndivergent_information")
   )
   `%>%` <- dygraphs::`%>%`
-  graph %>% 
-    dygraphs::dyAxis("y", valueRange = c(0, 1.1), pixelsPerLabel = 1e4, 
-                     drawGrid = FALSE)
+  graph %>% dygraphs::dyAxis("y", valueRange = c(0, 1.1), 
+                             pixelsPerLabel = 1e4, drawGrid = FALSE)
 })
 ndivergent_vs_lp <- reactive({
   chain <- diagnostic_chain()
@@ -277,19 +277,20 @@ param_vs_lp <- reactive({
   sel <- selected_range()
   lp <- samps_post_warmup[if (!is.null(sel)) sel,, "lp__"]
   transform_x <- diagnostic_param_transform()
-  t_x <- eval(parse(text = paste("function(x)", transform_x)))
   samps <- samps_post_warmup[if (!is.null(sel)) sel,, param]
-  if (transform_x != "x") samps <- t_x(samps)
+  lab <- param
+  if (transform_x != "x") {
+    t_x <- eval(parse(text = paste("function(x)", transform_x)))
+    samps <- t_x(samps)
+    lab <- gsub("x", param, transform_x)
+  }
   samps <- as.data.frame(samps)
-  lab <- if (transform_x != "x") gsub("x", param, transform_x) else param
   divergent <- ndivergent_pw()[if (!is.null(sel)) sel, -1L]
   td <- treedepth_pw()[if (!is.null(sel)) sel, -1L]
   hit_max_td <- apply(td, 2L, function(y) as.numeric(y == MISC$max_td))
-  .sampler_param_vs_param(p = lp, sp = samps, 
-                          divergent = divergent, 
+  .sampler_param_vs_param(p = lp, sp = samps, divergent = divergent, 
                           hit_max_td = as.data.frame(hit_max_td),
-                          p_lab = "Log Posterior",
-                          sp_lab = lab, 
+                          p_lab = "Log Posterior", sp_lab = lab, 
                           chain = chain, violin = FALSE)
 })
 param_vs_accept_stat <- reactive({
@@ -344,35 +345,21 @@ p_hist <- reactive({
   chain <- diagnostic_chain()
   param <- diagnostic_param()
   sel <- selected_range()
-  transform_x <- diagnostic_param_transform() # diagnostic_param_transform()
-  t_x <- eval(parse(text = paste("function(x)", transform_x)))
+  transform_x <- diagnostic_param_transform()
   samps <- samps_post_warmup[if (!is.null(sel)) sel,, param]
-  if (transform_x != "x") samps <- t_x(samps)
-  lab <- if (transform_x != "x") gsub("x", param, transform_x) else param
+  lab <- param
+  if (transform_x != "x") {
+    t_x <- eval(parse(text = paste("function(x)", transform_x)))
+    samps <- t_x(samps)
+    lab <- gsub("x", param, transform_x)
+  }
   df <- as.data.frame(cbind(iterations = 1:nrow(samps), samps))
   .p_hist(df, lab = lab, chain = chain)
 })
 
 # outputs ---------------------------------------------------
-output$dynamic_trace_diagnostic_parameter_out <- dygraphs::renderDygraph({
-  dynamic_trace_diagnostic_parameter()
-})
-output$dynamic_trace_diagnostic_lp_out <- dygraphs::renderDygraph({
-  dynamic_trace_diagnostic_lp()
-})
-output$dynamic_trace_diagnostic_accept_stat_out <- dygraphs::renderDygraph({
-  dynamic_trace_diagnostic_accept_stat()
-})
-output$dynamic_trace_diagnostic_treedepth_out <- dygraphs::renderDygraph({
-  dynamic_trace_diagnostic_treedepth()
-})
-output$dynamic_trace_diagnostic_stepsize_out <- dygraphs::renderDygraph({
-  dynamic_trace_diagnostic_stepsize()
-})
-output$dynamic_trace_diagnostic_ndivergent_out <- dygraphs::renderDygraph({
-  dynamic_trace_diagnostic_ndivergent()
-})
-
+trace_nms <- c("parameter", "lp", "accept_stat", 
+               "treedepth", "stepsize", "ndivergent")
 hmc_plots <- c("accept_stat_trace", "accept_stat_hist","accept_stat_vs_lp",
                "lp_trace", "lp_hist", "ndivergent_trace", "treedepth_trace",
                "treedepth_ndivergent_hist","treedepth_ndivergent0_hist", 
@@ -381,6 +368,12 @@ hmc_plots <- c("accept_stat_trace", "accept_stat_hist","accept_stat_vs_lp",
                "stepsize_vs_lp", "stepsize_vs_accept_stat", "stepsize_trace", 
                "param_vs_lp", "param_vs_accept_stat", "param_vs_stepsize", 
                "param_vs_treedepth", "p_trace", "p_hist")
+for (j in seq_along(trace_nms)) {
+  local({
+    fn <- paste0("dynamic_trace_diagnostic_", trace_nms[j]) 
+    output[[paste0(fn,"_out")]] <- dygraphs::renderDygraph(do.call(fn, list()))
+  })
+}
 for (i in seq_along(hmc_plots)) {
   local({
     fn <- hmc_plots[i] 
@@ -390,7 +383,6 @@ for (i in seq_along(hmc_plots)) {
     })
   })
 }
-
 output$diagnostic_chain_text <- renderText({
   chain <- diagnostic_chain()
   if (chain == 0) return("All chains")
