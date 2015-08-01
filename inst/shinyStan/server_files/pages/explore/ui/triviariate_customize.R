@@ -37,8 +37,7 @@ output$ui_triviariate_customize <- renderUI({
         wellPanel(
           class = "optionswell",
           hr(class = "hroptions"),
-          # div(class = "divoptions_light",
-          options_header("Transformation"),
+          strongBig("Transformation"),
           transform_helpText("y,z"),
           fluidRow(
             column(3, textInput("trivariate_transform_x", label = NULL, value = "x")),
@@ -46,32 +45,33 @@ output$ui_triviariate_customize <- renderUI({
             column(3, textInput("trivariate_transform_z", label = NULL, value = "z")),
             column(2, actionButton("trivariate_transform_go", label = "Transform"))
           ),
-          # ),
           hr(class = "hroptions"),
-          # div(class = "divoptions_light",
           fluidRow(
-            column(3, shinyjs::colourInput("trivariate_pt_color", strong20("Color"), value = base_fill)),
-            column(3, sliderInput("trivariate_pt_size", strong20("Size"), value = 0.5, min = 0, max = 2, step = 0.1, ticks = FALSE)),
-            column(2, radioButtons("trivariate_grid", strong20("Grid"), choices = list(Show = "show", Hide = "hide"), selected = "show", inline = FALSE)),
-            column(2, radioButtons("trivariate_flip", strong20("y-axis"), choices = list(Normal = "normal", Flipped = "flip"), selected = "normal", inline = FALSE))
+            column(3, shinyjs::colourInput("trivariate_pt_color", strongMed("Color"), 
+                                           value = base_fill)),
+            column(3, sliderInput("trivariate_pt_size", strongMed("Size"), 
+                                  value = 0.5, min = 0, max = 2, step = 0.1, ticks = FALSE)),
+            column(2, radioButtons("trivariate_grid", strongMed("Grid"), 
+                                   choices = list(Show = "show", Hide = "hide"), selected = "show", inline = FALSE)),
+            column(2, radioButtons("trivariate_flip", strongMed("y-axis"), 
+                                   choices = list(Normal = "normal", Flipped = "flip"), selected = "normal", inline = FALSE))
           )
-          # )
         )
     )
   )
   
-#   bsCollapse(
-#     bsCollapsePanel(title = "View Options", id = "trivariate_collapse",
-#                     fluidRow(
-#                       column(3, shinyjs::colourInput("trivariate_pt_color", strong("Color"), value = base_fill)),
-#                       column(3, sliderInput("trivariate_pt_size", strong("Size"), value = 0.5, min = 0, max = 2, step = 0.1, ticks = FALSE)),
-#                       column(2, radioButtons("trivariate_warmup", strong("Warmup"), choices = list(Include = "include", Omit = "omit"), selected = "omit", inline = FALSE)),
-#                       column(2, radioButtons("trivariate_grid", strong("Grid"), choices = list(Show = "show", Hide = "hide"), selected = "show", inline = FALSE)),
-#                       column(2, radioButtons("trivariate_flip", strong("y-axis"), choices = list(Normal = "normal", Flipped = "flip"), selected = "normal", inline = FALSE))
-#                     ),
-#                     hr(),
-#                     h5(style = "color: #006DCC;", "Controlling the dynamic 3D scatterplot"),
-#                     helpText(style = "color: white; font-size: 12px;", "Use your mouse or trackpad to rotate the plot and zoom in or out.")
-#     )
-#   )
+  #   bsCollapse(
+  #     bsCollapsePanel(title = "View Options", id = "trivariate_collapse",
+  #                     fluidRow(
+  #                       column(3, shinyjs::colourInput("trivariate_pt_color", strong("Color"), value = base_fill)),
+  #                       column(3, sliderInput("trivariate_pt_size", strong("Size"), value = 0.5, min = 0, max = 2, step = 0.1, ticks = FALSE)),
+  #                       column(2, radioButtons("trivariate_warmup", strong("Warmup"), choices = list(Include = "include", Omit = "omit"), selected = "omit", inline = FALSE)),
+  #                       column(2, radioButtons("trivariate_grid", strong("Grid"), choices = list(Show = "show", Hide = "hide"), selected = "show", inline = FALSE)),
+  #                       column(2, radioButtons("trivariate_flip", strong("y-axis"), choices = list(Normal = "normal", Flipped = "flip"), selected = "normal", inline = FALSE))
+  #                     ),
+  #                     hr(),
+  #                     h5(style = "color: #006DCC;", "Controlling the dynamic 3D scatterplot"),
+  #                     helpText(style = "color: white; font-size: 12px;", "Use your mouse or trackpad to rotate the plot and zoom in or out.")
+  #     )
+  #   )
 })

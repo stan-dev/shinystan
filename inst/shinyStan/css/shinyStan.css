@@ -46,22 +46,23 @@
   -o-transition: all 0.75s;
 }
 #nav li ul { 
-  -webkit-transition: all 1s; transition-delay: 0.1s;
-   -moz-transition: all 1s; transition-delay: 0.1s;
-   -o-transition: all 1s;
+  transition-delay: 0.1s;
+  -webkit-transition: all 1s; 
+  -moz-transition: all 1s; 
+  -o-transition: all 1s;
 }
 #nav li ul li { 
-  -webkit-transition: height 0.5s; transition-delay: 0.1s;
-  -moz-transition: height 0.5s; transition-delay: 0.1s;
+  transition-delay: 0.1s;
+  -webkit-transition: height 0.5s; 
+  -moz-transition: height 0.5s; 
   -o-transition: height 0.5s;
 }
 
 body {
   padding-top: 60px;
-/*  
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
    font-weight: 300;
-*/
+
 }
 
 /*links*/
