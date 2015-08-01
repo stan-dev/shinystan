@@ -53,21 +53,33 @@ tagList(
                         tabPanel("Posterior summary statistics", icon = icon("table", "fa-2x"),
                                  br(),
                                  fluidRow(
-                                   column(3, 
-                                          bsCollapse(
-                                            bsCollapsePanel(title = "View Table Options", id = "stats_table_options_collapse",
-                                                            actionLink("btn_open_glossary", "Open glossary", icon = icon("book", lib = "glyphicon")),
-                                                            uiOutput("glossary_modal"),
-                                                            br(),
-                                                            numericInput("stats_digits", label = strong(style = "color: black;", "Digits"), value = 1, min = 0, max = 7, step = 1),
-                                                            checkboxInput("user_regex",strong(style = "color: black;","Regex searching"), value = TRUE),
-                                                            checkboxGroupInput("stats_columns", label = strong(style = "color: black;", "Columns"),
-                                                                               choices = c("Rhat", "Effective sample size (n_eff)" = "n_eff", "Posterior mean" = "mean", "Posterior standard deviation" = "sd", "Monte Carlo uncertainty (se_mean)" = "se_mean", "Quantile: 2.5%" = "2.5%", "Quantile: 25%" = "25%", "Quantile: 50%" = "50%", "Quantile: 75%" = "75%", "Quantile: 97.5%" = "97.5%"),
-                                                                               selected = c("Rhat", "n_eff", "mean", "sd", "2.5%", "50%", "97.5%")),
-                                                            
-                                                            downloadButton("download_all_summary", "Save"),
-                                                            actionButton("tex_options", withMathJax("\\(\\LaTeX\\)"), icon = icon("print", lib = "glyphicon")),
-                                                            uiOutput("ui_tex_modal")
+                                   column(3,
+                                          a(id = "table_options_show", "Show/Hide Table Options"),
+                                          shinyjs::hidden(
+                                            div(id = "table_options",
+                                                wellPanel(
+                                                  class = "tableoptionswell",
+                                                  # class = "optionswell",
+                                                  actionLink("btn_open_glossary", "Open glossary", icon = icon("book", lib = "glyphicon")),
+                                                  uiOutput("glossary_modal"),
+                                                  hr(class = "hroptions"),
+                                                  # div(class = "divoptions_light",
+                                                      numericInput("stats_digits", label = strong(style = "color: black;", "Digits"), value = 1, min = 0, max = 7, step = 1),
+                                                      checkboxInput("user_regex",strong(style = "color: black;","Regex searching"), value = TRUE),
+                                                  # ),
+                                                  hr(class = "hroptions"),
+                                                  # div(class = "divoptions_light",
+                                                      checkboxGroupInput("stats_columns", label = strong(style = "color: black;", "Columns"),
+                                                                         choices = c("Rhat", "Effective sample size (n_eff)" = "n_eff", "Posterior mean" = "mean", "Posterior standard deviation" = "sd", "Monte Carlo uncertainty (se_mean)" = "se_mean", "Quantile: 2.5%" = "2.5%", "Quantile: 25%" = "25%", "Quantile: 50%" = "50%", "Quantile: 75%" = "75%", "Quantile: 97.5%" = "97.5%"),
+                                                                         selected = c("Rhat", "n_eff", "mean", "sd", "2.5%", "50%", "97.5%")),
+                                                  # ),
+                                                  hr(class = "hroptions"),
+                                                  # div(class = "divoptions_light",
+                                                      downloadButton("download_all_summary", "Save"),
+                                                      actionButton("tex_options", withMathJax("\\(\\LaTeX\\)"), icon = icon("print", lib = "glyphicon")),
+                                                      uiOutput("ui_tex_modal")
+                                                  # )
+                                                )
                                             )
                                           )
                                    ),
@@ -190,7 +202,7 @@ tagList(
                                             selectizeInput("bivariate_param_y", label = strong(style = "color: #006DCC;", "y-axis"), 
                                                            choices = rev(.make_param_list(object)), 
                                                            selected = rev(.make_param_list(object))[1], multiple = FALSE),
-                                            a_toggle(id = "bivariate_options_show", "show/hide Options"),
+                                            a_toggle(id = "bivariate_options_show", "Show/Hide Options"),
                                             uiOutput("ui_bivariate_customize"),
                                             plotOutput("bivariate_plot_out", height = "350px"),
                                             helpText(style = "font-size: 11px", "For Stan models using the NUTS algorithm, red points indicate iterations that encountered a divergent transition.",  
@@ -202,7 +214,7 @@ tagList(
                                    #### trivariate #####
                                    tabPanel("Trivariate", 
                                             uiOutput("ui_trivariate_select"),
-                                            a_toggle(id = "trivariate_options_show", "show/hide Options"),
+                                            a_toggle(id = "trivariate_options_show", "Show/Hide Options"),
                                             uiOutput("ui_triviariate_customize"),
                                             br(),
                                             threejs::scatterplotThreeOutput("trivariate_plot_out", height = "400px"),
@@ -210,7 +222,7 @@ tagList(
                                    ),
                                    #### density #####
                                    tabPanel("Density",
-                                            a_toggle(id = "density_options_show", "show/hide Options"),
+                                            a_toggle(id = "density_options_show", "Show/Hide Options"),
                                             uiOutput("ui_density_customize"),
                                             plotOutput("density_plot_out", height = "250px"),
                                             hr(),
@@ -218,7 +230,7 @@ tagList(
                                    ),
                                    #### histogram #####
                                    tabPanel("Histogram", 
-                                            a_toggle(id = "hist_options_show", "show/hide Options"),
+                                            a_toggle(id = "hist_options_show", "Show/Hide Options"),
                                             uiOutput("ui_hist_customize"),
                                             plotOutput("hist_plot_out", height = "250px"),
                                             hr(),

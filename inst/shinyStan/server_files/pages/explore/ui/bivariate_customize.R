@@ -50,27 +50,27 @@ output$ui_bivariate_customize <- renderUI({
         wellPanel(
           class = "optionswell",
           hr(class = "hroptions"),
-          div(class = "divoptions_light",
+          # div(class = "divoptions_light",
               options_header("Transformation"),
               transform_helpText("y"),
               fluidRow(
                 column(3, textInput("bivariate_transform_x", label = NULL, value = "x")),
                 column(3, textInput("bivariate_transform_y", label = NULL, value = "y")),
                 column(2, actionButton("bivariate_transform_go", label = "Transform"))
-              )
-          ),
+              ),
+          # ),
           hr(class = "hroptions"),
-          div(class = "divoptions_light",
+          # div(class = "divoptions_light",
               fluidRow(
                 column(2, strong20("Points")),
                 column(3, offset = 1, shinyjs::colourInput("bivariate_pt_color", strong20("Color"), my_pt_color)),
                 column(2, numericInput("bivariate_pt_size", strong20("Size"), value = my_pt_size, min = 0, max = 10, step = 0.5)),
                 column(2, numericInput("bivariate_pt_shape", strong20("Shape"), value = my_pt_shape, min = 1, max = 10, step = 1)),
                 column(2, sliderInput("bivariate_pt_alpha", strong20("Opacity"), value = my_pt_alpha, min = 0, max = 1, step = 0.01, ticks = FALSE))
-              )
-          ),
+              ),
+          # ),
           hr(class = "hroptions"),
-          div(class = "divoptions_light",
+          # div(class = "divoptions_light",
               fluidRow(
                 column(2, selectizeInput(inputId = "bivariate_ellipse_lev", 
                                          label = strong20("Ellipse"), 
@@ -80,10 +80,10 @@ output$ui_bivariate_customize <- renderUI({
                 column(2, numericInput("bivariate_ellipse_lwd", strong20("Size"), value = my_ellipse_lwd, min = 0, max = 5, step = 0.5)),
                 column(2, numericInput("bivariate_ellipse_lty", strong20("Shape"), value = my_ellipse_lty, min = 1, max = 6, step = 1)),
                 column(2, sliderInput("bivariate_ellipse_alpha", strong20("Opacity"), value = my_ellipse_alpha, min = 0, max = 1, step = 0.01, ticks = FALSE))
-              )
-          ),
+              ),
+          # ),
           hr(class = "hroptions"),
-          div(class = "divoptions_light",
+          # div(class = "divoptions_light",
               fluidRow(
                 column(2, selectizeInput(inputId = "bivariate_lines", 
                                          label = strong20("Lines"), 
@@ -91,7 +91,7 @@ output$ui_bivariate_customize <- renderUI({
                 column(3, offset = 1, shinyjs::colourInput("bivariate_lines_color", strong20("Color"), my_lines_color)),
                 column(2, sliderInput("bivariate_lines_alpha", label = strong20("Opacity"), value = alpha_calc_lines(nIter), min = 0, max = 1, step = 0.01, ticks = FALSE))
               )
-          )
+          # )
         )
     )
   )
