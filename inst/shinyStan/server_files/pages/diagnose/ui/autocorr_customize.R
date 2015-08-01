@@ -18,7 +18,7 @@ output$ui_autocorr_customize <- renderUI({
   absolutePanel(id = "controls_autocorr", 
                 class = "draggable_controls",
                 fixed = TRUE,
-                top = 175, right = 20, width = 270,
+                top = 185, right = 20, width = 200,
                 draggable = TRUE,
                 shinyjs::hidden(
                   div(id = "autocorr_options",
@@ -26,19 +26,17 @@ output$ui_autocorr_customize <- renderUI({
                         class = "optionswell",
                         strongBig("Autocorrelation"),
                         hr(class = "hroptions"),
-                        sliderInput("ac_lags", label = strongMed("Lags"), 
+                        br(),
+                        sliderInput("ac_lags", label = NULL, 
                                     post = " lags", min = 0, max = nIter-warmup_val-5, 
                                     step = 5, value = min(25, round((nIter-warmup_val)/2))),
-                        hr(class = "hroptions"),
-                        strongMed("Options"),
                         checkboxInput("ac_partial", label = "Partial autocorrelation", 
                                       value = FALSE),
                         checkboxInput("ac_warmup", label = "Include warmup", FALSE),
                         checkboxInput("ac_combine", label = "Combine chains", FALSE),
                         checkboxInput("ac_flip", label = "Flip facets", FALSE),
-                        hr(class = "hroptions"),
-                        br(),
-                        downloadButton("download_autocorr", "Save as ggplot2 object")
+                        downloadButton("download_autocorr", "Save ggplot2 object"),
+                        br(),br()
                       )
                   )
                 )

@@ -26,8 +26,7 @@ output$ui_multiparam_customize <- renderUI({
   absolutePanel(id = "controls_multiparam", 
                 class = "draggable_controls",
                 fixed = TRUE,
-                # top = 175, right = 20, width = 270,
-                top = 300, right = 20, width = 270,
+                top = 190, right = 20, width = 270,
                 draggable = TRUE,
                 shinyjs::hidden(
                   div(id = "multiparam_options",
@@ -55,10 +54,10 @@ output$ui_multiparam_customize <- renderUI({
                                                           selectInput("param_plot_rhat_palette", span(style = "font-size: 12px", "Rhat palette"), choices = c("Blues", "Grays", "Greens", "Oranges", "Purples", "Reds"), selected = my_rhat_palette, selectize=TRUE))
                         ),
                         conditionalPanel(condition = "input.multiparam_options_display == 'Sorting'",
-                                         # checkboxInput("param_plot_sort_j", label = "Sort j", value = FALSE),
                                          radioButtons("param_plot_sort_j", label = "Sort parameters in select list by", choices = c(Row = TRUE, Column = FALSE), selected = TRUE, inline = TRUE),
                                          helpText(style = "font-size: 12px;","If applicable, sort with x[1,2] before x[2,1] or vice-versa")
-                        )
+                        ),
+                        br()
                       )
                   )
                 )

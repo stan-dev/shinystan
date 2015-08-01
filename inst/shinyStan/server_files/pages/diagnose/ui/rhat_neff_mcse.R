@@ -14,24 +14,21 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 output$ui_rhat_neff_mcse <- renderUI({
-  fluidRow(
-    column(9,
-           splitLayout(h4("\\(n_{eff} / N\\)", align = "center"),
-                       h4("\\(\\text{se}_{mean} / sd\\)", align = "center"),
-                       h4("\\(\\hat{R}\\)", align = "center")),
-           splitLayout(
-             plotOutput("n_eff_plot_out", height = "250px"),
-             plotOutput("mcse_over_sd_plot_out", height = "250px"),
-             plotOutput("rhat_plot_out", height = "250px"),
-             cellArgs = list(class = "plot_hover_shadow")
-           )
+  div(
+    splitLayout(h4("\\(n_{eff} / N\\)", align = "center"),
+                h4("\\(\\text{se}_{mean} / sd\\)", align = "center"),
+                h4("\\(\\hat{R}\\)", align = "center")),
+    splitLayout(
+      plotOutput("n_eff_plot_out", height = "250px"),
+      plotOutput("mcse_over_sd_plot_out", height = "250px"),
+      plotOutput("rhat_plot_out", height = "250px"),
+      cellArgs = list(class = "plot_hover_shadow")
     )
   )
 })
 
 output$ui_rhat_neff_mcse_warnings <- renderUI({
-  fluidRow(
-    column(9,
+  div(
     fluidRow(
       column(4, strong(textOutput("n_eff_warnings_title"))),
       column(4, strong(textOutput("mcse_over_sd_warnings_title"))),
@@ -46,14 +43,14 @@ output$ui_rhat_neff_mcse_warnings <- renderUI({
     ),
     tags$style(type="text/css", "#n_eff_warnings, #rhat_warnings, #mcse_over_sd_warnings {font-size: 12px;}")
   )
-  )
+  
 })
 
 output$ui_warnings_customize <- renderUI({
   absolutePanel(id = "controls_warnings", 
                 class = "draggable_controls",
                 fixed = TRUE,
-                top = 175, right = 20, width = 270,
+                top = 210, right = 20, width = 200,
                 draggable = TRUE,
                 shinyjs::hidden(
                   div(id = "rhat_warnings_options",

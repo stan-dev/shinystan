@@ -24,6 +24,7 @@ summary_stats <- reactive({
 })
 
 output$all_summary_out <- DT::renderDataTable({
+  validate(need(input$table_options_display, "loading"))
   DT::datatable({
     summary_stats()
   },

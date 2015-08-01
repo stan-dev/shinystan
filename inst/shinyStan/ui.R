@@ -24,7 +24,7 @@ source("server_files/utilities/ppcheck_names_descriptions.R", local = TRUE)
 object <- shinystan_object
 show_model_name <- 
   h5(style = "padding: 0px 0px 10px 10px; color: #006DCC; opacity: 0.95; ", 
-     paste("Model name:", object@model_name))
+     paste("MODEL:", object@model_name))
 
 # Begin shinyUI -----------------------------------------------------------
 # _________________________________________________________________________
@@ -58,31 +58,14 @@ tagList(
                         tabPanel("Posterior summary statistics", icon = icon("table", "fa-2x"),
                                  br(),
                                  fluidRow(
-                                   column(3,
-                                          a(id = "table_options_show", "Show/Hide Table Options"),
-                                          shinyjs::hidden(
-                                            div(id = "table_options",
-                                                wellPanel(
-                                                  class = "tableoptionswell",
-                                                  actionLink("btn_open_glossary", "Open glossary", icon = icon("book", lib = "glyphicon")),
-                                                  uiOutput("glossary_modal"),
-                                                  hr(class = "hroptions"),
-                                                      numericInput("stats_digits", label = strong(style = "color: black;", "Digits"), value = 1, min = 0, max = 7, step = 1),
-                                                      checkboxInput("user_regex",strong(style = "color: black;","Regex searching"), value = TRUE),
-                                                  hr(class = "hroptions"),
-                                                      checkboxGroupInput("stats_columns", label = strong(style = "color: black;", "Columns"),
-                                                                         choices = c("Rhat", "Effective sample size (n_eff)" = "n_eff", "Posterior mean" = "mean", "Posterior standard deviation" = "sd", "Monte Carlo uncertainty (se_mean)" = "se_mean", "Quantile: 2.5%" = "2.5%", "Quantile: 25%" = "25%", "Quantile: 50%" = "50%", "Quantile: 75%" = "75%", "Quantile: 97.5%" = "97.5%"),
-                                                                         selected = c("Rhat", "n_eff", "mean", "sd", "2.5%", "50%", "97.5%")),
-                                                  hr(class = "hroptions"),
-                                                      downloadButton("download_all_summary", "Save"),
-                                                      actionButton("tex_options", withMathJax("\\(\\LaTeX\\)"), icon = icon("print", lib = "glyphicon")),
-                                                      uiOutput("ui_tex_modal")
-                                                )
-                                            )
-                                          )
-                                   ),
-                                   column(9, DT::dataTableOutput("all_summary_out"))
-                                 )
+                                   column(10, DT::dataTableOutput("all_summary_out")),
+                                   column(2, a_glossary("btn_open_glossary"),
+                                          uiOutput("glossary_modal"),
+                                          a_options("table"),
+                                          uiOutput("ui_table_customize"),
+                                          uiOutput("ui_tex_modal")
+                                   )
+                                   )
                         )
                       ) # End tabsetPanel
              ), # End ESTIMATE
@@ -107,9 +90,7 @@ tagList(
                         ),
                         #### hmc/nuts stats ####
                         tabPanel("HMC/NUTS (stats)",
-                                 actionLink(inputId = "btn_open_nuts_glossary", 
-                                            label = "Open glossary", 
-                                            icon = icon("book", lib = "glyphicon")),
+                                 fluidRow(column(3, offset = 9, a_glossary("btn_open_nuts_glossary"))), 
                                  uiOutput("nuts_glossary_modal"),
                                  h2("Summary of sampler parameters"),
                                  uiOutput("ui_sampler_stats_customize"),
@@ -118,17 +99,16 @@ tagList(
                         ),
                         #### rhat, n_eff, mcse ####
                         tabPanel("\\(\\hat{R}, n_{eff}, \\text{se}_{mean}\\)", # icon = icon("bar-chart-o", "fa-2x"),
-                                 fluidRow(column(2, actionLink(inputId = "btn_open_glossary_copy", 
-                                                               label = "Open glossary", 
-                                                               icon = icon("book", lib = "glyphicon"))),
-                                          column(3, offset = 7, 
-                                                 a_options("rhat_warnings"),
-                                                 uiOutput("ui_warnings_customize"))
-                                 ),
-                                 uiOutput("glossary_modal_copy"),
-                                 uiOutput("ui_rhat_neff_mcse"),
-                                 hr(),
-                                 uiOutput("ui_rhat_neff_mcse_warnings")
+                                 fluidRow(
+                                   column(9, uiOutput("ui_rhat_neff_mcse"),
+                                          hr(),
+                                          uiOutput("ui_rhat_neff_mcse_warnings")),
+                                   column(3, 
+                                            a_glossary("btn_open_glossary_copy"),
+                                            uiOutput("glossary_modal_copy"),
+                                            a_options("rhat_warnings"),
+                                            uiOutput("ui_warnings_customize"))
+                                 )
                         ),
                         #### autocorrelation ####
                         tabPanel("Autocorrelation", 

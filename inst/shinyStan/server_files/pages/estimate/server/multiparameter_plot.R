@@ -30,7 +30,7 @@ calc_height_param_plot <- reactive({
 })
 
 multiparam_plot <- reactive({
-  # validate(need(input$param_plot_fill_color, message = "Loading..."))
+  validate(need(input$param_plot_fill_color, message = "Loading..."))
   if (is.null(input$param_plot_ci_level)) {
     # delay until input is ready
     return()

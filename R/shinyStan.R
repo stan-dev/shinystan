@@ -49,9 +49,9 @@
 #' @import methods
 #' @import shiny
 #' @import shinyBS
-#' @importFrom shinyjs colourInput useShinyjs
 #' @import threejs
 #' @import xts
+#' @importFrom shinyjs colourInput useShinyjs
 #' @importFrom DT datatable
 #' @importFrom gridExtra arrangeGrob grid.arrange
 #' @importFrom gtools mixedsort

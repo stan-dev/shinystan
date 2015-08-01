@@ -60,9 +60,8 @@
 
 body {
   padding-top: 60px;
-  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
-   font-weight: 300;
-
+  /*font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+   font-weight: 300;*/
 }
 
 /*links*/
@@ -97,6 +96,9 @@ a:active { /* selected link */
   /* Fade out while not hovering */
   opacity: 0.9;
   transition: opacity 500ms 1s;
+}
+.aoptions {
+  margin-top: 10px;
 }
 .hroptions {
   margin-top: 0; 

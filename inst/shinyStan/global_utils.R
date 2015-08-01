@@ -1,17 +1,18 @@
-a_toggle <- function(...) {
-  a(style = "text-decoration: underline; ", ...)
-}
 a_options <- function(name) {
-  actionLink(inputId = paste0(name, "_options_show"), 
-             label = strong(style = "margin-top: 20px; color: purple;", 
-                            "Show/Hide Options"), 
-             icon = icon("sliders", "fa-lg"))
+  div(class = "aoptions",
+      actionLink(inputId = paste0(name, "_options_show"), 
+                 label = strong(style = "margin-top: 20px; color: #222222;", 
+                                "Show/Hide Options"), 
+                 icon = icon("sliders", "fa-lg"))
+  )
 }
-tooltip_transform <- function(el, var = "x", ...) {
-  ttl <- paste0("A function of ", var,", e.g.,",
-                 paste0("log(", var,"), 1/(1+exp(-", var,")), etc. "),
-                 "Most valid R expressions will work.")
-  shinyBS::tipify(el, title = ttl, placement = "top", ...)
+a_glossary <- function(id) {
+  div(class = "aoptions",
+      actionLink(inputId = id, 
+                 label = strong(style = "margin-top: 20px; color: #222222;", "Open glossary"), 
+                 icon = icon("book", lib = "glyphicon")
+      )
+  )
 }
 strongMed <- function(...) {
   strong(style = "font-size: 14px; margin-bottom: 5px;", ...)

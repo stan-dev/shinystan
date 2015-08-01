@@ -38,6 +38,5 @@ Imports:
     xts (>= 0.9-7),
     stats,
     shinyBS (>= 0.61),
-    shinyjs (>= 0.0.7.0),
-    V8
+    shinyjs (>= 0.0.7.0)
 VignetteBuilder: knitr

@@ -34,13 +34,6 @@ function(input, output, session) {
   files <- list.files("server_files", full.names = TRUE, recursive = TRUE)
   for (f in files) source(f, local = TRUE)
 
-  # tooltips
-#   for (id in seq_along(tooltip_ids)) {
-#     addTooltip(session, id = tooltip_ids[id], trigger = "hover", 
-#                placement = tooltip_placements[id],
-#                title = tooltip_msgs[id], options = list(container = 'body'))
-#   }
-
   # user's notes 
   observeEvent(input$save_user_model_info, handlerExpr = {
     if (input$user_model_info != "")
@@ -69,6 +62,12 @@ function(input, output, session) {
     shinyjs::toggleState(id = "ac_flip", condition = input$ac_combine == FALSE)
   })
   
+  # tooltips
+  #   for (id in seq_along(tooltip_ids)) {
+  #     addTooltip(session, id = tooltip_ids[id], trigger = "hover", 
+  #                placement = tooltip_placements[id],
+  #                title = tooltip_msgs[id], options = list(container = 'body'))
+  #   }
   
 } # End shinyServer
 
