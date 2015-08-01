@@ -29,8 +29,8 @@ calc_height_param_plot <- reactive({
   round(50*LL)
 })
 
-plot_param_vertical <- reactive({
-  validate(need(input$param_plot_fill_color, message = "Loading..."))
+multiparam_plot <- reactive({
+  # validate(need(input$param_plot_fill_color, message = "Loading..."))
   if (is.null(input$param_plot_ci_level)) {
     # delay until input is ready
     return()
@@ -55,15 +55,15 @@ plot_param_vertical <- reactive({
 })
 
 
-output$plot_param_vertical_out <- renderPlot({
-  plot_param_vertical()
+output$multiparam_plot_out <- renderPlot({
+  multiparam_plot()
 }, height = calc_height_param_plot, bg = "transparent")
 
 # download the plot
 output$download_multiparam_plot <- downloadHandler(
-  filename = 'shinystan_param_plot.RData',
+  filename = 'shinystan_multiparam_plot.RData',
   content = function(file) {
-    shinystan_param_plot <- plot_param_vertical()
-    save(shinystan_param_plot, file = file)
+    shinystan_multiparam_plot <- multiparam_plot()
+    save(shinystan_multiparam_plot, file = file)
   }
 )

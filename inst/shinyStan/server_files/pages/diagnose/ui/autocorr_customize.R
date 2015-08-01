@@ -24,7 +24,7 @@ output$ui_autocorr_customize <- renderUI({
                   div(id = "autocorr_options",
                       wellPanel(
                         class = "optionswell",
-                        strongBig(style = "align: right;", "Autocorrelation"),
+                        strongBig("Autocorrelation"),
                         hr(class = "hroptions"),
                         sliderInput("ac_lags", label = strongMed("Lags"), 
                                     post = " lags", min = 0, max = nIter-warmup_val-5, 

@@ -35,11 +35,11 @@ function(input, output, session) {
   for (f in files) source(f, local = TRUE)
 
   # tooltips
-  for (id in seq_along(tooltip_ids)) {
-    addTooltip(session, id = tooltip_ids[id], trigger = "hover", 
-               placement = tooltip_placements[id],
-               title = tooltip_msgs[id], options = list(container = 'body'))
-  }
+#   for (id in seq_along(tooltip_ids)) {
+#     addTooltip(session, id = tooltip_ids[id], trigger = "hover", 
+#                placement = tooltip_placements[id],
+#                title = tooltip_msgs[id], options = list(container = 'body'))
+#   }
 
   # user's notes 
   observeEvent(input$save_user_model_info, handlerExpr = {
@@ -53,7 +53,8 @@ function(input, output, session) {
     }
   })
   
-  options_inputs <- c("table", "bivariate", "trivariate", "density", "hist", "autocorr", "rhat_warnings")
+  options_inputs <- c("table", "multiparam", "autocorr", "rhat_warnings", # multitrace
+                      "bivariate", "trivariate", "density", "hist")
   dens_inputs <- c("point_est", "ci", "x_breaks", "fill_color", "line_color")
   observe({
     lapply(seq_along(options_inputs), function(j){

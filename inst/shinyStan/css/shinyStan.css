@@ -79,11 +79,8 @@ a:active { /* selected link */
     color: #006DCC;
 }
 
-.well {
-  padding-top: 5px;
-  padding-bottom: 0;
-}
-
+/**************************************/
+/* customization control panels */
 .optionswell, .tableoptionswell {
   padding-top: 20px;
   background-color: #dadada;
@@ -92,34 +89,15 @@ a:active { /* selected link */
   box-shadow: 0 0 0 rgba(0, 0, 0, 0.05) inset;
   margin-bottom: 20px;
   min-height: 20px;
-  /*max-height: 220px;*/
+  /*max-height: 400px;*/
   overflow-y: scroll;
 }
-/*
-.optionswell {
-  padding-top: 20px;
-  background-color: #dadada;
-  border: 2px solid #222222;
-  border-radius: 4px;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset;
-  margin-bottom: 20px;
-  min-height: 20px;
-  max-height: 220px;
-  overflow-y: scroll;
+.draggable_controls {
+  cursor: move;
+  /* Fade out while not hovering */
+  opacity: 0.9;
+  transition: opacity 500ms 1s;
 }
-*/
-
-.divoptions_light {
-  padding-right: 10px; 
-  padding-left: 10px; 
-  margin-top: 0; 
-  margin-bottom: 10px; 
-  background-color: #f3f3f3;
-  -webkit-box-shadow: inset 2px 1px 2px 0 rgba(189,189,189,0.5);
-  -moz-box-shadow: inset 2px 1px 2px 0 rgba(189,189,189,0.5);
-  box-shadow: inset 2px 1px 2px 0 rgba(189,189,189,0.5);
-}
-
 .hroptions {
   margin-top: 0; 
   margin-bottom: 0;
@@ -133,6 +111,23 @@ a:active { /* selected link */
   border-width: 2px; 
   border-radius: 1px;
   border-color: #bdbdbd;
+}
+.divoptions_light {
+  padding-right: 10px; 
+  padding-left: 10px; 
+  margin-top: 0; 
+  margin-bottom: 10px; 
+  background-color: #f3f3f3;
+  -webkit-box-shadow: inset 2px 1px 2px 0 rgba(189,189,189,0.5);
+  -moz-box-shadow: inset 2px 1px 2px 0 rgba(189,189,189,0.5);
+  box-shadow: inset 2px 1px 2px 0 rgba(189,189,189,0.5);
+}
+/**************************************/
+
+
+.well {
+  padding-top: 5px;
+  padding-bottom: 0;
 }
 
 .panel-body {
@@ -168,31 +163,24 @@ a:active { /* selected link */
   font-family: monospace;
 }
 
-/* buttons to trigger transformations*/
-/*#trivariate_transform_go, #bivariate_transform_go, #dens_transform_x_go,
-#hist_transform_x_go {
-  margin-top: 25px;
-}
-*/
-/**************************************/
-
 /**************************************/
 /* don't blink when recalculating */
-#autocorr_plot_out.recalculating, #plot_param_vertical_out.recalculating { 
+#autocorr_plot_out.recalculating, #multiparam_plot_out.recalculating { 
+  /*#multitrace_plot_out.recalculating*/
   opacity: 1.0; 
 }
 /**************************************/
 
 /**************************************/
 /* plot hover shadow */
-
 .plot_hover_shadow:hover { 
   -moz-box-shadow: 0 0 10px #84afd3; 
   -webkit-box-shadow: 0 0 10px #84afd3; 
   box-shadow: 0 0 10px #84afd3; 
 } 
 
-#multi_trace_plot_out:hover, #autocorr_plot_out:hover, #multiview_density:hover, #multiview_trace:hover, #multiview_autocorr:hover, #mcse_over_sd_plot_out:hover, #n_eff_plot_out:hover, #rhat_plot_out:hover, #hist_plot_out:hover, #density_plot_out:hover, #trace_plot_out:hover, #bivariate_plot_out:hover, #sampler_plot_treedepth_out:hover, #sampler_plot_treedepth0_out:hover, #sampler_plot_treedepth1_out:hover, #sampler_plot_divergent_out:hover { 
+/*#multitrace_plot_out:hover*/
+#autocorr_plot_out:hover, #multiview_density:hover, #multiview_autocorr:hover, #mcse_over_sd_plot_out:hover, #n_eff_plot_out:hover, #rhat_plot_out:hover, #hist_plot_out:hover, #density_plot_out:hover, #bivariate_plot_out:hover, #sampler_plot_treedepth_out:hover, #sampler_plot_treedepth0_out:hover, #sampler_plot_treedepth1_out:hover, #sampler_plot_divergent_out:hover { 
   
   -moz-box-shadow: 0 0 10px #84afd3; 
   -webkit-box-shadow: 0 0 10px #84afd3; 
@@ -208,48 +196,9 @@ a:active { /* selected link */
 } 
 /**************************************/
 
-/**************************************/
-/* customization control panels */
-
-.hr_controls {
-  border-width: 2px; 
-  border-radius: 1px; 
-  border-color: #006dcc; 
-  margin-top: 5px;
-}
-
-.shinystan_customize {
-  color: #006dcc; 
-  text-align: right; 
-  padding-right: 5px; 
-  font-size: 11px; 
-  font-weight: bold;
-}
-
-#controls_multi_trace, #controls_multiparam {
-  /* Appearance */
-  color: white;
-  cursor: move;
-  /* Fade out while not hovering */
-  opacity: 0.1;
-  transition: opacity 500ms 1s;
-}
-
-.draggable_controls {
-  cursor: move;
-  /* Fade out while not hovering */
-  opacity: 0.9;
-  transition: opacity 500ms 1s;
-}
-
-/*#controls_autocorr:hover, #controls_warnings:hover */
-#controls_multi_trace:hover, #controls_multiparam:hover {
-  /* Fade in while hovering */
-  opacity: 0.9;
-  transition-delay: 0;
-}
-
+/*******************/
 /* sliders */
+/*******************/
 .irs {
     height: 40px;
 }
@@ -369,25 +318,6 @@ a:active { /* selected link */
 
 
 /**************************************/
-/* collapsePanels */
-#multiview_collapse, #density_collapse, #dynamic_trace_collapse, #hist_collapse, #trivariate_collapse, #bivariate_collapse_all .panel-body{
-  opacity: 0.8; color: white;
-}
-#bivariate_points_collapse .panel-body{
-  opacity: 1; color: white; 
-  padding: 5px 0 0 15px;
-}
-#bivariate_ellipse_collapse .panel-body{
-  opacity: 1; color: white; 
-  padding: 0 0 0 15px;
-}
-#bivariate_lines_collapse .panel-body{
-  opacity: 1; color: white; 
-  padding: 0 0 0 15px;
-}
-#stats_table_options_collapse .panel-body{
-  background-color: #F5F5F5;
-}
 #stats_columns .shiny-options-group {
   color: black;
 }
@@ -409,76 +339,6 @@ a:active { /* selected link */
   font-family: monospace;
 }
 /**************************************/
-
-
-/**************************************/
-/* customization switch-style toggles*/
-#multiparam_options, #ac_options, #multi_trace_options, #warnings_options {
-max-height: 0;
-max-width: 0;
-opacity: 0;
-}
-
-#multiparam_options + label, #ac_options + label, #multi_trace_options + label, #warnings_options + label {
-display: block;
-position: relative;
-box-shadow: inset 0 0 0 1px #d5d5d5;
-text-indent: -5000px;
-height: 20px;
-width: 50px;
-top: -15px;
-border-radius: 15px;
-}
-
-#warnings_options + label {
-top: -20px;
-}
-
-#multiparam_options + label:before, #ac_options + label:before, #multi_trace_options + label:before, #warnings_options + label:before {
-content: "";
-position: absolute;
-display: block;
-height: 20px;
-width: 30px;
-top: 0;
-left: 0;
-border-radius: 15px;
-background: rgba(19,191,17,0);
--moz-transition: .25s ease-in-out;
--webkit-transition: .25s ease-in-out;
--o-transition: .25s ease-in-out;
-transition: .25s ease-in-out;
-}
-
-#multiparam_options + label:after, #ac_options + label:after, #multi_trace_options + label:after, #warnings_options + label:after {
-content: "";
-position: absolute;
-display: block;
-height: 20px;
-width: 30px;
-top: 0;
-left: 0;
-border-radius: 15px;
-background: white;
-box-shadow: inset 0 0 0 1px rgba(0,0,0,.2), 0 2px 4px rgba(0,0,0,.2);
--moz-transition: .25s ease-in-out;
--webkit-transition: .25s ease-in-out;
--o-transition: .25s ease-in-out;
-transition: .25s ease-in-out;
-}
-
-#multiparam_options:checked + label:before, #ac_options:checked + label:before, #multi_trace_options:checked + label:before, #warnings_options:checked + label:before {
-width: 50px;
-background: #006dcc;
-}
-
-#multiparam_options:checked + label:after, #ac_options:checked + label:after, #multi_trace_options:checked + label:after, #warnings_options:checked + label:after {
-left: 20px;
-box-shadow: inset 0 0 0 1px #0044cc, 0 2px 4px rgba(0,0,0,.2);
-}
-/**************************************/
-
-
 
 /**************************************
  * Hover.css (http://ianlunn.github.io/Hover/)

@@ -16,19 +16,6 @@
 .onAttach <- function(...) {
   ver <- utils::packageVersion("shinyStan")
   msg <- paste0("\nThis is shinyStan version ", ver,"\n")
-  # check shinyBS version
-  sbs_version <- utils::packageVersion("shinyBS") 
-  if (sbs_version != "0.50.1") {
-    msg <- paste0(msg, 
-                  "\nMessage:", 
-                  "\nshinyStan runs best with version ",
-                  "0.50.1 of the shinyBS package (you ",
-                  "have version ", sbs_version, ").",
-                  "\nTo install the preferred version ",
-                  "restart R and then run ",
-                  "\ndevtools::install_github('jgabry/shinyBS@shinyBS_for_shinyStan')"
-    )
-  }
   packageStartupMessage(msg)
 } 
 

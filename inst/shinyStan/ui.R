@@ -44,10 +44,15 @@ tagList(
                       tabsetPanel(
                         #### multiparameter plot ####
                         tabPanel("Parameters plot", icon = icon("bar-chart-o", "fa-2x"),
-                                 uiOutput("ui_multiparam_selectize"),
-                                 conditionalPanel(condition = "input.multiparam_options == true",
-                                                  uiOutput("ui_multiparam_customize")),
-                                 plotOutput("plot_param_vertical_out", width = "90%")
+                                 wellPanel(
+                                   fluidRow(
+                                     column(6, uiOutput("ui_multiparam_selectize")),
+                                     column(3, offset = 1, sliderInput("param_plot_ci_level", h5("Credible interval"), width = "75%", ticks = FALSE, min = 50, max = 95, value = 50, step = 5, post = "%")),
+                                     column(2, a_options("multiparam"))
+                                   )
+                                 ),
+                                 uiOutput("ui_multiparam_customize"),
+                                 plotOutput("multiparam_plot_out", width = "90%")
                         ),
                         #### posterior summary statistics ####
                         tabPanel("Posterior summary statistics", icon = icon("table", "fa-2x"),
@@ -130,31 +135,30 @@ tagList(
                                  uiOutput("ui_autocorr_customize"),
                                  wellPanel(
                                    fluidRow(
-                                     column(6, selectizeInput("ac_params", width = "100%", label = h5("Select or enter parameter names"), 
+                                     column(8, selectizeInput("ac_params", width = "100%", label = h5("Select or enter parameter names"), 
                                                               choices = .make_param_list_with_groups(object), multiple = TRUE)),
-                                     column(3, offset = 3, a_options("autocorr"))
+                                     column(3, offset = 1, a_options("autocorr"))
                                    )
                                  ),
                                  plotOutput("autocorr_plot_out")
                         ),
-                        #### multiparameter traceplot ####
-                        tabPanel("Trace", # icon = icon("bar-chart-o", "fa-2x"),
-                                 wellPanel(
-                                   fluidRow(
-                                     column(6, selectizeInput("multi_trace_params", width = '100%', 
-                                                              label = h5("Select or enter parameter names"), 
-                                                              choices = .make_param_list_with_groups(object), multiple = TRUE)),
-                                     column(3, offset = 1, sliderInput("multi_xzoom", width = "75%",
-                                                                       label = h5("Iterations"), min = 1, max = object@nIter, 
-                                                                       step = 1, value = c(object@nWarmup + 1, object@nIter), ticks = FALSE)),
-                                     column(2, tags$div(h5("Customize"),includeHTML("html/multi_trace_options.html")))
-                                   )
-                                 ),
-                                 conditionalPanel(condition = "input.multi_trace_options == true",
-                                                  uiOutput("ui_multi_trace_customize")),
-                                 plotOutput("multi_trace_plot_out"),
-                                 br()
-                        ),
+#                         #### multiparameter traceplot ####
+#                         tabPanel("Trace", # icon = icon("bar-chart-o", "fa-2x"),
+#                                  wellPanel(
+#                                    fluidRow(
+#                                      column(6, selectizeInput("multitrace_params", width = '100%', 
+#                                                               label = h5("Select or enter parameter names"), 
+#                                                               choices = .make_param_list_with_groups(object), multiple = TRUE)),
+#                                      column(3, offset = 1, sliderInput("multi_xzoom", width = "75%",
+#                                                                        label = h5("Iterations"), min = 1, max = object@nIter, 
+#                                                                        step = 1, value = c(object@nWarmup + 1, object@nIter), ticks = FALSE)),
+#                                      column(2, a_options("multitrace"))
+#                                    )
+#                                  ),
+#                                  uiOutput("ui_multitrace_customize"),
+#                                  plotOutput("multitrace_plot_out"),
+#                                  br()
+#                         ),
                         #### ppcheck ####
                         tabPanel(title = "PPcheck", # icon = icon("bar-chart-o", "fa-2x"),
                                  h2("Graphical posterior predictive checks"),
