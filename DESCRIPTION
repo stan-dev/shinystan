@@ -16,6 +16,7 @@ Depends:
     R (>= 3.1.1),
     ggplot2 (>= 1.0.0),
     methods,
+    plyr,
     shiny (>= 0.11.2),
     shinyBS (>= 0.50.1)
 License: GPL (>=3)
@@ -32,7 +33,6 @@ Imports:
     gridExtra,
     gtools,
     markdown (>= 0.7.4),
-    plyr,
     reshape2,
     threejs,
     xtable,
