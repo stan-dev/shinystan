@@ -53,18 +53,22 @@ function(input, output, session) {
     }
   })
   
-  options_inputs <- c("table", "bivariate", "trivariate", "density", "hist")
+  options_inputs <- c("table", "bivariate", "trivariate", "density", "hist", "autocorr")
   dens_inputs <- c("point_est", "ci", "x_breaks", "fill_color", "line_color")
   observe({
     lapply(seq_along(options_inputs), function(j){
       shinyjs::onclick(paste0(options_inputs[j], "_options_show"),
                        shinyjs::toggle(id = paste0(options_inputs[j], "_options"), 
-                                       anim = TRUE, animType = "slide", time = 0.5))
+                                       anim = TRUE, animType = "fade", time = 0.5,
+                                       delay = 0.1))
     })
     lapply(seq_along(dens_inputs), function(j) {
       shinyjs::toggleState(id = paste0("dens_", dens_inputs[j]), 
                            condition = input$dens_chain_split == "Together")
     })
+    shinyjs::toggleState(id = "ac_flip", condition = input$ac_combine == FALSE)
   })
+  
+  
 } # End shinyServer
 

@@ -59,26 +59,19 @@ tagList(
                                             div(id = "table_options",
                                                 wellPanel(
                                                   class = "tableoptionswell",
-                                                  # class = "optionswell",
                                                   actionLink("btn_open_glossary", "Open glossary", icon = icon("book", lib = "glyphicon")),
                                                   uiOutput("glossary_modal"),
                                                   hr(class = "hroptions"),
-                                                  # div(class = "divoptions_light",
                                                       numericInput("stats_digits", label = strong(style = "color: black;", "Digits"), value = 1, min = 0, max = 7, step = 1),
                                                       checkboxInput("user_regex",strong(style = "color: black;","Regex searching"), value = TRUE),
-                                                  # ),
                                                   hr(class = "hroptions"),
-                                                  # div(class = "divoptions_light",
                                                       checkboxGroupInput("stats_columns", label = strong(style = "color: black;", "Columns"),
                                                                          choices = c("Rhat", "Effective sample size (n_eff)" = "n_eff", "Posterior mean" = "mean", "Posterior standard deviation" = "sd", "Monte Carlo uncertainty (se_mean)" = "se_mean", "Quantile: 2.5%" = "2.5%", "Quantile: 25%" = "25%", "Quantile: 50%" = "50%", "Quantile: 75%" = "75%", "Quantile: 97.5%" = "97.5%"),
                                                                          selected = c("Rhat", "n_eff", "mean", "sd", "2.5%", "50%", "97.5%")),
-                                                  # ),
                                                   hr(class = "hroptions"),
-                                                  # div(class = "divoptions_light",
                                                       downloadButton("download_all_summary", "Save"),
                                                       actionButton("tex_options", withMathJax("\\(\\LaTeX\\)"), icon = icon("print", lib = "glyphicon")),
                                                       uiOutput("ui_tex_modal")
-                                                  # )
                                                 )
                                             )
                                           )
@@ -136,13 +129,15 @@ tagList(
                         ),
                         #### autocorrelation ####
                         tabPanel("Autocorrelation", # icon = icon("bar-chart-o", "fa-2x"),
-                                 conditionalPanel(condition = "input.ac_options == true",
-                                                  uiOutput("ui_autocorr_customize")),
+#                                  conditionalPanel(condition = "input.ac_options == true",
+#                                                   ),
+uiOutput("ui_autocorr_customize"),
                                  wellPanel(
                                    fluidRow(
                                      column(6, selectizeInput("ac_params", width = "100%", label = h5("Select or enter parameter names"), 
                                                               choices = .make_param_list_with_groups(object), multiple = TRUE)),
-                                     column(2, offset = 4, tags$div(h5("Customize"),includeHTML("html/ac_options.html")))
+                                     # column(2, offset = 4, tags$div(h5("Customize"),includeHTML("html/ac_options.html")))
+                                     column(3, offset = 3, a(id = "autocorr_options_show", "Show/Hide Options"))
                                    )
                                  ),
                                  plotOutput("autocorr_plot_out")

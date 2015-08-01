@@ -372,7 +372,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
 
 
 
-# plot_param_vertical_gg --------------------------------------------------
+# multiparam_plot --------------------------------------------------
 # main plot of multiple parameters
 .multiparam_plot <- function(samps, params = NULL, all_param_names,
                              show_density, show_ci_line, CI.level = 0.5, 
@@ -503,10 +503,10 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
     p.ci.2 <- geom_segment(aes(x = l, xend = h, y = y, yend = y),
                            colour = fill_color, size = 2)
     if (color_by_rhat) {
-      p.point <- geom_point(aes(x = m, y = y, color = rhat_id), size = 3)
+      p.point <- geom_point(aes(x = m, y = y, color = rhat_id), size = 4)
       p.all + p.ci.2 + p.point + rhat_colors + rhat_lgnd
     } else {
-      p.point <- geom_point(aes(x = m, y = y), size = 3.5, color = fill_color, fill = est_color, shape = 21)
+      p.point <- geom_point(aes(x = m, y = y), size = 4, color = fill_color, fill = est_color, shape = 21)
       p.all + p.ci.2 + p.point
     }
   }
