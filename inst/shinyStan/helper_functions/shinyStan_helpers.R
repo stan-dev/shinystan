@@ -57,7 +57,7 @@
   if (rect == "None" & inc_warmup) graph <- graph + geom_vline(xintercept = warmup_val, color = "gray35", size = 1.5)
 
   if (style == "point") {
-    print(plyr::ddply(dat, "chains", plyr::summarise, mean = mean(value))$mean)
+    print(plyr::ddply(dat, "chains", plyr::summarize, mean = mean(value))$mean)
     graph <- graph + geom_point(size = 1.5, alpha = 0.55)
   } else {
     graph <- graph + geom_line(size = 0.35)
@@ -273,7 +273,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
     dat$iterations <- 1:nrow(dat)
   }
   
-  ac_dat <- plyr::ddply(dat, "chains", plyr::here(plyr::summarise),
+  ac_dat <- plyr::ddply(dat, "chains", plyr::here(plyr::summarize),
                         ac = acf(value, lag.max = lags, plot = FALSE)$acf[,,1],
                         lag = 0:lags)
   ac_labs <- labs(x = "Lag", y = "Autocorrelation")
@@ -314,12 +314,12 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   
   if (!partial) {
       ac_dat <- plyr::ddply(dat, c(if (nParams > 1) "parameters", "chains"), 
-                            plyr::here(plyr::summarise),
+                            plyr::here(plyr::summarize),
                             ac = acf(value, lag.max = lags, plot = FALSE)$acf[,,1L],
                             lag = 0:lags)
   } else {
       ac_dat <- plyr::ddply(dat, c(if (nParams > 1) "parameters", "chains"), 
-                            plyr::here(plyr::summarise),
+                            plyr::here(plyr::summarize),
                             ac = pacf(value, lag.max = lags, plot = FALSE)$acf[,,1L],
                             lag = 1:lags)
   }
