@@ -13,10 +13,6 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-
-options_header <- function(...) {
-  helpText(style = "margin-top: 0; margin-bottom: 10px;", ...)
-}
 output$ui_hist_customize <- renderUI({
   my_fill_color <- base_fill
   my_line_color <- vline_base_clr
@@ -24,33 +20,21 @@ output$ui_hist_customize <- renderUI({
     div(id = "hist_options",
         wellPanel(
           class = "optionswell",
+          hr(class = "hroptions"),
+          options_header("Transformation"),
+          transform_helpText(),
+          fluidRow(
+            column(4, textInput("hist_transform_x", label = NULL, value = "x")),
+            column(2, actionButton("hist_transform_x_go", label = "Transform"))
+          ),
+          hr(class = "hroptions"),
         fluidRow(
-          column(2, numericInput("hist_chain", label = strong("Chain"), min = 0, max = object@nChains, step = 1, value = 0)),
-          column(4, sliderInput("hist_binwd", label =  strong("Binwidth (0 = default)"), min = 0, value = 0, max = 50, step = 0.05, ticks = FALSE)),
-          column(3, shinyjs::colourInput("hist_fill_color", strong("Fill color"), my_fill_color)),
-          column(3, shinyjs::colourInput("hist_line_color", strong("Line color"), my_line_color))
-        ),
-        hr(class = "hroptions"),
-        options_header("Transformation"),
-        transform_helpText(),
-        fluidRow(
-          column(4, textInput("hist_transform_x", label = NULL, value = "x")),
-          column(2, actionButton("hist_transform_x_go", label = "Transform"))
+          column(2, numericInput("hist_chain", label = strong20("Chain"), min = 0, max = object@nChains, step = 1, value = 0)),
+          column(4, sliderInput("hist_binwd", label =  strong20("Binwidth (0 = default)"), min = 0, value = 0, max = 50, step = 0.05, ticks = FALSE)),
+          column(3, shinyjs::colourInput("hist_fill_color", strong20("Fill"), my_fill_color)),
+          column(3, shinyjs::colourInput("hist_line_color", strong20("Line"), my_line_color))
         )
         )
     )
   )
-  
-#   bsCollapse(
-#     bsCollapsePanel(title = "View Options", id = "hist_collapse",
-#                     fluidRow(
-#                       column(2, numericInput("hist_chain", label = strong_w("Chain"), min = 0, max = object@nChains, step = 1, value = 0)),
-#                       column(4, sliderInput("hist_binwd", label =  strong_w("Binwidth (0 = default)"), min = 0, value = 0, max = 50, step = 0.05, ticks = FALSE)),
-#                       column(3, shinyjs::colourInput("hist_fill_color", strong_w("Fill color"), my_fill_color)),
-#                       column(3, shinyjs::colourInput("hist_line_color", strong_w("Line color"), my_line_color))
-#                     ),
-#                     hr(),
-#                     downloadButton("download_histogram", "Save as ggplot2 object")
-#     )
-#   )
 })

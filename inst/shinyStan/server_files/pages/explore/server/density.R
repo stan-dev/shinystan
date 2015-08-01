@@ -23,14 +23,6 @@ density_plot <- reactive({
            need(!is.null(input$dens_chain), message = FALSE))
   chain <- input$dens_chain
   if (is.na(chain)) chain <- 0
-
-#   customize <- input$dens_collapse == "open"
-#   customize <- input$dens_customize
-#   if (customize & is.null(input$dens_x_breaks)) {
-#     # delay until the customization inputs are ready
-#     return()
-#   }
-
   prior_fam <- input$dens_prior
   prior_params <- if (prior_fam == "None") NULL 
                     else if (prior_fam == "Normal") 
@@ -49,7 +41,7 @@ density_plot <- reactive({
                       list(shape = input$dens_prior_inversegamma_shape, scale = input$dens_prior_inversegamma_scale)
                     else NULL
   
-  xzoom <- input$dens_xzoom != "Auto"
+  xzoom <- input$dens_xzoom != "c(min, max)"
   do.call(".param_dens", args = list(
     param       = input$param,
     dat         = par_samps_post_warmup(),

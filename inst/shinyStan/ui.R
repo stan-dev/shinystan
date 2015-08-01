@@ -196,32 +196,26 @@ tagList(
                                    ),
                                    #### bivariate #####
                                    tabPanel("Bivariate",
+                                            selectizeInput("bivariate_param_y", label = strong(style = "color: #006DCC;", "y-axis"), 
+                                                           choices = rev(.make_param_list(object)), 
+                                                           selected = rev(.make_param_list(object))[1], multiple = FALSE),
+                                            a_toggle(id = "bivariate_options_show", "show/hide Options"),
                                             uiOutput("ui_bivariate_customize"),
-                                            fluidRow(
-                                              column(4, selectizeInput("bivariate_param_y", label = strong(style = "color: #006DCC;", "y-axis"), 
-                                                                       choices = rev(.make_param_list(object)), 
-                                                                       selected = rev(.make_param_list(object))[1], multiple = FALSE)),
-                                              column(3, textInput("bivariate_transform_y", 
-                                                                  label = strong(style = "font-size: 11px;","Transform y"), value = "y")),
-                                              column(3, textInput("bivariate_transform_x", 
-                                                                  label = strong(style = "font-size: 11px;","Transform x"), value = "x")),
-                                              column(2, actionButton("bivariate_transform_go", 
-                                                                     label = strong(style = "font-size: 11px;","Transform")))
-                                            ),
                                             plotOutput("bivariate_plot_out", height = "350px"),
                                             helpText(style = "font-size: 11px", "For Stan models using the NUTS algorithm, red points indicate iterations that encountered a divergent transition.",  
                                                      "Yellow points indicate a transition that hit the maximum treedepth",
                                                      "rather than terminated its evolution normally."),
-                                            br()
+                                            hr(),
+                                            downloadButton("download_bivariate", "Save as ggplot2 object")
                                    ),
                                    #### trivariate #####
                                    tabPanel("Trivariate", 
+                                            uiOutput("ui_trivariate_select"),
                                             a_toggle(id = "trivariate_options_show", "show/hide Options"),
                                             uiOutput("ui_triviariate_customize"),
-                                            uiOutput("ui_trivariate_select"),
                                             br(),
-                                            threejs::scatterplotThreeOutput("trivariate_plot_out"),
-                                            helpText(style = "color: white; font-size: 12px;", "Use your mouse or trackpad to rotate the plot and zoom in or out.")
+                                            threejs::scatterplotThreeOutput("trivariate_plot_out", height = "400px"),
+                                            helpText(style = "font-size: 12px;", "Use your mouse and trackpad to rotate the plot and zoom in or out.")
                                    ),
                                    #### density #####
                                    tabPanel("Density",

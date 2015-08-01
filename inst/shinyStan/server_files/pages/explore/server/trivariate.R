@@ -36,8 +36,7 @@ trivariate_plot <- reactive({
   x <- input$trivariate_param_x
   y <- input$trivariate_param_y
   z <- input$trivariate_param_z
-  warmup <- input$trivariate_warmup == "include"
-  samps <- if (warmup) samps_all else samps_post_warmup
+  samps <- samps_post_warmup
   do.call(".param_trivariate", args = list(
     params = c(x, y, z),
     samps = samps,
