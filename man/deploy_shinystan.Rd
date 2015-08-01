@@ -14,15 +14,16 @@ at least four characters long and may only contain letters, numbers, dashes
 and underscores.}
 
 \item{account}{ShinyApps account username. Only required if more than one
-ShinyApps account is configured on the system. See
-\code{\link[shinyapps]{accounts}}.}
+ShinyApps account is configured on the system. See the \pkg{shinyapps}
+package documentation or \url{http://www.shinyapps.io/} for help
+configuring your account.}
 
 \item{...}{Optional arguments. See Details.}
 }
 \description{
-Requires a ShinyApps account. Visit \url{http://www.shinyapps.io/} to sign
-up. Also see the 'Deploying to shinyapps.io' vignette for a step-by-step
-guide.
+Requires a (free or paid) ShinyApps account. Visit
+\url{http://www.shinyapps.io/} to sign up. Also requires the \pkg{shinyapps}
+package.
 }
 \details{
 In \code{...}, the arguments \code{ppcheck_data} and
@@ -36,8 +37,8 @@ In \code{...}, the arguments \code{ppcheck_data} and
   interactively on shinyapps.io when using the app.
 }
 \note{
-See the 'Deploying to shinyapps.io' vignette for more detailed
-  examples.
+See the 'Deploying to shinyapps.io' vignette for a more detailed
+  example.
 }
 \examples{
 \dontrun{
@@ -52,9 +53,5 @@ deploy_shinystan(sso = my_sso, appName = "my-model", account = "username")
 
 deploy_shinystan(sso = my_sso, appName = "my-model")
 }
-}
-\seealso{
-\code{\link[shinyapps]{deployApp}},
-  \code{\link[shinyapps]{accounts}}
 }
 

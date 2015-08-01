@@ -1,6 +1,6 @@
 Package: shinyStan
-Title: Explore your MCMC
-Version: 1.2.0
+Title: Explore Your MCMC
+Version: 2.0.0
 Authors@R: as.person(c(
     "Jonah Gabry <jsg2201@columbia.edu> [aut, cre]",
     "Stan Development Team [aut]",
@@ -9,13 +9,17 @@ Authors@R: as.person(c(
     "Dongying Song [ctb]"
   ))
 Maintainer: Jonah Gabry <jsg2201@columbia.edu>
-Description: Explore MCMC output through interactive visualizations and tables.
+Description: Explore MCMC output through interactive visualizations and tables
+    using the Shiny web application framework. The ShinyStan app is run 
+    locally, but the package also provides a function that enables users to 
+    easily deploy their own ShinyStan apps online using RStudio's ShinyApps 
+    service (to deploy an app users must install the suggested shinyapps package,
+    which is available from RStudio. See Additional_repositories.).
 URL: http://mc-stan.org, https://github.com/stan-dev/shinystan 
 BugReports: https://github.com/stan-dev/shinystan/issues
 Depends: 
     R (>= 3.1.1),
     ggplot2 (>= 1.0.0),
-    methods,
     shiny (>= 0.11.2)
 License: GPL (>=3)
 LazyData: true
@@ -23,8 +27,8 @@ Suggests:
     rstan,
     coda,
     knitr (>= 1.9),
-    shinyapps,
-    testthat
+    testthat,
+    shinyapps
 Imports: 
     DT (>= 0.1),
     dygraphs (>= 0.4.1),
@@ -40,3 +44,4 @@ Imports:
     shinyBS (>= 0.61),
     shinyjs (>= 0.0.7.0)
 VignetteBuilder: knitr
+Additional_repositories: https://github.com/Rstudio/shinyapps

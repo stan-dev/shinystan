@@ -13,113 +13,43 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-
-
-# throw error if object is not shinystan object ---------------------------
 sso_check <- function(sso) {
-  if (!is.shinystan(sso)) stop("Please specify a shinystan object", call. = FALSE)
-  else return(invisible(TRUE))
+  if (!is.shinystan(sso)) 
+    stop("Please specify a shinystan object", call. = FALSE)
+  else 
+    return(invisible(TRUE))
 }
 
-# checks if an object is a stanfit object ---------------------------------
 is_stan <- function(X) inherits(X, "stanfit")
 
-# checks for rstan package ------------------------------------------------
 rstan_check <- function() {
-  msg <- paste("You need to have the RStan package installed to use this option.")
-  has_rstan <- requireNamespace("rstan", quietly = TRUE)  
-  if (!has_rstan) stop(msg, call. = FALSE)
+  if (!requireNamespace("rstan", quietly = TRUE)) 
+    stop("You need to have the RStan package installed to use this option.", 
+         call. = FALSE)
 }
 
-# checks for coda package  ------------------------------------------------
 coda_check <- function() {
-  msg <- paste("You need to have the coda package installed to use this option.")
-  has_coda <- requireNamespace("coda", quietly = TRUE)  
-  if (!has_coda) stop(msg, call. = FALSE)
+  if (!requireNamespace("coda", quietly = TRUE)) 
+    stop("You need to have the coda package installed to use this option.", 
+         call. = FALSE)
 }
 
-# wrapper for grepl with ignore.case = TRUE -------------------------------
-grepl_ic <- function(pattern, x, ignore.case = TRUE) {
-  grepl(pattern = pattern, x = x, ignore.case = ignore.case)
-}
-
-# check slot ----------------------------------------------------
-check_slot <- function(sso, slot_name, which = c("remove","add")) {
-  sso_check(sso)
-  slotnames_all <- slotNames("shinystan")
-  if (which == "remove") {
-    pass <- !.hasSlot(sso, slot_name)
-    if (pass) return(sso) else {
-      sso_new <- new("shinystan")
-      for (sn in slotnames_all) {
-        slot(sso_new, sn) <- slot(sso, sn)
-      }
-      return(sso_new)
-    }
-  } else { # which == "add"
-    pass <- .hasSlot(sso, slot_name)
-    if (pass) return(sso) else {
-      sso_new <- new("shinystan")
-      for (sn in setdiff(slotnames_all, slot_name)) {
-        slot(sso_new, sn) <- slot(sso, sn)
-      }
-      return(sso_new)
-    }
-  }
-}
-
-# gets names of all shinystan objects in user's global environment --------
-get_sso_names <- function() {
-  Filter(function(x) "shinystan" %in% class(get(x)), objects(envir = .GlobalEnv))
-}
-
-# generates new name for shinystan object if default name is taken --------
-rename_sso <- function(out_name, sso_names) {
-  
-  renamer <- function(i) {
-    check_name <- paste0(out_name,".",i)
-    check_name %in% sso_names
-  }
-  rename  <- out_name %in% sso_names  
-  i <- 1
-  while (rename) {
-    rename <- renamer(i)
-    i <- i + 1
-  }
-  new_out_name <- paste0(out_name,".",i-1)
-  new_out_name
-}
-
-
-# cleanup function to run on exiting launch_shinystan -----------------------------
-cleanup_shinystan <- function(shinystan_object, out_name, is_stanfit_object) {
-  rename <- out_name %in% objects(envir = .GlobalEnv)
-  if (is_stanfit_object && rename) {
-    sso_names <- get_sso_names()
-    out_name <- rename_sso(out_name, sso_names)
-  }
-  assign(out_name, shinystan_object, inherits = TRUE)
-  message(paste("\n Name of shinystan object:", out_name))
+cleanup_shinystan <- function() {
   rm(list = "shinystan_object", envir = globalenv())
 }
 
-# assignment function -----------------------------------------------------
+return_sso <- function() {
+  get("shinystan_object", inherits = TRUE)
+}
+
 assign_shinystan <- function(X) {
   assign("shinystan_object", X, inherits = TRUE)
 }
 
-# launch the app ----------------------------------------------------------
 launch <- function(object, ...) {
   if (is.shinystan(object)) assign_shinystan(object)
   else assign_shinystan(stan2shinystan(object))
-
   shiny::runApp(system.file("shinyStan", package = "shinyStan"), ...)
-}
-
-# launch the demo ---------------------------------------------------------
-launch_demo <- function(object) {
-  assign_shinystan(object)
-  shiny::runApp(system.file("shinyStan", package = "shinyStan"))
 }
 
 # mcmclist to matrix (adapted from Coda package) --------------------------
@@ -136,7 +66,10 @@ mcmclist2matrix <- function(x) {
   out
 }
 
-# check objects for as.shinystan ------------------------------------------
+grepl_ic <- function(pattern, x, ignore.case = TRUE) {
+  grepl(pattern = pattern, x = x, ignore.case = ignore.case)
+}
+
 get_type <- function(x) {
   if (is.shinystan(x)) return("shinystan")
   if (is_stan(x)) return("stanfit")
@@ -145,7 +78,7 @@ get_type <- function(x) {
   return("other")
 }
 
-# functions to set defaults for ppcheck selectInputs for y and y_rep ---------------
+# functions to set defaults for ppcheck selectInputs for y and y_rep 
 y_lines <- function(y_name = "y") {
   paste0(
     "output$ui_pp_y_from_r <- renderUI({
@@ -198,3 +131,4 @@ set_ppcheck_defaults <- function(appDir, yrep_name, y_name = "y") {
     lines = c(y_lines(y_name), yrep_lines(yrep_name))
   )
 }
+

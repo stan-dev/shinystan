@@ -13,32 +13,35 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-
-
 #' Launch shinyStan app in demo mode
 #'
-#' @return In addition to launching the \strong{shinyStan} app an S4 object of 
-#'   class \code{shinystan} is returned.
+#' @export
+#'
+#' @param ... Optional arguments to pass to \code{\link[shiny]{runApp}}. See
+#' Details.
+#' @return An S4 object of class \code{shinystan}.
 #'   
-#' @details Unless you are using RStudio, \code{launch_shinystan} will open your
-#'   system's default web browser. For RStudio users \strong{shinyStan} will 
-#'   launch in RStudio's (pop-up) Viewer pane. If you prefer to use
-#'   \strong{shinyStan} in your web browser (or if you are having trouble with
-#'   the RStudio Viewer pane) you can click on 'Open in Browser' at the top of
-#'   the Viewer pane.
+#' @details Unless you are using RStudio, \code{launch_shinystan} will open the
+#'   app in your system's default web browser. For RStudio users
+#'   \strong{shinyStan} will launch in RStudio's (pop-up) Viewer pane by
+#'   default. If you prefer to use \strong{shinyStan} in your web browser (or if
+#'   you are having trouble with the RStudio Viewer pane) you can 
+#'   specify \code{launch.browser = TRUE} in \code{...}. Alternatively, if 
+#'   \strong{shinyStan} is open in the RStudio Viewer pane you can click on 
+#'   'Open in Browser' (at the top left of the Viewer pane).
+#'   
 #' @seealso \code{\link[shinyStan]{launch_shinystan}},
 #'   \code{\link[shinyStan]{as.shinystan}},
-#' @export
 #' @examples
 #' \dontrun{
 #' launch_shinystan_demo()
+#' ssdemo <- launch_shinystan_demo()
 #' }
 #'
 
-launch_shinystan_demo <- function() {
+launch_shinystan_demo <- function(...) {
   demo_name <- "eight_schools"
-  out_name <- paste0("shinystan_demo_object")
-  on.exit(cleanup_shinystan(get("shinystan_object"), out_name, 
-                            is_stanfit_object = FALSE))
-  launch_demo(get(demo_name))
+  on.exit(cleanup_shinystan())
+  launch(get(demo_name), ...)
+  invisible(return_sso())
 }

@@ -4,26 +4,32 @@
 \alias{launch_shinystan_demo}
 \title{Launch shinyStan app in demo mode}
 \usage{
-launch_shinystan_demo()
+launch_shinystan_demo(...)
+}
+\arguments{
+\item{...}{Optional arguments to pass to \code{\link[shiny]{runApp}}. See
+Details.}
 }
 \value{
-In addition to launching the \strong{shinyStan} app an S4 object of
-  class \code{shinystan} is returned.
+An S4 object of class \code{shinystan}.
 }
 \description{
 Launch shinyStan app in demo mode
 }
 \details{
-Unless you are using RStudio, \code{launch_shinystan} will open your
-  system's default web browser. For RStudio users \strong{shinyStan} will
-  launch in RStudio's (pop-up) Viewer pane. If you prefer to use
-  \strong{shinyStan} in your web browser (or if you are having trouble with
-  the RStudio Viewer pane) you can click on 'Open in Browser' at the top of
-  the Viewer pane.
+Unless you are using RStudio, \code{launch_shinystan} will open the
+  app in your system's default web browser. For RStudio users
+  \strong{shinyStan} will launch in RStudio's (pop-up) Viewer pane by
+  default. If you prefer to use \strong{shinyStan} in your web browser (or if
+  you are having trouble with the RStudio Viewer pane) you can
+  specify \code{launch.browser = TRUE} in \code{...}. Alternatively, if
+  \strong{shinyStan} is open in the RStudio Viewer pane you can click on
+  'Open in Browser' (at the top left of the Viewer pane).
 }
 \examples{
 \dontrun{
 launch_shinystan_demo()
+ssdemo <- launch_shinystan_demo()
 }
 }
 \seealso{

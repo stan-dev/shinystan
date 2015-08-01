@@ -14,20 +14,22 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-
 #' Deploy to shinyapps.io
 #' 
-#' Requires a ShinyApps account. Visit \url{http://www.shinyapps.io/} to sign
-#' up. Also see the 'Deploying to shinyapps.io' vignette for a step-by-step
-#' guide.
+#' Requires a (free or paid) ShinyApps account. Visit 
+#' \url{http://www.shinyapps.io/} to sign up. Also requires the \pkg{shinyapps} 
+#' package.
+#' 
+#' @export
 #' 
 #' @param sso The \code{shinystan} object to use.
 #' @param appName The name to use for the application. Application names must be
 #'   at least four characters long and may only contain letters, numbers, dashes
 #'   and underscores.
 #' @param account ShinyApps account username. Only required if more than one 
-#'   ShinyApps account is configured on the system. See
-#'   \code{\link[shinyapps]{accounts}}.
+#'   ShinyApps account is configured on the system. See the \pkg{shinyapps} 
+#'   package documentation or \url{http://www.shinyapps.io/} for help
+#'   configuring your account.
 #' @param ... Optional arguments. See Details.
 #' 
 #' @details In \code{...}, the arguments \code{ppcheck_data} and 
@@ -40,12 +42,9 @@
 #'   \code{ppcheck_yrep} (but not \code{ppcheck_data}) can also be set
 #'   interactively on shinyapps.io when using the app.
 #' 
-#' @note See the 'Deploying to shinyapps.io' vignette for more detailed 
-#'   examples.
+#' @note See the 'Deploying to shinyapps.io' vignette for a more detailed 
+#'   example.
 #' 
-#' @seealso \code{\link[shinyapps]{deployApp}},
-#'   \code{\link[shinyapps]{accounts}}
-#' @export
 #' @examples
 #' \dontrun{
 #' # For this example assume my_sso is the name of the shinystan object for 
@@ -77,7 +76,7 @@ deploy_shinystan <- function(sso, appName, account = NULL, ...) {
   deployDir <- file.path(appDir, "shinyStan")
   contents <- system.file("shinyStan", package = "shinyStan")
   file.copy(from = contents, to = appDir, recursive = TRUE)
-  server_pkgs <- c("shiny", "shinyBS", "shinyjs", "markdown", "V8")
+  server_pkgs <- c("shiny", "shinyBS", "shinyjs", "markdown")
   ui_pkgs <- c(server_pkgs, "ggplot2", "gtools", "plyr", "reshape2", 
                "dygraphs", "xts", "xtable", "gridExtra", "DT", "threejs")
   server_lines <- paste0("library(", server_pkgs,");")
