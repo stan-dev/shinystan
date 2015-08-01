@@ -49,17 +49,17 @@ output$ui_density_customize <- renderUI({
             column(3, numericInput("dens_chain", label = strong20("Chain"), min = 0, max = object@nChains, step = 1, value = 0)),
             column(3, conditionalPanel(condition = "input.dens_chain == 0",
                                        radioButtons("dens_chain_split", label = strong20("All chains"), choices = c("Together", "Separate"), selected = "Together", inline = FALSE))),
-            column(3, condPanel_together(selectInput("dens_point_est", strong20("Point est"), choices = c("None","Mean","Median","MAP"), selected = my_point_est))),
-            column(3, condPanel_together(selectInput("dens_ci", strong20("CI %"), choices = c("None" = "None", "50%" = 0.5, "80%" = 0.8, "95%" = 0.95), selected = my_CI)))
+            column(3, selectInput("dens_point_est", strong20("Point est"), choices = c("None","Mean","Median","MAP"), selected = my_point_est)),
+            column(3, selectInput("dens_ci", strong20("CI %"), choices = c("None" = "None", "50%" = 0.5, "80%" = 0.8, "95%" = 0.95), selected = my_CI))
           )
           ),
           hr(class = "hroptions"),
           div(class = "divoptions_light",
           fluidRow(
             column(2, strong20("Aesthetics")),
-            column(3, offset = 1, condPanel_together(selectInput("dens_x_breaks", strong20("x breaks"), choices = c("None", "Some", "Many"), selected = my_x_breaks))),
-            column(3, condPanel_together(shinyjs::colourInput("dens_fill_color", strong20("Fill"), my_fill_color))), 
-            column(3, condPanel_together(shinyjs::colourInput("dens_line_color", strong20("Line"), my_line_color))) 
+            column(3, offset = 1, selectInput("dens_x_breaks", strong20("x breaks"), choices = c("None", "Some", "Many"), selected = my_x_breaks)),
+            column(3, shinyjs::colourInput("dens_fill_color", strong20("Fill"), my_fill_color)), 
+            column(3, shinyjs::colourInput("dens_line_color", strong20("Line"), my_line_color)) 
           )
           ),
           hr(class = "hroptions"),

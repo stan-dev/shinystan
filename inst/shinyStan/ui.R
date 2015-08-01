@@ -172,19 +172,10 @@ tagList(
                                                  multiple = FALSE)),
                         column(7, offset = 1, DT::dataTableOutput("parameter_summary_out"))
                       ),
-                      navlistPanel(well = FALSE,
+                      navlistPanel(well = FALSE, widths = c(3, 9),
                                    #### multiview ####
                                    tabPanel("Multiview", icon = icon("th-large", lib = "glyphicon"),
                                             checkboxInput("multiview_warmup", label = strong("Include warmup"), value = FALSE),
-                                            #                                             bsCollapse(
-                                            #                                               bsCollapsePanel(title = "View Options", id = "multiview_collapse",
-                                            #                                                               
-                                            #                                                               hr(),
-                                            #                                                               uiOutput("ui_dynamic_trace_helptext")
-                                            #                                                               # hr(),
-                                            #                                                               # downloadButton("download_multiview", "Save as ggplot2 objects")
-                                            #                                               )
-                                            #                                             ),
                                             splitLayout(h5("Kernel Density Estimate"), h5("Autocorrelation")),
                                             splitLayout(plotOutput("multiview_density_out", height = "150"), 
                                                         plotOutput("multiview_autocorr_out", height = "150"),

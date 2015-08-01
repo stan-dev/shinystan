@@ -29,7 +29,7 @@ install_shinystan <- function(branch = "master", build_vignettes = TRUE) {
   # check for devtools
   if (!requireNamespace("devtools", quietly = TRUE)) 
     install.packages("devtools")
-  dpkgs <- list(ggplot2 = "1.0.0", shiny = "0.11.2", shinyjs = "0.0.7.0", 
+  dpkgs <- list(ggplot2 = "1.0.0", shiny = "0.11.2", shinyjs = "0.0.7.0", V8 = "0.6",
                 DT = "0.1", gridExtra = "0.0", gtools = "0.0", htmlwidgets = "0.0", 
                 knitr = "0.0", maps = "0.0", markdown = "0.7.4", plyr = "1.8.3", 
                 reshape2 = "0.0", threejs = "0.0", xtable = "0.0", xts = "0.9-7")

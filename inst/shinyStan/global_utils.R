@@ -7,9 +7,7 @@ transform_helpText <- function(var = "x") {
            "in the box below and then click", code("Transform")),
   helpText(style = "font-size: 10px;", 
            "Most valid R expressions will work, e.g.,",
-           paste0('log(', var,')'), paste0('sqrt(', var,')'),
-           paste0('exp(', var,'/100)'), paste0('1/(1+exp(-', var,')),'), "etc."
-           )
+           "log(x), sqrt(x), 1/(1+exp(-x)), etc")
   )
 }
 

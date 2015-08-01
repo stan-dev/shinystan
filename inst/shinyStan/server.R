@@ -57,6 +57,9 @@ function(input, output, session) {
   shinyjs::onclick("trivariate_options_show", shinyjs::toggle(id = "trivariate_options", anim = TRUE, animType = "slide", time = 0.75))
   shinyjs::onclick("density_options_show", shinyjs::toggle(id = "density_options", anim = TRUE, animType = "slide", time = 0.75))
   shinyjs::onclick("hist_options_show", shinyjs::toggle(id = "hist_options", anim = TRUE, animType = "slide", time = 0.75))
-  
+  dens_inputs <- c("point_est", "ci", "x_breaks", "fill_color", "line_color")
+  observe(lapply(seq_along(dens_inputs), function(j) {
+      shinyjs::toggleState(id = paste0("dens_", dens_inputs[j]), condition = input$dens_chain_split == "Together")
+    }))
 } # End shinyServer
 
