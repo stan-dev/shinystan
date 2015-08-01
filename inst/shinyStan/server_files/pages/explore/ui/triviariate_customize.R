@@ -37,6 +37,7 @@ output$ui_triviariate_customize <- renderUI({
         wellPanel(
           class = "optionswell",
           hr(class = "hroptions"),
+          div(class = "divoptions_light",
           options_header("Transformation"),
           transform_helpText("y,z"),
           fluidRow(
@@ -44,13 +45,16 @@ output$ui_triviariate_customize <- renderUI({
             column(3, textInput("trivariate_transform_y", label = NULL, value = "y")),
             column(3, textInput("trivariate_transform_z", label = NULL, value = "z")),
             column(2, actionButton("trivariate_transform_go", label = "Transform"))
+          )
           ),
           hr(class = "hroptions"),
+          div(class = "divoptions_light",
           fluidRow(
             column(3, shinyjs::colourInput("trivariate_pt_color", strong20("Color"), value = base_fill)),
             column(3, sliderInput("trivariate_pt_size", strong20("Size"), value = 0.5, min = 0, max = 2, step = 0.1, ticks = FALSE)),
             column(2, radioButtons("trivariate_grid", strong20("Grid"), choices = list(Show = "show", Hide = "hide"), selected = "show", inline = FALSE)),
             column(2, radioButtons("trivariate_flip", strong20("y-axis"), choices = list(Normal = "normal", Flipped = "flip"), selected = "normal", inline = FALSE))
+          )
           )
         )
     )

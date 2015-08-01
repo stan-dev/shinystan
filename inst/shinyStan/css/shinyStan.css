@@ -95,11 +95,20 @@ a:active { /* selected link */
   overflow-y: scroll;
 }
 
+.divoptions_light {
+  padding-right: 5px; 
+  padding-left: 5px; 
+  margin-top: 0; 
+  margin-bottom: 10px; 
+  background-color: #f3f3f3;
+}
+
 .hroptions {
   margin-top: 0; 
   margin-bottom: 0;
   border-width: 2px; 
-  border-radius: 1px; 
+  border-radius: 1px;
+  border-color: #bdbdbd;
 }
 
 .panel-body {
