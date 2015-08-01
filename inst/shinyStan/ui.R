@@ -102,8 +102,7 @@ tagList(
                         ),
                         #### hmc/nuts stats ####
                         tabPanel("HMC/NUTS (stats)",
-                                 actionLink(style = "text-decoration: underline;", 
-                                            inputId = "btn_open_nuts_glossary", 
+                                 actionLink(inputId = "btn_open_nuts_glossary", 
                                             label = "Open glossary", 
                                             icon = icon("book", lib = "glyphicon")),
                                  uiOutput("nuts_glossary_modal"),
@@ -114,30 +113,26 @@ tagList(
                         ),
                         #### rhat, n_eff, mcse ####
                         tabPanel("\\(\\hat{R}, n_{eff}, \\text{se}_{mean}\\)", # icon = icon("bar-chart-o", "fa-2x"),
-                                 fluidRow(column(2, actionLink(style = "text-decoration: underline;", 
-                                                               inputId = "btn_open_glossary_copy", 
+                                 fluidRow(column(2, actionLink(inputId = "btn_open_glossary_copy", 
                                                                label = "Open glossary", 
-                                                               icon = icon("book", lib = "glyphicon")))),
-                                 fluidRow(column(3, splitLayout(includeHTML("html/warnings_options.html"), 
-                                                                span("Customize"), cellWidths = c("25%","75%")))),
+                                                               icon = icon("book", lib = "glyphicon"))),
+                                          column(3, offset = 7, 
+                                                 a_options("rhat_warnings"),
+                                                 uiOutput("ui_warnings_customize"))
+                                 ),
                                  uiOutput("glossary_modal_copy"),
                                  uiOutput("ui_rhat_neff_mcse"),
                                  hr(),
-                                 uiOutput("ui_rhat_neff_mcse_warnings"),
-                                 conditionalPanel(condition = "input.warnings_options == true",
-                                                  uiOutput("ui_warnings_customize"))
+                                 uiOutput("ui_rhat_neff_mcse_warnings")
                         ),
                         #### autocorrelation ####
-                        tabPanel("Autocorrelation", # icon = icon("bar-chart-o", "fa-2x"),
-#                                  conditionalPanel(condition = "input.ac_options == true",
-#                                                   ),
-uiOutput("ui_autocorr_customize"),
+                        tabPanel("Autocorrelation", 
+                                 uiOutput("ui_autocorr_customize"),
                                  wellPanel(
                                    fluidRow(
                                      column(6, selectizeInput("ac_params", width = "100%", label = h5("Select or enter parameter names"), 
                                                               choices = .make_param_list_with_groups(object), multiple = TRUE)),
-                                     # column(2, offset = 4, tags$div(h5("Customize"),includeHTML("html/ac_options.html")))
-                                     column(3, offset = 3, a(id = "autocorr_options_show", "Show/Hide Options"))
+                                     column(3, offset = 3, a_options("autocorr"))
                                    )
                                  ),
                                  plotOutput("autocorr_plot_out")
@@ -197,7 +192,7 @@ uiOutput("ui_autocorr_customize"),
                                             selectizeInput("bivariate_param_y", label = strong(style = "color: #006DCC;", "y-axis"), 
                                                            choices = rev(.make_param_list(object)), 
                                                            selected = rev(.make_param_list(object))[1], multiple = FALSE),
-                                            a_toggle(id = "bivariate_options_show", "Show/Hide Options"),
+                                            a_options("bivariate"),
                                             uiOutput("ui_bivariate_customize"),
                                             plotOutput("bivariate_plot_out", height = "350px"),
                                             helpText(style = "font-size: 11px", "For Stan models using the NUTS algorithm, red points indicate iterations that encountered a divergent transition.",  
@@ -209,7 +204,7 @@ uiOutput("ui_autocorr_customize"),
                                    #### trivariate #####
                                    tabPanel("Trivariate", 
                                             uiOutput("ui_trivariate_select"),
-                                            a_toggle(id = "trivariate_options_show", "Show/Hide Options"),
+                                            a_options("trivariate"),
                                             uiOutput("ui_triviariate_customize"),
                                             br(),
                                             threejs::scatterplotThreeOutput("trivariate_plot_out", height = "400px"),
@@ -217,7 +212,7 @@ uiOutput("ui_autocorr_customize"),
                                    ),
                                    #### density #####
                                    tabPanel("Density",
-                                            a_toggle(id = "density_options_show", "Show/Hide Options"),
+                                            a_options("density"),
                                             uiOutput("ui_density_customize"),
                                             plotOutput("density_plot_out", height = "250px"),
                                             hr(),
@@ -225,7 +220,7 @@ uiOutput("ui_autocorr_customize"),
                                    ),
                                    #### histogram #####
                                    tabPanel("Histogram", 
-                                            a_toggle(id = "hist_options_show", "Show/Hide Options"),
+                                            a_options("hist"),
                                             uiOutput("ui_hist_customize"),
                                             plotOutput("hist_plot_out", height = "250px"),
                                             hr(),

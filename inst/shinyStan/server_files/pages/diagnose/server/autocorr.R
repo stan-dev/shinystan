@@ -25,8 +25,7 @@ calc_height_autocorr_plot <- reactive({
 
 autocorr_plot <- reactive({
   validate(need(input$ac_lags, message = "Loading..."))
-  samps <- if (input$ac_warmup == TRUE) 
-    samps_all else samps_post_warmup
+  samps <- if (!input$ac_warmup) samps_post_warmup else samps
   do.call(".autocorr_plot", args = list(
     samps           = samps,
     params          = input$ac_params,

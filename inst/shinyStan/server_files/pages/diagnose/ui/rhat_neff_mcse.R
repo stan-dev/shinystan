@@ -16,7 +16,8 @@
 
 
 output$ui_rhat_neff_mcse <- renderUI({
-  tags$div(
+    fluidRow(
+      column(9,
     splitLayout(h4("\\(n_{eff} / N\\)", align = "center"),
                 h4("\\(\\text{se}_{mean} / sd\\)", align = "center"),
                 h4("\\(\\hat{R}\\)", align = "center")),
@@ -26,11 +27,13 @@ output$ui_rhat_neff_mcse <- renderUI({
       plotOutput("rhat_plot_out", height = "250px"),
       cellArgs = list(class = "plot_hover_shadow")
     )
+      )
   )
 })
 
 output$ui_rhat_neff_mcse_warnings <- renderUI({
-  tags$div(
+  fluidRow(
+    column(9,
     fluidRow(
       column(4, strong(textOutput("n_eff_warnings_title"))),
       column(4, strong(textOutput("mcse_over_sd_warnings_title"))),
@@ -44,5 +47,6 @@ output$ui_rhat_neff_mcse_warnings <- renderUI({
       column(4, div(style = "color: #006dcc;", textOutput("rhat_warnings")))
     ),
     tags$style(type="text/css", "#n_eff_warnings, #rhat_warnings, #mcse_over_sd_warnings {font-size: 12px;}")
+  )
   )
 })

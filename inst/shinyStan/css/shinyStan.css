@@ -226,7 +226,7 @@ a:active { /* selected link */
   font-weight: bold;
 }
 
-#controls_multi_trace, #controls_multiparam, #controls_warnings {
+#controls_multi_trace, #controls_multiparam {
   /* Appearance */
   color: white;
   cursor: move;
@@ -235,15 +235,15 @@ a:active { /* selected link */
   transition: opacity 500ms 1s;
 }
 
-#controls_autocorr {
+.draggable_controls {
   cursor: move;
   /* Fade out while not hovering */
   opacity: 0.9;
   transition: opacity 500ms 1s;
 }
 
-/*#controls_autocorr:hover, */
-#controls_multi_trace:hover, #controls_multiparam:hover, #controls_warnings:hover {
+/*#controls_autocorr:hover, #controls_warnings:hover */
+#controls_multi_trace:hover, #controls_multiparam:hover {
   /* Fade in while hovering */
   opacity: 0.9;
   transition-delay: 0;

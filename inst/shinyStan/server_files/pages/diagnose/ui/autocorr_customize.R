@@ -15,7 +15,9 @@
 
 
 output$ui_autocorr_customize <- renderUI({
-  absolutePanel(id = "controls_autocorr", fixed = TRUE,
+  absolutePanel(id = "controls_autocorr", 
+                class = "draggable_controls",
+                fixed = TRUE,
                 top = 175, right = 20, width = 270,
                 draggable = TRUE,
                 shinyjs::hidden(
@@ -29,8 +31,9 @@ output$ui_autocorr_customize <- renderUI({
                                     step = 5, value = min(25, round((nIter-warmup_val)/2))),
                         hr(class = "hroptions"),
                         strongMed("Options"),
-                        checkboxInput("ac_partial", label = "Partial autocorrelation", value = FALSE),
-                        checkboxInput("ac_warmup", label = "Include warmup", TRUE),
+                        checkboxInput("ac_partial", label = "Partial autocorrelation", 
+                                      value = FALSE),
+                        checkboxInput("ac_warmup", label = "Include warmup", FALSE),
                         checkboxInput("ac_combine", label = "Combine chains", FALSE),
                         checkboxInput("ac_flip", label = "Flip facets", FALSE),
                         hr(class = "hroptions"),
