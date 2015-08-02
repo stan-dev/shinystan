@@ -26,7 +26,7 @@ output$ui_multiparam_customize <- renderUI({
   absolutePanel(id = "controls_multiparam", 
                 class = "draggable_controls",
                 fixed = TRUE,
-                top = 190, right = 20, width = 270,
+                top = 190, right = 20, width = 200,
                 draggable = TRUE,
                 shinyjs::hidden(
                   div(id = "multiparam_options",
@@ -41,7 +41,7 @@ output$ui_multiparam_customize <- renderUI({
                                          checkboxInput("param_plot_show_density", label = "Kernal density estimates", value = my_show_density),
                                          checkboxInput("param_plot_show_ci_line", label = "95% interval line", value = my_show_ci_line),
                                          radioButtons("param_plot_point_est", label = "Point estimate", choices = c("Median", "Mean"), selected = my_point_est, inline = TRUE),
-                                         downloadButton("download_multiparam_plot", "Save as ggplot2 object")
+                                         downloadButton("download_multiparam_plot", "Save ggplot2 object")
                         ),
                         conditionalPanel(condition = "input.multiparam_options_display == 'Aesthetics'",
                                          withMathJax(),

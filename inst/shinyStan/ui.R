@@ -13,7 +13,6 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-
 source("global_utils.R", local = TRUE)
 helpers <- list.files("helper_functions", full.names = TRUE, recursive = TRUE)
 for (h in helpers) source(h, local = TRUE)
@@ -33,9 +32,10 @@ tagList(
   includeCSS("css/shinyStan.css"),
   includeCSS("css/shinyStan_datatables.css"),
   includeCSS("css/shinyStan_dygraphs.css"),
-  navbarPage(title = strong(style = "color: #f9dd67; ", "shinyStan"),
-             windowTitle = "shinyStan", collapsible = FALSE, id = "nav",
-             inverse = TRUE, header = show_model_name, position = "fixed-top",
+  navbarPage(title = strong(style = "color: #B2011D;", "shinyStan"),
+             windowTitle = "shinyStan", collapsible = TRUE, id = "nav",
+             inverse = FALSE, header = show_model_name, position = "fixed-top",
+             theme = shinythemes::shinytheme("united"),
              
              #### PAGE: ESTIMATE ####
              tabPanel(title = "Estimate", icon = icon("stats", lib = "glyphicon"),
@@ -60,8 +60,8 @@ tagList(
                                  fluidRow(
                                    column(10, DT::dataTableOutput("all_summary_out")),
                                    column(2, a_glossary("btn_open_glossary"),
-                                          uiOutput("glossary_modal"),
                                           a_options("table"),
+                                          uiOutput("glossary_modal"),
                                           uiOutput("ui_table_customize"),
                                           uiOutput("ui_tex_modal")
                                    )
@@ -256,7 +256,7 @@ tagList(
              ), # End navbarMenu
              
              #### QUIT ####
-             tabPanel(strong(style = "color: #f9dd67;", "Quit"), 
+             tabPanel(strong(style = "color: #dadada;", "Quit"), 
                       value = "quit", icon = icon("close"),
                       h1("Thanks for using shinyStan."),
                       br(),br(),

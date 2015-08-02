@@ -16,7 +16,7 @@
 
 
 output$ui_tex_modal <- renderUI({
-  bsModal("tex", title = withMathJax("\\(\\LaTeX\\)"), trigger = "tex_options",
+  shinyBS::bsModal("tex", title = withMathJax("\\(\\LaTeX\\)"), trigger = "tex_options",
           helpText(style = "color: #337ab7;","The table will print in the R console and can be pasted seamlessly into a .tex file."),
           br(),
           selectizeInput("tex_params", width = "100%", label = strong("Select or enter parameter names"), choices = .make_param_list_with_groups(object), multiple = TRUE,

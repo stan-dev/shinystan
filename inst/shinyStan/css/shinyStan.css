@@ -1,65 +1,77 @@
 /* Also see shinyStan_datatables.css and shinyStan_dygraphs.css*/
 
-.navbar {
-  background-image: url("textures/binding_dark.png");
-  margin-bottom: 0;
-  font-size: 15px ;
-  opacity: 0.9;
-  border-radius: 0;
-  /*border-color: #222222;*/
-  border-color: transparent;
-  -moz-box-shadow: 0 0 10px #222222; 
-  -webkit-box-shadow: 0 0 10px #222222; 
-  box-shadow: 0 0 10px #222222; 
+
+.navbar-fixed-top {
+  background-color: white;
+  border-top: 5px solid black;
+  border-bottom: 0;
 }
 
-.navbar .nav > .active > a,
-.navbar .nav > .active > a:focus,
+
+.navbar-brand {
+  background: white;
+  /*border-radius: 0 0 0 10px;*/
+}
+
+.navbar .nav {
+  /*background-color: black;*/
+  padding-right: 20px;
+  padding-left: 20px;
+  border-radius: 0 0 10px 10px;
+  background: black;
+  height: 47px;
+  font-size: 13px;
+  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+
+.navbar .nav > .active > a {
+  background: black;
+  color: #B2011D;
+}
 .navbar .nav > .active > a:hover {
-    background-color: #f9dd67;
-    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.125) ;
-    -moz-box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.125) ;
-    -webkit-box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.125) ;
-    box-shadow: 0 2px 5px -3px #0044cc;
-    -moz-box-shadow: 0 2px 5px -3px #0044cc ;
-    -webkit-box-shadow: 0 2px 5px -3px #0044cc ;
-    
-    text-shadow: none;
-    color: #006DCC;
-    text-decoration: none;
-    -webkit-border-radius: 0 0 4px 4px;
-    -moz-border-radius: 0 0 4px 4px;
-    -webkit-transform: scale(1.075);
-    -moz-transform: scale(1.075);
-    transform: scale(1.075);
-    font-family: 'Tahoma';
-    font-weight: 600;
-} 
-#nav li { 
-  -webkit-transition: all 0.2s; transition-delay: 0.1s;
-  -moz-transition: all 0.2s; transition-delay: 0.1s;
-  -o-transition: all 0.2s;
+  background: black;
+  color: #B2011D;
+  border-radius: 3px 3px 3px 3px;
+  box-shadow: 0 0 1px #B2011D inset;
 }
-#nav li a { 
-  -webkit-transition: all 0.75s; transition-delay: 0.1s;
-  -moz-transition: all 0.75s; transition-delay: 0.1s;
-  -o-transition: all 0.75s;
+
+
+.navbar .nav li {
+  padding-top: 7px;
+  color: #ffffff;
+  line-height: 1.71429;
+  display: inline-block;
+  text-align:center; 
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
 }
-#nav li ul { 
+
+.navbar .nav li a{ 
   transition-delay: 0.1s;
-  -webkit-transition: all 1s; 
-  -moz-transition: all 1s; 
-  -o-transition: all 1s;
+  background-color: black;
+  color: #ffffff;
+  font-weight: lighter;
+  line-height: 1.71429;
+  margin-bottom: 0;
+  padding: 7px;
+  text-align: center;
+  text-transform: uppercase;
 }
-#nav li ul li { 
-  transition-delay: 0.1s;
-  -webkit-transition: height 0.5s; 
-  -moz-transition: height 0.5s; 
-  -o-transition: height 0.5s;
+
+/*
+.navbar .nav li a:link, a:visited {
 }
+*/
+
+.navbar .nav li a:hover, a:active{ 
+  /*background: #191919;*/
+  color: white;
+  border-radius: 3px 3px 3px 3px;
+  box-shadow: 0 0 1px #ffffff inset;
+}
+
 
 body {
-  padding-top: 60px;
+  padding-top: 75px;
   /*font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
    font-weight: 300;*/
 }
@@ -72,7 +84,7 @@ a:visited { /* visited link */
     color: #0044cc;
 }
 a:hover { /* mouse over link */
-    color: #a61717;
+    color: #B2011D;
 }
 a:active { /* selected link */
     color: #006DCC;

@@ -47,10 +47,10 @@
 #' @import ggplot2
 #' @import methods
 #' @import shiny
-#' @import shinyBS
 #' @import threejs
 #' @import stats
 #' @import xts
+#' @importFrom shinyBS bsModal
 #' @importFrom shinyjs colourInput useShinyjs
 #' @importFrom DT datatable
 #' @importFrom gridExtra arrangeGrob grid.arrange
