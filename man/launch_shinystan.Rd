@@ -8,8 +8,8 @@ launch_shinystan(object, ...)
 }
 \arguments{
 \item{object}{An object of class \code{shinystan} or \code{stanfit}. See
-\code{\link[shinyStan]{as.shinystan}} for how to easily convert other types
-of objects to \code{shinystan} objects.}
+\code{\link[shinyStan]{as.shinystan}} for converting to a
+\code{shinystan} object (sso).}
 
 \item{...}{Optional arguments to pass to \code{\link[shiny]{runApp}}. See
 Details (RStudio users in particular).}
@@ -32,14 +32,11 @@ Unless you are using RStudio, \code{launch_shinystan} will open the
 }
 \examples{
 \dontrun{
-# If X is a shinystan object or stanfit object then
-# to launch the app just run
-X <- launch_shinystan(X)
+# If X is a stanfit object (or shinystan object (sso))
+X_sso <- launch_shinystan(X)
 
-# If X is not a shinystan or stanfit object then to launch the app first
-# convert X to a shinystan object using the as.shinystan function
-X_shinystan <- as.shinystan(X)
-launch_shinystan(X_shinystan)
+# If X is not an sso or stanfit object
+X_sso <- launch_shinystan(as.shinystan(X, model_name = "Example"))
 }
 }
 \seealso{

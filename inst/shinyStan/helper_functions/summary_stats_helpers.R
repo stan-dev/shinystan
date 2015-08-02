@@ -30,17 +30,11 @@
 }
 
 # sampler_summary ---------------------------------------------------------
-.sampler_stuff <- function(X, param, inc_warmup, report) {
+.sampler_stuff <- function(X, param, report) {
   sapply_funs <- function(x, fun_name) {
     funs <- list(maxf = function(x) max(x[,param]), minf = function(x) min(x[,param]),
                  meanf = function(x) mean(x[,param]), sdf = function(x) sd(x[,param]))
     sapply(x, FUN = funs[[fun_name]])
-  }
-  if (inc_warmup == FALSE) {
-    X <- lapply(1:length(sampler_params), function(i) {
-      out <- sampler_params[[i]]
-      out[-(1:warmup_val), ]
-    })
   }
   out <- if (report == "maximum") sapply_funs(X, "maxf") 
   else if (report == "minimum") sapply_funs(X, "minf")
@@ -52,13 +46,12 @@
 }
 
 # summary statistics for algorithm=NUTS or algorithm=HMC sampler parameters
-.sampler_summary <- function(sampler_params, warmup_val, inc_warmup = TRUE, 
+.sampler_summary <- function(sampler_params, warmup_val,
                              report = "average", digits = 4){ 
   
   params <- colnames(sampler_params[[1]])
   out <- sapply(params, FUN = function(p) .sampler_stuff(X = sampler_params, 
                                                          param = p, 
-                                                         inc_warmup = inc_warmup, 
                                                          report = report))
   
   if (length(dim(out)) > 1) { # if multiple chains

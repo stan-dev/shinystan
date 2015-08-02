@@ -22,7 +22,8 @@ Additional_repositories: https://github.com/rstudio/shinyapps
 Depends: 
     R (>= 3.1.1),
     ggplot2 (>= 1.0.0),
-    shiny (>= 0.11.2)
+    shiny (>= 0.11.2),
+    shinyBS (>= 0.61)
 License: GPL (>=3)
 LazyData: true
 Suggests: 
@@ -41,7 +42,6 @@ Imports:
     plyr (>= 1.8.3),
     reshape2 (>= 1.4.1),
     stats,
-    shinyBS (>= 0.61),
     shinyjs (>= 0.0.7.0),
     threejs (>= 0.2.1),
     xtable,

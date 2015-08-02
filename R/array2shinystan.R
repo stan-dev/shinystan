@@ -34,7 +34,8 @@
 # \code{\link[shinyStan]{launch_shinystan}}. 
 # 
 
-array2shinystan <- function(X, model_name = "unnamed model", burnin = 0, param_dims = list(),
+array2shinystan <- function(X, model_name = "unnamed model", burnin = 0, 
+                            param_dims = list(),
                             model_code) {
 
   Xname <- deparse(substitute(X))

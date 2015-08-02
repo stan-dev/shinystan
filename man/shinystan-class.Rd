@@ -4,8 +4,8 @@
 \name{shinystan-class}
 \alias{shinystan}
 \alias{shinystan-class}
-\title{An S4 class for \code{shinystan} objects}
+\title{S4 shinystan objects (sso)}
 \description{
-An S4 class for \code{shinystan} objects
+S4 shinystan objects (sso)
 }
 

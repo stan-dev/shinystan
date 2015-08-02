@@ -36,7 +36,8 @@ chains2shinystan <- function(chain_list, ...) {
   if (nChain > 1) {
     nIter <- sapply(chain_list, nrow)
     same_iters <- length(unique(nIter)) == 1
-    if (!same_iters) stop("Each chain should contain the same number of iterations.")
+    if (!same_iters) 
+      stop("Each chain should contain the same number of iterations.")
 
     cnames <- sapply(chain_list, colnames)
     if (is.array(cnames)) {
@@ -46,7 +47,8 @@ chains2shinystan <- function(chain_list, ...) {
       same_params <- length(unique(cnames)) == 1
       param_names <- cnames
     }
-    if (!same_params) stop("The parameters for each chain should be in the same order and have the same names.")
+    if (!same_params) 
+      stop("The parameters for each chain should be in the same order and have the same names.")
 
     nIter <- nIter[1]
   } else {

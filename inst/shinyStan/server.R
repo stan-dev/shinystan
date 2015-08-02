@@ -19,7 +19,7 @@ source("global_utils.R", local = TRUE)
 helpers <- list.files("helper_functions", full.names = TRUE, recursive = TRUE)
 for (h in helpers) source(h, local = TRUE)
 source("server_files/utilities/ppcheck_names_descriptions.R", local = TRUE)
-source("server_files/utilities/extract_shinystan_object.R", local=TRUE)
+source("server_files/utilities/extract_sso.R", local=TRUE)
 
 # Begin shinyServer -------------------------------------------------------
 # _________________________________________________________________________

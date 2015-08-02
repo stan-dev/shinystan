@@ -66,9 +66,8 @@ stan2shinystan <- function(stanfit, model_name, notes) {
   slots$nChains <- ncol(stanfit)
   slots$nIter <- nrow(samps_all) 
   slots$nWarmup <- nWarmup
-  slots$stan_algorithm <- stan_algorithm
   if (!missing(notes)) slots$user_model_info <- notes
   if (length(mcode) > 0) slots$model_code <- mcode
-  slots$misc <- list(max_td = max_td)
+  slots$misc <- list(max_td = max_td, stan_algorithm = stan_algorithm)
   do.call("new", slots)
 }

@@ -17,15 +17,16 @@
 
 # summary statistics for sampler parameters -------------------------------
 summary_stats_sampler <- reactive({
-  validate(need(sampler_params[[1]] != "Not Stan", 
+  validate(need(sampler_params_post_warmup, 
                 message = "Only available for Stan models"),
            need(input$sampler_warmup, message = "Loading..."))
+  sp <- if (input$sampler_warmup == "include") 
+    sampler_params else sampler_params_post_warmup
+  
   do.call(".sampler_summary", args = list(
-    sampler_params  = sampler_params,
-    inc_warmup      = input$sampler_warmup == "include",
+    sampler_params  = sp,
     warmup_val      = warmup_val,
     report          = input$sampler_report,
-    # algorithm       = stan_algorithm,
     digits          = input$sampler_digits
   ))
 })
