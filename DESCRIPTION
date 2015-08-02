@@ -1,22 +1,24 @@
 Package: shinyStan
-Title: Explore Your MCMC
+Title: Interactive Visual Summaries and Analysis for MCMC
 Version: 2.0.0
-Authors@R: as.person(c(
-    "Jonah Gabry <jsg2201@columbia.edu> [aut, cre]",
-    "Stan Development Team [aut]",
-    "Michael Andreae [ctb]",
-    "Yuanjun Gao [ctb]",
-    "Dongying Song [ctb]"
-  ))
+Date: 2015-08-01
+Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"),
+    email = "jsg2201@columbia.edu", comment = "Stan Development Team"),
+      person("Michael", "Andreae", role = "ctb"),
+      person("Gao", "Yuanjun", role = "ctb"),
+      person("Dongying", "Song", role = "ctb"))
 Maintainer: Jonah Gabry <jsg2201@columbia.edu>
-Description: Explore MCMC output through interactive visualizations and tables
-    using the Shiny web application framework. The ShinyStan app is run 
-    locally, but the package also provides a function that enables users to 
-    easily deploy their own ShinyStan apps online using RStudio's ShinyApps 
-    service (to deploy an app users must install the suggested shinyapps package,
-    which is available from RStudio. See Additional_repositories.).
-URL: http://mc-stan.org, https://github.com/stan-dev/shinystan 
+Description: Immediate, informative, customizable visual and numerical summaries 
+    of model parameters and convergence diagnostics for MCMC simulations. 
+    shinyStan can be used to explore the output of MCMC programs written in 
+    any programming language (and has additional features for Stan models).
+    Users can also deploy their own shinyStan apps online using 
+    RStudio's ShinyApps service. Note: to use this feature the user must install 
+    the shinyapps package available from RStudio (Github url in 
+    Additional_repositories).
+URL: http://mc-stan.org, https://github.com/stan-dev/shinystan/
 BugReports: https://github.com/stan-dev/shinystan/issues
+Additional_repositories: https://github.com/rstudio/shinyapps
 Depends: 
     R (>= 3.1.1),
     ggplot2 (>= 1.0.0),
@@ -24,24 +26,24 @@ Depends:
 License: GPL (>=3)
 LazyData: true
 Suggests: 
-    rstan,
     coda,
     knitr (>= 1.9),
-    testthat,
-    shinyapps
+    rstan (>= 2.7),
+    shinyapps (>= 0.4),
+    testthat
 Imports: 
     DT (>= 0.1),
     dygraphs (>= 0.4.1),
     gridExtra,
     gtools,
     markdown (>= 0.7.4),
+    methods,
     plyr (>= 1.8.3),
-    reshape2,
-    threejs,
-    xtable,
-    xts (>= 0.9-7),
+    reshape2 (>= 1.4.1),
     stats,
     shinyBS (>= 0.61),
-    shinyjs (>= 0.0.7.0)
+    shinyjs (>= 0.0.7.0),
+    threejs (>= 0.2.1),
+    xtable,
+    xts (>= 0.9-7)
 VignetteBuilder: knitr
-Additional_repositories: https://github.com/Rstudio/shinyapps

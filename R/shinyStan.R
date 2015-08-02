@@ -43,13 +43,13 @@
 #'   \code{\link[shinyStan]{launch_shinystan_demo}} or try it with one of your
 #'   own models using \code{\link[shinyStan]{launch_shinystan}}.
 #'    
-#' @import stats
 #' @import dygraphs
 #' @import ggplot2
 #' @import methods
 #' @import shiny
 #' @import shinyBS
 #' @import threejs
+#' @import stats
 #' @import xts
 #' @importFrom shinyjs colourInput useShinyjs
 #' @importFrom DT datatable
