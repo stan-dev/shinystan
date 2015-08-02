@@ -231,8 +231,7 @@ tagList(
                                  helpText("The text will be saved in the", code("user_model_info"),
                                           "slot of your", code("shinystan"), 
                                           "object and displayed here each time you launch the app for this model.",
-                                          bsButton("btn_user_model_info_why", label = "Read more about the 'Notes' tab", 
-                                                   style = "link", size = "mini")
+                                          actionLink("btn_user_model_info_why", label = "Read more about the 'Notes' tab")
                                  ),
                                  h4("Notes"),
                                  tags$textarea(id="user_model_info", 

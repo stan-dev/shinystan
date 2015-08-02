@@ -7,7 +7,7 @@ make_nuts_glossary_modal_output <- function(id, trigger) {
   renderUI({
     algorithm_nuts <- h5(style = "color: #337ab7;", "algorithm = NUTS")
     algorithm_hmc <- h5(style = "color: #337ab7;", "algorithm = HMC")
-    bsModal(id, title = strong("shinyStan glossary"), trigger,
+    shinyBS::bsModal(id, title = strong("shinyStan glossary"), trigger,
             withMathJax(),
             
             navlistPanel(well = FALSE,

@@ -16,7 +16,7 @@
 
 
 output$user_model_info_modal <- renderUI({
-  bsModal("user_model_info_why_modal", title = "shinyStan help", trigger = "btn_user_model_info_why",
+  shinyBS::bsModal("user_model_info_why_modal", title = "shinyStan help", trigger = "btn_user_model_info_why",
           h4("Why use the 'Notes' feature?"),
           p(
             "If you want to allow other users to explore your model with

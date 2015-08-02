@@ -22,7 +22,7 @@
 # function to output glossary  --------------------------------------------
 make_glossary_modal_output <- function(id, trigger) {
   renderUI({
-    bsModal(id, title = strong("shinyStan glossary"), trigger, 
+    shinyBS::bsModal(id, title = strong("shinyStan glossary"), trigger, 
             withMathJax(),
             
             navlistPanel(well = FALSE,

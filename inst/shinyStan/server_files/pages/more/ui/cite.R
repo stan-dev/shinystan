@@ -16,7 +16,7 @@
 
 
 output$ui_cite <- renderUI({
-  bsModal("cite_shinystan", title = "Citing shinyStan", trigger = "citation_modal",      
+  shinyBS::bsModal("cite_shinystan", title = "Citing shinyStan", trigger = "citation_modal",      
   pre(
 "@Misc{shinystan-software:2015,
 title = {{shinyStan}: {R} Package for Interactive Exploration of {MCMC} samples, Version 1.1.0},
