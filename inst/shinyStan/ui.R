@@ -21,7 +21,7 @@ source("server_files/utilities/ppcheck_names_descriptions.R", local = TRUE)
 
 # give shinystan_object shorter name
 object <- shinystan_object
-footer_text <- paste("ShinyStan",  "v2.0.0")
+
 # Begin shinyUI -----------------------------------------------------------
 # _________________________________________________________________________
 tagList(
@@ -32,7 +32,6 @@ tagList(
   navbarPage(title = NULL,
              windowTitle = "ShinyStan", collapsible = TRUE, id = "nav",
              inverse = FALSE, position = "fixed-top",
-             footer = div(class = "shinystan-footer", footer_text),
              theme = shinythemes::shinytheme("flatly"),
              
              tabPanel(title = strong(style = "color: #B2011D;", "ShinyStan"),
@@ -247,6 +246,7 @@ tagList(
                                           tags$textarea(id="model_code", 
                                                         wrap = "off",
                                                         cols = 80,
+                                                        readonly = TRUE,
                                                         object@model_code)
                                    )
                                  )
