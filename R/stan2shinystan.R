@@ -16,9 +16,7 @@
 # convert stanfit object to shinystan object
 stan2shinystan <- function(stanfit, model_name, notes) {
   # notes: text to add to user_model_info slot
-  
   rstan_check()
-  
   if (!inherits(stanfit, "stanfit")) {
     name <- deparse(substitute(stanfit))
     stop(paste(name, "is not a stanfit object."))

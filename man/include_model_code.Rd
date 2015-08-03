@@ -43,9 +43,8 @@ my_code <- "
  }
 "
 
-# Add the code to a shinystan object X
-X <- include_model_code(X, my_code)
-launch_shinystan(X) # code is visible in the Model Code tab
+# Add the code to a shinystan object sso
+sso <- include_model_code(sso, my_code)
 
 }
 }
