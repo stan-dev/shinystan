@@ -3,14 +3,14 @@
 \name{as.shinystan}
 \alias{as.shinystan}
 \alias{is.shinystan}
-\title{Create and test \code{shinystan} objects}
+\title{Create and test shinystan objects}
 \usage{
 as.shinystan(X, ...)
 
-is.shinystan(Y)
+is.shinystan(object)
 }
 \arguments{
-\item{X}{An object to be converted to a \code{shinystan} object. Can be
+\item{X}{An object to be converted to a shinystan object. Can be
 one of the following:
 \describe{
   \item{stanfit}{An object of class \code{stanfit} (\pkg{rstan})}
@@ -24,16 +24,16 @@ one of the following:
 
 \item{...}{Additional arguments. See \strong{Details}, below, for instructions.}
 
-\item{Y}{An object to test.}
+\item{object}{An object to test.}
 }
 \value{
-For \code{as.shinystan} an object of class \code{shinystan} that can
+For \code{as.shinystan} an object of class shinystan that can
 be used with \code{{launch_shinystan}}. For
 \code{is.shinystan} a logical value indicating whether the tested object
-is a \code{shinystan} object.
+is a shinystan object.
 }
 \description{
-Create and test \code{shinystan} objects
+Create and test shinystan objects
 }
 \details{
 If \code{X} is a \code{stanfit} object then no additional arguments
@@ -47,7 +47,7 @@ specified but are not required:
   \item{\code{param_dims}}{Rarely used and never necessary. A named list giving the dimensions for all parameters.
   For scalar parameters use \code{0} as the dimension. See \strong{Examples}.}
   \item{\code{model_code}}{A character string with the code you used to run your model.
-  This can also be added to your \code{shinystan} object later using the
+  This can also be added to your shinystan object later using the
   \code{\link{include_model_code}} function. See \code{\link{include_model_code}}
   for additional formatting instructions. After launching the app \code{model_code}
   will be viewable in the \strong{Model Code} tab.}

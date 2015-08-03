@@ -35,8 +35,12 @@ function(input, output, session) {
 
   # user's notes 
   observeEvent(input$save_user_model_info, handlerExpr = {
-    if (input$user_model_info != "")
-      shinystan_object@user_model_info <<- input$user_model_info
+    model_info <- input$user_model_info
+    if (model_info == "")
+      model_info <- "Use this space to store notes about your model."
+      # shinystan_object@user_model_info <<- input$user_model_info
+    assign("shinystan_object@user_model_info", input$user_model_info, 
+           inherits = TRUE)
   })
   output$user_text_saved <- renderText({
     input$save_user_model_info # take dependency on action button

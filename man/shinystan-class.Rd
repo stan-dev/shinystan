@@ -6,6 +6,30 @@
 \alias{shinystan-class}
 \title{S4 shinystan objects (sso)}
 \description{
-S4 shinystan objects (sso)
+shinystan objects
+}
+\section{Creating shinystan objects}{
+
+
+See \code{\link{as.shinystan}}.
+}
+
+\section{Turning shinystan objects into custom ShinyStan apps hosted online}{
+
+
+See \code{\link{deploy_shinystan}}.
+}
+
+\section{Functions for manipulating shinystan objects}{
+
+
+
+\code{\link{notes}} Add to or replace notes
+
+\code{\link{rename_model}} Change the model name.
+
+\code{\link{generate_quantity}} Add new parameters/quantities as a function of one or two existing parameters.
+
+\code{\link{model_code}} Add or change model code.
 }
 

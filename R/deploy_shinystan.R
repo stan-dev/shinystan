@@ -22,7 +22,7 @@
 #' 
 #' @export
 #' 
-#' @param sso The \code{shinystan} object to use.
+#' @param sso shinystan object.
 #' @param appName The name to use for the application. Application names must be
 #'   at least four characters long and may only contain letters, numbers, dashes
 #'   and underscores.

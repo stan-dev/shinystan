@@ -13,9 +13,9 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-#' Create and test \code{shinystan} objects
+#' Create and test shinystan objects
 #'
-#' @param X An object to be converted to a \code{shinystan} object. Can be
+#' @param X An object to be converted to a shinystan object. Can be
 #' one of the following:
 #' \describe{
 #'   \item{stanfit}{An object of class \code{stanfit} (\pkg{rstan})}
@@ -27,12 +27,12 @@
 #'   }
 #' }
 #'
-#' @param Y An object to test.
+#' @param object An object to test.
 #' @param ... Additional arguments. See \strong{Details}, below, for instructions.
-#' @return For \code{as.shinystan} an object of class \code{shinystan} that can
+#' @return For \code{as.shinystan} an object of class shinystan that can
 #' be used with \code{{launch_shinystan}}. For
 #' \code{is.shinystan} a logical value indicating whether the tested object
-#' is a \code{shinystan} object.
+#' is a shinystan object.
 #' @details If \code{X} is a \code{stanfit} object then no additional arguments
 #' should be specified in \code{...} (they are taken automatically from the \code{stanfit}
 #' object). If \code{X} is not a \code{stanfit} object then the following arguments can be
@@ -44,7 +44,7 @@
 #'   \item{\code{param_dims}}{Rarely used and never necessary. A named list giving the dimensions for all parameters.
 #'   For scalar parameters use \code{0} as the dimension. See \strong{Examples}.}
 #'   \item{\code{model_code}}{A character string with the code you used to run your model.
-#'   This can also be added to your \code{shinystan} object later using the
+#'   This can also be added to your shinystan object later using the
 #'   \code{\link{include_model_code}} function. See \code{\link{include_model_code}}
 #'   for additional formatting instructions. After launching the app \code{model_code}
 #'   will be viewable in the \strong{Model Code} tab.}
@@ -89,11 +89,8 @@
 #'}
 
 as.shinystan <- function(X, ...) {
-  
   Xname <- deparse(substitute(X))
-  what_X_is <- get_type(X)
-  
-  if (what_X_is == "shinystan") {
+  if (is.shinystan(X)) {
     message(
       paste0(Xname, " is already a shinystan object.\n",
              "You can use launch_shinystan(", Xname, 
@@ -101,10 +98,11 @@ as.shinystan <- function(X, ...) {
     )
     return(X)
   }
-  if (what_X_is == "stanfit") return(stan2shinystan(X, ...))
-  if (what_X_is == "mcmclist") return(mcmc2shinystan(X, ...))
-  if (what_X_is == "chainlist") return(chains2shinystan(X, ...))
-  if (what_X_is == "other") {
+  X_is <- get_type(X)
+  if (X_is == "stanfit") return(stan2shinystan(X, ...))
+  if (X_is == "mcmclist") return(mcmc2shinystan(X, ...))
+  if (X_is == "chainlist") return(chains2shinystan(X, ...))
+  if (X_is == "other") {
     if (!is.array(X)) 
       stop(paste(Xname, "is not a valid input type. See ?as.shinystan"), 
            call. = FALSE)
@@ -114,4 +112,4 @@ as.shinystan <- function(X, ...) {
 }
 
 #' @rdname as.shinystan
-is.shinystan <- function(Y) inherits(Y, "shinystan")
+is.shinystan <- function(object) inherits(object, "shinystan")

@@ -38,7 +38,7 @@ The `deploy_shinystan` function will deploy a ShinyStan app unique to your model
 
 For the example below assume that 
 
-- `my_sso` is the `shinystan` object you want to use
+- `my_sso` is the shinystan object you want to use
 - the name you want to use for the app is `MyModel` 
 - the username for your ShinyApps account (from Step 1) is `username`.
 

@@ -20,7 +20,7 @@
 #' @param rstudio For RStudio users, should the app launch in RStudio's Viewer? 
 #'   The default (FALSE) is to launch the app in the default web browser.
 #' @param ... Optional arguments to pass to \code{\link[shiny]{runApp}}.
-#' @return An S4 object of class \code{shinystan}.
+#' @return An S4 shinystan object.
 #'   
 #' @seealso \code{\link{launch_shinystan}},
 #'   \code{\link{as.shinystan}},

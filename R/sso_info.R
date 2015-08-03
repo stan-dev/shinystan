@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-#' Print summary of \code{shinystan} object
+#' Print summary of shinystan object
 #'
 #' Prints basic summary info including number of parameters, chains, iterations, 
 #' warmup iterations, etc. 

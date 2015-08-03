@@ -2,12 +2,12 @@
 % Please edit documentation in R/retrieve.R
 \name{retrieve}
 \alias{retrieve}
-\title{Get summary statistics from \code{shinystan} object}
+\title{Get summary statistics from shinystan object}
 \usage{
 retrieve(sso, what, ...)
 }
 \arguments{
-\item{sso}{A \code{shinystan} object}
+\item{sso}{A shinystan object}
 
 \item{what}{What do you want to get? See \strong{Details}, below.}
 
@@ -18,7 +18,7 @@ retrieve(sso, what, ...)
   \strong{Details}, below.}
 }
 \description{
-From a \code{shinystan} object get rhat, effective sample size, posterior
+From a shinystan object get rhat, effective sample size, posterior
 quantiles, means, standard deviations, sampler diagnostics, etc.
 }
 \details{

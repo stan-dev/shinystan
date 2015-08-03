@@ -7,9 +7,9 @@
 launch_shinystan(object, rstudio = FALSE, ...)
 }
 \arguments{
-\item{object}{An object of class \code{shinystan}, \code{stanfit}, or
+\item{object}{An object of class shinystan, stanfit, or
 \code{stanreg}. See \code{\link{as.shinystan}} for converting other
-objects to a \code{shinystan} object (sso).}
+objects to a shinystan object (sso).}
 
 \item{rstudio}{For RStudio users, should the app launch in RStudio's Viewer?
 The default (FALSE) is to launch the app in the default web browser.}
@@ -17,7 +17,7 @@ The default (FALSE) is to launch the app in the default web browser.}
 \item{...}{Optional arguments to pass to \code{\link[shiny]{runApp}}.}
 }
 \value{
-An S4 object of class \code{shinystan}.
+An S4 shinystan object.
 }
 \description{
 ShinyStan app

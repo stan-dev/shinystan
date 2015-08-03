@@ -14,12 +14,12 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-#' Add model code to a \code{shinystan} object
+#' Add model code to a shinystan object
 #'
-#' @param sso A \code{shinystan} object.
+#' @param sso A shinystan object.
 #' @param code The code you want to add. See \strong{Details} below for 
 #'   formatting instructions.
-#' @return The \code{shinystan} object \code{sso} with \code{code} in the 
+#' @return The shinystan object \code{sso} with \code{code} in the 
 #'   \code{model_code} slot.
 #'   
 #' @details \code{code} should be a character string that can be used as an
@@ -47,11 +47,11 @@
 #' "
 #' 
 #' # Add the code to a shinystan object sso
-#' sso <- include_model_code(sso, my_code)
+#' sso <- model_code(sso, my_code)
 #'
 #'}
 
-include_model_code <- function(sso, code) {
+model_code <- function(sso, code) {
   sso_check(sso)
   if (!is.character(code)) 
     stop("'code' should be a character string.")

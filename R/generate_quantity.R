@@ -14,17 +14,17 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-#' Add to \code{shinystan} object a new parameter as a function of one or two
+#' Add to shinystan object a new parameter as a function of one or two 
 #' existing parameters
 #'
-#' @param sso The \code{shinystan} object to modify.
-#' @param fun Function to call, i.e. \code{function(param1)}
-#' or \code{function(param1,param2)}. See \strong{Examples}, below.
+#' @param sso shinystan object.
+#' @param fun Function to call, i.e. \code{function(param1)} or
+#'   \code{function(param1,param2)}. See \strong{Examples}, below.
 #' @param param1 Name of first parameter as character string.
 #' @param param2 Optional. Name of second paramter as character string.
 #' @param new_name Name for the new parameter as character string.
-#' @return A \code{shinystan} object with \code{new_name} included as a parameter.
-#' @seealso \code{\link{as.shinystan}}, \code{\link{launch_shinystan_demo}}
+#' @return sso, updated. See Examples.
+#' @seealso \code{\link{as.shinystan}}
 #' @export
 #'
 #' @examples

@@ -13,12 +13,12 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-#' Get summary statistics from \code{shinystan} object
+#' Get summary statistics from shinystan object
 #'
-#' From a \code{shinystan} object get rhat, effective sample size, posterior
+#' From a shinystan object get rhat, effective sample size, posterior
 #' quantiles, means, standard deviations, sampler diagnostics, etc.
 #' 
-#' @param sso A \code{shinystan} object
+#' @param sso A shinystan object
 #' @param what What do you want to get? See \strong{Details}, below.
 #' @param ... Optional arguments, in particular \code{pars} to specify parameter
 #'   names (by default all parameters will be used). For NUTS sampler parameters
