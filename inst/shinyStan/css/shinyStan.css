@@ -428,6 +428,10 @@ a:active { /* selected link */
 #user_text_saved {
   color: gray;
 }
+#save_user_model_info_safe_quit, #save_user_model_code_safe_quit{
+  color: gray;
+  font-size: 12px;
+}
 #model_code {
   background: transparent; 
   height: 400px;

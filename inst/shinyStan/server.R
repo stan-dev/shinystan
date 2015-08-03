@@ -38,17 +38,10 @@ function(input, output, session) {
     model_info <- input$user_model_info
     if (model_info == "")
       model_info <- "Use this space to store notes about your model."
-      # shinystan_object@user_model_info <<- input$user_model_info
-    assign("shinystan_object@user_model_info", input$user_model_info, 
-           inherits = TRUE)
-  })
-  output$user_text_saved <- renderText({
-    input$save_user_model_info # take dependency on action button
-    if (input$save_user_model_info != 0) {
-      print(paste("Saved:  ", format(Sys.time(), "%a %b %d %Y %X")))
-    }
+    slot(shinystan_object, "user_model_info") <<- input$user_model_info
   })
   
+
   options_inputs <- c("table", "multiparam", "autocorr", "rhat_warnings", # multitrace
                       "bivariate", "trivariate", "density", "hist")
   dens_inputs <- c("point_est", "ci", "x_breaks", "fill_color", "line_color")

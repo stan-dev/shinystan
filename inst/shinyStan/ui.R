@@ -238,17 +238,8 @@ tagList(
              navbarMenu(title = "More",
                         
                         #### PAGE: Model Code ####
-                        tabPanel(title = "Model Code",
-                                 fluidRow(
-                                   column(10, offset = 2,
-                                          h4("Model Code"),
-                                          tags$textarea(id="model_code", 
-                                                        wrap = "off",
-                                                        cols = 80,
-                                                        readonly = TRUE,
-                                                        object@model_code)
-                                   )
-                                 )
+                        tabPanel(title = "Model Code", 
+                                 uiOutput("ui_model_code")
                         ), # End Model Code
                         
                         #### PAGE: Notepad ####
@@ -274,7 +265,7 @@ tagList(
              ), # End navbarMenu
              
              #### QUIT ####
-             tabPanel(strong(style = "color: #dadada;", "Quit"), 
+             tabPanel(strong(style = "color: #dadada; font-size: 12px;", "Save & Quit"), 
                       value = "quit", icon = icon("close"),
                       h1("Thanks for using ShinyStan."),
                       br(),br(),
