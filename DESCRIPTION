@@ -41,7 +41,6 @@ Imports:
     methods,
     reshape2 (>= 1.4.1),
     stats,
-    shinyBS (>= 0.61),
     shinyjs (>= 0.0.7.0),
     shinythemes,
     threejs (>= 0.2.1),

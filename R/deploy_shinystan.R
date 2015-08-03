@@ -76,7 +76,7 @@ deploy_shinystan <- function(sso, appName, account = NULL, ...) {
   deployDir <- file.path(appDir, "ShinyStan")
   contents <- system.file("ShinyStan", package = "shinystan")
   file.copy(from = contents, to = appDir, recursive = TRUE)
-  server_pkgs <- c("shiny", "shinyBS", "shinyjs", "markdown", "shinythemes")
+  server_pkgs <- c("shiny", "shinyjs", "markdown", "shinythemes")
   ui_pkgs <- c(server_pkgs, "ggplot2", "gtools", "reshape2", 
                "dygraphs", "xts", "xtable", "gridExtra", "DT", "threejs")
   server_lines <- paste0("library(", server_pkgs,");")

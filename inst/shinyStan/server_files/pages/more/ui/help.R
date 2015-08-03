@@ -15,28 +15,31 @@
 
 
 output$ui_help <- renderUI({
-  tags$div(
-  br(),
-  navlistPanel(well = FALSE,
-               "Help topics",
-               tabPanel("Questions, bugs, and new features",
-                        h4("Stan users group"),
-                        p("To ask a question or suggest a new feature visit the",
-                          a("Stan users message board.", href = "https://github.com/stan-dev/shinystan/issues")),
-                        h4("GitHub issue tracker"),
-                        p("To report a bug visit the",
-                          a("GitHub issue tracker.", href = "https://github.com/stan-dev/shinystan/issues"),
-                          "You can also use the issue tracker to suggest new features.")
-               ),             
-               tabPanel("Saving plots",
-                        h4("Saving plots as ggplot2 objects"),
-                        p("Clicking on a 'Save ggplot2 object' button will be save an .RData 
+  div(id = "help_div", 
+      style = "padding-top: 10px;",
+      h2(style = "text-align: center;", "Help"),
+      br(),
+      navlistPanel(well = FALSE,
+                   "Help Topics",
+                   tabPanel("Questions, bugs, and new features",
+                            h4("Stan users group"),
+                            p("To ask a question or suggest a new feature visit the",
+                              a("Stan users message board.", href = "https://github.com/stan-dev/shinystan/issues")),
+                            br(),
+                            h4("GitHub issue tracker"),
+                            p("To report a bug visit the",
+                              a("GitHub issue tracker.", href = "https://github.com/stan-dev/shinystan/issues"),
+                              "You can also use the issue tracker to suggest new features.")
+                   ),             
+                   tabPanel("Saving plots",
+                            h4("Saving plots as ggplot2 objects"),
+                            p("Clicking on a 'Save ggplot2 object' button will be save an .RData 
                           file that you can load into your Global Environment using the",
-             code("load"), "function in R. 
+                              code("load"), "function in R. 
              You can then make changes to the plot using the functions in the 
              ggplot2 package."
-           )
-  )
-  )
+                            )
+                   )
+      )
   )
 })

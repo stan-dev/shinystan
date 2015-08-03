@@ -13,7 +13,8 @@ a_options <- function(name) {
 a_glossary <- function(id) {
   div(class = "aoptions",
       actionLink(inputId = id, 
-                 label = strong(style = "margin-top: 20px; color: #222222;", "Open glossary"), 
+                 label = strong(style = "margin-top: 20px; color: #222222;", 
+                                "Help/Glossary"), 
                  icon = icon("book", lib = "glyphicon")
       )
   )

@@ -52,7 +52,6 @@
 #' @import stats
 #' @import xts
 #' @importFrom shinythemes shinytheme
-#' @importFrom shinyBS bsModal
 #' @importFrom shinyjs colourInput useShinyjs
 #' @importFrom DT datatable
 #' @importFrom gridExtra arrangeGrob grid.arrange

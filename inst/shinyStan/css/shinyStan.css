@@ -40,8 +40,12 @@
   margin-bottom: -145px;
 }
 
-#home-links {
+.home-links {
   text-align: center;
+}
+
+.help-links-active {
+  text-decoration: underline;
 }
 
 .btn-default {

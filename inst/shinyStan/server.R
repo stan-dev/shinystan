@@ -61,21 +61,27 @@ function(input, output, session) {
     shinyjs::toggleState(id = "ac_flip", condition = input$ac_combine == FALSE)
   })
   observe({
-    shinyjs::onclick("toc_estimate", updateTabsetPanel(session, "nav", selected = "Estimate"))
-    shinyjs::onclick("toc_diagnose", updateTabsetPanel(session, "nav", selected = "Diagnose"))
-    shinyjs::onclick("toc_explore", updateTabsetPanel(session, "nav", selected = "Explore"))
-    shinyjs::onclick("toc_code", updateTabsetPanel(session, "nav", selected = "Model Code"))
-    shinyjs::onclick("toc_help", updateTabsetPanel(session, "nav", selected = "Help"))
-    shinyjs::onclick("toc_about", updateTabsetPanel(session, "nav", selected = "About"))
-    shinyjs::onclick("toc_quit", updateTabsetPanel(session, "nav", selected = "Quit"))
+    shinyjs::onclick("toc_estimate", 
+                     updateTabsetPanel(session, "nav", selected = "Estimate"))
+    shinyjs::onclick("toc_diagnose", 
+                     updateTabsetPanel(session, "nav", selected = "Diagnose"))
+    shinyjs::onclick("toc_explore", 
+                     updateTabsetPanel(session, "nav", selected = "Explore"))
+    shinyjs::onclick("open_glossary_from_table",
+                     updateTabsetPanel(session, "nav", selected = "Help"))
+    shinyjs::onclick("open_glossary_from_nuts_table", 
+                     updateTabsetPanel(session, "nav", selected = "Help"))
+    shinyjs::onclick("open_glossary_from_rhat", 
+                     updateTabsetPanel(session, "nav", selected = "Help"))
+    shinyjs::onclick("toggle_help_glossary", {
+      shinyjs::toggle(id = "help_div", anim = TRUE, animType = "slide")
+      shinyjs::toggle(id = "glossary_div", anim = TRUE, animType = "slide")
+    })
+#     shinyjs::onclick("toc_code", updateTabsetPanel(session, "nav", selected = "Model Code"))
+#     shinyjs::onclick("toc_help", updateTabsetPanel(session, "nav", selected = "Help"))
+#     shinyjs::onclick("toc_about", updateTabsetPanel(session, "nav", selected = "About"))
+#     shinyjs::onclick("toc_quit", updateTabsetPanel(session, "nav", selected = "Quit"))
   })
-  
-  # tooltips
-  #   for (id in seq_along(tooltip_ids)) {
-  #     addTooltip(session, id = tooltip_ids[id], trigger = "hover", 
-  #                placement = tooltip_placements[id],
-  #                title = tooltip_msgs[id], options = list(container = 'body'))
-  #   }
   
 } # End shinyServer
 

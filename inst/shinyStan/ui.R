@@ -43,16 +43,18 @@ tagList(
                             img(src = "wide_ensemble.png", id = "wide-ensemble", width = "100%")
                           )
                       ),
-                      div(id = "home-links",
+                      div(class = "home-links",
                           div(id = "shinystan-title", "ShinyStan"),
                           div(id = "model-name", 
                               h4(paste("Model")),
                               h5(object@model_name)
                               ),
                           br(),
-                          h3(toc_entry("Diagnose")),
-                          h3(toc_entry("Estimate")),
-                          h3(toc_entry("Explore"))
+                          div(style = "text-decoration: underline;",
+                            h3(toc_entry("Diagnose")),
+                            h3(toc_entry("Estimate")),
+                            h3(toc_entry("Explore"))
+                          )
                           # div(toc_entry("Code"), toc_entry("Help"), toc_entry("About"), toc_entry("Quit"))
                       )
              ),
@@ -80,9 +82,8 @@ tagList(
                                  fluidRow(
                                    column(10, DT::dataTableOutput("all_summary_out")),
                                    column(2, 
-                                          # a_glossary("btn_open_glossary"),
+                                          a_glossary("open_glossary_from_table"),
                                           a_options("table"),
-                                          # uiOutput("glossary_modal"),
                                           uiOutput("ui_table_customize")
                                           # uiOutput("ui_tex_modal")
                                    )
@@ -111,8 +112,7 @@ tagList(
                         ),
                         #### hmc/nuts stats ####
                         tabPanel("HMC/NUTS (stats)",
-#                                  fluidRow(column(3, offset = 9, a_glossary("btn_open_nuts_glossary"))), 
-#                                  uiOutput("nuts_glossary_modal"),
+                                 fluidRow(column(3, offset = 9, a_glossary("open_glossary_from_nuts_table"))), 
                                  h2("Summary of sampler parameters"),
                                  uiOutput("ui_sampler_stats_customize"),
                                  DT::dataTableOutput("sampler_summary"),
@@ -125,9 +125,8 @@ tagList(
                                           hr(),
                                           uiOutput("ui_rhat_neff_mcse_warnings")),
                                    column(3, 
-                                          # a_glossary("btn_open_glossary_copy"),
+                                          a_glossary("open_glossary_from_rhat"),
                                           a_options("rhat_warnings"),
-                                          # uiOutput("glossary_modal_copy"),
                                           uiOutput("ui_warnings_customize"))
                                  )
                         ),
@@ -254,39 +253,23 @@ tagList(
                         
                         #### PAGE: Notepad ####
                         tabPanel(title = "Notepad",
-                                 fluidRow(
-                                   column(2, 
-                                          br(),br(),
-                                          helpText(style = "font-size: 12px;", 
-                                                   p("Use this space to store notes about your model."),
-                                                   p("The text will be saved in the", 
-                                                   code("user_model_info"),
-                                                   "slot of your", code("shinystan"), 
-                                                   "object and displayed here each time you launch the app for this model."),
-                                                   actionLink("btn_user_model_info_why", 
-                                                              label = "Read more about the 'Notes' tab")
-                                          ),
-                                          uiOutput("user_model_info_modal"),
-                                          br(),
-                                          actionButton("save_user_model_info", 
-                                                       label = "Save changes", 
-                                                       icon = icon("save")),
-                                          textOutput("user_text_saved")
-                                   ),
-                                   column(10,
-                                          h4("Notes"),
-                                          tags$textarea(id="user_model_info", 
-                                                        rows=20, cols=80, 
-                                                        object@user_model_info)
-                                   )
-                                 )
+                                 uiOutput("ui_notepad")
                         ), # End Notepad
                         
                         #### PAGE: About ####
                         tabPanel(title = "About", uiOutput("ui_about")), 
                         
                         #### PAGE: Help ####
-                        tabPanel(title = "Help", uiOutput("ui_help"))
+                        tabPanel(title = "Help",
+                                 br(),br(),
+                                 div(class = "home-links",
+                                     actionLink(class = "help-links-active", 
+                                                inputId = "toggle_help_glossary", 
+                                                label = h4("Toggle Help/Glossary"))
+                                 ),
+                                 uiOutput("ui_help"),
+                                 uiOutput("ui_glossary")
+                        )
                         
              ), # End navbarMenu
              
