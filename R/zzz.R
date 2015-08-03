@@ -14,8 +14,8 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 .onAttach <- function(...) {
-  ver <- utils::packageVersion("shinyStan")
-  msg <- paste0("\nThis is shinyStan version ", ver,"\n")
+  ver <- utils::packageVersion("shinystan")
+  msg <- paste0("\nThis is shinystan version ", ver,"\n")
   packageStartupMessage(msg)
 } 
 

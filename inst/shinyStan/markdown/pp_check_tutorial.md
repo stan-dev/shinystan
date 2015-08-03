@@ -1,11 +1,11 @@
-## Using Stan and shinyStan for posterior predictive checking
+## Using Stan and ShinyStan for posterior predictive checking
 
 In this tutorial we do the following:
 
 1. Generate some fake data to play with
 2. Write code for a simple Stan model
 3. Fit the model using **RStan** 
-4. Use **shinyStan** for graphical posterior predictive checks
+4. Use **ShinyStan** for graphical posterior predictive checks
 
 ### Data
 
@@ -59,10 +59,10 @@ The code in the `generated quantities` block will be evaluated for each posterio
 
 ### Fit the model
 
-If we've saved our Stan code in a file called `stan_code.stan` then we can run this model with **RStan** and then launch **shinyStan** like this:
+If we've saved our Stan code in a file called `stan_code.stan` then we can run this model with **RStan** and then launch **ShinyStan** like this:
 
     library(rstan)
-    library(shinyStan)
+    library(ShinyStan)
     
     # Prepare the data we'll need as a list
     stan_data <- list(y = y, X = X, N = N, K = K)
@@ -70,12 +70,12 @@ If we've saved our Stan code in a file called `stan_code.stan` then we can run t
     # Fit the model
     stanfit <- stan(file = "stan_code.stan", data = stan_data)
     
-    # Launch shinyStan
+    # Launch ShinyStan
     launch_shinystan(stanfit)
 
 
-### Graphical posterior predictive checks with shinyStan
+### Graphical posterior predictive checks with ShinyStan
 
-Once we've launched **shinyStan** we can navigate to the page for posterior predictive checking. In the dropdown menus it will ask us to select the object containing our data from our R global environment and the name of the paramter from our model containing the posterior predictive replications. So we enter `y` and `y_rep`, respectively. 
+Once we've launched **ShinyStan** we can navigate to the page for posterior predictive checking. In the dropdown menus it will ask us to select the object containing our data from our R global environment and the name of the paramter from our model containing the posterior predictive replications. So we enter `y` and `y_rep`, respectively. 
 
-**shinyStan** will then generate graphics that will aid in checking the fit of our model including comparisons of the distribution of the observed data to the distributions of the posterior predictive replications, distributions of test statistics, and residual plots.
+**ShinyStan** will then generate graphics that will aid in checking the fit of our model including comparisons of the distribution of the observed data to the distributions of the posterior predictive replications, distributions of test statistics, and residual plots.

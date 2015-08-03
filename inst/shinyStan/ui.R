@@ -78,11 +78,12 @@ tagList(
                                  br(),
                                  fluidRow(
                                    column(10, DT::dataTableOutput("all_summary_out")),
-                                   column(2, a_glossary("btn_open_glossary"),
+                                   column(2, 
+                                          # a_glossary("btn_open_glossary"),
                                           a_options("table"),
-                                          uiOutput("glossary_modal"),
-                                          uiOutput("ui_table_customize"),
-                                          uiOutput("ui_tex_modal")
+                                          # uiOutput("glossary_modal"),
+                                          uiOutput("ui_table_customize")
+                                          # uiOutput("ui_tex_modal")
                                    )
                                    )
                         )
@@ -109,8 +110,8 @@ tagList(
                         ),
                         #### hmc/nuts stats ####
                         tabPanel("HMC/NUTS (stats)",
-                                 fluidRow(column(3, offset = 9, a_glossary("btn_open_nuts_glossary"))), 
-                                 uiOutput("nuts_glossary_modal"),
+#                                  fluidRow(column(3, offset = 9, a_glossary("btn_open_nuts_glossary"))), 
+#                                  uiOutput("nuts_glossary_modal"),
                                  h2("Summary of sampler parameters"),
                                  uiOutput("ui_sampler_stats_customize"),
                                  DT::dataTableOutput("sampler_summary"),
@@ -123,10 +124,10 @@ tagList(
                                           hr(),
                                           uiOutput("ui_rhat_neff_mcse_warnings")),
                                    column(3, 
-                                            a_glossary("btn_open_glossary_copy"),
-                                            uiOutput("glossary_modal_copy"),
-                                            a_options("rhat_warnings"),
-                                            uiOutput("ui_warnings_customize"))
+                                          # a_glossary("btn_open_glossary_copy"),
+                                          a_options("rhat_warnings"),
+                                          # uiOutput("glossary_modal_copy"),
+                                          uiOutput("ui_warnings_customize"))
                                  )
                         ),
                         #### autocorrelation ####

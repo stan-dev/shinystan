@@ -15,6 +15,7 @@
 
 output$ui_rhat_neff_mcse <- renderUI({
   div(
+    withMathJax(),
     splitLayout(h4("\\(n_{eff} / N\\)", align = "center"),
                 h4("\\(\\text{se}_{mean} / sd\\)", align = "center"),
                 h4("\\(\\hat{R}\\)", align = "center")),

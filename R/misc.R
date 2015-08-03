@@ -51,7 +51,7 @@ launch <- function(object, rstudio = FALSE, ...) {
   launch.browser <- if (!rstudio) 
     TRUE else getOption("shiny.launch.browser", interactive())
   assign_shinystan(object)
-  shiny::runApp(system.file("shinyStan", package = "shinyStan"), 
+  shiny::runApp(system.file("ShinyStan", package = "shinystan"), 
                 launch.browser = launch.browser, ...)
 }
 
