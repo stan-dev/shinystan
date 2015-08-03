@@ -32,10 +32,29 @@ tagList(
   includeCSS("css/shinyStan.css"),
   includeCSS("css/shinyStan_datatables.css"),
   includeCSS("css/shinyStan_dygraphs.css"),
-  navbarPage(title = strong(style = "color: #B2011D;", "shinyStan"),
+  navbarPage(title = NULL,
              windowTitle = "shinyStan", collapsible = TRUE, id = "nav",
-             inverse = FALSE, header = show_model_name, position = "fixed-top",
-             theme = shinythemes::shinytheme("united"),
+             inverse = FALSE, # header = show_model_name, 
+             position = "fixed-top",
+             theme = shinythemes::shinytheme("flatly"),
+             
+             tabPanel(title = strong(style = "color: #B2011D;", "ShinyStan"),
+                      div(id = "logos",
+                          div(id = "logo1", 
+                              img(src = "stan_logo.png", id = "stan-logo", width = "20%")),
+                          div(
+                            id = "logo2",
+                            img(src = "wide_ensemble.png", id = "wide-ensemble", width = "100%")
+                          )
+                      ),
+                      div(id = "home-links",
+                          div(id = "shinystan-title", "ShinyStan"),
+                          h3(toc_entry("Diagnose")),
+                          h3(toc_entry("Estimate")),
+                          h3(toc_entry("Explore"))
+                          # div(toc_entry("Code"), toc_entry("Help"), toc_entry("About"), toc_entry("Quit"))
+                      )
+             ),
              
              #### PAGE: ESTIMATE ####
              tabPanel(title = "Estimate", icon = icon("stats", lib = "glyphicon"),

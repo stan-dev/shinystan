@@ -1,6 +1,70 @@
 /* Also see shinyStan_datatables.css and shinyStan_dygraphs.css*/
 
 
+#shinystan-title {
+    max-width: 100%;
+    text-align: center;
+    font-size: 4.25rem;
+    line-height: 1.05882;
+    margin-bottom: 1.5rem;
+    margin-top: 0;
+    font-family: "volkhov",serif;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -3px;
+}
+
+#wide-ensemble {
+  z-index: -1;
+  position: relative;
+	margin:  20px 0 0;
+	width: 100%;
+}
+#stan-logo {
+  z-index: 1;
+  position: relative;
+  width: 15%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: -145px;
+}
+
+#home-links {
+  text-align: center;
+}
+
+.btn-default {
+  background: black;
+  color: white;
+  box-shadow: 0 0 1px #ffffff inset;
+}
+.btn-default:link {
+color: white;
+}
+.btn-default:focus,.btn-default.focus{
+  color:#ffffff;background-color:#798d8f;border-color:#566566
+  
+}
+.btn-default:hover{
+  color:#ffffff;background-color:#798d8f;border-color:#74898a
+  
+}
+.btn-default:active,.btn-default.active,.open>.dropdown-toggle.btn-default{
+  color:#ffffff;background-color:#798d8f;border-color:#74898a
+  
+}
+.btn-default:active:hover,.btn-default.active:hover,.open>.dropdown-toggle.btn-default:hover,.btn-default:active:focus,.btn-default.active:focus,.open>.dropdown-toggle.btn-default:focus,.btn-default:active.focus,.btn-default.active.focus,.open>.dropdown-toggle.btn-default.focus{
+  color:#ffffff;background-color:#687b7c;border-color:#566566
+  
+}
+.btn-default:active,.btn-default.active,.open>.dropdown-toggle.btn-default{
+  background-image:none
+  
+}
+
+/***********************/
+/* NAVBAR */
 .navbar-fixed-top {
   background-color: white;
   border-top: 5px solid black;
@@ -68,6 +132,7 @@
   border-radius: 3px 3px 3px 3px;
   box-shadow: 0 0 1px #ffffff inset;
 }
+/***********************/
 
 
 body {

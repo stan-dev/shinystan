@@ -46,10 +46,15 @@ assign_shinystan <- function(X) {
   assign("shinystan_object", X, inherits = TRUE)
 }
 
-launch <- function(object, ...) {
-  if (is.shinystan(object)) assign_shinystan(object)
+launch <- function(object, launch.browser = TRUE, ...) {
+  if (is.shinystan(object)) 
+    assign_shinystan(object)
+  else if (inherits(object, "stanreg")) 
+    assign_shinystan(stan2shinystan(object$stanfit))
   else assign_shinystan(stan2shinystan(object))
-  shiny::runApp(system.file("shinyStan", package = "shinyStan"), ...)
+  
+  shiny::runApp(system.file("shinyStan", package = "shinyStan"), 
+                launch.browser = launch.browser)
 }
 
 # mcmclist to matrix (adapted from Coda package) --------------------------

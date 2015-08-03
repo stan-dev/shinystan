@@ -45,17 +45,18 @@
 #' X_sso <- launch_shinystan(as.shinystan(X, model_name = "Example"))
 #' }
 #'
-launch_shinystan <- function(object, ...) {
+launch_shinystan <- function(object, launch.browser = TRUE, ...) {
   name <- deparse(substitute(object))
   no_name <- substr(name, 1, 12) == "as.shinystan"
   if (missing(object)) 
     stop("Please specify a shinystan or stanfit object.")
-  is_stanfit_object <- is_stan(object)
-  if (!is_stanfit_object & !is.shinystan(object)) 
+  
+  if (!is.shinystan(object) && !inherits(object, "stanreg") 
+      && !inherits(object, "stanfit"))
     stop(paste(name, "is not a shinystan or stanfit object."))
   message(paste("\n Loading... \n", 
                 "For large models shinyStan may take a few moments to launch."))
   on.exit(cleanup_shinystan())
-  launch(object, ...)
+  launch(object, launch.browser, ...)
   invisible(return_sso())
 }

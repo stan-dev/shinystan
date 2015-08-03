@@ -1,3 +1,7 @@
+toc_entry <- function(name, icon_name, ...) {
+  actionLink(inputId = paste0("toc_", tolower(name)), label = name, 
+             if (!missing(icon_name)) icon = icon(name = icon_name, ...))
+}
 a_options <- function(name) {
   div(class = "aoptions",
       actionLink(inputId = paste0(name, "_options_show"), 

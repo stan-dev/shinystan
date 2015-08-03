@@ -61,6 +61,15 @@ function(input, output, session) {
     })
     shinyjs::toggleState(id = "ac_flip", condition = input$ac_combine == FALSE)
   })
+  observe({
+    shinyjs::onclick("toc_estimate", updateTabsetPanel(session, "nav", selected = "Estimate"))
+    shinyjs::onclick("toc_diagnose", updateTabsetPanel(session, "nav", selected = "Diagnose"))
+    shinyjs::onclick("toc_explore", updateTabsetPanel(session, "nav", selected = "Explore"))
+    shinyjs::onclick("toc_code", updateTabsetPanel(session, "nav", selected = "Model Code"))
+    shinyjs::onclick("toc_help", updateTabsetPanel(session, "nav", selected = "Help"))
+    shinyjs::onclick("toc_about", updateTabsetPanel(session, "nav", selected = "About"))
+    shinyjs::onclick("toc_quit", updateTabsetPanel(session, "nav", selected = "Quit"))
+  })
   
   # tooltips
   #   for (id in seq_along(tooltip_ids)) {
