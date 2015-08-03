@@ -16,6 +16,8 @@
 #' ShinyStan demo: Eight Schools 
 #'
 #' A shinystan object for the Stan "Eight Schools" demo model 
+#' 
 #' @seealso \code{\link{launch_shinystan_demo}}
 #' @format An S4 object of class \code{shinystan}
+#' 
 "eight_schools"

@@ -28,7 +28,7 @@
 #'   The ShinyStan app provides immediate, informative, customizable visual and 
 #'   numerical summaries of model parameters and convergence diagnostics for
 #'   MCMC simulations. Although some special features are only available for
-#'   users of the \pkg{RStan} package (the R interface to the Stan programming
+#'   users of the \pkg{rstan} package (the R interface to the Stan programming
 #'   language for Bayesian statistical inference), it can also easily be used to
 #'   explore the output from any other program (e.g. Jags, Bugs, SAS) or any
 #'   user-written MCMC algorithm.
