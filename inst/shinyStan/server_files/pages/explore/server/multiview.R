@@ -13,42 +13,36 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
+multiview_samps <- reactive({
+  validate(need(input$param, message = FALSE),
+           need(!is.null(input$multiview_warmup), message = "Loading..."))
+  if (!input$multiview_warmup) 
+    par_samps_post_warmup()
+  else 
+    par_samps_all()
+})
 
 dynamic_trace_plot_multiview <- reactive({
   if (input$param == "") return()
   stack <- FALSE  
   chain <- 0      
   do.call(".param_trace_dynamic", args = list(
-    param_samps = if (input$multiview_warmup) 
-      par_samps_all() else par_samps_post_warmup(),
+    param_samps = multiview_samps(),
     chain = chain,
     stack = stack)
   )
 })
 autocorr_plot_multiview <- reactive({
-  validate(need(input$param, message = FALSE),
-           need(!is.null(input$multiview_warmup), message = "Loading..."))
-  if (is.null(input$multiview_warmup)) warmup <- FALSE
-  else warmup <- input$multiview_warmup
-
   lags <- min(25, round((nIter-warmup_val)/2))
-  if (warmup == FALSE) samps <- par_samps_post_warmup()
-  else samps <- par_samps_all()
-  
   do.call(".autocorr_single_plot", args = list(
-    samps = samps,
+    samps = multiview_samps(),
     lags = lags
   ))
 })
 density_plot_multiview <- reactive({
-  validate(need(input$param, message = FALSE),
-           need(!is.null(input$multiview_warmup), message = "Loading..."))
-  if (input$multiview_warmup == FALSE) samps <- par_samps_post_warmup()
-  else samps <- par_samps_all()
-  
   do.call(".param_dens", args = list(
     param       = input$param,
-    dat         = samps,
+    dat         = multiview_samps(),
     chain       = 0,
     chain_split = FALSE,
     fill_color  = base_fill,

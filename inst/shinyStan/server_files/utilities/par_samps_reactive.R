@@ -13,16 +13,14 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-
-
 # reactive function to get samples for a single parameter
 par_samps_all <- reactive({
   param <- input$param
   p <- which(param_names == param)
-  samps_all[,,p]
+  samps_all[,, p]
 })
 par_samps_post_warmup <- reactive({
   param <- input$param
   p <- which(param_names == param)
-  samps_post_warmup[,,p]
+  samps_post_warmup[,, p]
 })

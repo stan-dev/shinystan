@@ -39,7 +39,6 @@ Imports:
     gtools,
     markdown (>= 0.7.4),
     methods,
-    plyr (>= 1.8.3),
     reshape2 (>= 1.4.1),
     stats,
     shinyBS (>= 0.61),

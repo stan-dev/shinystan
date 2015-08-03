@@ -24,17 +24,21 @@ calc_height_autocorr_plot <- reactive({
 })
 
 autocorr_plot <- reactive({
-  validate(need(input$ac_lags, message = "Loading..."))
-  samps <- if (!input$ac_warmup) samps_post_warmup else samps
+  validate(need(input$ac_lags, message = "Loading..."),
+           need(!is.null(input$ac_warmup), message = "Loading..."))
+  samps <- if (!input$ac_warmup) 
+    samps_post_warmup else samps_all
+  params <- .update_params_with_groups(input$ac_params, param_names)
+  if (length(params) == 0)
+    params <- dimnames(samps)$parameters[1] # default to first parameter
+  params <- unique(params)
+  samps <- samps[,, params, drop = FALSE]
   do.call(".autocorr_plot", args = list(
     samps           = samps,
-    params          = input$ac_params,
-    all_param_names = param_names,
     lags            = input$ac_lags,
     flip            = input$ac_flip,
     combine_chains  = input$ac_combine,
-    partial         = input$ac_partial,
-    nChains         = nChains
+    partial         = input$ac_partial
   ))
 })
 
