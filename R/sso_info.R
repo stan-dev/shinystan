@@ -24,8 +24,9 @@
 
 sso_info <- function(sso) {
   sso_check(sso)
-  
+  sso_name <- deparse(substitute(sso))
   cat(
+    paste("shinystan object:", sso_name),
     paste("Model name:", sso@model_name),
     paste("Parameters:", length(sso@param_names)),
     paste("Parameter groups:", length(names(sso@param_dims))),

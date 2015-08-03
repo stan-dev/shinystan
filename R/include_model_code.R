@@ -45,22 +45,20 @@
 #'    }
 #'  }
 #' "
-#'
-#' # Add the code to a shinystan object X
-#' X <- include_model_code(X, my_code)
-#' launch_shinystan(X) # code is visible in the Model Code tab
+#' 
+#' # Add the code to a shinystan object sso
+#' sso <- include_model_code(sso, my_code)
 #'
 #'}
 
 include_model_code <- function(sso, code) {
   sso_check(sso)
-  if (!is.character(code)) stop("'code' should be a character string.")
-  
+  if (!is.character(code)) 
+    stop("'code' should be a character string.")
   sso@model_code <- code
-  
   message(
-    paste0("Successfully added code.", 
-           "\nYou can view the added code in the shinyStan GUI on the 'Model Code' page.")
+    paste0("Successfully added code.", "\nYou can view the added code in the", 
+           "ShinyStan GUI on the 'Model Code' page.")
   )
   sso
 }
