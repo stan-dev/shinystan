@@ -18,7 +18,7 @@
 .param_trace <- function(param, dat,
                          warmup_val, inc_warmup = FALSE,
                          chain,
-                         style, palette,
+                         palette,
                          rect, rect_color, rect_alpha,
                          x1, x2, y1, y2) {
   # x1, x2, y1, y2 are the x and y axis limits for the tracezoom feature
@@ -56,12 +56,7 @@
   if (rect != "None") graph <- graph + shading_rect
   if (rect == "None" & inc_warmup) graph <- graph + geom_vline(xintercept = warmup_val, color = "gray35", size = 1.5)
 
-  if (style == "point") {
-    print(plyr::ddply(dat, "chains", plyr::summarize, mean = mean(value))$mean)
-    graph <- graph + geom_point(size = 1.5, alpha = 0.55)
-  } else {
-    graph <- graph + geom_line(size = 0.35)
-  }
+  graph <- graph + geom_line(size = 0.35)
 
   if (is.na(x1)) {
     return(graph)
@@ -264,21 +259,48 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
 }
 
 
-# autocorr_single_plot ----------------------------------------------------
-# markov chain autocorrelation plot for single parameter (for multiview)
+# autocorr ----------------------------------------------------
+.ac_fun <- function(x, lag.max, partial = FALSE) {
+  if (!partial)
+    acf(x, lag.max = lag.max, plot = FALSE)$acf[,, 1L]
+  else 
+    pacf(x, lag.max = lag.max, plot = FALSE)$acf[,, 1L]
+}
+.ac_plot_data <- function(dat, lags, partial = FALSE) {
+  nc <- length(unique(dat$chains))
+  ac_list <- tapply(dat$value, INDEX = dat$chains, FUN = .ac_fun, lag.max = lags,
+                    partial = partial, simplify = FALSE)
+  nl <- if (partial) lags else lags + 1 
+  ch <- factor(rep(1:nc, each = nl), labels = paste0("chain:", 1:nc))
+  ll <- rep(seq(if (partial) 1 else 0, lags), nc)
+  data.frame(chains = ch, ac = do.call(c, ac_list), lag = ll)
+}
+.ac_plot_data_multi <- function(dat, lags, partial = FALSE) {
+  nc <- length(unique(dat$chains))
+  np <- length(unique(dat$parameters))
+  ac_list <- tapply(dat$value, INDEX = list(dat$chains, dat$parameters), 
+                    FUN = .ac_fun, lag.max = lags, 
+                    partial = partial, simplify = FALSE)
+  nl <- if (partial) lags else lags + 1 
+  ch <- factor(rep(rep(1:nc, each = nl), np), labels = paste0("chain:", 1:nc))
+  ll <- rep(seq(if (partial) 1 else 0, lags), nc * np)
+  pp <- factor(rep(1:np, each = nc * nl), labels = levels(dat$parameters))
+  data.frame(parameters = pp, chains = ch, ac = do.call(c, ac_list), lag = ll)
+}
+
+# markov chain autocorrelation plot for single parameters
 .autocorr_single_plot <- function(samps, lags) {
   dat <- reshape2::melt(samps)
   if (!("chains" %in% colnames(dat))) { # fixes for if there's only 1 chain:
     dat$chains <- "chain:1"
     dat$iterations <- 1:nrow(dat)
   }
-  
-  ac_dat <- plyr::ddply(dat, "chains", plyr::here(plyr::summarize),
-                        ac = acf(value, lag.max = lags, plot = FALSE)$acf[,,1],
-                        lag = 0:lags)
+  ac_dat <- .ac_plot_data(dat, lags)
   ac_labs <- labs(x = "Lag", y = "Autocorrelation")
-  ac_theme <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_lgnd + transparent)
-  y_scale <- scale_y_continuous(breaks = seq(0, 1, 0.25), labels = c("0","","0.5","",""))
+  ac_theme <- theme_classic() %+replace% 
+    (axis_color + axis_labs + fat_axis + no_lgnd + transparent)
+  y_scale <- scale_y_continuous(breaks = seq(0, 1, 0.25), 
+                                labels = c("0","","0.5","",""))
   graph <- ggplot(ac_dat, aes(x = lag, y = ac))
   graph <- graph +
     geom_bar(position = "identity", stat = "identity", fill = base_fill) +
@@ -286,44 +308,24 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   graph
 }
 
-
-# autocorr_plot -----------------------------------------------------------
 # markov chain autocorrelation plot for multiple parameters
-.autocorr_plot <- function(samps, params = NULL, all_param_names,
-                           nChains,
-                           partial = FALSE,
+.autocorr_plot <- function(samps, partial = FALSE,
                            lags = 25, flip = FALSE,
                            combine_chains = FALSE) {
   
-  params <- .update_params_with_groups(params, all_param_names)
-  if(length(params) == 0) {
-    dim.samps <- dim(samps) 
-    params <- dimnames(samps)$parameters[1] # defaults to first parameter
-  }
-  params <- unique(params)
-  dat <- samps[,,params]
-  dat <- reshape2::melt(dat)
-  
+  params <- dimnames(samps)$parameters
+  nParams <- length(params)
+  nChains <- dim(samps)[2L]
+  dat <- reshape2::melt(samps)
   if (!("chains" %in% colnames(dat))) { # fixes for if there's only 1 chain:
     dat$chains <- "chain:1"
     dat$iterations <- 1:nrow(dat)
   }
-  
-  nParams <- length(params)
+  # browser()
   ac_type <- if (partial) "partial" else "correlation"
+  if (nParams == 1) ac_dat <- .ac_plot_data(dat, lags = lags, partial = partial)
+  else ac_dat <- .ac_plot_data_multi(dat, lags = lags, partial = partial)
   
-  if (!partial) {
-      ac_dat <- plyr::ddply(dat, c(if (nParams > 1) "parameters", "chains"), 
-                            plyr::here(plyr::summarize),
-                            ac = acf(value, lag.max = lags, plot = FALSE)$acf[,,1L],
-                            lag = 0:lags)
-  } else {
-      ac_dat <- plyr::ddply(dat, c(if (nParams > 1) "parameters", "chains"), 
-                            plyr::here(plyr::summarize),
-                            ac = pacf(value, lag.max = lags, plot = FALSE)$acf[,,1L],
-                            lag = 1:lags)
-  }
-   
   ac_labs <- labs(x = "Lag", y = if (partial) 
     "Partial autocorrelation" else "Autocorrelation")
   ac_theme <- theme_classic() %+replace% 
@@ -348,8 +350,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                               fill = factor(chains)))
   graph <- graph +
     geom_bar(position = "identity", stat = "identity", size = 0.4) +
-    scale_fill_manual(values = rep(base_fill, object@nChains)) +
-    scale_color_manual(values = rep(vline_base_clr, object@nChains)) +
+    scale_fill_manual(values = rep(base_fill, nChains)) +
+    scale_color_manual(values = rep(vline_base_clr, nChains)) +
     y_scale +
     ac_labs +
     ac_theme

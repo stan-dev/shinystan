@@ -58,7 +58,6 @@
 #' @importFrom gridExtra arrangeGrob grid.arrange
 #' @importFrom gtools mixedsort
 #' @importFrom markdown markdownToHTML
-#' @importFrom plyr ddply summarize
 #' @importFrom reshape2 melt
 #' @importFrom xtable xtable print.xtable
 #'
