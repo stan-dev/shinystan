@@ -44,6 +44,7 @@ Imports:
     stats,
     shinyBS (>= 0.61),
     shinyjs (>= 0.0.7.0),
+    shinythemes,
     threejs (>= 0.2.1),
     xtable,
     xts (>= 0.9-7)
