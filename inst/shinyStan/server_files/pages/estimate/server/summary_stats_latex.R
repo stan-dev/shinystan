@@ -32,15 +32,17 @@ summary_stats_latex <- reactive({
     ))
   }
 
-  tab_env <- if (input$tex_long) "longtable" else getOption("xtable.tabular.environment", "tabular")
+  pkgs <- input$tex_pkgs
+  tab_env <- if ("Longtable" %in% pkgs) 
+    "longtable" else getOption("xtable.tabular.environment", "tabular")
   caption <- if (nzchar(input$tex_caption)) input$tex_caption else NULL
   xt <- xtable::xtable(x, caption = caption)
   xtable::digits(xt) <- input$tex_digits
-  if ("n_eff" %in% colnames(xt)) xtable::display(xt)[1 + which(colnames(xt) == "n_eff")] <- "d"
+  if ("n_eff" %in% colnames(xt)) 
+    xtable::display(xt)[1 + which(colnames(xt) == "n_eff")] <- "d"
   xtable::print.xtable(xt, 
-                       booktabs = input$tex_booktabs,
+                       booktabs = "Booktabs" %in% pkgs,
                        tabular.environment = tab_env,
-                       include.rownames = FALSE
-                       )
+                       include.rownames = FALSE)
 })
 
