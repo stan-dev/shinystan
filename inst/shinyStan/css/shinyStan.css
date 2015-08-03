@@ -14,6 +14,10 @@
     letter-spacing: -3px;
 }
 
+#model-name {
+  padding-top: 10px;
+}
+
 #wide-ensemble {
   z-index: -1;
   position: relative;

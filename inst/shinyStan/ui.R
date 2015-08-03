@@ -21,9 +21,6 @@ source("server_files/utilities/ppcheck_names_descriptions.R", local = TRUE)
 
 # give shinystan_object shorter name
 object <- shinystan_object
-show_model_name <- 
-  h5(style = "padding: 0px 0px 10px 10px; color: #006DCC; opacity: 0.95; ", 
-     paste("MODEL:", object@model_name))
 
 # Begin shinyUI -----------------------------------------------------------
 # _________________________________________________________________________
@@ -34,7 +31,7 @@ tagList(
   includeCSS("css/ShinyStan_dygraphs.css"),
   navbarPage(title = NULL,
              windowTitle = "ShinyStan", collapsible = TRUE, id = "nav",
-             inverse = FALSE, # header = show_model_name, 
+             inverse = FALSE,
              position = "fixed-top",
              theme = shinythemes::shinytheme("flatly"),
              
@@ -49,6 +46,11 @@ tagList(
                       ),
                       div(id = "home-links",
                           div(id = "shinystan-title", "ShinyStan"),
+                          div(id = "model-name", 
+                              h4(paste("Model")),
+                              h5(object@model_name)
+                              ),
+                          br(),
                           h3(toc_entry("Diagnose")),
                           h3(toc_entry("Estimate")),
                           h3(toc_entry("Explore"))
