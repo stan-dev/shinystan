@@ -21,7 +21,7 @@ source("server_files/utilities/ppcheck_names_descriptions.R", local = TRUE)
 
 # give shinystan_object shorter name
 object <- shinystan_object
-
+footer_text <- paste("ShinyStan",  "v2.0.0")
 # Begin shinyUI -----------------------------------------------------------
 # _________________________________________________________________________
 tagList(
@@ -31,8 +31,8 @@ tagList(
   includeCSS("css/ShinyStan_dygraphs.css"),
   navbarPage(title = NULL,
              windowTitle = "ShinyStan", collapsible = TRUE, id = "nav",
-             inverse = FALSE,
-             position = "fixed-top",
+             inverse = FALSE, position = "fixed-top",
+             footer = div(class = "shinystan-footer", footer_text),
              theme = shinythemes::shinytheme("flatly"),
              
              tabPanel(title = strong(style = "color: #B2011D;", "ShinyStan"),
@@ -240,33 +240,43 @@ tagList(
              navbarMenu(title = "More",
                         
                         #### PAGE: Model Code ####
-                        tabPanel(title = "Model Code", 
-                                 h4("Model Code"),
-                                 tags$textarea(id="model_code", 
-                                               style="background: transparent; border-width: .5px;", 
-                                               object@model_code)
+                        tabPanel(title = "Model Code",
+                                 fluidRow(
+                                   column(10, offset = 2,
+                                          h4("Model Code"),
+                                          tags$textarea(id="model_code", 
+                                                        wrap = "off",
+                                                        cols = 80,
+                                                        object@model_code)
+                                   )
+                                 )
                         ), # End Model Code
                         
                         #### PAGE: Notepad ####
                         tabPanel(title = "Notepad",
-                                 helpText(strong("Use this space to store notes about your model")),
-                                 helpText("The text will be saved in the", code("user_model_info"),
-                                          "slot of your", code("shinystan"), 
-                                          "object and displayed here each time you launch the app for this model.",
-                                          actionLink("btn_user_model_info_why", label = "Read more about the 'Notes' tab")
-                                 ),
-                                 h4("Notes"),
-                                 tags$textarea(id="user_model_info", 
-                                               style="background: transparent; border-width: .5px; border-color: #222222", 
-                                               rows=20, cols=60, object@user_model_info),
-                                 br(),
                                  fluidRow(
-                                   column(3, actionButton("save_user_model_info", label = "Save notes", icon = icon("download"))),
-                                   column(8, offset = 1, textOutput("user_text_saved")),
-                                   tags$style(type = "text/css", "#user_text_saved {color: gray;}")
-                                 ),
-                                 hr(),
-                                 uiOutput("user_model_info_modal")
+                                   column(2, 
+                                          br(),br(),
+                                          helpText(style = "font-size: 12px;", 
+                                                   p("Use this space to store notes about your model."),
+                                                   p("The text will be saved in the", 
+                                                   code("user_model_info"),
+                                                   "slot of your", code("shinystan"), 
+                                                   "object and displayed here each time you launch the app for this model."),
+                                                   actionLink("btn_user_model_info_why", label = "Read more about the 'Notes' tab")
+                                          ),
+                                          uiOutput("user_model_info_modal"),
+                                          br(),
+                                          actionButton("save_user_model_info", label = "Save changes", icon = icon("save")),
+                                          textOutput("user_text_saved")
+                                   ),
+                                   column(10,
+                                          h4("Notes"),
+                                          tags$textarea(id="user_model_info", 
+                                                        rows=20, cols=80, 
+                                                        object@user_model_info)
+                                   )
+                                 )
                         ), # End Notepad
                         
                         #### PAGE: About ####

@@ -13,63 +13,6 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-# param_trace -------------------------------------------------------------
-# trace plot for a single parameter
-.param_trace <- function(param, dat,
-                         warmup_val, inc_warmup = FALSE,
-                         chain,
-                         palette,
-                         rect, rect_color, rect_alpha,
-                         x1, x2, y1, y2) {
-  # x1, x2, y1, y2 are the x and y axis limits for the tracezoom feature
-  # style: either "point" or "line"
-
-  dat <- reshape2::melt(dat)
-
-  if (!("chains" %in% colnames(dat))) { # fixes for if there's only 1 chain:
-    dat$chains <- "chain:1"
-    dat$iterations <- 1:nrow(dat)
-  }
-
-  if (!inc_warmup) {
-    dat <- subset(dat, iterations >= warmup_val)
-  }
-  if (chain != 0) { # note: we use chain == 0 for all chains
-    dat <- subset(dat, chains == paste0("chain:",chain))
-  }
-
-  rect_xmin <- ifelse(rect == "Samples", Inf, -Inf)
-  shading_rect <- annotate("rect", xmin = rect_xmin, xmax = warmup_val,
-                           ymin = -Inf, ymax = Inf, fill = rect_color, alpha = rect_alpha)
-
-  xy_labs <- labs(y = param, x = ifelse(inc_warmup, "Iteration \n Warmup | Samples", "Iteration (warmpup excluded)"))
-  nclrs <- length(unique(dat$chains))
-  if(palette == "Default") clrs <- scale_color_discrete()
-  if(palette == "Gray") clrs <- scale_color_grey()
-  if(palette == "Brewer (spectral)") clrs <- scale_color_brewer(palette = "Spectral")
-  if(palette == "Rainbow") clrs <- scale_colour_manual(values = rainbow(nclrs))
-
-  theme_elements <- axis_color + fat_axis + no_lgnd + axis_labs + transparent
-  # if (style == "line") theme_elements <- theme_elements + h_lines
-  graph <- ggplot(dat, aes(x = iterations, y = value, color = chains))
-  graph <- graph + xy_labs + clrs + theme_classic() %+replace% theme_elements 
-  if (rect != "None") graph <- graph + shading_rect
-  if (rect == "None" & inc_warmup) graph <- graph + geom_vline(xintercept = warmup_val, color = "gray35", size = 1.5)
-
-  graph <- graph + geom_line(size = 0.35)
-
-  if (is.na(x1)) {
-    return(graph)
-  } else {
-    graph <- (graph +
-                scale_y_continuous(limits = c(y1, y2)) +
-                scale_x_continuous(limits = c(x1, x2))
-    )
-    return(graph)
-  }
-}
-
-
 # param_trace_multi ------------------------------------------------------
 # trace plots for multiple parameters
 .param_trace_multi <- function(params = NULL, all_param_names, dat, warmup_val = 0,

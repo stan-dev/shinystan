@@ -1,5 +1,11 @@
 /* Also see shinyStan_datatables.css and shinyStan_dygraphs.css*/
 
+/* red color: #B2011D */
+
+.shinystan-footer {
+  color: #B2011D;
+  font-size: 12px;
+}
 
 #shinystan-title {
     max-width: 100%;
@@ -70,23 +76,22 @@ color: white;
 /***********************/
 /* NAVBAR */
 .navbar-fixed-top {
-  background-color: white;
+  background-color: transparent;
   border-top: 5px solid black;
-  border-bottom: 0;
 }
 
 
 .navbar-brand {
-  background: white;
+  background: transparent;
   /*border-radius: 0 0 0 10px;*/
 }
 
 .navbar .nav {
-  /*background-color: black;*/
   padding-right: 20px;
   padding-left: 20px;
   border-radius: 0 0 10px 10px;
   background: black;
+  opacity: 0.9;
   height: 47px;
   font-size: 13px;
   font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
@@ -410,16 +415,24 @@ a:active { /* selected link */
 /**************************************/
 /* notes and model_code text areas */
 #user_model_info {
+  background: transparent; 
   width: 500px; 
-  border-color: #214565; 
+  border-color: #B2011D; 
   border-radius: 3px;
 }
+#user_text_saved {
+  color: gray;
+}
 #model_code {
-  width: 600px; 
-  height: 600px; 
-  border-color: #214565; 
+  min-height: 100px;
+  height: 400px; 
+  border-color: #B2011D; 
   border-radius: 3px;
-  font-family: monospace;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-size: 13px;
+}
+#model_code:focus {
+  outline: #B2011D;
 }
 /**************************************/
 
