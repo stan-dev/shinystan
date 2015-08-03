@@ -21,6 +21,6 @@ X <- rename_model(X, "Any character string")
 }
 }
 \seealso{
-\code{\link[shinyStan]{as.shinystan}}
+\code{\link{as.shinystan}}
 }
 

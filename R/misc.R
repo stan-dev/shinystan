@@ -1,12 +1,12 @@
-# This file is part of shinyStan
-# Copyright (C) 2015 Jonah Sol Gabry & Stan Development Team
+# This file is part of shinystan
+# Copyright (C) Jonah Gabry
 #
-# shinyStan is free software; you can redistribute it and/or modify it under the
+# shinystan is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
 # Foundation; either version 3 of the License, or (at your option) any later
 # version.
 # 
-# shinyStan is distributed in the hope that it will be useful, but WITHOUT ANY
+# shinystan is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 # 
@@ -46,15 +46,13 @@ assign_shinystan <- function(X) {
   assign("shinystan_object", X, inherits = TRUE)
 }
 
-launch <- function(object, launch.browser = TRUE, ...) {
-  if (is.shinystan(object)) 
-    assign_shinystan(object)
-  else if (inherits(object, "stanreg")) 
-    assign_shinystan(stan2shinystan(object$stanfit))
-  else assign_shinystan(stan2shinystan(object))
-  
+launch <- function(object, rstudio = FALSE, ...) {
+  stopifnot(is.shinystan(object))
+  launch.browser <- if (!rstudio) 
+    TRUE else getOption("shiny.launch.browser", interactive())
+  assign_shinystan(object)
   shiny::runApp(system.file("shinyStan", package = "shinyStan"), 
-                launch.browser = launch.browser)
+                launch.browser = launch.browser, ...)
 }
 
 # mcmclist to matrix (adapted from Coda package) --------------------------

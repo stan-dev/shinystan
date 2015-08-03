@@ -54,6 +54,6 @@ launch_shinystan(X)
 }
 }
 \seealso{
-\code{\link[shinyStan]{as.shinystan}}, \code{\link[shinyStan]{launch_shinystan_demo}}
+\code{\link{as.shinystan}}, \code{\link{launch_shinystan_demo}}
 }
 

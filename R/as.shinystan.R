@@ -1,12 +1,12 @@
-# This file is part of shinyStan
-# Copyright (C) 2015 Jonah Sol Gabry & Stan Development Team
+# This file is part of shinystan
+# Copyright (C) Jonah Gabry
 #
-# shinyStan is free software; you can redistribute it and/or modify it under the
+# shinystan is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
 # Foundation; either version 3 of the License, or (at your option) any later
 # version.
 # 
-# shinyStan is distributed in the hope that it will be useful, but WITHOUT ANY
+# shinystan is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 # 
@@ -30,7 +30,7 @@
 #' @param Y An object to test.
 #' @param ... Additional arguments. See \strong{Details}, below, for instructions.
 #' @return For \code{as.shinystan} an object of class \code{shinystan} that can
-#' be used with \code{\link[shinyStan]{launch_shinystan}}. For
+#' be used with \code{{launch_shinystan}}. For
 #' \code{is.shinystan} a logical value indicating whether the tested object
 #' is a \code{shinystan} object.
 #' @details If \code{X} is a \code{stanfit} object then no additional arguments
@@ -45,11 +45,11 @@
 #'   For scalar parameters use \code{0} as the dimension. See \strong{Examples}.}
 #'   \item{\code{model_code}}{A character string with the code you used to run your model.
 #'   This can also be added to your \code{shinystan} object later using the
-#'   \code{\link[shinyStan]{include_model_code}} function. See \code{\link[shinyStan]{include_model_code}}
+#'   \code{\link{include_model_code}} function. See \code{\link{include_model_code}}
 #'   for additional formatting instructions. After launching the app \code{model_code}
 #'   will be viewable in the \strong{Model Code} tab.}
 #' }
-#' @seealso \code{\link[shinyStan]{launch_shinystan}}, \code{\link[shinyStan]{launch_shinystan_demo}}
+#' @seealso \code{\link{launch_shinystan}}, \code{\link{launch_shinystan_demo}}
 #' @export
 #'
 #' @examples
@@ -96,7 +96,8 @@ as.shinystan <- function(X, ...) {
   if (what_X_is == "shinystan") {
     message(
       paste0(Xname, " is already a shinystan object.\n",
-             "You can use launch_shinystan(", Xname, ") to launch shinyStan.")
+             "You can use launch_shinystan(", Xname, 
+             ") to launch ShinyStan.")
     )
     return(X)
   }
@@ -104,7 +105,9 @@ as.shinystan <- function(X, ...) {
   if (what_X_is == "mcmclist") return(mcmc2shinystan(X, ...))
   if (what_X_is == "chainlist") return(chains2shinystan(X, ...))
   if (what_X_is == "other") {
-    if (!is.array(X)) stop(paste(Xname, "is not a valid input type. See ?as.shinystan"), call. = FALSE)
+    if (!is.array(X)) 
+      stop(paste(Xname, "is not a valid input type. See ?as.shinystan"), 
+           call. = FALSE)
     array2shinystan(X, ...)
   }
   

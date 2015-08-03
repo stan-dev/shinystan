@@ -2,33 +2,25 @@
 % Please edit documentation in R/launch_shinystan.R
 \name{launch_shinystan}
 \alias{launch_shinystan}
-\title{Launch shinyStan app}
+\title{ShinyStan app}
 \usage{
-launch_shinystan(object, ...)
+launch_shinystan(object, rstudio = FALSE, ...)
 }
 \arguments{
-\item{object}{An object of class \code{shinystan} or \code{stanfit}. See
-\code{\link[shinyStan]{as.shinystan}} for converting to a
-\code{shinystan} object (sso).}
+\item{object}{An object of class \code{shinystan}, \code{stanfit}, or
+\code{stanreg}. See \code{\link{as.shinystan}} for converting other
+objects to a \code{shinystan} object (sso).}
 
-\item{...}{Optional arguments to pass to \code{\link[shiny]{runApp}}. See
-Details (RStudio users in particular).}
+\item{rstudio}{For RStudio users, should the app launch in RStudio's Viewer?
+The default (FALSE) is to launch the app in the default web browser.}
+
+\item{...}{Optional arguments to pass to \code{\link[shiny]{runApp}}.}
 }
 \value{
 An S4 object of class \code{shinystan}.
 }
 \description{
-Launch shinyStan app
-}
-\details{
-Unless you are using RStudio, \code{launch_shinystan} will open the
-  app in your system's default web browser. For RStudio users
-  \strong{shinyStan} will launch in RStudio's (pop-up) Viewer pane by
-  default. If you prefer to use \strong{shinyStan} in your web browser (or if
-  you are having trouble with the RStudio Viewer pane) you can
-  specify \code{launch.browser = TRUE} in \code{...}. Alternatively, if
-  \strong{shinyStan} is open in the RStudio Viewer pane you can click on
-  'Open in Browser' (at the top left of the Viewer pane).
+ShinyStan app
 }
 \examples{
 \dontrun{
@@ -40,7 +32,7 @@ X_sso <- launch_shinystan(as.shinystan(X, model_name = "Example"))
 }
 }
 \seealso{
-\code{\link[shinyStan]{as.shinystan}},
-  \code{\link[shinyStan]{launch_shinystan_demo}}
+\code{\link{as.shinystan}},
+  \code{\link{launch_shinystan_demo}}
 }
 

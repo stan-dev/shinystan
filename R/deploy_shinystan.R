@@ -1,12 +1,12 @@
-# This file is part of shinyStan
-# Copyright (C) 2015 Jonah Sol Gabry & Stan Development Team
+# This file is part of shinystan
+# Copyright (C) Jonah Gabry
 #
-# shinyStan is free software; you can redistribute it and/or modify it under the
+# shinystan is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
 # Foundation; either version 3 of the License, or (at your option) any later
 # version.
 # 
-# shinyStan is distributed in the hope that it will be useful, but WITHOUT ANY
+# shinystan is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 # 
@@ -14,7 +14,7 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-#' Deploy to shinyapps.io
+#' Deploy a ShinyStan app to shinyapps.io
 #' 
 #' Requires a (free or paid) ShinyApps account. Visit 
 #' \url{http://www.shinyapps.io/} to sign up. Also requires the \pkg{shinyapps} 
@@ -63,7 +63,7 @@
 deploy_shinystan <- function(sso, appName, account = NULL, ...) {
   sso_check(sso)
   if (!requireNamespace("shinyapps", quietly = TRUE)) 
-    stop("Deploying a shinyStan app requires the shinyapps package.",
+    stop("Deploying a ShinyStan app requires the shinyapps package.",
         "\nTo install use devtools::install_github('rstudio/shinyapps')", 
         call. = FALSE)
   if (missing(appName)) 
@@ -73,8 +73,8 @@ deploy_shinystan <- function(sso, appName, account = NULL, ...) {
   # copy contents to temporary directory and write necessary additional lines to
   # ui, server, and global
   appDir <- tempdir()
-  deployDir <- file.path(appDir, "shinyStan")
-  contents <- system.file("shinyStan", package = "shinyStan")
+  deployDir <- file.path(appDir, "shinystan")
+  contents <- system.file("shinystan", package = "shinystan")
   file.copy(from = contents, to = appDir, recursive = TRUE)
   server_pkgs <- c("shiny", "shinyBS", "shinyjs", "markdown")
   ui_pkgs <- c(server_pkgs, "ggplot2", "gtools", "plyr", "reshape2", 

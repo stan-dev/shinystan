@@ -1,12 +1,12 @@
-# This file is part of shinyStan
-# Copyright (C) 2015 Jonah Sol Gabry & Stan Development Team
+# This file is part of shinystan
+# Copyright (C) Jonah Gabry
 #
-# shinyStan is free software; you can redistribute it and/or modify it under the
+# shinystan is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
 # Foundation; either version 3 of the License, or (at your option) any later
 # version.
 # 
-# shinyStan is distributed in the hope that it will be useful, but WITHOUT ANY
+# shinystan is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 # 
@@ -14,11 +14,9 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-
 output$ui_help <- renderUI({
   tags$div(
   br(),
-  # h3("shinyStan help"),
   navlistPanel(well = FALSE,
                "Help topics",
                tabPanel("Questions, bugs, and new features",
@@ -38,22 +36,7 @@ output$ui_help <- renderUI({
              You can then make changes to the plot using the functions in the 
              ggplot2 package."
            )
-  ),
-  tabPanel("Performance",
-           h4("Launch speed with large stanfit objects"),
-           p("When used with a very large stanfit object",
-            strong("shinyStan"), "may launch very slowly because first a", 
-            "shinystan object is created from the specified", 
-            "stanfit object. When", strong("shinyStan"),"is closed you will",
-            "have access to this object in the",
-            "global environment and next time you use shinyStan for the",
-            "same model you can launch it quicker by using the", 
-            "shinystan object rather than the original", 
-            "stanfit object."),
-           p("Alternatively, a shinystan object can be",
-             "created before launching the app by using the", 
-             code("as.shinystan"), "function.")
-           )
+  )
   )
   )
 })

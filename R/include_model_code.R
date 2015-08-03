@@ -1,12 +1,12 @@
-# This file is part of shinyStan
-# Copyright (C) 2015 Jonah Sol Gabry & Stan Development Team
+# This file is part of shinystan
+# Copyright (C) Jonah Gabry
 #
-# shinyStan is free software; you can redistribute it and/or modify it under the
+# shinystan is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
 # Foundation; either version 3 of the License, or (at your option) any later
 # version.
 # 
-# shinyStan is distributed in the hope that it will be useful, but WITHOUT ANY
+# shinystan is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 # 
@@ -17,15 +17,16 @@
 #' Add model code to a \code{shinystan} object
 #'
 #' @param sso A \code{shinystan} object.
-#' @param code The code you want to add. See \strong{Details} below for
-#' formatting instructions.
-#' @return The \code{shinystan} object \code{sso} with \code{code} in the
-#' \code{model_code} slot.
-#'
-#' @details \code{code} should be a character string that can be used as an argument
-#' to \code{cat}. See \strong{Examples}, below.
-#' @note This is intended for users who did not run their models using \pkg{rstan}.
-#' For \pkg{rstan} users the model code will be automatically available. 
+#' @param code The code you want to add. See \strong{Details} below for 
+#'   formatting instructions.
+#' @return The \code{shinystan} object \code{sso} with \code{code} in the 
+#'   \code{model_code} slot.
+#'   
+#' @details \code{code} should be a character string that can be used as an
+#'   argument to \code{cat}. See \strong{Examples}, below.
+#' @note This is intended for users who did not run their models using
+#'   \pkg{rstan}. For \pkg{rstan} users the model code will be automatically
+#'   available.
 #' 
 #' @seealso \code{cat}
 #' @export

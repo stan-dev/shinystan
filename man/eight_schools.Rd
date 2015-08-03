@@ -3,13 +3,16 @@
 \docType{data}
 \name{eight_schools}
 \alias{eight_schools}
-\title{shinyStan demo: Eight Schools}
+\title{ShinyStan demo: Eight Schools}
 \format{An S4 object of class \code{shinystan}}
 \usage{
 eight_schools
 }
 \description{
-A shinyStan object for the Stan "Eight Schools" demo model
+A shinystan object for the Stan "Eight Schools" demo model
+}
+\seealso{
+\code{\link{launch_shinystan_demo}}
 }
 \keyword{datasets}
 

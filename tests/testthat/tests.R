@@ -1,4 +1,4 @@
-library(shinyStan)
+library(shinystan)
 
 context("creating shinystan objects")
 

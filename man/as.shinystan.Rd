@@ -28,7 +28,7 @@ one of the following:
 }
 \value{
 For \code{as.shinystan} an object of class \code{shinystan} that can
-be used with \code{\link[shinyStan]{launch_shinystan}}. For
+be used with \code{{launch_shinystan}}. For
 \code{is.shinystan} a logical value indicating whether the tested object
 is a \code{shinystan} object.
 }
@@ -48,7 +48,7 @@ specified but are not required:
   For scalar parameters use \code{0} as the dimension. See \strong{Examples}.}
   \item{\code{model_code}}{A character string with the code you used to run your model.
   This can also be added to your \code{shinystan} object later using the
-  \code{\link[shinyStan]{include_model_code}} function. See \code{\link[shinyStan]{include_model_code}}
+  \code{\link{include_model_code}} function. See \code{\link{include_model_code}}
   for additional formatting instructions. After launching the app \code{model_code}
   will be viewable in the \strong{Model Code} tab.}
 }
@@ -90,6 +90,6 @@ launch_shinystan(my_shinystan)
 }
 }
 \seealso{
-\code{\link[shinyStan]{launch_shinystan}}, \code{\link[shinyStan]{launch_shinystan_demo}}
+\code{\link{launch_shinystan}}, \code{\link{launch_shinystan_demo}}
 }
 

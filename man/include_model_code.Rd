@@ -14,18 +14,19 @@ formatting instructions.}
 }
 \value{
 The \code{shinystan} object \code{sso} with \code{code} in the
-\code{model_code} slot.
+  \code{model_code} slot.
 }
 \description{
 Add model code to a \code{shinystan} object
 }
 \details{
-\code{code} should be a character string that can be used as an argument
-to \code{cat}. See \strong{Examples}, below.
+\code{code} should be a character string that can be used as an
+  argument to \code{cat}. See \strong{Examples}, below.
 }
 \note{
-This is intended for users who did not run their models using \pkg{rstan}.
-For \pkg{rstan} users the model code will be automatically available.
+This is intended for users who did not run their models using
+  \pkg{rstan}. For \pkg{rstan} users the model code will be automatically
+  available.
 }
 \examples{
 \dontrun{

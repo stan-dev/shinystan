@@ -1,12 +1,12 @@
-# This file is part of shinyStan
-# Copyright (C) 2015 Jonah Sol Gabry & Stan Development Team
+# This file is part of shinystan
+# Copyright (C) Jonah Gabry
 #
-# shinyStan is free software; you can redistribute it and/or modify it under the
+# shinystan is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
 # Foundation; either version 3 of the License, or (at your option) any later
 # version.
 # 
-# shinyStan is distributed in the hope that it will be useful, but WITHOUT ANY
+# shinystan is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 # 
@@ -29,11 +29,11 @@ show_model_name <-
 # _________________________________________________________________________
 tagList(
   shinyjs::useShinyjs(),
-  includeCSS("css/shinyStan.css"),
-  includeCSS("css/shinyStan_datatables.css"),
-  includeCSS("css/shinyStan_dygraphs.css"),
+  includeCSS("css/ShinyStan.css"),
+  includeCSS("css/ShinyStan_datatables.css"),
+  includeCSS("css/ShinyStan_dygraphs.css"),
   navbarPage(title = NULL,
-             windowTitle = "shinyStan", collapsible = TRUE, id = "nav",
+             windowTitle = "ShinyStan", collapsible = TRUE, id = "nav",
              inverse = FALSE, # header = show_model_name, 
              position = "fixed-top",
              theme = shinythemes::shinytheme("flatly"),
@@ -277,7 +277,7 @@ tagList(
              #### QUIT ####
              tabPanel(strong(style = "color: #dadada;", "Quit"), 
                       value = "quit", icon = icon("close"),
-                      h1("Thanks for using shinyStan."),
+                      h1("Thanks for using ShinyStan."),
                       br(),br(),
                       h5("It's safe to close this browser window.")
              )

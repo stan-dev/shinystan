@@ -2,7 +2,7 @@
 % Please edit documentation in R/deploy_shinystan.R
 \name{deploy_shinystan}
 \alias{deploy_shinystan}
-\title{Deploy to shinyapps.io}
+\title{Deploy a ShinyStan app to shinyapps.io}
 \usage{
 deploy_shinystan(sso, appName, account = NULL, ...)
 }
