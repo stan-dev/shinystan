@@ -263,11 +263,14 @@ tagList(
                                                    code("user_model_info"),
                                                    "slot of your", code("shinystan"), 
                                                    "object and displayed here each time you launch the app for this model."),
-                                                   actionLink("btn_user_model_info_why", label = "Read more about the 'Notes' tab")
+                                                   actionLink("btn_user_model_info_why", 
+                                                              label = "Read more about the 'Notes' tab")
                                           ),
                                           uiOutput("user_model_info_modal"),
                                           br(),
-                                          actionButton("save_user_model_info", label = "Save changes", icon = icon("save")),
+                                          actionButton("save_user_model_info", 
+                                                       label = "Save changes", 
+                                                       icon = icon("save")),
                                           textOutput("user_text_saved")
                                    ),
                                    column(10,
