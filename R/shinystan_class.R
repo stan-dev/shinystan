@@ -59,7 +59,9 @@ shinystan <- setClass("shinystan",
                                        nChains = 0,
                                        nIter = 0,
                                        nWarmup = 0,
-                                       user_model_info = "Use this space to store notes about your model",
-                                       model_code = "Use this space to store your model code",
+                                       user_model_info = 
+                                         "Use this space to store notes about your model",
+                                       model_code = 
+                                         "Use this space to store your model code",
                                        misc = list()
                       ))

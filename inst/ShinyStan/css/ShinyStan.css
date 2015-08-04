@@ -5,7 +5,7 @@
 #shinystan-title {
     max-width: 100%;
     text-align: center;
-    font-size: 4.25rem;
+    font-size: 5.25rem;
     line-height: 1.05882;
     margin-bottom: 1.5rem;
     margin-top: 0;
@@ -14,11 +14,9 @@
     font-weight: 400;
     letter-spacing: -3px;
 }
-
 #model-name {
   padding-top: 10px;
 }
-
 #wide-ensemble {
   z-index: -1;
   position: relative;
@@ -37,6 +35,9 @@
 
 .home-links {
   text-align: center;
+}
+.home-links:hover {
+  font-size: 1.05em;
 }
 
 .help-links-active {

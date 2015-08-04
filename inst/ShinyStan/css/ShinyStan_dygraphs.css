@@ -9,28 +9,6 @@
   font-weight: 500;
   line-height: 26px;
 }
-.dygraph-label.dygraph-xlabel{
-  font-size: 13px;
-  font-weight: bold;
-}
-.dygraph-label.dygraph-ylabel{
-  font-size: 18px;
-}
-.dygraph-axis-label{
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 10px;
-  font-style: normal;
-  font-variant: normal;
-  font-weight: 200;
-}
-.dygraph-legend{
-  background: transparent !important;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 10px;
-  font-style: normal;
-  font-variant: normal;
-  font-weight: 200;
-}
 .dygraphs input[type="text"] {
   width: 30px;
   border: 2px solid #346fa1;

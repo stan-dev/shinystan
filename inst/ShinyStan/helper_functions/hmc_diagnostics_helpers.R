@@ -192,12 +192,12 @@ thm_no_yaxs <- thm + no_yaxs
                         drawXAxis = TRUE, drawYAxis = !fill_graph, 
                         drawAxesAtZero = TRUE, axisLineColor = "black") %>%
     dygraphs::dyAxis("x", pixelsPerLabel = 1e6, axisLineWidth = 3) %>%
-    dygraphs::dyAxis("y", pixelsPerLabel = 20, axisLabelWidth = 20) %>%
+    dygraphs::dyAxis("y", pixelsPerLabel = 30, axisLabelWidth = 20) %>%
     dygraphs::dyRangeSelector(height = 1, retainDateWindow = TRUE) %>%
     dygraphs::dyLegend(show = "never") %>%
     dygraphs::dyHighlight(highlightCircleSize = 2,
                           highlightSeriesBackgroundAlpha = 1/3,
                           hideOnMouseOut = TRUE,
                           highlightSeriesOpts = list(strokeWidth = 1.5)) %>%
-    dygraphs::dyCSS(css = "css/shinyStan_dygraphs.css")
+    dygraphs::dyCSS(css = "css/ShinyStan_dygraphs.css")
 }

@@ -46,11 +46,11 @@ tagList(
                       div(class = "home-links",
                           div(id = "shinystan-title", "ShinyStan"),
                           div(id = "model-name", 
-                              h4(paste("Model")),
-                              h5(object@model_name)
+                              h2(paste("Model")),
+                              h4(object@model_name)
                               ),
                           br(),
-                          div(class = "home-links-links",
+                          div(id = "home-links-links",
                             h3(toc_entry("Diagnose")),
                             h3(toc_entry("Estimate")),
                             h3(toc_entry("Explore"))
