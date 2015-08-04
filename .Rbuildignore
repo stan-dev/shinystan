@@ -4,3 +4,4 @@ LICENSE
 ^\.travis\.yml$
 ^install_shinystan.R
 ^NEWS\.md$
+^README\.md$
