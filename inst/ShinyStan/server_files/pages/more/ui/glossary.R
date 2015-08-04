@@ -5,10 +5,10 @@ output$ui_glossary <- renderUI({
     div(id = "glossary_div", 
         style = "padding-top: 10px;",
         withMathJax(),
-        h2(style = "text-align: center;", "Glossary"),
+        h1(style = "text-align: center;", "Glossary"),
         br(),
-        div(id = "glossary_navlist",
-            navlistPanel(well = FALSE,
+        div(
+            navlistPanel(well = TRUE, id = "glossary_navlist",
                          "Glossary Entries",
                          tabPanel("Effective sample size",
                                   p(h4("Effective sample size"),"\\(n_{\\rm eff}\\)"),

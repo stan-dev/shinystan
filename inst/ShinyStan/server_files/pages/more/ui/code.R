@@ -16,7 +16,7 @@ output$ui_model_code <- renderUI({
                                   br(), save_and_close_reminder("save_user_model_code_safe_quit"))
     ),
     mainPanel(width = 9,
-              h4("Model Code"),
+              br(),br(),
               tags$textarea(id="user_model_code", wrap = "off", cols = 80, 
                             rows = 20, object@model_code)
     )

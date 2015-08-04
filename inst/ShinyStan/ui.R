@@ -23,8 +23,8 @@ source("server_files/utilities/ppcheck_names_descriptions.R", local = TRUE)
 object <- shinystan_object
 
 corner_link <- HTML(paste0('<a href=',
-                              shQuote(paste0("http://mc-stan.org",sep='')), 
-                              '>', 'Stan', '</a>'))
+                           shQuote(paste0("http://mc-stan.org",sep='')), 
+                           '>', 'Stan', '</a>'))
 save_and_quit <- tags$button(
   id = 'save_and_close_button',
   type = "button",
@@ -37,7 +37,7 @@ save_and_quit <- tags$button(
 tagList(
   shinyjs::useShinyjs(),
   includeCSS("css/ShinyStan.css"),
-  includeCSS("css/ShinyStan_datatables.css"),
+  # includeCSS("css/ShinyStan_datatables.css"),
   includeCSS("css/ShinyStan_dygraphs.css"),
   navbarPage(save_and_quit, id = "nav", #title = NULL,
              windowTitle = "ShinyStan", collapsible = TRUE, 
@@ -46,64 +46,40 @@ tagList(
              
              tabPanel(title = strong(style = "color: #B2011D;", "ShinyStan"),
                       div(id = "logos",
-                          div(id = "logo1", 
-                              img(src = "stan_logo.png", id = "stan-logo", width = "20%")),
                           div(
                             id = "logo2",
-                            img(src = "wide_ensemble.png", id = "wide-ensemble", width = "100%")
-                          )
+                            img(src = "wide_ensemble.png", class = "wide-ensemble", 
+                                width = "100%")
+                          ),
+                          div(id = "logo1", 
+                              img(src = "stan_logo.png", class = "stan-logo")),
+                          div(id = "shinystan-title", "ShinyStan")
                       ),
                       div(class = "home-links",
-                          div(id = "shinystan-title", "ShinyStan"),
                           div(id = "model-name", 
                               h2(paste("Model")),
                               h4(object@model_name)
-                              ),
+                          ),
                           br(),
                           div(id = "home-links-links",
-                            h3(toc_entry("Diagnose")),
-                            h3(toc_entry("Estimate")),
-                            h3(toc_entry("Explore"))
+#                               splitLayout(
+#                                 id = "home-links-links",
+#                                 style = "background: black; border: 5px solid black; border-radius: 10px;",
+#                                 cellWidths = 200,
+#                                 # cellArgs = list(style = "padding: 6px"),
+#                                 h3(toc_entry("Diagnose")),
+#                                 h3(toc_entry("Estimate")),
+#                                 h3(toc_entry("Explore"))
+#                               )
+                              h3(toc_entry("Diagnose")),
+                              h3(toc_entry("Estimate")),
+                              h3(toc_entry("Explore"))
                           )
                           # div(toc_entry("Code"), toc_entry("Help"), toc_entry("About"), toc_entry("Quit"))
                       )
              ),
              
-             #### PAGE: ESTIMATE ####
-             tabPanel(title = "Estimate", icon = icon("stats", lib = "glyphicon"),
-                      withMathJax(),
-                      
-                      tabsetPanel(
-                        #### multiparameter plot ####
-                        tabPanel("Parameters plot", icon = icon("bar-chart-o", "fa-2x"),
-                                 wellPanel(
-                                   fluidRow(
-                                     column(6, uiOutput("ui_multiparam_selectize")),
-                                     column(3, offset = 1, 
-                                            sliderInput("param_plot_ci_level", h5("Credible interval"), 
-                                                        width = "75%", ticks = FALSE, min = 50, max = 95, 
-                                                        value = 50, step = 5, post = "%")),
-                                     column(2, a_options("multiparam"))
-                                   )
-                                 ),
-                                 uiOutput("ui_multiparam_customize"),
-                                 plotOutput("multiparam_plot_out", width = "90%")
-                        ),
-                        #### posterior summary statistics ####
-                        tabPanel("Posterior summary statistics", icon = icon("table", "fa-2x"),
-                                 br(),
-                                 fluidRow(
-                                   column(10, br(), DT::dataTableOutput("all_summary_out")),
-                                   column(2, 
-                                          a_glossary("open_glossary_from_table"),
-                                          a_options("table"),
-                                          uiOutput("ui_table_customize")
-                                          # uiOutput("ui_tex_modal")
-                                   )
-                                   )
-                        )
-                      ) # End tabsetPanel
-             ), # End ESTIMATE
+             
              
              #### PAGE: DIAGNOSE ####
              tabPanel(title = "Diagnose", icon = icon("medkit"),
@@ -155,23 +131,23 @@ tagList(
                                  ),
                                  plotOutput("autocorr_plot_out")
                         ),
-#                         #### multiparameter traceplot ####
-#                         tabPanel("Trace", # icon = icon("bar-chart-o", "fa-2x"),
-#                                  wellPanel(
-#                                    fluidRow(
-#                                      column(6, selectizeInput("multitrace_params", width = '100%', 
-#                                                               label = h5("Select or enter parameter names"), 
-#                                                               choices = .make_param_list_with_groups(object), multiple = TRUE)),
-#                                      column(3, offset = 1, sliderInput("multi_xzoom", width = "75%",
-#                                                                        label = h5("Iterations"), min = 1, max = object@nIter, 
-#                                                                        step = 1, value = c(object@nWarmup + 1, object@nIter), ticks = FALSE)),
-#                                      column(2, a_options("multitrace"))
-#                                    )
-#                                  ),
-#                                  uiOutput("ui_multitrace_customize"),
-#                                  plotOutput("multitrace_plot_out"),
-#                                  br()
-#                         ),
+                        #                         #### multiparameter traceplot ####
+                        #                         tabPanel("Trace", # icon = icon("bar-chart-o", "fa-2x"),
+                        #                                  wellPanel(
+                        #                                    fluidRow(
+                        #                                      column(6, selectizeInput("multitrace_params", width = '100%', 
+                        #                                                               label = h5("Select or enter parameter names"), 
+                        #                                                               choices = .make_param_list_with_groups(object), multiple = TRUE)),
+                        #                                      column(3, offset = 1, sliderInput("multi_xzoom", width = "75%",
+                        #                                                                        label = h5("Iterations"), min = 1, max = object@nIter, 
+                        #                                                                        step = 1, value = c(object@nWarmup + 1, object@nIter), ticks = FALSE)),
+                        #                                      column(2, a_options("multitrace"))
+                        #                                    )
+                        #                                  ),
+                        #                                  uiOutput("ui_multitrace_customize"),
+                        #                                  plotOutput("multitrace_plot_out"),
+                        #                                  br()
+                        #                         ),
                         #### ppcheck ####
                         tabPanel(title = "PPcheck", # icon = icon("bar-chart-o", "fa-2x"),
                                  h2("Graphical posterior predictive checks"),
@@ -181,6 +157,50 @@ tagList(
                         
                       ) # End tabsetPanel
              ), # End DIAGNOSE
+             
+             #### PAGE: ESTIMATE ####
+             tabPanel(title = "Estimate", icon = icon("stats", lib = "glyphicon"),
+                      withMathJax(),
+                      
+                      tabsetPanel(
+                        #### multiparameter plot ####
+                        tabPanel("Parameters plot", icon = icon("bar-chart-o", "fa-2x"),
+                                 wellPanel(
+                                   fluidRow(
+                                     column(6, uiOutput("ui_multiparam_selectize")),
+                                     column(3, offset = 1, 
+                                            sliderInput("param_plot_ci_level", h5("Credible interval"), 
+                                                        width = "75%", ticks = FALSE, min = 50, max = 95, 
+                                                        value = 50, step = 5, post = "%")),
+                                     column(2, a_options("multiparam"))
+                                   )
+                                 ),
+                                 uiOutput("ui_multiparam_customize"),
+                                 plotOutput("multiparam_plot_out", width = "90%")
+                        ),
+                        #### posterior summary statistics ####
+                        tabPanel("Posterior summary statistics", icon = icon("table", "fa-2x"),
+                                 # br(),
+                                 fluidRow(
+                                   column(4, 
+                                          helpText(style = "margin-bottom: 2px;", "Table tips:"),
+                                          helpText(style = "margin-top: 2px; font-size: 11px;", 
+                                                   "Drag column names to rearrange the table columns."
+                                          )),
+                                   column(2, offset = 4, 
+                                          div(
+                                            strong(id = "table_digits_txt", "Digits"),
+                                            numericInput("table_digits", label = NULL, 
+                                                         value = 1, min = 0, max = 7, step = 1)
+                                          )
+                                   ),
+                                   column(2, a_glossary("open_glossary_from_table"))
+                                 ),
+                                 div(DT::dataTableOutput("all_summary_out"), 
+                                     style = "overflow-x: auto")
+                        )
+                      ) # End tabsetPanel
+             ), # End ESTIMATE
              
              #### PAGE: EXPLORE ####
              tabPanel(title = "Explore", icon = icon("eye-open", lib = "glyphicon"),
@@ -261,7 +281,19 @@ tagList(
                         ), # End Notepad
                         
                         #### PAGE: About ####
-                        tabPanel(title = "About", uiOutput("ui_about")), 
+                        tabPanel(title = "About", 
+                                 div(id = "logos",
+                                     div(
+                                       id = "logo2",
+                                       img(src = "wide_ensemble.png", class = "wide-ensemble", width = "100%")
+                                     ),
+                                     div(id = "logo1", 
+                                         img(src = "stan_logo.png", class = "stan-logo")),
+                                     div(id = "shinystan-title", "ShinyStan"),
+                                     br(),br(),br(),br(),
+                                     uiOutput("ui_about")   
+                                 )
+                                 ), 
                         
                         #### PAGE: Help ####
                         tabPanel(title = "Help",
@@ -277,12 +309,12 @@ tagList(
                         
              ) # End navbarMenu
              
-#              #### QUIT ####
-#              tabPanel(strong(style = "color: #dadada; font-size: 12px;", "Save & Quit"), 
-#                       value = "quit", icon = icon("close"),
-#                       h1("Thanks for using ShinyStan."),
-#                       br(),br(),
-#                       h5("It's safe to close this browser window.")
-#              )
+             #              #### QUIT ####
+             #              tabPanel(strong(style = "color: #dadada; font-size: 12px;", "Save & Quit"), 
+             #                       value = "quit", icon = icon("close"),
+             #                       h1("Thanks for using ShinyStan."),
+             #                       br(),br(),
+             #                       h5("It's safe to close this browser window.")
+             #              )
   ) # End navbarPage
 ) # End tagList

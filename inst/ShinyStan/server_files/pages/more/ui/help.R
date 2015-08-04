@@ -17,9 +17,9 @@
 output$ui_help <- renderUI({
   div(id = "help_div", 
       style = "padding-top: 10px;",
-      h2(style = "text-align: center;", "Help"),
+      h1(style = "text-align: center;", "Help"),
       br(),
-      navlistPanel(well = FALSE,
+      navlistPanel(well = TRUE,
                    "Help Topics",
                    tabPanel("Questions, bugs, and new features",
                             h4("Stan users group"),

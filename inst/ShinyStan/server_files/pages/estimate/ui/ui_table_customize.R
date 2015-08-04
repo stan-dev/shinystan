@@ -30,8 +30,7 @@ output$ui_table_customize <- renderUI({
                                     selected = "Options", width = "100%"),
                         conditionalPanel(condition = "input.table_options_display == 'Options'",
                                          numericInput("stats_digits", label = "Digits", 
-                                                      value = 1, min = 0, max = 7, step = 1),
-                                         checkboxInput("user_regex", "Regex searching", value = TRUE)
+                                                      value = 1, min = 0, max = 7, step = 1)
                         ),
                         conditionalPanel(condition = "input.table_options_display == 'LaTeX'",
                                            helpText(withMathJax("Print \\(\\LaTeX\\) table to R console")),
@@ -44,7 +43,7 @@ output$ui_table_customize <- renderUI({
                                                         value = input$stats_digits, min = 0),
                                          div(style = "font-size: 11px; padding: 1px;",
                                          checkboxGroupInput("tex_columns", label = "Columns",
-                                                            choices = c("Rhat", "Effective sample size (n_eff)" = "n_eff", "Posterior mean" = "mean", "Posterior standard deviation" = "sd", "Monte Carlo uncertainty (se_mean)" = "se_mean", "Quantile: 2.5%" = "2.5%", "Quantile: 25%" = "25%", "Quantile: 50%" = "50%", "Quantile: 75%" = "75%", "Quantile: 97.5%" = "97.5%"),
+                                                            choices = c("Rhat", "Effective sample size" = "n_eff", "Posterior mean" = "mean", "Posterior standard deviation" = "sd", "Monte Carlo error" = "se_mean", "Quantile: 2.5%" = "2.5%", "Quantile: 25%" = "25%", "Quantile: 50%" = "50%", "Quantile: 75%" = "75%", "Quantile: 97.5%" = "97.5%"),
                                                             selected = c("Rhat", "n_eff", "mean", "sd", "2.5%", "50%", "97.5%"))
                                          ),
                                          textInput("tex_caption", label = "Caption"),

@@ -28,6 +28,8 @@
 # all_summary -------------------------------------------------------------
 # summary stats for all parameters
 .all_summary <- function(summary, digits = 2, cols) {
+  if (missing(cols))
+    cols <- 1:ncol(summary)
   df <- as.data.frame(summary[, cols])
   df <- round(df, digits)
   if ("n_eff" %in% cols) df[, "n_eff"] <- round(df[, "n_eff"])

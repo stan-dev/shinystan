@@ -29,20 +29,21 @@ plotOutput_400px <- function(id, ...) {
   plotOutput(id, height = "400px")
 }
 
-help_interval <- helpText(style = "font-size: 11px;",
-                          "Highlighted interval shows \\(\\bar{x} \\pm sd(x)\\)")
-help_lines <- helpText(style = "font-size: 11px;",
-                       "Lines are mean (solid) and median (dashed)")
-help_max_td <- helpText(style = "font-size: 11px;", 
-                        "Horizontal line indicates the max_treedepth setting")
-help_points <- helpText(style = "font-size: 11px;", 
-                        "Large red points indicate which (if any) iterations",
-                        "encountered a divergent transition. Yellow indicates",
-                        "a transition hitting the maximum treedepth.")  
-help_dynamic <- helpText(style = "font-size: 11px;", 
-                         "Use your mouse or the sliders to select areas in the",
-                         "traceplot to zoom into. The other plots on the screen", 
-                         "will update accordingly. Double-click to reset.")
+hT11 <- function(...) helpText(style = "font-size: 11px;", ...)
+help_interval <- hT11(
+  "Highlighted interval shows \\(\\bar{x} \\pm sd(x)\\)")
+help_lines <- hT11(
+  "Lines are mean (solid) and median (dashed)")
+help_max_td <- hT11(
+  "Horizontal line indicates the max_treedepth setting")
+help_points <- hT11(
+  "Large red points indicate which (if any) iterations",
+  "encountered a divergent transition. Yellow indicates",
+  "a transition hitting the maximum treedepth.")  
+help_dynamic <- hT11(
+  "Use your mouse or the sliders to select areas in the",
+  "traceplot to zoom into. The other plots on the screen", 
+  "will update accordingly. Double-click to reset.")
 # help_violin <- helpText("The violin plot ")
 output$diagnostics_warnings_text <- renderText({
   divs <- sum(ndivergent_pw()[,-1])

@@ -14,39 +14,47 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-output$ui_cite <- renderUI({
-  div(
-    shinyjs::hidden(wellPanel(id = "citation_div", pre(id = "citation_text", 
-"@Misc{shinystan-software:2015,
+# output$ui_cite <- renderUI({
+#   div(style = "text-align: left;", 
+#     shinyjs::hidden(wellPanel(id = "citation_div", pre(id = "citation_text", 
+# "@Misc{shinystan-software:2015,
+# title = {{shinystan}: {R} Package for Interactive Exploration of {MCMC} samples, Version 2.0.0},
+# author = {Gabry, Jonah and Stan Development Team},
+# year = {2015},
+# abstract = {The shinystan R package provides the ShinyStan app for exploring Markov chain Monte Carlo output through interactive visualizations and tables.},
+# url = {https://mc-stan.org}
+# }")))
+#   )
+# })
+output$ui_credits <- renderUI({
+  # jonah_and_stan <- "Jonah Gabry and Stan Development Team"
+  michael <- "Michael Andreae"
+  yuanjun <- "Yuanjun Gao"
+  dongying <- "Dongying Song"
+  HTML(paste(michael, yuanjun, dongying, sep = '<br/>'))
+})
+output$ui_about <- renderUI({
+  div(style = "text-align: center;",
+    strong(style = "font-size: 16px;", "Jonah Gabry and Stan Development Team"),
+    div(class = "aoptions",
+      actionLink(inputId = "shinystan_citation_show", 
+                 label = "Show/Hide citation")
+    ),
+    p(style = "font-size: 12px; color: gray;", 
+      a(style = "font-size: 15px;", "Stan Development Team", href="http://mc-stan.org/team/"), "(mc-stan.org)"),
+    div(style = "text-align: left;", 
+        shinyjs::hidden(wellPanel(id = "citation_div", pre(id = "citation_text", 
+                                                           "@Misc{shinystan-software:2015,
 title = {{shinystan}: {R} Package for Interactive Exploration of {MCMC} samples, Version 2.0.0},
 author = {Gabry, Jonah and Stan Development Team},
 year = {2015},
 abstract = {The shinystan R package provides the ShinyStan app for exploring Markov chain Monte Carlo output through interactive visualizations and tables.},
 url = {https://mc-stan.org}
 }")))
-  )
-})
-output$ui_credits <- renderUI({
-  jonah_and_stan <- "Jonah Gabry and Stan Development Team"
-  michael <- "Michael Andreae,"
-  yuanjun <- "Yuanjun Gao,"
-  dongying <- "Dongying Song"
-  HTML(paste(strong(jonah_and_stan), 
-             paste("& contributors", michael, yuanjun, dongying), 
-             sep = '<br/>'))
-})
-output$ui_about <- renderUI({
-  div(
-    h3("ShinyStan"),
-    htmlOutput("ui_credits"),
-    div(class = "aoptions",
-      actionLink(inputId = "shinystan_citation_show", 
-                 label = "Show/Hide citation")
     ),
-    uiOutput("ui_cite"),
     br(),
-    h3("Stan & RStan"),
-    a("Stan Development Team", href="http://mc-stan.org/team/"),
+    h6("Additional contributors:"),
+    helpText(style = "font-size: 12px;", htmlOutput("ui_credits")),
     br()
   )
 })
