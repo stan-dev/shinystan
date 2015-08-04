@@ -22,6 +22,16 @@ source("server_files/utilities/ppcheck_names_descriptions.R", local = TRUE)
 # give shinystan_object shorter name
 object <- shinystan_object
 
+corner_link <- HTML(paste0('<a href=',
+                              shQuote(paste0("http://mc-stan.org",sep='')), 
+                              '>', 'Stan', '</a>'))
+save_and_quit <- tags$button(
+  id = 'save_and_close_button',
+  type = "button",
+  class = "btn action-button",
+  onclick = "window.close();",
+  "Save & Close"
+)
 # Begin shinyUI -----------------------------------------------------------
 # _________________________________________________________________________
 tagList(
@@ -29,8 +39,8 @@ tagList(
   includeCSS("css/ShinyStan.css"),
   includeCSS("css/ShinyStan_datatables.css"),
   includeCSS("css/ShinyStan_dygraphs.css"),
-  navbarPage(title = NULL,
-             windowTitle = "ShinyStan", collapsible = TRUE, id = "nav",
+  navbarPage(save_and_quit, id = "nav", #title = NULL,
+             windowTitle = "ShinyStan", collapsible = TRUE, 
              inverse = FALSE, position = "fixed-top",
              theme = shinythemes::shinytheme("flatly"),
              
@@ -69,7 +79,10 @@ tagList(
                                  wellPanel(
                                    fluidRow(
                                      column(6, uiOutput("ui_multiparam_selectize")),
-                                     column(3, offset = 1, sliderInput("param_plot_ci_level", h5("Credible interval"), width = "75%", ticks = FALSE, min = 50, max = 95, value = 50, step = 5, post = "%")),
+                                     column(3, offset = 1, 
+                                            sliderInput("param_plot_ci_level", h5("Credible interval"), 
+                                                        width = "75%", ticks = FALSE, min = 50, max = 95, 
+                                                        value = 50, step = 5, post = "%")),
                                      column(2, a_options("multiparam"))
                                    )
                                  ),
@@ -80,7 +93,7 @@ tagList(
                         tabPanel("Posterior summary statistics", icon = icon("table", "fa-2x"),
                                  br(),
                                  fluidRow(
-                                   column(10, DT::dataTableOutput("all_summary_out")),
+                                   column(10, br(), DT::dataTableOutput("all_summary_out")),
                                    column(2, 
                                           a_glossary("open_glossary_from_table"),
                                           a_options("table"),
@@ -262,14 +275,14 @@ tagList(
                                  uiOutput("ui_glossary")
                         )
                         
-             ), # End navbarMenu
+             ) # End navbarMenu
              
-             #### QUIT ####
-             tabPanel(strong(style = "color: #dadada; font-size: 12px;", "Save & Quit"), 
-                      value = "quit", icon = icon("close"),
-                      h1("Thanks for using ShinyStan."),
-                      br(),br(),
-                      h5("It's safe to close this browser window.")
-             )
+#              #### QUIT ####
+#              tabPanel(strong(style = "color: #dadada; font-size: 12px;", "Save & Quit"), 
+#                       value = "quit", icon = icon("close"),
+#                       h1("Thanks for using ShinyStan."),
+#                       br(),br(),
+#                       h5("It's safe to close this browser window.")
+#              )
   ) # End navbarPage
 ) # End tagList

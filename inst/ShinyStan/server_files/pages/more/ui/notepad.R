@@ -13,14 +13,7 @@ output$ui_notepad <- renderUI({
                             icon = icon("save")),
                div(style = "font-size: 11px;", textOutput("user_text_saved")),
                conditionalPanel(condition = "input.save_user_model_info > 0",
-                                br(),
-                                helpText(id = "save_user_model_info_safe_quit", 
-                                         p("In order to make sure the changes", 
-                                         "aren't lost use the"),
-                                         p("SAVE & QUIT"),
-                                         "button to exit the app before", 
-                                         "closing the browser window.")
-                                )
+                                br(), save_and_close_reminder("save_user_model_info_safe_quit"))
         ),
         mainPanel(width = 9,
                h4("Notes"),

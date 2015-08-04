@@ -37,11 +37,6 @@ coda_check <- function() {
 cleanup_shinystan <- function() {
   rm(list = "shinystan_object", envir = globalenv())
 }
-
-return_sso <- function() {
-  get("shinystan_object", inherits = TRUE)
-}
-
 assign_shinystan <- function(X) {
   assign("shinystan_object", X, inherits = TRUE)
 }

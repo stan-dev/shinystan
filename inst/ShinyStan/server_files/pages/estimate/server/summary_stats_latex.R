@@ -28,7 +28,7 @@ summary_stats_latex <- reactive({
   } else {
     x <- do.call(".tex_summary", args = list(
       summary     = fit_summary[params, ],
-      cols        = input$stats_columns
+      cols        = input$tex_columns
     ))
   }
 
@@ -45,4 +45,10 @@ summary_stats_latex <- reactive({
                        tabular.environment = tab_env,
                        include.rownames = FALSE)
 })
+
+# latex the table
+observeEvent(input$tex_go, handlerExpr = {
+  summary_stats_latex()
+})
+
 

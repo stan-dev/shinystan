@@ -15,9 +15,11 @@
 
 # param_trace_multi ------------------------------------------------------
 # trace plots for multiple parameters
-.param_trace_multi <- function(params = NULL, all_param_names, dat, warmup_val = 0,
+.param_trace_multi <- function(params = NULL, all_param_names, dat, 
+                               warmup_val = 0,
                                chain = 0, palette = "Default",
-                               rect = "Samples", rect_color = "skyblue", rect_alpha = 0.1,
+                               rect = "Samples", rect_color = "skyblue", 
+                               rect_alpha = 0.1,
                                layout = "Long", x1, x2) {
 
   

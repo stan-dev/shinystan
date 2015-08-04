@@ -50,6 +50,5 @@ launch_shinystan <- function(object, rstudio = FALSE, ...) {
   message(paste("\n Loading... \n", 
                 "For large models ShinyStan may take a few moments to launch."))
   on.exit(cleanup_shinystan())
-  launch(object, rstudio, ...)
-  invisible(return_sso())
+  invisible(launch(object, rstudio, ...))
 }

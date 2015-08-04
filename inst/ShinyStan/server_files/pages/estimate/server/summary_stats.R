@@ -14,55 +14,72 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 # Table of posterior summary statistics -----------------------------------
+
 summary_stats <- reactive({
   do.call(".all_summary", args = list(
-    summary     = fit_summary,
-    digits      = input$stats_digits,
-    cols        = input$stats_columns
+    summary     = fit_summary
+    # digits      = input$stats_digits,
+    # cols        = input$stats_columns
   ))
 })
 
-output$all_summary_out <- DT::renderDataTable({
-  validate(need(input$table_options_display, "loading"))
-  DT::datatable({
-    summary_stats()
-  },
-  filter = 'bottom',
-  options = list(
-    searchHighlight = TRUE,
-    search = list(regex = input$user_regex), # allow regular expression when searching for parameter names
-    processing = TRUE,
-    pagingType = "full", # show only first, previous, next, last buttons (no page numbers)
-    pageLength = 10,
-    lengthMenu = list(c(5, 10, 20, 50, -1), c('5', '10', '20', '50', 'All')),
-    scrollY = 400,
-    scrollX = TRUE,
-    autoWidth = TRUE,
-    scrollCollapse = FALSE,
-    columnDefs = list(list(width="85px", targets=list(0)), 
-                      list(sClass="alignRight", targets ="_all")),
-    initComplete = htmlwidgets::JS( # change text color of column titles
-      'function(settings, json) {
-      $(this.api().table().header()).css({"color": "#006DCC"});
-      }'),
-    rowCallback = htmlwidgets::JS(
-      'function(row, data) {
-      // Bold cells in the first column
-      $("td:eq(0)", row).css("font-weight", "bold");
-      }')
-  )
-  )
+table_digits <- reactive({
+  input$stats_digits
 })
 
-# download the table
-output$download_all_summary <- downloadHandler(
-  filename = paste0('shinystan_summary_stats.RData'),
-  content = function(file) {
-    shinystan_summary_stats <- summary_stats()
-    save(shinystan_summary_stats, file = file)
-  }
-)
-# latex the table
-observeEvent(input$tex_go, handlerExpr = {
-  summary_stats_latex()
+output$all_summary_out <- DT::renderDataTable({
+  `%>%` <- DT::`%>%`
+  validate(need(input$table_options_display, "loading"))
+  DT::datatable(data = table_stats, colnames = c('mcse' = 'se_mean'),
+    options = list(
+      #dom = 'Rlfrtip', 
+      colReorder = list(realtime = TRUE),
+      dom = 'C<"clear">Rlfritp<"bottom">T',
+      colVis = list(exclude = list(0), activate = 'mouseover'),
+      pageLength = 10, 
+      # autoWidth = TRUE,
+      pagingType = "full",
+      processing = TRUE,
+      deferRender = TRUE,
+      scrollY = 400,
+      scrollX = TRUE,
+      scrollCollapse = FALSE,
+      preDrawCallback = DT::JS('function() { 
+Shiny.unbindAll(this.api().table().node()); }'), 
+      drawCallback = DT::JS('function() { 
+Shiny.bindAll(this.api().table().node()); } '),
+      search = list(regex = input$user_regex),
+      tableTools = list(sSwfPath = DT::copySWF("www", pdf = TRUE), 
+                        aButtons = list('copy', 'print', list(
+                          sExtends = 'collection',
+                          sButtonText = 'Save',
+                          aButtons = c('csv', 'pdf')
+                        )))
+    ), filter = 'bottom', extensions = c("TableTools", "ColReorder", "ColVis", "FixedColumns", "Scroller")) 
+  # %>% DT::formatRound(digits = table_digits())
 })
+
+#   options = list(
+#     searchHighlight = TRUE,
+#     search = list(regex = input$user_regex), # allow regular expression when searching for parameter names
+#     processing = TRUE,
+#     pagingType = "full", # show only first, previous, next, last buttons (no page numbers)
+#     pageLength = 10,
+#     lengthMenu = list(c(5, 10, 20, 50, -1), c('5', '10', '20', '50', 'All')),
+#     scrollY = 400,
+#     scrollX = TRUE,
+#     autoWidth = TRUE,
+#     scrollCollapse = FALSE,
+#     columnDefs = list(list(width="85px", targets=list(0)), 
+#                       list(sClass="alignRight", targets ="_all")),
+#     initComplete = htmlwidgets::JS( # change text color of column titles
+#       'function(settings, json) {
+#       $(this.api().table().header()).css({"color": "#006DCC"});
+#       }'),
+#     rowCallback = htmlwidgets::JS(
+#       'function(row, data) {
+#       // Bold cells in the first column
+#       $("td:eq(0)", row).css("font-weight", "bold");
+#       }')
+#   )
+

@@ -3,6 +3,25 @@
 /* red color: #B2011D */
 
 @import url('//fonts.googleapis.com/css?family=Volkhov:400,400italic,700,700italic');
+
+#save_and_close_button{
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  background: white;
+  color: #B2011D;
+  padding: 3px;
+  border: 1px solid black;
+  font-size: 12px;
+  font-weight: bold;
+}
+#save_and_close_button:hover {
+  background: black;
+  color: white;
+  font-weight: bolder;
+  border: 2px solid #B2011D;
+}
+
 #shinystan-title {
     max-width: 100%;
     text-align: center;
@@ -32,6 +51,17 @@
   margin-left: auto;
   margin-right: auto;
   margin-bottom: -145px;
+}
+
+#all_summary_out{
+  z-index: -1;
+}
+#controls_table{
+  z-index: 1;
+}
+#table_options{
+  max-height: 500px;
+  overflow-y: scroll;
 }
 
 .home-links {
@@ -88,6 +118,8 @@ color: white;
 }
 
 .navbar .nav {
+  position: absolute;
+  left: 200px;
   padding-right: 20px;
   padding-left: 20px;
   border-radius: 0 0 10px 10px;
@@ -461,6 +493,16 @@ a:active { /* selected link */
 #save_user_model_info_safe_quit, #save_user_model_code_safe_quit{
   color: gray;
   font-size: 12px;
+}
+.save-close-reminder {
+  background: white;
+  color: #B2011D;
+  padding: 3px;
+  border: 1px solid black;
+  border-radius: 3px;
+  font-size: 11px;
+  text-align: center;
+  width: 80px;
 }
 
 /**************************************/

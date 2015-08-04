@@ -26,7 +26,7 @@ output$ui_glossary <- renderUI({
                             Chapter 11 of ", a("BDA3.", href = "http://www.stat.columbia.edu/~gelman/book/"))
                          ),
                          tabPanel("Monte Carlo uncertainty",
-                                  p(h4("Monte Carlo uncertainty"), "\\(se_{\\rm mean}\\)"),
+                                  p(h4("Monte Carlo uncertainty"), "\\(mcse\\)"),
                                   p(
                                     "The standard error of the mean of the posterior draws (not to be confused
 with the standard deviation of the posterior draws) is the uncertainty

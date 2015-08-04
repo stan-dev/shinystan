@@ -39,6 +39,10 @@ sampler_params_post_warmup <-
       }
 
 fit_summary <- object@summary
+table_stats <- cbind(fit_summary[, colnames(fit_summary) %in% c("Rhat", "n_eff")], 
+                     fit_summary[, !colnames(fit_summary) %in% c("Rhat", "n_eff")])
+table_stats[,"n_eff"] <- round(table_stats[,"n_eff"])
+
 param_names <- object@param_names
 MISC <- object@misc
 stan_algorithm <- if ("stan_algorithm" %in% names(MISC)) 

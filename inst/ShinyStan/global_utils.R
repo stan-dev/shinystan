@@ -1,12 +1,20 @@
+save_and_close_reminder <- function(id) {
+  helpText(id = id,
+           p("In order to make sure the changes aren't lost use the",
+             span(class = "save-close-reminder", "Save & Close"),
+             "button in the top left corner to exit the app instead", 
+             "of closing the browser window.")
+  )
+}
 toc_entry <- function(name, icon_name, ...) {
   actionLink(inputId = paste0("toc_", tolower(name)), label = name, 
              if (!missing(icon_name)) icon = icon(name = icon_name, ...))
 }
 a_options <- function(name) {
+  lab <- if (name == "table") "Table Options" else "Show/Hide Options"
   div(class = "aoptions",
       actionLink(inputId = paste0(name, "_options_show"), 
-                 label = strong(style = "margin-top: 20px; color: #222222;", 
-                                "Show/Hide Options"), 
+                 label = strong(style = "margin-top: 20px; color: #222222;", lab), 
                  icon = icon("sliders", "fa-lg")))
 }
 a_glossary <- function(id) {

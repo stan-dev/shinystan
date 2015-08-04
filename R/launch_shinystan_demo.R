@@ -34,6 +34,5 @@
 launch_shinystan_demo <- function(rstudio = FALSE, ...) {
   demo_name <- "eight_schools"
   on.exit(cleanup_shinystan())
-  launch(get(demo_name), rstudio, ...)
-  invisible(return_sso())
+  invisible(launch(get(demo_name), rstudio, ...))
 }
