@@ -21,8 +21,10 @@ notes(object, notes, replace = FALSE)
 Notes are viewable on ShinyStan's Notepad page
 }
 \examples{
+\dontrun{
 sso <- notes(sso, "new note")
 sso <- notes(sso, c("new note", "another new note"), replace = TRUE)
+}
 }
 \seealso{
 \code{\link{as.shinystan}}

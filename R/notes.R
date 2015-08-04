@@ -11,8 +11,10 @@
 #' 
 #' @seealso \code{\link{as.shinystan}}
 #' @examples 
+#' \dontrun{
 #' sso <- notes(sso, "new note")
 #' sso <- notes(sso, c("new note", "another new note"), replace = TRUE)
+#' }
 #'  
 notes <- function(object, notes, replace = FALSE) {
   sso@user_model_info <- 
