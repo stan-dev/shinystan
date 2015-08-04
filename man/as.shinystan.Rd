@@ -46,11 +46,7 @@ specified but are not required:
   should only be specified if the burnin samples are included in \code{X}.}
   \item{\code{param_dims}}{Rarely used and never necessary. A named list giving the dimensions for all parameters.
   For scalar parameters use \code{0} as the dimension. See \strong{Examples}.}
-  \item{\code{model_code}}{A character string with the code you used to run your model.
-  This can also be added to your shinystan object later using the
-  \code{\link{include_model_code}} function. See \code{\link{include_model_code}}
-  for additional formatting instructions. After launching the app \code{model_code}
-  will be viewable in the \strong{Model Code} tab.}
+  \item{\code{model_code}}{A character string with the code you used to run your model.}
 }
 }
 \examples{

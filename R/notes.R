@@ -16,7 +16,7 @@
 #' sso <- notes(sso, c("new note", "another new note"), replace = TRUE)
 #' }
 #'  
-notes <- function(object, notes, replace = FALSE) {
+notes <- function(sso, notes, replace = FALSE) {
   sso@user_model_info <- 
     if (replace) paste0("\n\n", notes)
   else c(sso@user_model_info, paste0("\n\n", notes))

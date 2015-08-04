@@ -4,15 +4,15 @@
 \alias{notes}
 \title{Additional or replacement notes}
 \usage{
-notes(object, notes, replace = FALSE)
+notes(sso, notes, replace = FALSE)
 }
 \arguments{
+\item{sso}{shinystan object.}
+
 \item{notes}{A character vector of additional or replacement notes.}
 
 \item{replace}{If \code{TRUE} the existing notes are overwritten by
 \code{notes}. Otherwise the new notes are appended to the existing notes.}
-
-\item{sso}{shinystan object.}
 }
 \value{
 \code{sso}, updated. See Examples.
