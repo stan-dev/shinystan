@@ -183,7 +183,6 @@ a:active { /* selected link */
 }
 .draggable_controls {
   cursor: move;
-  /* Fade out while not hovering */
   opacity: 0.9;
   transition: opacity 500ms 1s;
 }
@@ -417,28 +416,54 @@ a:active { /* selected link */
 
 
 /**************************************/
+
+#shinystan_citation {
+  color: black;
+  cursor: move;
+}
+#citation_text {
+  color: black;
+  font-size: 11px;
+}
 /* notes and model_code text areas */
 #user_model_info {
-  background: transparent; 
+  background: #f1edec; 
   height: 400px;
-  border: 10px solid #B2011D; 
+  border: 5px solid #597ea2; 
   border-radius: 2px;
   font-size: 13px;
 }
-#user_text_saved {
+#user_model_code {
+  background: #f1edec; 
+  height: 400px;
+  border: 5px solid #597ea2; 
+  border-radius: 2px;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-size: 11px;
+}
+#user_model_info:focus, #user_model_code:focus {
+  background: #f7e5e8;
+  /*
+  opacity: 0.9;
+  filter: alpha(opacity=90);
+  */
+  outline: none;
+  border: 10px solid black;/*#B2011D; */
+  box-shadow: 0 0 10px black;
+  font-size: 0.95em;
+  -o-transform: scale(1.2);
+  -ms-transform: scale(1.2);
+  -moz-transform: scale(1.2);
+  -webkit-transform: scale(1.2);
+  transform: scale(1.2);
+  transition-duration: 0.1s; 
+}
+#user_text_saved, #user_code_saved {
   color: gray;
 }
 #save_user_model_info_safe_quit, #save_user_model_code_safe_quit{
   color: gray;
   font-size: 12px;
-}
-#model_code {
-  background: transparent; 
-  height: 400px;
-  border: 10px solid #B2011D; 
-  border-radius: 2px;
-  font-family: "Lucida Console", Monaco, monospace;
-  font-size: 11px;
 }
 
 /**************************************/

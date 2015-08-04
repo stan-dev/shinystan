@@ -25,14 +25,21 @@
 sso_info <- function(sso) {
   sso_check(sso)
   sso_name <- deparse(substitute(sso))
+  has_notes <- 
+    sso@user_model_info != "Use this space to store notes about your model"
+  has_code <- 
+    sso@model_code != "Use this space to store your model code" 
+  
   cat(
-    paste("shinystan object:", sso_name),
+    sso_name, "---------------------",
     paste("Model name:", sso@model_name),
     paste("Parameters:", length(sso@param_names)),
     paste("Parameter groups:", length(names(sso@param_dims))),
     paste("Chains:", sso@nChains),
     paste("Iterations:", sso@nIter),
     paste("Warmup:", sso@nWarmup),
+    paste("Has model code:", has_code),
+    paste("Has user notes:", has_notes),
     sep = "\n"
   )
 }

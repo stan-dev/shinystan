@@ -32,16 +32,7 @@ function(input, output, session) {
   # source all files from server_files directory and subdirectories
   files <- list.files("server_files", full.names = TRUE, recursive = TRUE)
   for (f in files) source(f, local = TRUE)
-
-  # user's notes 
-  observeEvent(input$save_user_model_info, handlerExpr = {
-    model_info <- input$user_model_info
-    if (model_info == "")
-      model_info <- "Use this space to store notes about your model."
-    slot(shinystan_object, "user_model_info") <<- input$user_model_info
-  })
   
-
   options_inputs <- c("table", "multiparam", "autocorr", "rhat_warnings", # multitrace
                       "bivariate", "trivariate", "density", "hist")
   dens_inputs <- c("point_est", "ci", "x_breaks", "fill_color", "line_color")
@@ -79,6 +70,8 @@ function(input, output, session) {
 #     shinyjs::onclick("toc_about", updateTabsetPanel(session, "nav", selected = "About"))
 #     shinyjs::onclick("toc_quit", updateTabsetPanel(session, "nav", selected = "Quit"))
   })
+  observeEvent(input$shinystan_citation_show,
+               shinyjs::toggle(id = "citation_div", anim = TRUE, animType = "slide"))
   
 } # End shinyServer
 

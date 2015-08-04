@@ -59,7 +59,7 @@ shinystan <- setClass("shinystan",
                                        nChains = 0,
                                        nIter = 0,
                                        nWarmup = 0,
-                                       user_model_info = "Use this space to store notes about your model.",
-                                       model_code = "No code found. After closing shinyStan you can use the include_model_code function in R to add your code.",
+                                       user_model_info = "Use this space to store notes about your model",
+                                       model_code = "Use this space to store your model code",
                                        misc = list()
                       ))
