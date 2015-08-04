@@ -3,7 +3,7 @@ output$ui_notepad <- renderUI({
       sidebarLayout(
         sidebarPanel(width = 3, style = "height: 550px;", 
                br(),
-               h4("Model code"),
+               h4("Notes"),
                helpText(style = "font-size: 12px;", 
                         p("Notes are displayed here each time you launch ShinyStan 
                           with this shinystan object.")

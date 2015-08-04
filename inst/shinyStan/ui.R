@@ -50,7 +50,7 @@ tagList(
                               h5(object@model_name)
                               ),
                           br(),
-                          div(style = "text-decoration: underline;",
+                          div(class = "home-links-links",
                             h3(toc_entry("Diagnose")),
                             h3(toc_entry("Estimate")),
                             h3(toc_entry("Explore"))
