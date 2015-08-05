@@ -25,11 +25,14 @@
 #' @param ... Optional arguments to pass to \code{\link[shiny]{runApp}}.
 #' @return An S4 shinystan object.
 #'   
-#' @seealso \code{\link{launch_shinystan}},
-#'   \code{\link{as.shinystan}},
+#' @seealso \code{\link{launch_shinystan}}, \code{\link{as.shinystan}}
+#' 
 #' @examples
 #' \dontrun{
-#' launch_shinystan_demo()
+#' # launch demo but don't save a shinystan object
+#' launch_shinystan_demo() 
+#' 
+#' # launch demo and save the shinystan object for the demo 
 #' ssdemo <- launch_shinystan_demo()
 #' }
 #'

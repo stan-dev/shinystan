@@ -23,12 +23,14 @@ ShinyStan demo
 }
 \examples{
 \dontrun{
+# launch demo but don't save a shinystan object
 launch_shinystan_demo()
+
+# launch demo and save the shinystan object for the demo
 ssdemo <- launch_shinystan_demo()
 }
 }
 \seealso{
-\code{\link{launch_shinystan}},
-  \code{\link{as.shinystan}},
+\code{\link{launch_shinystan}}, \code{\link{as.shinystan}}
 }
 

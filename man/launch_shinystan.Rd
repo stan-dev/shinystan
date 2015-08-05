@@ -7,9 +7,9 @@
 launch_shinystan(object, rstudio = getOption("shinystan.rstudio"), ...)
 }
 \arguments{
-\item{object}{An object of class shinystan, stanfit, or
-\code{stanreg}. See \code{\link{as.shinystan}} for converting other
-objects to a shinystan object (sso).}
+\item{object}{An object of class shinystan, stanfit, or stanreg. See
+\code{\link{as.shinystan}} for converting other objects to a shinystan
+object (sso).}
 
 \item{rstudio}{For RStudio users, should the app launch in RStudio's Viewer?
 The default is to launch the app in the user's default web browser instead
@@ -27,15 +27,45 @@ ShinyStan app
 }
 \examples{
 \dontrun{
-# If X is a stanfit object (or shinystan object (sso))
-X_sso <- launch_shinystan(X)
+#######################################
+# Example 1: 'sso' is a shinystan object
+#######################################
 
-# If X is not an sso or stanfit object
-X_sso <- launch_shinystan(as.shinystan(X, model_name = "Example"))
+# Just launch shinystan
+launch_shinystan(sso)
+
+# Launch shinystan and replace sso with an updated version of itself
+# if any changes are made to sso while using the app
+sso <- launch_shinystan(sso)
+
+# Launch shinystan but save any changes made to sso while running the app
+# in a new shinystan object sso2. sso will remained unchanged.
+sso2 <- launch_shinystan(sso)
+
+#######################################
+# Example 2: 'sf' is a stanfit object
+#######################################
+
+# Just launch shinystan
+launch_shinystan(sf)
+
+# Launch shinystan and save the resulting shinystan object
+sf_sso <- launch_shinystan(sf)
+
+# Now sf_sso is a shinystan object and so Example 1 (above) applies when
+# using sf_sso.
+
+#######################################
+# Example 3: 'fit' is an mcmc.list, array or list of matrices
+#######################################
+
+# First create shinystan object (see ?as.shinystan for full details)
+fit_sso <- as.shinystan(fit, model_name = "Example")
+
+# Now fit_sso is a shinystan object and so Example 1 (above) applies.
 }
 }
 \seealso{
-\code{\link{as.shinystan}},
-  \code{\link{launch_shinystan_demo}}, \code{\link{shinystan_options}}
+\code{\link{as.shinystan}}, \code{\link{launch_shinystan_demo}}
 }
 

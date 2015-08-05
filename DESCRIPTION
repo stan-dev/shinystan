@@ -1,21 +1,20 @@
 Package: shinystan
-Title: Interactive Visual Summaries and Analysis for MCMC
+Title: Interactive Visual Summaries and Analysis for Markov Chain Monte Carlo
 Version: 2.0.0
-Date: 2015-08-03
+Date: 2015-08-06
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"),
     email = "jsg2201@columbia.edu", comment = "Stan Development Team"),
       person("Michael", "Andreae", role = "ctb"),
       person("Gao", "Yuanjun", role = "ctb"),
       person("Dongying", "Song", role = "ctb"))
 Maintainer: Jonah Gabry <jsg2201@columbia.edu>
-Description: Immediate, informative, customizable visual and numerical summaries 
-    of model parameters and convergence diagnostics for MCMC simulations. 
-    The ShinyStan app provided in the shinystan package can be used to explore 
-    the output of MCMC programs written in any programming language 
-    (and has additional features for Stan models).
-    Users can also deploy their own ShinyStan apps online using 
+Description: Interactive visual and numerical summaries of model parameters and 
+    convergence diagnostics for MCMC simulations. The ShinyStan app provided in 
+    the shinystan package can be used to explore the output of MCMC programs 
+    written in any programming language (and has additional features for 
+    Stan models). Users can also deploy their own ShinyStan apps online using 
     RStudio's ShinyApps service. Note: to use this feature the user must install 
-    the shinyapps package available from RStudio (Github url in 
+    the suggested shinyapps package available from RStudio (GitHub URL in 
     Additional_repositories).
 URL: http://mc-stan.org, https://github.com/stan-dev/shinystan/
 BugReports: https://github.com/stan-dev/shinystan/issues
@@ -27,7 +26,7 @@ Depends:
 License: GPL (>=3)
 LazyData: true
 Suggests: 
-    coda,
+    coda (>= 0.17-1),
     knitr (>= 1.9),
     rstan (>= 2.7),
     shinyapps (>= 0.4),

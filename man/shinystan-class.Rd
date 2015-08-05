@@ -28,7 +28,8 @@ See \code{\link{deploy_shinystan}}.
 
 \code{\link{rename_model}} Change the model name.
 
-\code{\link{generate_quantity}} Add new parameters/quantities as a function of one or two existing parameters.
+\code{\link{generate_quantity}} Add new parameters/quantities as a function
+of one or two existing parameters.
 
 \code{\link{model_code}} Add or change model code.
 }

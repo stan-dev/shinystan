@@ -49,8 +49,8 @@
 #' @import shiny
 #' @import dygraphs
 #' @import threejs
-#' @import stats
 #' @import xts
+#' @importFrom stats acf quantile time var
 #' @importFrom shinythemes shinytheme
 #' @importFrom shinyjs colourInput useShinyjs
 #' @importFrom DT datatable
