@@ -81,7 +81,7 @@ deploy_shinystan <- function(sso, appName, account = NULL, ...) {
                "dygraphs", "xts", "xtable", "gridExtra", "DT", "threejs")
   server_lines <- paste0("library(", server_pkgs,");")
   ui_lines <- paste0("library(", ui_pkgs,");")
-  global_lines <- paste("load('shinystan_object.RData');", 
+  global_lines <- paste("load('shinystan_temp_object.RData');", 
                         "if (file.exists('y.RData')) load('y.RData')")
   for (ff in c("ui", "server", "global")) {
     file_name <- file.path(deployDir, paste0(ff, ".R"))
@@ -93,8 +93,9 @@ deploy_shinystan <- function(sso, appName, account = NULL, ...) {
   }
 
   # save shinystan_object to deployDir
-  shinystan_object <- sso
-  save(shinystan_object, file = file.path(deployDir, "shinystan_object.RData"))
+  shinystan_temp_object <- sso
+  save(shinystan_temp_object, 
+       file = file.path(deployDir, "shinystan_temp_object.RData"))
   
   # save ppcheck_data and set ppcheck defaults
   pp <- list(...)
