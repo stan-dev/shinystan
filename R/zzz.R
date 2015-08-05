@@ -19,4 +19,12 @@
   packageStartupMessage(msg)
 } 
 
-.onLoad <- function(libname, pkgname) { }
+.onLoad <- function(libname, pkgname) {
+  op <- options()
+  op.shinystan <- list(
+    shinystan.rstudio = FALSE
+  )
+  set_ops <- !(names(op.shinystan) %in% names(op))
+  if (any(set_ops)) options(op.shinystan[set_ops])
+  invisible()
+}
