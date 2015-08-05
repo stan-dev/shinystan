@@ -34,7 +34,7 @@ Suggests:
     testthat
 Imports: 
     DT (>= 0.1),
-    dygraphs (>= 0.4.1),
+    dygraphs (>= 0.4.5),
     gridExtra,
     gtools,
     markdown (>= 0.7.4),
@@ -44,6 +44,6 @@ Imports:
     shinyjs (>= 0.0.7.0),
     shinythemes,
     threejs (>= 0.2.1),
-    xtable,
+    xtable (>= 1.7-4),
     xts (>= 0.9-7)
 VignetteBuilder: knitr
