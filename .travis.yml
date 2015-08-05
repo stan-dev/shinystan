@@ -3,6 +3,7 @@ language: r
 sudo: required
 
 warnings_are_errors: true
+r_check_force_suggests: false
 
 r_github_packages:
   - rstudio/shinyapps
