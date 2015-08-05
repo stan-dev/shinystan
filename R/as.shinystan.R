@@ -88,15 +88,13 @@
 as.shinystan <- function(X, ...) {
   Xname <- deparse(substitute(X))
   if (is.shinystan(X)) {
-    message(
-      paste0(Xname, " is already a shinystan object.\n",
-             "You can use launch_shinystan(", Xname, 
-             ") to launch ShinyStan.")
-    )
+    message(paste0(Xname, " is already a shinystan object.\n",
+             "You can use launch_shinystan(", Xname, ") to launch ShinyStan."))
     return(X)
   }
   X_is <- get_type(X)
   if (X_is == "stanfit") return(stan2shinystan(X, ...))
+  if (X_is == "stanreg") return(stan2shinystan(X$stanfit, ...))
   if (X_is == "mcmclist") return(mcmc2shinystan(X, ...))
   if (X_is == "chainlist") return(chains2shinystan(X, ...))
   if (X_is == "other") {

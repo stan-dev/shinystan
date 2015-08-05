@@ -24,7 +24,6 @@ stan2shinystan <- function(stanfit, model_name, notes) {
   
   stan_args <- stanfit@stan_args[[1]]
   from_cmdstan_csv <- ("engine" %in% names(stan_args))
-  
   stan_algorithm <- if (from_cmdstan_csv) 
     toupper(stan_args$engine) else stan_args$algorithm
   warmup <- if (from_cmdstan_csv) stanfit@sim$warmup2 else stanfit@sim$warmup

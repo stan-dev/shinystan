@@ -67,10 +67,11 @@ grepl_ic <- function(pattern, x, ignore.case = TRUE) {
 
 get_type <- function(x) {
   if (is.shinystan(x)) return("shinystan")
-  if (is_stan(x)) return("stanfit")
-  if (inherits(x, "mcmc.list")) return("mcmclist")
-  if (is.list(x) & !inherits(x, "mcmc.list")) return("chainlist")
-  return("other")
+  else if (is_stan(x)) return("stanfit")
+  else if (inherits(x, "mcmc.list")) return("mcmclist")
+  else if (is.list(x) & !inherits(x, "mcmc.list")) return("chainlist")
+  else if (inherits(x, "stanreg")) return("stanreg")
+  else return("other")
 }
 
 # functions to set defaults for ppcheck selectInputs for y and y_rep 
