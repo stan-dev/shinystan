@@ -21,14 +21,13 @@
 #' 
 #' See \code{\link{as.shinystan}}.
 #' 
-#' @section Turning shinystan objects into custom ShinyStan apps hosted online:
+#' @section Hosting your own ShinyStan apps online:
 #' 
 #' See \code{\link{deploy_shinystan}}.
 #'   
 #' @section Functions for manipulating shinystan objects:
 #' 
-#' 
-#' \code{\link{notes}} Add to or replace notes
+#' \code{\link{notes}} Add to or replace notes.
 #' 
 #' \code{\link{rename_model}} Change the model name.
 #' 
@@ -36,6 +35,9 @@
 #' of one or two existing parameters.
 #' 
 #' \code{\link{model_code}} Add or change model code.
+#' 
+#' \code{\link{update_sso}} Update a shinystan object created by an older version 
+#' of the package.
 #' 
 shinystan <- setClass("shinystan",
                       slots = list(model_name      = "character",

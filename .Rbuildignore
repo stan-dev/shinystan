@@ -5,3 +5,4 @@ LICENSE
 ^NEWS\.md$
 ^README\.md$
 .gitignore
+^cran-comments\.md$

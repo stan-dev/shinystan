@@ -1,4 +1,5 @@
 [![Travis-CI Build Status](https://travis-ci.org/stan-dev/shinystan.svg?branch=shinystan2)](https://travis-ci.org/stan-dev/shinystan)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/shinystan)](http://cran.r-project.org/web/packages/shinystan)
 
 # ShinyStan
 
@@ -20,15 +21,17 @@ MCMC simulations.
 
 ## About ShinyStan
 
-Most applied Bayesian data analysis requires employing a Markov chain Monte 
-Carlo (MCMC) algorithm to obtain samples from the posterior distributions of 
-the quantities of interest. Diagnosing convergence, checking the fit of the 
-model, and producing graphical and numerical summaries of the parameters of 
-interest is an essential but often laborious process that slows the down the 
-creative and exploratory process of model building. The shinystan package and 
-ShinyStan app are designed to facilitate this process in two primary ways:
+ShinyStan provides interactive Markov chain Monte Carlo (MCMC) diagnostics 
+and plots and tables helpful for analyzing a posterior sample. ShinyStan
+is powered by RStudio's Shiny web application framework and works with the 
+output of MCMC programs written in any programming language (and has extended 
+functionality for models fit using the rstan package and the No-U-Turn sampler). 
+A function is also provided that helps users deploy ShinyStan apps for their 
+models using RStudio's ShinyApps service. Each deployed ShinyStan app has a 
+unique URL and is compatible with Safari, Firefox, Chrome, and most 
+other browsers.  
 
-### Providing interactive visual model exploration
+### Diagnostics and posterior analysis
 
 ShinyStan provides immediate, informative, customizable visual and numerical 
 summaries of model parameters and convergence diagnostics for MCMC simulations.
