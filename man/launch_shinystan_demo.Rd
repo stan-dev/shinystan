@@ -4,11 +4,14 @@
 \alias{launch_shinystan_demo}
 \title{ShinyStan demo}
 \usage{
-launch_shinystan_demo(rstudio = FALSE, ...)
+launch_shinystan_demo(rstudio = getOption("shinystan.rstudio"), ...)
 }
 \arguments{
 \item{rstudio}{For RStudio users, should the app launch in RStudio's Viewer?
-The default (FALSE) is to launch the app in the default web browser.}
+The default is to launch the app in the user's default web browser instead
+of the RStudio viewer unless the user has set
+\code{options(shinystan.rstudio = TRUE)}, in which case the default is to
+launch in RStudio's Viewer.}
 
 \item{...}{Optional arguments to pass to \code{\link[shiny]{runApp}}.}
 }

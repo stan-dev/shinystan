@@ -29,7 +29,6 @@ function(input, output, session) {
     if (input$save_and_close_button > 0) 
       stopApp(object)
   })
-  
   # source all files from server_files directory and subdirectories
   files <- list.files("server_files", full.names = TRUE, recursive = TRUE)
   for (f in files) source(f, local = TRUE)
@@ -73,6 +72,5 @@ function(input, output, session) {
   })
   observeEvent(input$shinystan_citation_show,
                shinyjs::toggle(id = "citation_div", anim = TRUE, animType = "slide"))
-  
 } # End shinyServer
 

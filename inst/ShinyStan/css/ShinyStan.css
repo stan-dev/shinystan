@@ -5,6 +5,7 @@
 @import url('//fonts.googleapis.com/css?family=Volkhov:400,400italic,700,700italic');
 @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro);
 
+
 #save_and_close_button{
   position: absolute;
   top: 5px;
@@ -554,6 +555,7 @@ a:active { /* selected link */
   font-size: 11px;
   text-align: center;
   width: 80px;
+  white-space:nowrap;
 }
 
 /**************************************/

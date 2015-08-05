@@ -4,7 +4,7 @@
 \alias{launch_shinystan}
 \title{ShinyStan app}
 \usage{
-launch_shinystan(object, rstudio = FALSE, ...)
+launch_shinystan(object, rstudio = getOption("shinystan.rstudio"), ...)
 }
 \arguments{
 \item{object}{An object of class shinystan, stanfit, or
@@ -12,7 +12,10 @@ launch_shinystan(object, rstudio = FALSE, ...)
 objects to a shinystan object (sso).}
 
 \item{rstudio}{For RStudio users, should the app launch in RStudio's Viewer?
-The default (FALSE) is to launch the app in the default web browser.}
+The default is to launch the app in the user's default web browser instead
+of the RStudio viewer unless the user has set
+\code{options(shinystan.rstudio = TRUE)}, in which case the default is to
+launch in RStudio's Viewer.}
 
 \item{...}{Optional arguments to pass to \code{\link[shiny]{runApp}}.}
 }
@@ -33,6 +36,6 @@ X_sso <- launch_shinystan(as.shinystan(X, model_name = "Example"))
 }
 \seealso{
 \code{\link{as.shinystan}},
-  \code{\link{launch_shinystan_demo}}
+  \code{\link{launch_shinystan_demo}}, \code{\link{shinystan_options}}
 }
 
