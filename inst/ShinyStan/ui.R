@@ -19,9 +19,8 @@ for (h in helpers) source(h, local = TRUE)
 # load pp_check plot_names and plot_descriptions
 source("server_files/utilities/ppcheck_names_descriptions.R", local = TRUE)
 
-# give shinystan_object shorter name
-object <- shinystan_object
 
+object <- shinystan_temp_object
 corner_link <- HTML(paste0('<a href=',
                            shQuote(paste0("http://mc-stan.org",sep='')), 
                            '>', 'Stan', '</a>'))

@@ -35,17 +35,14 @@ coda_check <- function() {
 }
 
 cleanup_shinystan <- function() {
-  rm(list = "shinystan_object", envir = globalenv())
-}
-assign_shinystan <- function(X) {
-  assign("shinystan_object", X, inherits = TRUE)
+  rm(list = "shinystan_temp_object", envir = .GlobalEnv)
 }
 
 launch <- function(object, rstudio = FALSE, ...) {
   stopifnot(is.shinystan(object))
   launch.browser <- if (!rstudio) 
     TRUE else getOption("shiny.launch.browser", interactive())
-  assign_shinystan(object)
+  assign("shinystan_temp_object", object, inherits = TRUE)
   shiny::runApp(system.file("ShinyStan", package = "shinystan"), 
                 launch.browser = launch.browser, ...)
 }

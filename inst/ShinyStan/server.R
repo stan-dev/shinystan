@@ -27,7 +27,7 @@ function(input, output, session) {
   # Stop the app when "Quit" button is clicked
   observe({
     if (input$save_and_close_button > 0) 
-      stopApp(shinystan_object)
+      stopApp(object)
   })
   
   # source all files from server_files directory and subdirectories

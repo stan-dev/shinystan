@@ -1,15 +1,16 @@
 /* Also see shinyStan_datatables.css and shinyStan_dygraphs.css*/
 
-/* red color: #B2011D */
+/* red color: #B2001D */
 
 @import url('//fonts.googleapis.com/css?family=Volkhov:400,400italic,700,700italic');
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro);
 
 #save_and_close_button{
   position: absolute;
   top: 5px;
   left: 10px;
   background: white;
-  color: #B2011D;
+  color: #B2001D;
   padding: 3px;
   border: 1px solid black;
   font-size: 12px;
@@ -19,7 +20,7 @@
   background: black;
   color: white;
   font-weight: bolder;
-  border: 2px solid #B2011D;
+  border: 2px solid #B2001D;
 }
 
 #shinystan-title {
@@ -121,7 +122,8 @@ color: white;
 }
 
 .navbar .nav {
-  position: absolute;
+  z-index: 5;
+  position: relative;
   left: 200px;
   padding-right: 20px;
   padding-left: 20px;
@@ -133,15 +135,25 @@ color: white;
   font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
 
+#nav_toggle {
+  z-index: 20;
+  display: block;
+  vertical-align: top;
+  margin: 0;
+  padding: 6px 20px;
+  background-color: $black;
+  height: 44px;
+}
+
 .navbar .nav > .active > a {
   background: black;
-  color: #B2011D;
+  color: #B2001D;
 }
 .navbar .nav > .active > a:hover {
   background: black;
-  color: #B2011D;
+  color: #B2001D;
   border-radius: 3px 3px 3px 3px;
-  box-shadow: 0 0 1px #B2011D inset;
+  box-shadow: 0 0 1px #B2001D inset;
 }
 
 
@@ -151,7 +163,9 @@ color: white;
   line-height: 1.71429;
   display: inline-block;
   text-align:center; 
-  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+  /*font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; */
+  font-family: 'source-sans-pro', sans-serif;
+  text-transform: uppercase;
 }
 
 .navbar .nav li a{ 
@@ -163,7 +177,9 @@ color: white;
   margin-bottom: 0;
   padding: 7px;
   text-align: center;
-  text-transform: uppercase;
+  /*text-transform: uppercase;*/
+  font-family: 'source-sans-pro', sans-serif;
+  font-variant: small-caps;
 }
 
 /*
@@ -182,8 +198,10 @@ color: white;
 
 body {
   padding-top: 75px;
+  color: #222;
   /*font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
    font-weight: 300;*/
+  /*font-family: 'source-sans-pro', sans-serif;*/
 }
 
 /*links*/
@@ -194,7 +212,7 @@ a:visited { /* visited link */
     color: #006DCC;
 }
 a:hover { /* mouse over link */
-    color: #B2011D;
+    color: #B2001D;
 }
 a:active { /* selected link */
     color: #006DCC;
@@ -480,7 +498,8 @@ a:active { /* selected link */
   font-family: Verdana, Geneva, sans-serif; 
 }
 #user_model_code {
-  font-family: "Lucida Console", Monaco, monospace;
+  /*font-family: "Lucida Console", Monaco, monospace;*/
+  font-family: 'source-code-pro', monospace;
 }
 #user_model_info, #user_model_code {
   height: 400px;
@@ -509,7 +528,7 @@ a:active { /* selected link */
   filter: alpha(opacity=90);
   */
   outline: none;
-  border: 10px solid black;/*#B2011D; */
+  border: 10px solid black;/*#B2001D; */
   box-shadow: 0 0 10px black;
   font-size: 0.95em;
   -o-transform: scale(1.2);
@@ -528,7 +547,7 @@ a:active { /* selected link */
 }
 .save-close-reminder {
   background: white;
-  color: #B2011D;
+  color: #B2001D;
   padding: 3px;
   border: 1px solid black;
   border-radius: 3px;

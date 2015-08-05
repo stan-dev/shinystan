@@ -38,7 +38,7 @@ output$ui_about <- renderUI({
     strong(style = "font-size: 16px;", "Jonah Gabry and Stan Development Team"),
     div(class = "aoptions",
       actionLink(inputId = "shinystan_citation_show", 
-                 label = "Show/Hide citation")
+                 label = "Show Citation")
     ),
     p(style = "font-size: 12px; color: gray;", 
       a(style = "font-size: 15px;", "Stan Development Team", href="http://mc-stan.org/team/"), "(mc-stan.org)"),
@@ -55,6 +55,8 @@ url = {https://mc-stan.org}
     br(),
     h6("Additional contributors:"),
     helpText(style = "font-size: 12px;", htmlOutput("ui_credits")),
-    br()
+    br(),
+    h6("Logo:"),
+    helpText(style = "font-size: 12px;", "Michael Betancourt", br(), "with special thanks to Stephanie Mannhein for critical refinements. (CC-BY ND 4.0 license)")
   )
 })

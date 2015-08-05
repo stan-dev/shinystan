@@ -14,9 +14,8 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-
-# Extract the content of the shiny_stan_object slots
-object <- shinystan_object
+# Extract the contents of the shiny_stan_object slots
+object <- shinystan_temp_object
 model_name <- object@model_name
 samps_all <- object@samps_all
 sampler_params <- object@sampler_params
@@ -24,7 +23,6 @@ nIter <- object@nIter
 nChains <- object@nChains
 warmup_val <- object@nWarmup
 samps_post_warmup <- samps_all[(warmup_val + 1):nIter,, ,drop = FALSE]
-
 
 sampler_params_post_warmup <- 
   if (!is.list(sampler_params) | identical(sampler_params, list(NA))) 
@@ -38,9 +36,10 @@ sampler_params_post_warmup <-
         })
       }
 
-fit_summary <- object@summary
-table_stats <- cbind(fit_summary[, colnames(fit_summary) %in% c("Rhat", "n_eff")], 
-                     fit_summary[, !colnames(fit_summary) %in% c("Rhat", "n_eff")])
+table_stats <- fit_summary <- object@summary
+sel <- colnames(table_stats) %in% c("Rhat", "n_eff")
+table_stats <- cbind(table_stats[, sel], table_stats[, !sel])
+sel <- NULL
 table_stats[,"n_eff"] <- round(table_stats[,"n_eff"])
 
 param_names <- object@param_names

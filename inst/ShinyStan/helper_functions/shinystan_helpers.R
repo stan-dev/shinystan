@@ -33,11 +33,9 @@
   if (!("chains" %in% colnames(dat))) { # fixes for if there's only 1 chain:
     dat$chains <- "chain:1"
   }
-  
   dat$iterations <- x1:x2
-
-  if (chain != 0) dat <- subset(dat, chains == paste0("chain:",chain))
-
+  if (chain != 0) 
+    dat <- subset(dat, chains == paste0("chain:",chain))
   rect_xmin <- ifelse(rect == "Samples", Inf, -Inf)
   shading_rect <- annotate("rect", xmin = rect_xmin, xmax = warmup_val,
                            ymin = -Inf, ymax = Inf, fill = rect_color, alpha = rect_alpha)
@@ -50,7 +48,6 @@
   if(palette == "Gray") clrs <- scale_color_grey(name = lgnd_title)
   if(palette == "Brewer (spectral)") clrs <- scale_color_brewer(name = lgnd_title, palette = "Spectral")
   if(palette == "Rainbow") clrs <- scale_colour_manual(name = lgnd_title, values = rainbow(nclrs))
-
 
   lgnd_txt <- theme(legend.text = element_text(size = 13, face = "bold"))
   
@@ -78,7 +75,7 @@
   
   ttl <- "Histogram of Posterior Draws \n"
   if (transform_x != "x") {
-    t_x <- eval(parse(text = paste0("function(x) {", transform_x,"}")))
+    t_x <- function(x) eval(parse(text = transform_x))
     dat <- apply(dat, 2, t_x)
   }
   x_lab <- if (transform_x != "x") gsub("x", param, transform_x) else param
@@ -128,7 +125,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   
   ttl <- "Kernel Density Estimate \n"
   if (transform_x != "x") {
-    t_x <- eval(parse(text = paste0("function(x) {", transform_x,"}")))
+    t_x <- function(x) eval(parse(text = transform_x))
     dat <- apply(dat, 2, t_x)
   }
   x_lab <- if (transform_x != "x") gsub("x", param, transform_x) else param
@@ -569,18 +566,22 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   samps_use <- array(samps[,, params], c(nIter, nParams))
   colnames(samps_use) <- params
   
-  t_x <- eval(parse(text = paste("function(x)", transform_x)))
-  t_y <- eval(parse(text = paste("function(y)", transform_y)))
-  t_z <- eval(parse(text = paste("function(z)", transform_z)))
+  t_x <- function(x) eval(parse(text = transform_x))
+  t_y <- function(y) eval(parse(text = transform_y))
+  t_z <- function(y) eval(parse(text = transform_y))
   
-  if (transform_x != "x") samps_use[,1] <- t_x(samps_use[,1])
-  if (transform_y != "y") samps_use[,2] <- t_y(samps_use[,2])
-  if (transform_z != "z") samps_use[,3] <- t_z(samps_use[,3])
-  
-  if (transform_x != "x") colnames(samps_use)[1] <- gsub("x", params[1], transform_x) 
-  if (transform_y != "y") colnames(samps_use)[2] <- gsub("y", params[2], transform_y) 
-  if (transform_z != "z") colnames(samps_use)[3] <- gsub("z", params[3], transform_z) 
-  
+  if (transform_x != "x") {
+    samps_use[,1] <- t_x(samps_use[,1])
+    colnames(samps_use)[1] <- gsub("x", params[1], transform_x) 
+  }
+  if (transform_y != "y") {
+    samps_use[,2] <- t_y(samps_use[,2])
+    colnames(samps_use)[2] <- gsub("y", params[2], transform_y) 
+  }
+  if (transform_z != "z") {
+    samps_use[,3] <- t_z(samps_use[,3])
+    colnames(samps_use)[3] <- gsub("z", params[3], transform_z) 
+  }
   threejs::scatterplot3js(samps_use, size = pt_size, color = pt_color, 
                           grid = show_grid, flip.y = flip_y)
 }
@@ -617,8 +618,9 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   samps_use <- array(samps[,,params], c(nIter, nParams))
   colnames(samps_use) <- params
   
-  t_x <- eval(parse(text = paste("function(x)", transform_x)))
-  t_y <- eval(parse(text = paste("function(y)", transform_y)))
+  t_x <- eval(bquote(function(x) .(parse(text = transform_x)[[1]]))) 
+  # t_x <- function(x) eval(parse(text = transform_x))
+  t_y <- function(y) eval(parse(text = transform_y))
   x_lab <- if (transform_x != "x") gsub("x", param, transform_x) else param
   y_lab <- if (transform_y != "y") gsub("y", param2, transform_y) else param2
   param_labs <- labs(x = x_lab, y = y_lab)
