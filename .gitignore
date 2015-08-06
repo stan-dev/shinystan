@@ -16,3 +16,5 @@ inst/doc
 ^cran-comments\.md$
 
 cran-comments.md
+
+*.swf
