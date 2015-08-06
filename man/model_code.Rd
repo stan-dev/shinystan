@@ -2,31 +2,34 @@
 % Please edit documentation in R/model_code.R
 \name{model_code}
 \alias{model_code}
-\title{Add model code to a shinystan object}
+\title{Add model code to a shinystan object or see the code currently stored in
+a shinystan}
 \usage{
 model_code(sso, code)
 }
 \arguments{
 \item{sso}{A shinystan object.}
 
-\item{code}{The code you want to add. See \strong{Details} below for
+\item{code}{Optionally, the code you want to add. See \strong{Details} below for
 formatting instructions.}
 }
 \value{
-The shinystan object \code{sso} with \code{code} in the
-  \code{model_code} slot.
+If \code{code} is missing then any code currently stored in
+  \code{sso} is returned as a character string. If \code{code} is specified
+  then then any previous code is overwritten by the text in \code{code} and
+  an updated shinystan object is returned.
 }
 \description{
-Add model code to a shinystan object
+Add model code to a shinystan object or see the code currently stored in
+a shinystan
 }
 \details{
-\code{code} should be a character string that can be used as an
-  argument to \code{cat}. See \strong{Examples}, below.
+If \code{code} is specified it should be be a character string that
+  can be used as an argument to \code{cat}. See \strong{Examples}, below.
 }
 \note{
-This is intended for users who did not run their models using
-  \pkg{rstan}. For \pkg{rstan} users the model code will be automatically
-  available.
+For \pkg{rstan} users the model code will be automatically taken
+from the stanfit object.
 }
 \examples{
 \dontrun{
@@ -45,6 +48,9 @@ my_code <- "
 
 # Add the code to a shinystan object sso
 sso <- model_code(sso, my_code)
+
+# View the code currently stored in sso
+model_code(sso)
 
 }
 }

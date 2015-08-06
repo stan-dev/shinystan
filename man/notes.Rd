@@ -9,13 +9,19 @@ notes(sso, notes, replace = FALSE)
 \arguments{
 \item{sso}{shinystan object.}
 
-\item{notes}{A character vector of additional or replacement notes.}
+\item{notes}{Optional. A character vector of additional or replacement notes.}
 
 \item{replace}{If \code{TRUE} the existing notes are overwritten by
-\code{notes}. Otherwise the new notes are appended to the existing notes.}
+\code{notes} if \code{notes} is specified. If \code{FALSE} (the default)
+if \code{notes} is specified then its content is appended to the existing
+notes.}
 }
 \value{
-\code{sso}, updated. See Examples.
+If \code{notes} is missing then any existing notes stored in
+  \code{sso} are returned as a character string. If \code{notes} is specified
+  then an updated shinystan object is returned with either \code{notes} added
+  to the previous notes (if \code{replace=FALSE}) or overwritten by
+  \code{notes} (if \code{replace = TRUE}).
 }
 \description{
 Notes are viewable on ShinyStan's Notepad page
@@ -23,7 +29,10 @@ Notes are viewable on ShinyStan's Notepad page
 \examples{
 \dontrun{
 sso <- notes(sso, "new note")
-sso <- notes(sso, c("new note", "another new note"), replace = TRUE)
+sso <- notes(sso, c("a different note", "another note"), replace = TRUE)
+
+# See any notes currently in sso
+notes(sso)
 }
 }
 \seealso{
