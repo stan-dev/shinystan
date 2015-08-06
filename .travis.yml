@@ -2,11 +2,12 @@ language: r
 
 sudo: required
 
-warnings_are_errors: true
-r_check_force_suggests: false
-
 r_github_packages:
+  - stan-dev/rstan@develop/rstan/rstan
   - rstudio/shinyapps
+
+r_check_force_suggests: false
+warnings_are_errors: true
 
 notifications:
   email:
