@@ -306,14 +306,9 @@ tagList(
                                  uiOutput("ui_glossary")
                         )
                         
-             ) # End navbarMenu
-             
-             #              #### QUIT ####
-             #              tabPanel(strong(style = "color: #dadada; font-size: 12px;", "Save & Quit"), 
-             #                       value = "quit", icon = icon("close"),
-             #                       h1("Thanks for using ShinyStan."),
-             #                       br(),br(),
-             #                       h5("It's safe to close this browser window.")
-             #              )
+             ), # End navbarMenu
+             tabPanel("Gif",
+                      imageOutput("hamiltonian_gif")
+                      )
   ) # End navbarPage
 ) # End tagList

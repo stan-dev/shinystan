@@ -13,36 +13,51 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-#' ShinyStan
+#' The ShinyStan interface and shinystan R package
 #'
-#' @description Most applied Bayesian data analysis requires employing a Markov
-#'   chain Monte Carlo (MCMC) algorithm to obtain samples from the posterior 
-#'   distributions of the quantities of interest. Diagnosing convergence, 
-#'   checking the fit of the model, and producing graphical and numerical 
-#'   summaries of the parameters of interest is an important but often laborious
-#'   process that slows the down the creative and exploratory process of model
-#'   building. The ShinyStan app is designed to facilitate this process in two 
-#'   primary ways:
-#'   
-#' @section 1) Providing interactive visual model exploration and diagnostics: 
-#'   The ShinyStan app provides immediate, informative, customizable visual and 
-#'   numerical summaries of model parameters and convergence diagnostics for
-#'   MCMC simulations. Although some special features are only available for
-#'   users of the \pkg{rstan} package (the R interface to the Stan programming
-#'   language for Bayesian statistical inference), it can also easily be used to
-#'   explore the output from any other program (e.g. Jags, Bugs, SAS) or any
-#'   user-written MCMC algorithm.
-#'   
-#' @section 2) Making saving and sharing more convenient: The \pkg{shinystan} 
-#'   package allows you to store the basic components of an entire project 
-#'   (code, posterior samples, graphs, tables, notes) in a single object. Users 
-#'   can also save many of ShinyStan's plots as ggplot2 objects for further
-#'   customization and easy integration in reports or post-processing for
-#'   publication.
+#' @description Applied Bayesian data analysis is primarily implemented through 
+#'   the MCMC algorithms offered by various software packages. When analyzing a 
+#'   posterior sample obtained by one of these algorithms the first step is to 
+#'   check for signs that the chains have converged to the target distribution 
+#'   and and also for signs that the algorithm might require tuning or might be 
+#'   ill-suited for the given model. There may also be theoretical problems or 
+#'   practical inefficiencies with the specification of the model. ShinyStan
+#'   provides interactive plots and tables helpful for analyzing a posterior
+#'   sample, with particular attention to identifying potential problems with
+#'   the performance of the MCMC algorithm or the specification of the model. 
+#'   ShinyStan is powered by RStudio's Shiny web application framework and works
+#'   with the output of MCMC programs written in any programming language (and
+#'   has extended functionality for models fit using the rstan package and the
+#'   No-U-Turn sampler).
 #' 
-#' @note Check out the demo by running 
-#'   \code{\link{launch_shinystan_demo}} or try it with one of your
-#'   own models using \code{\link{launch_shinystan}}.
+#' @section ShinyStan has extended functionality for Stan models:
+#'   
+#'   Stan (\url{http://mc-stan.org}) models can be run in R using the
+#'   \pkg{rstan} package.
+#' 
+#' @section Saving and sharing:
+#'   
+#'   The shinystan package allows you to store the basic components of an entire
+#'   project (code, posterior samples, graphs, tables, notes) in a single 
+#'   object. Users can save many of the plots as ggplot2 objects for further 
+#'   customization and easy integration in reports or post-processing for 
+#'   publication.
+#'   
+#'   The new version of shinystan also provides the `deploy_shinystan` function,
+#'   which lets you easily deploy your own ShinyStan apps online using RStudio's
+#'   ShinyApps (\url{https://www.shinyapps.io}) service for any of your models. 
+#'   Each of your apps (each of your models) will have a unique url and is 
+#'   compatible with Safari, Firefox, Chrome, and most other browsers.
+#' 
+#' @section License: 
+#' 
+#'  The shinystan package is open source licensed under the GNU Public License,
+#'  version 3 (GPLv3).
+#' 
+#' @section Demo: 
+#' 
+#'  Check out the demo using \code{\link{launch_shinystan_demo}} or try it with
+#'  one of your own models using \code{\link{launch_shinystan}}.
 #'    
 #' @import ggplot2
 #' @import methods
