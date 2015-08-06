@@ -57,6 +57,11 @@ url = {https://mc-stan.org}
     helpText(style = "font-size: 12px;", htmlOutput("ui_credits")),
     br(),
     h6("Logo:"),
-    helpText(style = "font-size: 12px;", "Michael Betancourt", br(), "with special thanks to Stephanie Mannhein for critical refinements. (CC-BY ND 4.0 license)")
+    helpText(style = "font-size: 12px;", "Michael Betancourt", br(), "with special thanks to Stephanie Mannhein for critical refinements. (CC-BY ND 4.0 license)"),
+    br(),
+    h6("Shiny:"),
+    helpText(style = "font-size: 12px;", "ShinyStan is powered by the", 
+             a(href = "http://shiny.rstudio.com", 
+               "Shiny web application framework (RStudio)"))
   )
 })

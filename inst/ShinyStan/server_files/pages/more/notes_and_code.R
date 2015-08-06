@@ -1,3 +1,7 @@
+# output$hamiltonian_gif <- renderImage({
+#   list(src="www/ham-sim-stepsize-ok.gif")
+# }, deleteFile = FALSE)
+
 output$user_text_saved <- renderText({
   if (input$save_user_model_info > 0) {
     paste("Saved", format(Sys.time(), "%a %b %d %Y %X"))

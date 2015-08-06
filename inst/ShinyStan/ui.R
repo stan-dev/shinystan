@@ -24,7 +24,7 @@ object <- shinystan_temp_object
 corner_link <- HTML(paste0('<a href=',
                            shQuote(paste0("http://mc-stan.org",sep='')), 
                            '>', 'Stan', '</a>'))
-save_and_quit <- tags$button(
+save_and_close <- tags$button(
   id = 'save_and_close_button',
   type = "button",
   class = "btn action-button",
@@ -38,44 +38,28 @@ tagList(
   includeCSS("css/ShinyStan.css"),
   # includeCSS("css/ShinyStan_datatables.css"),
   includeCSS("css/ShinyStan_dygraphs.css"),
-  navbarPage(save_and_quit, id = "nav", #title = NULL,
+  navbarPage(save_and_close, id = "nav", #title = NULL,
              windowTitle = "ShinyStan", collapsible = TRUE, 
              inverse = FALSE, position = "fixed-top",
              theme = shinythemes::shinytheme("flatly"),
              
              tabPanel(title = strong(style = "color: #B2011D;", "ShinyStan"),
-                      div(id = "logos",
-                          div(
-                            id = "logo2",
-                            img(src = "wide_ensemble.png", class = "wide-ensemble", 
-                                width = "100%")
-                          ),
-                          div(id = "logo1", 
-                              img(src = "stan_logo.png", class = "stan-logo")),
-                          div(id = "shinystan-title", "ShinyStan")
-                      ),
+                      logo_and_name(),
                       div(class = "home-links",
-                          div(id = "model-name", 
+                          div(id = "model-name",
+                              br(),
                               h2(paste("Model")),
                               h4(object@model_name)
-                          ),
-                          br(),
-                          div(id = "home-links-links",
-#                               splitLayout(
-#                                 id = "home-links-links",
-#                                 style = "background: black; border: 5px solid black; border-radius: 10px;",
-#                                 cellWidths = 200,
-#                                 # cellArgs = list(style = "padding: 6px"),
-#                                 h3(toc_entry("Diagnose")),
-#                                 h3(toc_entry("Estimate")),
-#                                 h3(toc_entry("Explore"))
-#                               )
-                              h3(toc_entry("Diagnose")),
-                              h3(toc_entry("Estimate")),
-                              h3(toc_entry("Explore"))
                           )
-                          # div(toc_entry("Code"), toc_entry("Help"), toc_entry("About"), toc_entry("Quit"))
-                      )
+                          
+                          #                           div(id = "links_nav", class = "cl-effect-9",
+                          #                               h3(toc_entry("Diagnose")),
+                          #                               h3(toc_entry("Estimate")),
+                          #                               h3(toc_entry("Explore"))
+                          #                           )
+                      ),
+                      br(),br(),br(),br(),
+                      includeHTML("html/home_page_links.html")
              ),
              
              
@@ -281,18 +265,10 @@ tagList(
                         
                         #### PAGE: About ####
                         tabPanel(title = "About", 
-                                 div(id = "logos",
-                                     div(
-                                       id = "logo2",
-                                       img(src = "wide_ensemble.png", class = "wide-ensemble", width = "100%")
-                                     ),
-                                     div(id = "logo1", 
-                                         img(src = "stan_logo.png", class = "stan-logo")),
-                                     div(id = "shinystan-title", "ShinyStan"),
-                                     br(),br(),br(),br(),
-                                     uiOutput("ui_about")   
-                                 )
-                                 ), 
+                                 logo_and_name(),
+                                 div(style = "margin-top: 75px;",
+                                   uiOutput("ui_about"))
+                        ), 
                         
                         #### PAGE: Help ####
                         tabPanel(title = "Help",
@@ -306,9 +282,7 @@ tagList(
                                  uiOutput("ui_glossary")
                         )
                         
-             ), # End navbarMenu
-             tabPanel("Gif",
-                      imageOutput("hamiltonian_gif")
-                      )
+             ) # End navbarMenu
+
   ) # End navbarPage
 ) # End tagList

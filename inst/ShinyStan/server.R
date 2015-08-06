@@ -55,6 +55,8 @@ function(input, output, session) {
                      updateTabsetPanel(session, "nav", selected = "Diagnose"))
     shinyjs::onclick("toc_explore", 
                      updateTabsetPanel(session, "nav", selected = "Explore"))
+    shinyjs::onclick("toc_more", 
+                     updateTabsetPanel(session, "nav", selected = "Model Code"))
     shinyjs::onclick("open_glossary_from_table",
                      updateTabsetPanel(session, "nav", selected = "Help"))
     shinyjs::onclick("open_glossary_from_nuts_table", 

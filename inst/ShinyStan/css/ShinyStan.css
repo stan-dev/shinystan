@@ -1,10 +1,33 @@
 /* Also see shinyStan_datatables.css and shinyStan_dygraphs.css*/
 
-/* red color: #B2001D */
+/* red color: #B2001D 
+
+dark red color: #590815
+
+more red colors:
+#FCFAFA (Lightest)
+#F5ECEC
+#EBDADA
+#DCBCBC
+#C79999
+#B97C7C
+#A25050
+#8F2727
+#7C0000 (Darkest)
+
+complimentary accent colors
+#6B8E8E (Light Teal)
+#487575 (Mid Teal)
+#1D4F4F (Dark Teal)
+
+#CBDDA6 (Light Olive)
+#9FB670 (Mid Olive)
+#617B2D (Dark Olive)
+
+*/
 
 @import url('//fonts.googleapis.com/css?family=Volkhov:400,400italic,700,700italic');
 @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro);
-
 
 #save_and_close_button{
   position: absolute;
@@ -35,9 +58,14 @@
     font-style: italic;
     font-weight: 400;
     letter-spacing: -3px;
-    margin-top: 100px;
+    text-shadow:
+    -1px -1px 0 #fff,
+    1px -1px 0 #fff,
+    -1px 1px 0 #fff,
+    1px 1px 0 #fff; 
 }
 #model-name {
+  text-align: center;
   padding-top: 10px;
 }
 .wide-ensemble {
@@ -47,8 +75,9 @@
 	margin:  20px 0 0;
 	width: 100%;
 }
+
 .stan-logo {
-  z-index: 1;
+  z-index: 5;
   position: relative;
   /*width: 15%;*/
   display: block;
@@ -116,7 +145,6 @@ color: white;
   border-top: 5px solid black;
 }
 
-
 .navbar-brand {
   background: transparent;
   /*border-radius: 0 0 0 10px;*/
@@ -124,8 +152,7 @@ color: white;
 
 .navbar .nav {
   z-index: 5;
-  position: relative;
-  left: 200px;
+  text-align: center;
   padding-right: 20px;
   padding-left: 20px;
   border-radius: 0 0 10px 10px;
@@ -136,13 +163,14 @@ color: white;
   font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
 
+
 #nav_toggle {
   z-index: 20;
   display: block;
   vertical-align: top;
   margin: 0;
   padding: 6px 20px;
-  background-color: $black;
+  background-color: black;
   height: 44px;
 }
 
@@ -157,7 +185,6 @@ color: white;
   box-shadow: 0 0 1px #B2001D inset;
 }
 
-
 .navbar .nav li {
   padding-top: 7px;
   color: #ffffff;
@@ -171,16 +198,10 @@ color: white;
 
 .navbar .nav li a{ 
   transition-delay: 0.1s;
-  background-color: black;
-  color: #ffffff;
   font-weight: lighter;
-  line-height: 1.71429;
   margin-bottom: 0;
   padding: 7px;
-  text-align: center;
-  /*text-transform: uppercase;*/
-  font-family: 'source-sans-pro', sans-serif;
-  font-variant: small-caps;
+  
 }
 
 /*
@@ -194,6 +215,8 @@ color: white;
   border-radius: 3px 3px 3px 3px;
   box-shadow: 0 0 1px #ffffff inset;
 }
+
+
 /***********************/
 
 
@@ -272,28 +295,9 @@ a:active { /* selected link */
   padding-bottom: 0;
 }
 
-.panel-body {
-  background-color: #222222; 
-}
-
 .table .alignRight {
   text-align:right;
 }
-
-.modal-header {
-  background-color: #222222;
-  color: #f9dd67;
-}
-
-.popover-title {
-    font-size: 12px;
-}
-/*
-.popover-content {
-    background-color: #006dcc;
-    border-radius: 3px;
-}
-*/
 
 /**************************************/
 /* text boxes for transformations */
@@ -311,31 +315,6 @@ a:active { /* selected link */
   /*#multitrace_plot_out.recalculating*/
   opacity: 1.0; 
 }
-/**************************************/
-
-/**************************************/
-/* plot hover shadow */
-.plot_hover_shadow:hover { 
-  -moz-box-shadow: 0 0 10px #84afd3; 
-  -webkit-box-shadow: 0 0 10px #84afd3; 
-  box-shadow: 0 0 10px #84afd3; 
-} 
-
-/*#multitrace_plot_out:hover*/
-#autocorr_plot_out:hover, #multiview_density:hover, #multiview_autocorr:hover, #mcse_over_sd_plot_out:hover, #n_eff_plot_out:hover, #rhat_plot_out:hover, #hist_plot_out:hover, #density_plot_out:hover, #bivariate_plot_out:hover, #sampler_plot_treedepth_out:hover, #sampler_plot_treedepth0_out:hover, #sampler_plot_treedepth1_out:hover, #sampler_plot_divergent_out:hover { 
-  
-  -moz-box-shadow: 0 0 10px #84afd3; 
-  -webkit-box-shadow: 0 0 10px #84afd3; 
-  box-shadow: 0 0 10px #84afd3; 
-} 
-
-/* plot hover shadow for pp_check plots */
-#pp_y_vs_avg_rep_out:hover, #pp_avg_rep_vs_avg_resid_rep_out:hover, #pp_hist_resids_out:hover, #pp_hists_test_statistics_max_out:hover, #pp_hists_test_statistics_min_out:hover, #pp_hists_test_statistics_mean_out:hover, #pp_hists_test_statistics_sd_out:hover, #pp_dens_rep_vs_obs_out:hover, #pp_hists_rep_vs_obs_out:hover { 
-  
-  -moz-box-shadow: 0 0 10px #84afd3; 
-  -webkit-box-shadow: 0 0 10px #84afd3; 
-  box-shadow: 0 0 10px #84afd3; 
-} 
 /**************************************/
 
 /*******************/
@@ -365,21 +344,21 @@ a:active { /* selected link */
         height: 8px;
     }
 
-.irs-bar {
+  .irs-bar {
     height: 8px; top: 25px;
     border-top: 1px solid #006dcc;
     border-bottom: 1px solid #006dcc;
     background: #006dcc;
-}
-    .irs-bar-edge {
-        height: 8px; top: 25px;
-        width: 14px;
-        border: 1px solid #006dcc;
-        border-right: 0;
-        background: #006dcc;
-        -moz-border-radius: 16px 0 0 16px;
-        border-radius: 16px 0 0 16px;
-    }
+  }
+  .irs-bar-edge {
+    height: 8px; top: 25px;
+    width: 14px;
+    border: 1px solid #006dcc;
+    border-right: 0;
+    background: #006dcc;
+    -moz-border-radius: 16px 0 0 16px;
+    border-radius: 16px 0 0 16px;
+  }
 
 .irs-shadow {
     height: 2px; top: 38px;
@@ -485,6 +464,8 @@ a:active { /* selected link */
   background-color: #f1f0ec;
 }
 
+
+
 #shinystan_citation {
   color: black;
   cursor: move;
@@ -558,51 +539,121 @@ a:active { /* selected link */
   white-space:nowrap;
 }
 
+
+
+
+
 /**************************************/
 
-/**************************************
- * Hover.css (http://ianlunn.github.io/Hover/)
- * Version: 2.0.2
- * Author: Ian Lunn @IanLunn
- * Author URL: http://ianlunn.co.uk/
- * Github: https://github.com/IanLunn/Hover
- * Made available under a MIT License:
- * Hover.css Copyright Ian Lunn 2014. Generated with Sass.
-***************************************/
-.hvr-grow {
-  display: inline-block;
-  vertical-align: middle;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-transition-duration: 0.3s;
-  transition-duration: 0.3s;
-  -webkit-transition-property: transform;
-  transition-property: transform;
-}
-.hvr-grow:hover, .hvr-grow:focus, .hvr-grow:active {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
+#links_nav_div {
+  text-align: center;
 }
 
-/* Glow */
-.hvr-glow {
-  display: inline-block;
-  vertical-align: middle;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-transition-duration: 0.3s;
-  transition-duration: 0.3s;
-  -webkit-transition-property: box-shadow;
-  transition-property: box-shadow;
+#links_nav a {
+	position: relative;
+	display: inline-block;
+	outline: none;
+	text-decoration: none;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	font-weight: 400;
+	text-shadow: 0 0 1px rgba(255,255,255,0.3);
+	font-size: 1.35em;
+	color: #590815;
+	text-align: left;
 }
-.hvr-glow:hover, .hvr-glow:focus, .hvr-glow:active {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+
+#links_nav a:hover,
+#links_nav a:focus {
+	outline: none;
+}
+
+/* Effect 9: second text and borders */
+.cl-effect-9 a {
+	margin: 0 0px;
+	padding: 8px 10px;
+}
+
+.cl-effect-9 a::before,
+.cl-effect-9 a::after {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 1px;
+	background: #fff;
+	content: '';
+	opacity: 0.2;
+	-webkit-transition: opacity 0.3s, height 0.3s;
+	-moz-transition: opacity 0.3s, height 0.3s;
+	transition: opacity 0.3s, height 0.3s;
+}
+
+.cl-effect-9 a::after {
+	top: 100%;
+	opacity: 0;
+	-webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
+	-moz-transition: -moz-transform 0.3s, opacity 0.3s;
+	-o-transition: -o-transform 0.3s, opacity 0.3s;
+	transition: transform 0.3s, opacity 0.3s;
+	-webkit-transform: translateY(-10px);
+	-moz-transform: translateY(-10px);
+	-ms-transform: translateY(-10px);
+	-o-transform: translateY(-10px);
+	transform: translateY(-10px);
+}
+
+.cl-effect-9 a span:first-child {
+	z-index: 2;
+	display: block;
+	font-weight: 300;
+}
+
+.cl-effect-9 a span:last-child {
+	z-index: 1;
+	display: block;
+	padding: 8px 0 0 0;
+	color: rgba(0,0,0,0.4);
+	text-shadow: none;
+	text-transform: none;
+	font-style: italic;
+	font-size: 0.75em;
+	font-family: 'source-sans-pro', sans-serif;
+	opacity: 0;
+	-webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
+	-moz-transition: -moz-transform 0.3s, opacity 0.3s;
+	-o-transition: -o-transform 0.3s, opacity 0.3s;
+	transition: transform 0.3s, opacity 0.3s;
+	-webkit-transform: translateY(-100%);
+	-moz-transform: translateY(-100%);
+	-ms-transform: translateY(-100%);
+	-o-transform: translateY(-100%);
+	transform: translateY(-100%);
+}
+
+.cl-effect-9 a:hover::before,
+.cl-effect-9 a:focus::before {
+	height: 6px;
+}
+
+.cl-effect-9 a:hover::before,
+.cl-effect-9 a:hover::after,
+.cl-effect-9 a:focus::before,
+.cl-effect-9 a:focus::after {
+	opacity: 1;
+	-webkit-transform: translateY(0px);
+	-moz-transform: translateY(0px);
+	-ms-transform: translateY(0px);
+	-o-transform: translateY(0px);
+	transform: translateY(0px);
+}
+
+.cl-effect-9 a:hover span:last-child,
+.cl-effect-9 a:focus span:last-child {
+	opacity: 1;
+	-webkit-transform: translateY(0%);
+	-moz-transform: translateY(0%);
+	-ms-transform: translateY(0%);
+	-o-transform: translateY(0%);
+	transform: translateY(0%);
 }

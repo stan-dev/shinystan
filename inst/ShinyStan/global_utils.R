@@ -1,3 +1,13 @@
+logo_and_name <- function() {
+  div(
+      div(img(src = "wide_ensemble.png", 
+              class = "wide-ensemble", width = "100%")),
+      div(style = "margin-top: 25px",
+          img(src = "stan_logo.png", class = "stan-logo"),
+          div(id = "shinystan-title", "ShinyStan"))
+  )
+}
+
 save_and_close_reminder <- function(id) {
   helpText(id = id,
            p("In order to make sure the changes aren't lost use the",
