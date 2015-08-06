@@ -14,19 +14,21 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-#' Add model code to a shinystan object
+#' Add model code to a shinystan object or see the code currently stored in 
+#' a shinystan
 #'
 #' @param sso A shinystan object.
-#' @param code The code you want to add. See \strong{Details} below for 
+#' @param code Optionally, the code you want to add. See \strong{Details} below for 
 #'   formatting instructions.
-#' @return The shinystan object \code{sso} with \code{code} in the 
-#'   \code{model_code} slot.
+#' @return If \code{code} is missing then any code currently stored in
+#'   \code{sso} is returned as a character string. If \code{code} is specified
+#'   then then any previous code is overwritten by the text in \code{code} and
+#'   an updated shinystan object is returned.
 #'   
-#' @details \code{code} should be a character string that can be used as an
-#'   argument to \code{cat}. See \strong{Examples}, below.
-#' @note This is intended for users who did not run their models using
-#'   \pkg{rstan}. For \pkg{rstan} users the model code will be automatically
-#'   available.
+#' @details If \code{code} is specified it should be be a character string that
+#'   can be used as an argument to \code{cat}. See \strong{Examples}, below.
+#' @note For \pkg{rstan} users the model code will be automatically taken
+#' from the stanfit object. 
 #' 
 #' @seealso \code{cat}
 #' @export
@@ -48,17 +50,22 @@
 #' 
 #' # Add the code to a shinystan object sso
 #' sso <- model_code(sso, my_code)
+#' 
+#' # View the code currently stored in sso
+#' model_code(sso)
 #'
 #'}
 
 model_code <- function(sso, code) {
   sso_check(sso)
+  if (missing(code)) {
+    return(slot(sso, "model_code"))
+  } 
+  
   if (!is.character(code)) 
     stop("'code' should be a character string.")
-  sso@model_code <- code
-  message(
-    paste0("Successfully added code.", "\nYou can view the added code in the", 
-           "ShinyStan GUI on the 'Model Code' page.")
-  )
+  slot(sso, "model_code") <- code
+  message(paste0("Successfully added code.", "\nYou can view the code in the", 
+                 "ShinyStan GUI on the 'Model Code' page."))
   sso
 }

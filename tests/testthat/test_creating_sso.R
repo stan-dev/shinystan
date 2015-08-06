@@ -1,6 +1,6 @@
 library(shinystan)
 
-context("creating shinystan objects")
+context("Creating sso")
 
 array_test1 <- array(rnorm(300), dim = c(25, 4, 3))
 array_test2 <- array(rnorm(300), dim = c(100, 3))
