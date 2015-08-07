@@ -34,6 +34,8 @@ save_and_close <- tags$button(
 # Begin shinyUI -----------------------------------------------------------
 # _________________________________________________________________________
 tagList(
+  tags$noscript(style = "color: orange; font-size: 30px; text-align: center;", 
+                "Please enable JavaScript to use ShinyStan."),
   shinyjs::useShinyjs(),
   includeCSS("css/ShinyStan.css"),
   # includeCSS("css/ShinyStan_datatables.css"),
