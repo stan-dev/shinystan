@@ -38,11 +38,11 @@ output$ui_triviariate_customize <- renderUI({
           class = "optionswell",
           hr(class = "hroptions"),
           strongBig("Transformation"),
-          transform_helpText("y,z"),
+          transform_helpText("x,y,z"),
           fluidRow(
-            column(3, textInput("trivariate_transform_x", label = NULL, value = "x")),
-            column(3, textInput("trivariate_transform_y", label = NULL, value = "y")),
-            column(3, textInput("trivariate_transform_z", label = NULL, value = "z")),
+            column(3, transformation_selectInput("trivariate_transform_x")),
+            column(3, transformation_selectInput("trivariate_transform_y")),
+            column(3, transformation_selectInput("trivariate_transform_z")),
             column(2, actionButton("trivariate_transform_go", label = "Transform"))
           ),
           hr(class = "hroptions"),

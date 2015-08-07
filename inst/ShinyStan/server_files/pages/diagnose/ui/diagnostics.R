@@ -76,7 +76,7 @@ output$ui_diagnostics_customize <- renderUI({
         choices = .make_param_list(object), 
         selected = .make_param_list(object)[1]))),
       column(3, conditionalPanel_parameter(
-        textInput("diagnostic_param_transform", label = NULL, value = "x")
+        transformation_selectInput("diagnostic_param_transform")
         )),
       column(2, conditionalPanel_parameter(
         actionButton("diagnostic_param_transform_go", "Transform")))

@@ -47,10 +47,10 @@ output$ui_bivariate_customize <- renderUI({
           class = "optionswell",
           hr(class = "hroptions"),
           strongBig("Transformation"),
-          transform_helpText("y"),
+          transform_helpText("x,y"),
           fluidRow(
-            column(3, textInput("bivariate_transform_x", label = NULL, value = "x")),
-            column(3, textInput("bivariate_transform_y", label = NULL, value = "y")),
+            column(3, transformation_selectInput("bivariate_transform_x")),
+            column(3, transformation_selectInput("bivariate_transform_y")),
             column(2, actionButton("bivariate_transform_go", label = "Transform"))
           ),
           hr(class = "hroptions"),

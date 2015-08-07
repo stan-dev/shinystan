@@ -69,16 +69,18 @@
 # param_hist --------------------------------------------------------------
 # histogram for a single parameter
 .param_hist <- function(param, dat, chain, binwd,
-                        transform_x = "x",
+                        transform_x = "identity",
                         fill_color = "gray20", line_color = "gray35",
                         title = TRUE) {
   
   ttl <- "Histogram of Posterior Draws \n"
-  if (transform_x != "x") {
-    t_x <- function(x) eval(parse(text = transform_x))
+  if (transform_x != "identity") {
+    t_x <- get(transform_x)
     dat <- apply(dat, 2, t_x)
   }
-  x_lab <- if (transform_x != "x") gsub("x", param, transform_x) else param
+  x_lab <- if (transform_x != "identity") 
+    paste0(transform_x, "(", param, ")") else param
+  
   dat <- reshape2::melt(dat)
   if (!("chains" %in% colnames(dat))) { # fixes for if there's only 1 chain:
     dat$chains <- "chain:1"
@@ -120,15 +122,16 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                         xzoom = FALSE, x_lim = NULL,
                         chain_split = FALSE,
                         title = TRUE,
-                        transform_x = "x",
+                        transform_x = "identity",
                         prior_fam = "None", prior_params) {
   
   ttl <- "Kernel Density Estimate \n"
-  if (transform_x != "x") {
-    t_x <- function(x) eval(parse(text = transform_x))
+  if (transform_x != "identity") {
+    t_x <- get(transform_x)
     dat <- apply(dat, 2, t_x)
   }
-  x_lab <- if (transform_x != "x") gsub("x", param, transform_x) else param
+  x_lab <- if (transform_x != "identity") 
+    paste0(transform_x, "(", param, ")") else param
   
   dat <- reshape2::melt(dat)
   if (!("chains" %in% colnames(dat))) { # fixes for if there's only 1 chain:
@@ -557,7 +560,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
 
 # trivariate_plot ---------------------------------------------------------
 .param_trivariate <- function(samps, params, 
-                              transform_x = "x", transform_y = "y", transform_z = "z",
+                              transform_x = "identity", transform_y = "identity", 
+                              transform_z = "identity",
                               pt_size = 1, pt_color = "gray35", show_grid = TRUE, 
                               flip_y = TRUE) {
   nParams <- 3
@@ -566,21 +570,21 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   samps_use <- array(samps[,, params], c(nIter, nParams))
   colnames(samps_use) <- params
   
-  t_x <- function(x) eval(parse(text = transform_x))
-  t_y <- function(y) eval(parse(text = transform_y))
-  t_z <- function(y) eval(parse(text = transform_y))
-  
-  if (transform_x != "x") {
+  t_x <- get(transform_x)
+  t_y <- get(transform_y)
+  t_z <- get(transform_z)
+
+  if (transform_x != "identity") {
     samps_use[,1] <- t_x(samps_use[,1])
-    colnames(samps_use)[1] <- gsub("x", params[1], transform_x) 
+    colnames(samps_use)[1] <- paste0(transform_x, "(", params[1], ")")
   }
-  if (transform_y != "y") {
+  if (transform_y != "identity") {
     samps_use[,2] <- t_y(samps_use[,2])
-    colnames(samps_use)[2] <- gsub("y", params[2], transform_y) 
+    colnames(samps_use)[2] <- paste0(transform_y, "(", params[2], ")")
   }
-  if (transform_z != "z") {
+  if (transform_z != "identity") {
     samps_use[,3] <- t_z(samps_use[,3])
-    colnames(samps_use)[3] <- gsub("z", params[3], transform_z) 
+    colnames(samps_use)[3] <- paste0(transform_z, "(", params[3], ")")
   }
   threejs::scatterplot3js(samps_use, size = pt_size, color = pt_color, 
                           grid = show_grid, flip.y = flip_y)
@@ -603,8 +607,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                             lines_color = "gray",
                             lines_alpha,
                             points = TRUE,
-                            transform_x = "x",
-                            transform_y = "y"
+                            transform_x = "identity",
+                            transform_y = "identity"
 ){
 
   shape_translator <- function(x) {
@@ -618,14 +622,20 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   samps_use <- array(samps[,,params], c(nIter, nParams))
   colnames(samps_use) <- params
   
-  t_x <- eval(bquote(function(x) .(parse(text = transform_x)[[1]]))) 
+  t_x <- get(transform_x)
   # t_x <- function(x) eval(parse(text = transform_x))
-  t_y <- function(y) eval(parse(text = transform_y))
-  x_lab <- if (transform_x != "x") gsub("x", param, transform_x) else param
-  y_lab <- if (transform_y != "y") gsub("y", param2, transform_y) else param2
+  t_y <- get(transform_y)
+  x_lab <- if (transform_x != "identity") 
+    paste0(transform_x, "(", param, ")") else param
+  y_lab <- if (transform_y != "identity") 
+    paste0(transform_y, "(", param2, ")") else param2
   param_labs <- labs(x = x_lab, y = y_lab)
   
-  dat <- data.frame(x = t_x(samps_use[,param]), y = t_y(samps_use[,param2]))
+  dat <- data.frame(
+    x = if (transform_x == "identity") 
+      samps_use[,param] else t_x(samps_use[,param]), 
+    y = if (transform_y == "identity") 
+      samps_use[,param2] else t_y(samps_use[,param2]))
   if (!is.null(sp)) {
     dat$divergent <- c(sapply(sp, FUN = function(y) y[, "n_divergent__"]))
     dat$hit_max_td <- if (is.null(max_td)) 0 else 

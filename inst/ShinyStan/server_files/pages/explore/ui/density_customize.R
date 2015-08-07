@@ -36,9 +36,9 @@ output$ui_density_customize <- renderUI({
           class = "optionswell",
           hr(class = "hroptions"),
           strongBig("Transformation"),
-          transform_helpText(),
+          transform_helpText("x"),
           fluidRow(
-            column(4, textInput("dens_transform_x", label = NULL, value = "x")),
+            column(4, transformation_selectInput("dens_transform_x")),
             column(2, actionButton("dens_transform_x_go", label = "Transform"))
           ),
           hr(class = "hroptions"),

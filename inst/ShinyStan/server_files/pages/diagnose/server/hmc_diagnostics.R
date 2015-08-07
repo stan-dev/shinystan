@@ -279,10 +279,10 @@ dynamic_trace_diagnostic_parameter <- reactive({
   transform_x <- diagnostic_param_transform()
   samps <- samps_post_warmup[,, param]
   lab <- param
-  if (transform_x != "x") {
-    t_x <- eval(parse(text = paste("function(x)", transform_x)))
+  if (transform_x != "identity") {
+    t_x <- get(transform_x)
     samps <- t_x(samps)
-    lab <- gsub("x", param, transform_x) 
+    lab <- paste0(transform_x, "(", param, ")")
   }
   stack <- FALSE  
   do.call(".dynamic_trace_diagnostics", args = list(
@@ -304,10 +304,10 @@ param_vs_lp <- reactive({
   td <- treedepth_pw()[if (!is.null(sel)) sel, -1L]
   hit_max_td <- apply(td, 2L, function(y) as.numeric(y == MISC$max_td))
   lab <- param
-  if (transform_x != "x") {
-    t_x <- eval(parse(text = paste("function(x)", transform_x)))
+  if (transform_x != "identity") {
+    t_x <- get(transform_x)
     samps <- t_x(samps)
-    lab <- gsub("x", param, transform_x)
+    lab <- paste0(transform_x, "(", param, ")")
   }
   samps <- as.data.frame(samps)
   .sampler_param_vs_param(p = lp, sp = samps, divergent = divergent, 
@@ -326,10 +326,10 @@ param_vs_accept_stat <- reactive({
   td <- treedepth_pw()[if (!is.null(sel)) sel, -1L]
   hit_max_td <- apply(td, 2L, function(y) as.numeric(y == MISC$max_td))
   lab <- param
-  if (transform_x != "x") {
-    t_x <- eval(parse(text = paste("function(x)", transform_x)))
+  if (transform_x != "identity") {
+    t_x <- get(transform_x)
     samps <- t_x(samps)
-    lab <- gsub("x", param, transform_x) 
+    lab <- paste0(transform_x, "(", param, ")")
   }
   graph <- .sampler_param_vs_param(p = samps, sp = metrop,
                                    divergent = divergent, 
@@ -346,10 +346,10 @@ param_vs_stepsize <- reactive({
   transform_x <- diagnostic_param_transform()
   samps <- samps_post_warmup[if (!is.null(sel)) sel,, param]
   lab <- param
-  if (transform_x != "x") {
-    t_x <- eval(parse(text = paste("function(x)", transform_x)))
+  if (transform_x != "identity") {
+    t_x <- get(transform_x)
     samps <- t_x(samps)
-    lab <- gsub("x", param, transform_x)
+    lab <- paste0(transform_x, "(", param, ")")
   }
   .sampler_param_vs_param(p = samps, sp = stepsize, 
                           p_lab = lab, sp_lab = stepsize_lab, 
@@ -363,10 +363,10 @@ param_vs_treedepth <- reactive({
   transform_x <- diagnostic_param_transform()
   samps <- samps_post_warmup[if (!is.null(sel)) sel,, param]
   lab <- param
-  if (transform_x != "x") {
-    t_x <- eval(parse(text = paste("function(x)", transform_x)))
+  if (transform_x != "identity") {
+    t_x <- get(transform_x)
     samps <- t_x(samps)
-    lab <- gsub("x", param, transform_x) 
+    lab <- paste0(transform_x, "(", param, ")")
   }
   .sampler_param_vs_param(p = samps, sp = treedepth, p_lab = lab,
                           sp_lab = treedepth_lab, chain = chain, violin = TRUE)
@@ -379,10 +379,10 @@ p_hist <- reactive({
   transform_x <- diagnostic_param_transform()
   samps <- samps_post_warmup[if (!is.null(sel)) sel,, param]
   lab <- param
-  if (transform_x != "x") {
-    t_x <- eval(parse(text = paste("function(x)", transform_x)))
+  if (transform_x != "identity") {
+    t_x <- get(transform_x)
     samps <- t_x(samps)
-    lab <- gsub("x", param, transform_x)
+    lab <- paste0(transform_x, "(", param, ")")
   }
   df <- as.data.frame(cbind(iterations = 1:nrow(samps), samps))
   .p_hist(df, lab = lab, chain = chain)
