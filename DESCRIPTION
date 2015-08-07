@@ -2,12 +2,19 @@ Package: shinystan
 Title: Interactive Visual and Numerical Diagnostics and Posterior Analysis for 
   for Bayesian Models
 Version: 2.0.0
-Date: 2015-08-06
+Date: 2015-08-07
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"),
     email = "jsg2201@columbia.edu", comment = "Stan Development Team"),
+      person(family = "Stan Development Team", role = "ctb"),
       person("Michael", "Andreae", role = "ctb"),
-      person("Gao", "Yuanjun", role = "ctb"),
-      person("Dongying", "Song", role = "ctb"))
+      person("Michael", "Betancourt", role = "ctb"),
+      person("Bob", "Carpenter", role = "ctb"),
+      person("Yuanjun", "Gao", role = "ctb"),
+      person("Andrew", "Gelman", role = "ctb"),
+      person("Ben", "Goodrich", role = "ctb"),
+      person("Daniel", "Lee", role = "ctb"),
+      person("Dongying", "Song", role = "ctb"),
+      person("Rob", "Trangucci", role = "ctb"))
 Maintainer: Jonah Gabry <jsg2201@columbia.edu>
 Description: The core of the shinystan package is the ShinyStan graphical user 
   interface, which provides interactive Markov chain Monte Carlo (MCMC) diagnostics 
@@ -24,7 +31,7 @@ Description: The core of the shinystan package is the ShinyStan graphical user
 URL: https://github.com/stan-dev/shinystan, http://mc-stan.org/
 BugReports: https://github.com/stan-dev/shinystan/issues
 Depends: 
-    R (>= 3.1.1),
+    R (>= 3.1.0),
     ggplot2 (>= 1.0.0),
     shiny (>= 0.12.1)
 License: GPL (>=3)
