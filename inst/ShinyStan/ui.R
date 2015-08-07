@@ -287,7 +287,10 @@ tagList(
                         tabPanel(title = "About", 
                                  logo_and_name(),
                                  div(style = "margin-top: 75px;",
-                                   uiOutput("ui_about"))
+                                   # uiOutput("ui_about")
+                                   source(file.path("server_files", "pages", "more", 
+                                                    "ui", "about.R"))$value
+                                   )
                         ), 
                         
                         #### PAGE: Help ####

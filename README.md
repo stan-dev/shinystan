@@ -3,16 +3,18 @@
 
 # ShinyStan
 
-
-[![shinystan](https://cloud.githubusercontent.com/assets/7796803/6375377/a740c96c-bce4-11e4-82ef-4318a47a1116.png)](https://jgabry.shinyapps.io/ShinyStan2Preview)
-
-[Try the online demo](https://jgabry.shinyapps.io/ShinyStan2Preview)
-![shinystan screens](http://i60.tinypic.com/an1p29.png)
-The ShinyStan app for exploring Bayesian models is available in
+The ShinyStan graphical user interface for exploring Bayesian models is available in
 the [shinystan](https://github.com/stan-dev/shinystan/wiki/Installing-shinyStan) 
 R package. ShinyStan provides immediate, informative, customizable visual and 
 numerical summaries of model parameters and convergence diagnostics for 
 MCMC simulations.
+
+
+[![shinystan](http://i59.tinypic.com/30ho2sn.jpg)](https://jgabry.shinyapps.io/ShinyStan2Preview)
+
+[Try the online demo](https://jgabry.shinyapps.io/ShinyStan2Preview)
+![shinystan screens](http://i60.tinypic.com/an1p29.png)
+
 
 ## Installing the R package
 
@@ -55,5 +57,5 @@ and is compatible with Safari, Firefox, Chrome, and most other browsers.
 
 ### Licensing
 
-shinystan is open source licensed under the GNU Public License, 
-version 3 (GPLv3).
+The shinystan R package and ShinyStan interface are open source licensed under 
+the GNU Public License, version 3 (GPLv3).

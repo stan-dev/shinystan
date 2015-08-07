@@ -32,7 +32,7 @@ function(input, output, session) {
   # source all files from server_files directory and subdirectories
   files <- list.files("server_files", full.names = TRUE, recursive = TRUE)
   for (f in files) source(f, local = TRUE)
-  
+
   options_inputs <- c("table", "multiparam", "autocorr", "rhat_warnings", # multitrace
                       "bivariate", "trivariate", "density", "hist")
   dens_inputs <- c("point_est", "ci", "x_breaks", "fill_color", "line_color")
@@ -49,14 +49,21 @@ function(input, output, session) {
     shinyjs::toggleState(id = "ac_flip", condition = input$ac_combine == FALSE)
   })
   observe({
-    shinyjs::onclick("toc_estimate", 
-                     updateTabsetPanel(session, "nav", selected = "Estimate"))
-    shinyjs::onclick("toc_diagnose", 
-                     updateTabsetPanel(session, "nav", selected = "Diagnose"))
-    shinyjs::onclick("toc_explore", 
-                     updateTabsetPanel(session, "nav", selected = "Explore"))
-    shinyjs::onclick("toc_more", 
-                     updateTabsetPanel(session, "nav", selected = "Model Code"))
+    toc_entries <- c("Estimate", "Diagnose", "Explore", "Model Code")
+    local({
+      lapply(toc_entries, function(x) {
+        id <- paste0("toc_", if (x == "Model Code") "more" else tolower(x))
+        shinyjs::onclick(id, updateTabsetPanel(session, "nav", selected = x))
+       })
+    })
+#     shinyjs::onclick("toc_estimate", 
+#                      updateTabsetPanel(session, "nav", selected = "Estimate"))
+#     shinyjs::onclick("toc_diagnose", 
+#                      updateTabsetPanel(session, "nav", selected = "Diagnose"))
+#     shinyjs::onclick("toc_explore", 
+#                      updateTabsetPanel(session, "nav", selected = "Explore"))
+#     shinyjs::onclick("toc_more", 
+#                      updateTabsetPanel(session, "nav", selected = "Model Code"))
     shinyjs::onclick("open_glossary_from_table",
                      updateTabsetPanel(session, "nav", selected = "Help"))
     shinyjs::onclick("open_glossary_from_nuts_table", 
@@ -82,6 +89,7 @@ function(input, output, session) {
   })
   
   observeEvent(input$shinystan_citation_show,
-               shinyjs::toggle(id = "citation_div", anim = FALSE))
-} # End shinyServer
+               shinyjs::toggle(id = "citation_div", anim = TRUE, animType = "fade"))
+  
+} # End server
 

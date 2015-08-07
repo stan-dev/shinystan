@@ -45,8 +45,8 @@ help_dynamic <- hT11(
   "will update accordingly. Double-click to reset.")
 # help_violin <- helpText("The violin plot ")
 output$diagnostics_warnings_text <- renderText({
-  divs <- sum(ndivergent_pw()[,-1])
-  hits <- sum(treedepth_pw()[,-1] == MISC$max_td)
+  divs <- sum(.ndivergent_pw[,-1])
+  hits <- sum(.treedepth_pw[,-1] == MISC$max_td)
   d <- divs > 0
   h <- hits > 0
   if (d && h) msg <- paste("WARNINGS -- Diverging error:", divs, "iterations.",
@@ -153,7 +153,7 @@ output$ui_diagnostics_ndivergent <- renderUI({
   sp_nuts_check()
   chains_check()
   fluidRow(
-    column(7, #plotOutput_200px("ndivergent_trace_out"),
+    column(7,
            help_dynamic,
            dygraphOutput_175px("dynamic_trace_diagnostic_ndivergent_out"), 
            br(),br(),

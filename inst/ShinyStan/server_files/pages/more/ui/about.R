@@ -13,35 +13,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-
-# output$ui_cite <- renderUI({
-#   div(style = "text-align: left;", 
-#     shinyjs::hidden(wellPanel(id = "citation_div", pre(id = "citation_text", 
-# "@Misc{shinystan-software:2015,
-# title = {{shinystan}: {R} Package for Interactive Exploration of {MCMC} samples, Version 2.0.0},
-# author = {Gabry, Jonah and Stan Development Team},
-# year = {2015},
-# abstract = {The shinystan R package provides the ShinyStan app for exploring Markov chain Monte Carlo output through interactive visualizations and tables.},
-# url = {https://mc-stan.org}
-# }")))
-#   )
-# })
-output$ui_credits <- renderUI({
-  # jonah_and_stan <- "Jonah Gabry and Stan Development Team"
-  contribs <- c(
-  andreae = "Michael Andreae",
-  betancourt = "Michael Betancourt",
-  carpenter = "Bob Carpenter",
-  gao = "Yuanjun Gao",
-  gelman = "Andrew Gelman",
-  goodrich = "Ben Goodrich",
-  lee = "Daniel Lee",
-  song = "Dongying Song",
-  trangucci <- "Rob Trangucci"
-  )
-  HTML(paste(contribs, collapse = '<br/>'))
-})
-output$ui_about <- renderUI({
+# output$ui_about <- renderUI({
   div(style = "text-align: center; margin-top: 100px;",
       a(style = "font-size: 16px;", strong("Stan Development Team"), 
         href="http://mc-stan.org/team/"),
@@ -58,14 +30,15 @@ author = {Jonah Gabry and Stan Development Team},
 year = {2015},
 abstract = {The shinystan R package provides the ShinyStan interface for exploring Markov chain Monte Carlo output through interactive visualizations and tables.},
 url = {https://mc-stan.org}
-}")))
-    ),
+}")))),
     br(),
     h6("Author"),
     helpText(style = "font-size: 12px;", "Jonah Gabry"),
     br(),
     h6(style = "font-size: 12px;", "Contributors"),
-    helpText(style = "font-size: 12px;", htmlOutput("ui_credits")),
+    helpText(style = "font-size: 12px;", 
+             includeHTML("html/contribs.html")
+             ),
     br(),
     h6("Logo"),
     helpText(style = "font-size: 12px;", "Michael Betancourt"),
@@ -77,4 +50,4 @@ url = {https://mc-stan.org}
              a(href = "http://shiny.rstudio.com", 
                "Shiny web application framework"), "(RStudio)")
   )
-})
+# })
