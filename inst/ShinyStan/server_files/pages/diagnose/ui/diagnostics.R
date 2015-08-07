@@ -14,6 +14,9 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 
+chains_check <- reactive({
+  validate(need(nChains > 1, message = "This feature requires more than 1 chain"))
+})
 
 conditionalPanel_parameter <- function(...) {
   cond <- "input.diagnostics_navlist == 'By model parameter'"
@@ -89,6 +92,7 @@ output$ui_diagnostics_customize <- renderUI({
 # model parameter ---------------------------------------------------------
 output$ui_diagnostics_parameter <- renderUI({
   sp_nuts_check()
+  chains_check()
   div(
     fluidRow(
       column(7, help_dynamic,
@@ -108,6 +112,7 @@ output$ui_diagnostics_parameter <- renderUI({
 # sample (accept_stat, lp) ------------------------------------------------
 output$ui_diagnostics_sample <- renderUI({
   sp_nuts_check()
+  chains_check()
   div(
     fluidRow(
       column(7,
@@ -129,6 +134,7 @@ output$ui_diagnostics_sample <- renderUI({
 # treedepth ---------------------------------------------------------------
 output$ui_diagnostics_treedepth <- renderUI({
   sp_nuts_check()
+  chains_check()
   div(
     fluidRow(
       column(7, help_dynamic,
@@ -150,6 +156,7 @@ output$ui_diagnostics_treedepth <- renderUI({
 # N divergent -------------------------------------------------------------
 output$ui_diagnostics_ndivergent <- renderUI({
   sp_nuts_check()
+  chains_check()
   fluidRow(
     column(7, #plotOutput_200px("ndivergent_trace_out"),
            help_dynamic,
@@ -163,6 +170,7 @@ output$ui_diagnostics_ndivergent <- renderUI({
 # stepsize ----------------------------------------------------------------
 output$ui_diagnostics_stepsize <- renderUI({
   sp_nuts_check()
+  chains_check()
   fluidRow(
     column(7, help_dynamic,
            dygraphOutput_175px("dynamic_trace_diagnostic_stepsize_out"), 
