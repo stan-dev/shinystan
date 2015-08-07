@@ -56,7 +56,7 @@ mcse_over_sd_warnings <- reactive({
 
 output$n_eff_warnings_title <- renderText({
   paste0("The following parameters have an effective sample size less than ", 
-         input$n_eff_threshold,"% of the total number of samples: ")
+         input$n_eff_threshold,"% of the total sample size: ")
 })
 output$rhat_warnings_title <- renderText({
   paste0("The following parameters have an Rhat value above ", 

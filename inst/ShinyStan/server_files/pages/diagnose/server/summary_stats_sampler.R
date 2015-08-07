@@ -33,27 +33,15 @@ output$sampler_summary <- DT::renderDataTable({
   DT::datatable({
     summary_stats_sampler()
   }, options = list(
-    rownames = FALSE,
+    # rownames = FALSE,
     processing = TRUE,
+    deferRender = TRUE,
     scrollX = TRUE,
     scrollY = "200px",
-    # autoWidth = TRUE,
     scrollCollapse = TRUE,
     paging = FALSE,
-    # pageLength = 3,
     searching = FALSE,
-    info = FALSE,
-    aoColumnDefs = list(list(sClass="alignRight", aTargets = "_all")),
-    orderClasses = TRUE,
-    initComplete = htmlwidgets::JS( # change text color of column titles
-      'function(settings, json) {
-      $(this.api().table().header()).css({"color": "#006DCC"});
-      }'),
-    rowCallback = htmlwidgets::JS(
-      'function(row, data) {
-      // Bold cells in the first column
-      $("td:eq(0)", row).css("font-weight", "bold");
-      }')
+    info = FALSE
   )
   )
 })

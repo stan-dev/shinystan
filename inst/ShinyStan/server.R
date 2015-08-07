@@ -68,6 +68,19 @@ function(input, output, session) {
       shinyjs::toggle(id = "glossary_div", anim = TRUE, animType = "slide")
     })
   })
+  
+  diagnostic_inputs <- paste0("diagnostic_", 
+                             c("param", "param_transform", "param_transform_go"))
+  observe({
+    diag_nav <- input$diagnostics_navlist
+    local({
+      if (diag_nav != 'By model parameter')
+        lapply(diagnostic_inputs, function(x) shinyjs::disable(id = x))
+      else 
+        lapply(diagnostic_inputs, function(x) shinyjs::enable(id = x))
+    })
+  })
+  
   observeEvent(input$shinystan_citation_show,
                shinyjs::toggle(id = "citation_div", anim = FALSE))
 } # End shinyServer

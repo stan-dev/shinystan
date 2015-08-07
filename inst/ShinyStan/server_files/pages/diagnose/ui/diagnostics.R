@@ -18,10 +18,6 @@ chains_check <- reactive({
   validate(need(nChains > 1, message = "This feature requires more than 1 chain"))
 })
 
-conditionalPanel_parameter <- function(...) {
-  cond <- "input.diagnostics_navlist == 'By model parameter'"
-  conditionalPanel(cond, ...)
-}
 dygraphOutput_175px <- function(id) {
   dygraphs::dygraphOutput(id, height = "175px")
 }
@@ -64,28 +60,27 @@ output$diagnostics_warnings_text <- renderText({
 })
 
 output$ui_diagnostics_customize <- renderUI({
+  div(id = "diagnostics_customize",
   wellPanel(
     fluidRow(
       column(3, h4(textOutput("diagnostic_chain_text"))),
-      column(4, conditionalPanel_parameter(h5("Parameter"))),
-      column(4, conditionalPanel_parameter(h5("Transformation f(x) =")))
+      column(4, h5("Parameter")),
+      column(4, h5("Transformation"))
     ),
     fluidRow(
       column(3, div(style = "width: 100px;", 
                     numericInput("diagnostic_chain", label = NULL, value = 0, 
                                  min = 0, max = object@nChains))),
-      column(4, conditionalPanel_parameter(selectizeInput(
+      column(4, selectizeInput(
         inputId = "diagnostic_param", label = NULL, multiple = FALSE, 
         choices = .make_param_list(object), 
-        selected = .make_param_list(object)[1]))),
-      column(3, conditionalPanel_parameter(
-        transformation_selectInput("diagnostic_param_transform")
-        )),
-      column(2, conditionalPanel_parameter(
-        actionButton("diagnostic_param_transform_go", "Transform")))
+        selected = .make_param_list(object)[1])),
+      column(3, transformation_selectInput("diagnostic_param_transform")),
+      column(2, actionButton("diagnostic_param_transform_go", "Transform"))
     ),
     helpText(strong(style = "color: red; font-size: 13px;", 
                     textOutput("diagnostics_warnings_text")))
+  )
   )
 })
 
@@ -93,7 +88,7 @@ output$ui_diagnostics_customize <- renderUI({
 output$ui_diagnostics_parameter <- renderUI({
   sp_nuts_check()
   chains_check()
-  div(
+  div(class = "diagnostics-navlist-tabpanel",
     fluidRow(
       column(7, help_dynamic,
              dygraphOutput_175px("dynamic_trace_diagnostic_parameter_out")),
@@ -113,7 +108,7 @@ output$ui_diagnostics_parameter <- renderUI({
 output$ui_diagnostics_sample <- renderUI({
   sp_nuts_check()
   chains_check()
-  div(
+  div(class = "diagnostics-navlist-tabpanel",
     fluidRow(
       column(7,
              fluidRow(
@@ -135,7 +130,7 @@ output$ui_diagnostics_sample <- renderUI({
 output$ui_diagnostics_treedepth <- renderUI({
   sp_nuts_check()
   chains_check()
-  div(
+  div(class = "diagnostics-navlist-tabpanel",
     fluidRow(
       column(7, help_dynamic,
              dygraphOutput_175px("dynamic_trace_diagnostic_treedepth_out"),
@@ -179,3 +174,4 @@ output$ui_diagnostics_stepsize <- renderUI({
     column(5, plotOutput_400px("stepsize_vs_accept_stat_out"))
   )
 })
+

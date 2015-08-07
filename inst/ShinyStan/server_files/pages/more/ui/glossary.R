@@ -22,7 +22,7 @@ output$ui_glossary <- renderUI({
                                   p(
                                     "The estimation of effective sample size is described in detail in the 'Markov
                             Chain Monte Carlo Sampling' chapter of the ", a("Stan Modeling Language User's
-                                                                            Guide and Reference Manual", href = "http://mc-stan.org/manual.html"), "and in
+                                                                            Guide and Reference Manual", href = "http://mc-stan.org/documentation/"), "and in
                             Chapter 11 of ", a("BDA3.", href = "http://www.stat.columbia.edu/~gelman/book/"))
                          ),
                          tabPanel("Monte Carlo uncertainty",
@@ -38,7 +38,7 @@ draws approaches the standard deviation of the posterior distribution."
                          tabPanel("Rhat",
                                   withMathJax(),
                                   p(h4("Rhat"), "\\(\\hat{R}\\)"),
-                                  p(em("From", a("Stan Modeling Language User's Guide and Reference Manual", href = "http://mc-stan.org/manual.html")),":"),
+                                  p(em("From", a("Stan Modeling Language User's Guide and Reference Manual", href = "http://mc-stan.org/documentation/")),":"),
                                   p(
                                     "One way to monitor whether a chain has converged to the equilibrium
                             distribution is to compare its behavior to other randomly initialized chains.
@@ -58,7 +58,7 @@ draws approaches the standard deviation of the posterior distribution."
                                   p(
                                     "Details on the computatation of the ", "\\(\\hat{R}\\)", "statistic
 and some of its limitations can be found in the 'Markov Chain Monte Carlo Sampling' chapter of the ",
-                                    a("Stan Modeling Language User's Guide and Reference Manual", href = "http://mc-stan.org/manual.html"),
+                                    a("Stan Modeling Language User's Guide and Reference Manual", href = "http://mc-stan.org/documentation/"),
                                     "and in Chapter 11 of ", a("BDA3.", href = "http://www.stat.columbia.edu/~gelman/book/")
                                   )
                          ),

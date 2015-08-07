@@ -16,13 +16,14 @@
 output$ui_rhat_neff_mcse <- renderUI({
   div(
     withMathJax(),
+    br(),
     splitLayout(h4("\\(n_{eff} / N\\)", align = "center"),
                 h4("\\(mcse / sd\\)", align = "center"),
                 h4("\\(\\hat{R}\\)", align = "center")),
     splitLayout(
-      plotOutput("n_eff_plot_out", height = "250px"),
-      plotOutput("mcse_over_sd_plot_out", height = "250px"),
-      plotOutput("rhat_plot_out", height = "250px"),
+      plotOutput("n_eff_plot_out", height = "200px"),
+      plotOutput("mcse_over_sd_plot_out", height = "200px"),
+      plotOutput("rhat_plot_out", height = "200px"),
       cellArgs = list(class = "plot_hover_shadow")
     )
   )

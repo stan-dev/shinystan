@@ -17,7 +17,7 @@
 # reactive function to make latex table of summary stats
 summary_stats_latex <- reactive({
   
-  params <- .update_params_with_groups(input$tex_params, param_names)
+  params <- unique(.update_params_with_groups(input$tex_params, param_names))
   nParams <- length(params)
   if (nParams == 0) params <- param_names
   if (nParams == 1) {
@@ -46,9 +46,7 @@ summary_stats_latex <- reactive({
                        include.rownames = FALSE)
 })
 
-# latex the table
-observeEvent(input$tex_go, handlerExpr = {
-  summary_stats_latex()
+output$summary_stats_latex_out <- renderPrint({
+  input$tex_go
+  isolate(summary_stats_latex())
 })
-
-

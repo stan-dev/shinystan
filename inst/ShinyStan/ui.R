@@ -83,8 +83,10 @@ tagList(
                         ),
                         #### hmc/nuts stats ####
                         tabPanel("HMC/NUTS (stats)",
-                                 fluidRow(column(3, offset = 9, a_glossary("open_glossary_from_nuts_table"))), 
-                                 h2("Summary of sampler parameters"),
+                                 fluidRow(
+                                   column(5, h2("Summary of sampler parameters")),
+                                   column(3, offset = 4, a_glossary("open_glossary_from_nuts_table"))
+                                ), 
                                  uiOutput("ui_sampler_stats_customize"),
                                  DT::dataTableOutput("sampler_summary"),
                                  br()
@@ -117,7 +119,8 @@ tagList(
                         tabPanel(title = "PPcheck", 
                                  h2("Graphical posterior predictive checks"),
                                  h6("Experimental feature"),
-                                 uiOutput("ui_ppcheck_navlist")
+                                 uiOutput("ui_ppcheck_navlist"),
+                                 br()
                         )
                         
                       ) # End tabsetPanel
@@ -129,7 +132,7 @@ tagList(
                       
                       tabsetPanel(
                         #### multiparameter plot ####
-                        tabPanel("Parameters plot", icon = icon("bar-chart-o", "fa-2x"),
+                        tabPanel("Parameters plot", #icon = icon("bar-chart-o", "fa-2x"),
                                  wellPanel(
                                    fluidRow(
                                      column(6, uiOutput("ui_multiparam_selectize")),
@@ -144,7 +147,7 @@ tagList(
                                  plotOutput("multiparam_plot_out", width = "90%")
                         ),
                         #### posterior summary statistics ####
-                        tabPanel("Posterior summary statistics", icon = icon("table", "fa-2x"),
+                        tabPanel("Posterior summary statistics", #icon = icon("table", "fa-2x"),
                                  # br(),
                                  fluidRow(
                                    column(4, 
@@ -163,6 +166,39 @@ tagList(
                                  ),
                                  div(DT::dataTableOutput("all_summary_out"), 
                                      style = "overflow-x: auto")
+                        ),
+                        tabPanel("Generate LaTeX table", #icon = icon("table", "fa-2x"),
+                                 br(),
+                                 sidebarLayout(
+                                   mainPanel= mainPanel(width = 8,
+                                                        actionButton("tex_go", withMathJax("Update \\(\\LaTeX\\)"), 
+                                                                     icon = icon("print", lib = "glyphicon")),
+                                                        br(),br(),
+                                                        verbatimTextOutput("summary_stats_latex_out")
+                                   ),
+                                   sidebarPanel = sidebarPanel(width = 4, 
+                                                               h4(strong(withMathJax("\\(\\LaTeX\\) table generator"))),
+                                                               selectInput("tex_params", width = "100%", 
+                                                                              label = "Parameters (blank = all)", multiple = TRUE,
+                                                                              choices = .make_param_list_with_groups(object),
+                                                                              selected = if (length(object@param_names) == 1) object@param_names else object@param_names[1:2]),
+                                                               numericInput("tex_digits", label = "Digits", value = 1, min = 0),
+                                                               div(style = "padding: 1px;",
+                                                                   checkboxGroupInput("tex_columns", label = "Columns",
+                                                                                      choices = c("Rhat", "Effective sample size" = "n_eff", "Posterior mean" = "mean", 
+                                                                                                  "Posterior standard deviation" = "sd", "Monte Carlo error" = "se_mean", 
+                                                                                                  "Quantile: 2.5%" = "2.5%", "Quantile: 25%" = "25%", "Quantile: 50%" = "50%", 
+                                                                                                  "Quantile: 75%" = "75%", "Quantile: 97.5%" = "97.5%"),
+                                                                                      selected = c("Rhat", "n_eff", "mean", "sd", "2.5%", "50%", "97.5%"))
+                                                               ),
+                                                               textInput("tex_caption", label = "Caption"),
+                                                               checkboxGroupInput("tex_pkgs", "Packages",
+                                                                                  choices = c("Booktabs", "Longtable"),
+                                                                                  selected = "Booktabs", inline = TRUE
+                                                               ),
+                                                               br()
+                                   )
+                                 )
                         )
                       ) # End tabsetPanel
              ), # End ESTIMATE
@@ -254,7 +290,7 @@ tagList(
                         
                         #### PAGE: Help ####
                         tabPanel(title = "Help",
-                                 br(),br(),
+                                 # br(),br(),
                                  div(class = "home-links",
                                      actionLink(class = "help-links-active", 
                                                 inputId = "toggle_help_glossary", 

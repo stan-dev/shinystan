@@ -30,6 +30,7 @@ complimentary accent colors
 @import url('//fonts.googleapis.com/css?family=Volkhov:400,400italic,700,700italic');
 @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro);
 
+
 #save_and_close_button{
   position: absolute;
   top: 5px;
@@ -434,7 +435,7 @@ a:active { /* selected link */
 
 
 /**************************************/
-/* stuff on posterior summary stats page */
+/* digits control for stats tables */
 #table_digits {
   position: absolute;
   left: 50px;
@@ -448,25 +449,28 @@ a:active { /* selected link */
   left: 0;
   top: 8px;
 }
+#sampler_digits, #tex_digits {
+  height: 30px;
+  width: 60px;
+  padding: 0 0 0 5px;
+}
+#summary_stats_latex_out {
+  color: black;
+  background-color: #F5ECEC;
+}
 /**************************************/
+
 
 #dens_xzoom {
   width: 50%;
 }
 
+.diagnostics-navlist-tabpanel {
+  max-height: 500px;
+  overflow-y: scroll;
+}
+
 /**************************************/
-#glossary_div {
-  border: 10px solid #f1edec;
-  border-radius: 10px;
-  background-color: #f1edec;  
-}
-#help_div {
-  border: 10px solid #f1f0ec;
-  border-radius: 10px;
-  background-color: #f1f0ec;
-}
-
-
 
 #shinystan_citation {
   color: black;

@@ -18,9 +18,9 @@ output$ui_multiparam_customize <- renderUI({
   my_color_by_rhat <- FALSE
   my_show_density <- FALSE
   my_point_est <- "Median"
-  my_fill_color <- "#590815"
+  my_fill_color <-  "#590815"
   my_outline_color <- "#487575"
-  my_est_color <- "#B2001D"
+  my_est_color <- base_fill #"#B2001D"
   my_rhat_palette <- "Blues"
   
   absolutePanel(id = "controls_multiparam", 

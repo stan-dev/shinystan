@@ -13,6 +13,8 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
+pp_yrep_clr <- "#487575"
+pp_yrep_fill <- "#6B8E8E"
 
 
 # validate input tests ----------------------------------------------------
@@ -63,51 +65,50 @@ sample_id_for_resids <- reactive({
 .pp_hists_rep_vs_obs <- function(y, y_rep_samp, geom = "histogram") {
   thm <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + no_lgnd)
   graphs <- lapply(1:(1 + nrow(y_rep_samp)), function(i) {
-    if (i == 1) g <-  qplot(x = y, geom = geom, 
-                            color = I("#428bca"), 
-                            fill = I("#428bca"),
-                            alpha = 3/4) + labs(y = "", x = "y")
-    else g <- qplot(x = y_rep_samp[i-1, ], geom = geom, 
-                    color = if (geom == "histogram") I("black") else I("gray35"), 
-                    fill = if (geom == "histogram") I("gray35") else I("black"), 
-                    alpha = I(3/4)) + 
-                labs(y = "", x = rownames(y_rep_samp)[i-1])
-    
+    if (i == 1) 
+      g <-  qplot(x = y, geom = geom, color = I(vline_base_clr), 
+                  size = I(0.2), fill = I(base_fill)) + labs(y = "", x = "y")
+    else 
+      g <- qplot(x = y_rep_samp[i-1, ], geom = geom, 
+                 color = I(pp_yrep_clr), fill = I(pp_yrep_fill),
+                 size = I(0.2)) + labs(y = "", x = rownames(y_rep_samp)[i-1])
     g + thm 
   })
   graphs
 }
 
-.pp_dens_rep_vs_obs <- function(y, y_rep_samp, x_lim, y_lim) {
+.pp_dens_rep_vs_obs <- function(y, y_rep_samp, x_lim) {
   dat <- data.frame(t(y_rep_samp))
   dat <- cbind(y = y, dat)
   mdat <- reshape2::melt(dat)
   mdat$which <- "y_rep"
   mdat$which[mdat$variable == "y"] <- "y"
-  graph <- ggplot(mdat, aes(x = value, group = variable, fill = which, color = which, alpha = which, size = which))
+  graph <- ggplot(mdat, aes(x = value, group = variable, fill = which, 
+                            color = which, alpha = which, size = which))
   graph <- graph + 
     geom_density() + 
-    scale_color_manual(values = c("#428bca", "gray35")) + 
-    scale_fill_manual(values = c("#428bca", "gray35")) + 
+    scale_color_manual(values = c(vline_base_clr, pp_yrep_clr)) + 
+    scale_fill_manual(values = c(base_fill, pp_yrep_fill)) + 
     scale_alpha_manual(values = c(3/4, 0)) + 
     scale_size_manual(values = c(1/3, 1/2)) + 
-    scale_y_continuous(limits = y_lim) +
     scale_x_continuous(limits = x_lim) 
-  graph + labs(x = "", y = "") + theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + no_lgnd)
+  graph + labs(x = "", y = "") + 
+    theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + no_lgnd)
 }
 
 .pp_hists_test_statistics <- function(stat_y, stat_y_rep, which, geom = "histogram") {
   thm <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs)
   graph <- ggplot(data.frame(x = stat_y_rep), aes(x = x)) 
   if (geom == "histogram") { 
-    graph <- graph + stat_bin(aes(y=..count../sum(..count..)), color = "black", fill = "gray35", alpha = 3/4) 
+    graph <- graph + stat_bin(aes(y=..count../sum(..count..)), 
+                              color = pp_yrep_clr, fill = pp_yrep_fill, size = 0.2) 
   }
   if (geom == "density") {
     graph <- graph +
-      geom_density(color = "gray35", fill = "black", alpha = 3/4)
+      geom_density(color = pp_yrep_clr, fill = pp_yrep_fill, size = 0.2)
   }
   graph + 
-    geom_vline(xintercept = stat_y, color = "#428bca", size = 1.5, alpha = 1) +
+    geom_vline(xintercept = stat_y, color = vline_base_clr, size = 1.5, alpha = 1) +
     labs(y = "", x = paste0(which, "(y_rep)")) +
     thm 
 }
@@ -115,7 +116,8 @@ sample_id_for_resids <- reactive({
 .pp_hist_resids <- function(resids) {
   thm <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + no_lgnd)
   graph <- ggplot(data.frame(x = resids), aes(x = x)) + 
-    stat_bin(aes(y=..count../sum(..count..)), color = "black", fill = "gray35", alpha = 3/4, size = 0.75)
+    stat_bin(aes(y=..count../sum(..count..)), 
+             color = vline_base_clr, fill = base_fill, size = 0.2)
   graph + thm + labs(y = "", x = names(resids))
 }
 
@@ -124,8 +126,9 @@ sample_id_for_resids <- reactive({
   xy_labs <- labs(x = "Average y_rep", y = "Average residual")
   thm <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_lgnd)
   graph <- ggplot(dat, aes(x, y)) + 
-    geom_hline(yintercept = 0, color = "#428bca", size = 0.75) + 
-    geom_point(color = "gray35", size = 2.75, shape = 19) + 
+    geom_hline(yintercept = 0, color = vline_base_clr, size = 0.75) + 
+    geom_point(fill = pp_yrep_fill, color = pp_yrep_clr, size = 2.75, 
+               alpha = 0.75, shape = 21) + 
     xy_labs 
     
   graph + xy_labs + thm 
@@ -137,17 +140,16 @@ sample_id_for_resids <- reactive({
   xy_labs <- labs(x = "y", y = "Average y_rep")
   thm <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis)
   graph <- ggplot(dat, aes(x, y)) + 
-    geom_abline(intercept = 0, slope = 1, color = "#428bca", size = 0.75) +
-    geom_point(color = "gray35", size = 2.75, alpha = 1, shape = 19) + 
-    xy_labs +
-    thm
+    geom_abline(intercept = 0, slope = 1, color = vline_base_clr, size = 0.75) +
+    geom_point(fill = pp_yrep_fill, color = pp_yrep_clr, size = 2.75, 
+               alpha = 0.75, shape = 21) + 
+    xy_labs + thm
   
   if (zoom_to_zero) {
     graph <- graph + 
       geom_hline(yintercept = 0, size = 3, color = axis_line_color) + 
       geom_vline(xintercept = 0, size = 0.5, color = axis_line_color) +
-      thm %+replace%
-      theme(axis.line = element_blank())
+      thm %+replace% theme(axis.line = element_blank())
   }
   
   graph 

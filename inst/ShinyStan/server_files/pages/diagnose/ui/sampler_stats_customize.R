@@ -16,14 +16,16 @@
 
 output$ui_sampler_stats_customize <- renderUI({
   fluidRow(
-    column(3, radioButtons("sampler_warmup", label = h5("Warmup period"),
+    column(3, radioButtons("sampler_warmup", label = h5("Warmup"),
                            choices = list(Omit = "omit", Include = "include"),
                            inline = TRUE)
            ),
-    column(5, radioButtons("sampler_report", label = h5("Report average, sd, max, or min"),
-                           choices = list(Mean = "average", SD = "sd", Maximum = "maximum", Minimum = "minimum"),
+    column(4, radioButtons("sampler_report", label = h5("Statistic"),
+                           choices = list(Mean = "average", SD = "sd", 
+                                          Max = "maximum", Min = "minimum"),
                            inline = TRUE)
            ),
-    column(2, numericInput("sampler_digits", label = h5("Decimals"), value = 4, min = 0, max = 10, step = 1))
+    column(2, numericInput("sampler_digits", label = h5("Decimals"), value = 4, 
+                           min = 0, max = 10, step = 1))
   )
 })

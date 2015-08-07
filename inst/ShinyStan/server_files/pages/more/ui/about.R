@@ -63,7 +63,7 @@ url = {https://mc-stan.org}
     br(),
     h6("Author"),
     helpText(style = "font-size: 12px;", "Jonah Gabry"),
-    h6(style = "font-size: 10px;", "with help from"),
+    h6(style = "font-size: 11px;", "Contributors"),
     helpText(style = "font-size: 12px;", htmlOutput("ui_credits")),
     br(),
     h6("Logo"),
