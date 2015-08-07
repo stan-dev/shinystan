@@ -345,8 +345,10 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   Purples <- c("#DADAEB", "#807DBA", "#3F007D")
   Reds <- c("#FCBBA1", "#EF3B2C", "#67000D")
   rhat_pal <- get(rhat_palette)
-  rhat_id <- ifelse(rhat_values < 1.05, "A", ifelse(rhat_values < 1.1, "B", "C"))
-  rhat_id <- factor(rhat_id[params], levels = c("A","B", "C"), labels = c("<1.05", "<1.1", ">1.1"))
+  rhat_id <- ifelse(rhat_values < 1.05, "A", 
+                    ifelse(rhat_values < 1.1, "B", "C"))
+  rhat_id <- factor(rhat_id[params], levels = c("A","B", "C"), 
+                    labels = c("<1.05", "<1.1", ">1.1"))
   rhat_colors <- scale_color_manual(name = bquote(hat(R)),
                                     values = rhat_pal,
                                     drop = FALSE)
@@ -355,7 +357,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                      legend.text = element_text(size = 12))
 
   nParams <- length(params)
-  nIter <- dim.samps[1] * dim.samps[2]
+  nIter <- prod(dim.samps[1:2])
   samps.use <- array(samps[,,params], c(nIter, nParams))
   colnames(samps.use) <- params
 
@@ -436,8 +438,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
 
     #point estimator
     if (color_by_rhat) {
-      p.point <- geom_segment(aes(x = m, xend = m, y = y, yend = y + 0.25, color = rhat_id),
-                              size = 1.5)
+      p.point <- geom_segment(aes(x = m, xend = m, y = y, yend = y + 0.25, 
+                                  color = rhat_id), size = 1.5)
       p.all + p.poly + p.den + p.col + p.point + rhat_colors + rhat_lgnd
     } else {
       p.point <- geom_segment(aes(x = m, xend = m, y = y, yend = y + 0.25),
@@ -450,10 +452,12 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
     p.ci.2 <- geom_segment(aes(x = l, xend = h, y = y, yend = y),
                            colour = fill_color, size = 2)
     if (color_by_rhat) {
-      p.point <- geom_point(aes(x = m, y = y, color = rhat_id), size = 4)
+      p.point <- geom_point(aes(x = m, y = y, fill = rhat_id), color = "black",
+                            shape = 21, size = 4)
       p.all + p.ci.2 + p.point + rhat_colors + rhat_lgnd
     } else {
-      p.point <- geom_point(aes(x = m, y = y), size = 4, color = fill_color, fill = est_color, shape = 21)
+      p.point <- geom_point(aes(x = m, y = y), size = 4, color = fill_color, 
+                            fill = est_color, shape = 21)
       p.all + p.ci.2 + p.point
     }
   }
@@ -470,7 +474,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
          )
   my_labs <- labs(y = "", x = xlab)
   base_fill
-  graph <- qplot(x = x, data = dat, color = I(vline_base_clr), fill = I(base_fill), size = I(0.2))
+  graph <- qplot(x = x, data = dat, color = I(vline_base_clr), 
+                 fill = I(base_fill), size = I(0.2))
   graph <- graph + 
     my_labs + 
     theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + transparent)
@@ -479,25 +484,22 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
 }
 
 # n_eff_warnings -----------------------------------------------------------
-.n_eff_warnings <- function(summary, threshold = 10, N_total = length(samps_post_warmup[,,1])) {
+.n_eff_warnings <- function(summary, threshold = 10, 
+                            N_total = length(samps_post_warmup[,, 1L])) {
   n_eff <- summary[,"n_eff"]
-  warn_params <- names(which(n_eff/N_total < threshold/100 ))
+  warn_params <- names(which(n_eff/N_total < threshold/100))
   ll <- length(warn_params)
-  if (ll == 0) {
-    return("None")
-  }
-  return(paste0(warn_params, collapse = ", "))
+  if (ll == 0) "None"
+  else paste0(warn_params, collapse = ", ")
 }
 
 # rhat_warnings -----------------------------------------------------------
 .rhat_warnings <- function(summary, threshold = 1.10) {
   rhat <- summary[,"Rhat"]
-  warn_params_1 <- names(which(rhat > threshold))
-  ll <- length(warn_params_1)
-  if (ll == 0) {
-    return("None")
-  }
-  return(paste0(warn_params_1, collapse = ", "))
+  warn_params <- names(which(rhat > threshold))
+  ll <- length(warn_params)
+  if (ll == 0) "None"
+  else paste0(warn_params, collapse = ", ")
 }
 
 # mcse_over_sd_warnings -----------------------------------------------------------
@@ -506,10 +508,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   warn_params <- names(which(dat[,1] > (threshold/100) * dat[,2]))
 
   ll <- length(warn_params)
-  if (ll == 0) {
-    return("None")
-  }
-  return(paste0(warn_params, collapse = ", "))
+  if (ll == 0) "None"
+  else paste0(warn_params, collapse = ", ")
 }
 
 

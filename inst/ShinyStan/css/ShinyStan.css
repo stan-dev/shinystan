@@ -151,6 +151,8 @@ color: white;
 }
 
 .navbar .nav {
+  position: absolute;
+  left: 150px;
   z-index: 5;
   text-align: center;
   padding-right: 20px;
@@ -233,13 +235,13 @@ a:link {
     color: #006DCC;
 }
 a:visited { /* visited link */
-    color: #006DCC;
+    color: #590815;
 }
 a:hover { /* mouse over link */
-    color: #B2001D;
+    color: #590815; 
 }
 a:active { /* selected link */
-    color: #006DCC;
+    color: #590815;
 }
 
 /**************************************/
@@ -326,17 +328,17 @@ a:active { /* selected link */
     -moz-border-radius: 16px;
     border-radius: 16px;
 }
-    .irs-line-left {
+.irs-line-left {
         height: 8px;
-    }
-    .irs-line-mid {
+}
+.irs-line-mid {
         height: 8px;
-    }
-    .irs-line-right {
+}
+.irs-line-right {
         height: 8px;
-    }
+}
 
-  .irs-bar {
+.irs-bar {
     height: 8px; top: 25px;
     border-top: 1px solid #006dcc;
     border-bottom: 1px solid #006dcc;
@@ -350,7 +352,7 @@ a:active { /* selected link */
     background: #006dcc;
     -moz-border-radius: 16px 0 0 16px;
     border-radius: 16px 0 0 16px;
-  }
+}
 
 .irs-shadow {
     height: 2px; top: 38px;

@@ -10,7 +10,7 @@ logo_and_name <- function() {
 
 save_and_close_reminder <- function(id) {
   helpText(id = id,
-           p("In order to make sure the changes aren't lost use the",
+           p("To make sure the changes aren't lost, use the",
              span(class = "save-close-reminder", "Save & Close"),
              "button in the top left corner to exit the app instead", 
              "of closing the browser window.")

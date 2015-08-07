@@ -73,6 +73,6 @@ function(input, output, session) {
 #     shinyjs::onclick("toc_quit", updateTabsetPanel(session, "nav", selected = "Quit"))
   })
   observeEvent(input$shinystan_citation_show,
-               shinyjs::toggle(id = "citation_div", anim = TRUE, animType = "slide"))
+               shinyjs::toggle(id = "citation_div", anim = FALSE))
 } # End shinyServer
 

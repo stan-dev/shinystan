@@ -18,10 +18,10 @@ output$ui_multiparam_customize <- renderUI({
   my_color_by_rhat <- FALSE
   my_show_density <- FALSE
   my_point_est <- "Median"
-  my_fill_color <- "#337ab7"
-  my_outline_color <- "gray35"
-  my_est_color <- "#f9dd67"
-  my_rhat_palette <- "Oranges"
+  my_fill_color <- "#590815"
+  my_outline_color <- "#487575"
+  my_est_color <- "#B2001D"
+  my_rhat_palette <- "Blues"
   
   absolutePanel(id = "controls_multiparam", 
                 class = "draggable_controls",

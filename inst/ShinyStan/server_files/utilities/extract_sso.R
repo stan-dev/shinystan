@@ -15,7 +15,7 @@
 
 
 # Extract the contents of the shiny_stan_object slots
-object <- shinystan_temp_object
+object <- get(".shinystan_temp_object")
 model_name <- object@model_name
 samps_all <- object@samps_all
 sampler_params <- object@sampler_params

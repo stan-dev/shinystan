@@ -17,32 +17,30 @@ sso_check <- function(sso) {
   if (!is.shinystan(sso)) 
     stop("Please specify a shinystan object", call. = FALSE)
   else 
-    return(invisible(TRUE))
+    invisible(TRUE)
 }
-
-is_stan <- function(X) inherits(X, "stanfit")
-
+is_stan <- function(X) {
+  inherits(X, "stanfit")
+}
 rstan_check <- function() {
   if (!requireNamespace("rstan", quietly = TRUE)) 
     stop("You need to have the RStan package installed to use this option.", 
          call. = FALSE)
 }
-
 coda_check <- function() {
   if (!requireNamespace("coda", quietly = TRUE)) 
     stop("You need to have the coda package installed to use this option.", 
          call. = FALSE)
 }
-
 cleanup_shinystan <- function() {
-  rm(list = "shinystan_temp_object", envir = .GlobalEnv)
+  rm(list = ".shinystan_temp_object", envir = .GlobalEnv)
 }
 
 launch <- function(object, rstudio = FALSE, ...) {
   stopifnot(is.shinystan(object))
   launch.browser <- if (!rstudio) 
     TRUE else getOption("shiny.launch.browser", interactive())
-  assign("shinystan_temp_object", object, inherits = TRUE)
+  assign(".shinystan_temp_object", object, inherits = TRUE)
   shiny::runApp(system.file("ShinyStan", package = "shinystan"), 
                 launch.browser = launch.browser, ...)
 }

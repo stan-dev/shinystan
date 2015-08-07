@@ -28,40 +28,52 @@
 # })
 output$ui_credits <- renderUI({
   # jonah_and_stan <- "Jonah Gabry and Stan Development Team"
-  michael <- "Michael Andreae"
-  yuanjun <- "Yuanjun Gao"
-  dongying <- "Dongying Song"
-  HTML(paste(michael, yuanjun, dongying, sep = '<br/>'))
+  contribs <- c(
+  andreae = "Michael Andreae",
+  betancourt = "Michael Betancourt",
+  carpenter = "Bob Carpenter",
+  gao = "Yuanjun Gao",
+  gelman = "Andrew Gelman",
+  goodrich = "Ben Goodrich",
+  lee = "Daniel Lee",
+  song = "Dongying Song",
+  trangucci <- "Rob Trangucci"
+  )
+  HTML(paste(contribs, collapse = '<br/>'))
 })
 output$ui_about <- renderUI({
-  div(style = "text-align: center;",
-    strong(style = "font-size: 16px;", "Jonah Gabry and Stan Development Team"),
-    div(class = "aoptions",
-      actionLink(inputId = "shinystan_citation_show", 
-                 label = "Show Citation")
-    ),
-    p(style = "font-size: 12px; color: gray;", 
-      a(style = "font-size: 15px;", "Stan Development Team", href="http://mc-stan.org/team/"), "(mc-stan.org)"),
-    div(style = "text-align: left;", 
-        shinyjs::hidden(wellPanel(id = "citation_div", pre(id = "citation_text", 
-                                                           "@Misc{shinystan-software:2015,
+  div(style = "text-align: center; margin-top: 100px;",
+      a(style = "font-size: 16px;", strong("Stan Development Team"), 
+        href="http://mc-stan.org/team/"),
+      br(),
+      a(style = "font-size: 14px;", strong("mc-stan.org"), 
+        href="http://mc-stan.org/team/"),
+  div(class = "aoptions",
+      actionLink(inputId = "shinystan_citation_show", label = "Show Citation")),
+  div(style = "text-align: left;", 
+    shinyjs::hidden(wellPanel(id = "citation_div", pre(id = "citation_text", 
+"@Misc{shinystan-software:2015,
 title = {{shinystan}: {R} Package for Interactive Exploration of {MCMC} samples, Version 2.0.0},
-author = {Gabry, Jonah and Stan Development Team},
+author = {Jonah Gabry and Stan Development Team},
 year = {2015},
-abstract = {The shinystan R package provides the ShinyStan app for exploring Markov chain Monte Carlo output through interactive visualizations and tables.},
+abstract = {The shinystan R package provides the ShinyStan interface for exploring Markov chain Monte Carlo output through interactive visualizations and tables.},
 url = {https://mc-stan.org}
 }")))
     ),
     br(),
-    h6("Additional contributors:"),
+    h6("Author"),
+    helpText(style = "font-size: 12px;", "Jonah Gabry"),
+    h6(style = "font-size: 10px;", "with help from"),
     helpText(style = "font-size: 12px;", htmlOutput("ui_credits")),
     br(),
-    h6("Logo:"),
-    helpText(style = "font-size: 12px;", "Michael Betancourt", br(), "with special thanks to Stephanie Mannhein for critical refinements. (CC-BY ND 4.0 license)"),
+    h6("Logo"),
+    helpText(style = "font-size: 12px;", "Michael Betancourt"),
+    helpText(style = "font-size: 11px;", "with special thanks to Stephanie Mannhein",
+             "for critical refinements.", "(CC-BY ND 4.0 license)"),
     br(),
-    h6("Shiny:"),
+    h6("Shiny"),
     helpText(style = "font-size: 12px;", "ShinyStan is powered by the", 
              a(href = "http://shiny.rstudio.com", 
-               "Shiny web application framework (RStudio)"))
+               "Shiny web application framework"), "(RStudio)")
   )
 })

@@ -20,7 +20,7 @@ for (h in helpers) source(h, local = TRUE)
 source("server_files/utilities/ppcheck_names_descriptions.R", local = TRUE)
 
 
-object <- shinystan_temp_object
+object <- get(".shinystan_temp_object")
 corner_link <- HTML(paste0('<a href=',
                            shQuote(paste0("http://mc-stan.org",sep='')), 
                            '>', 'Stan', '</a>'))
@@ -48,10 +48,9 @@ tagList(
                       div(class = "home-links",
                           div(id = "model-name",
                               br(),
-                              h2(paste("Model")),
+                              h2(paste("Model:")),
                               h4(object@model_name)
                           )
-                          
                           #                           div(id = "links_nav", class = "cl-effect-9",
                           #                               h3(toc_entry("Diagnose")),
                           #                               h3(toc_entry("Estimate")),
@@ -91,7 +90,7 @@ tagList(
                                  br()
                         ),
                         #### rhat, n_eff, mcse ####
-                        tabPanel("\\(\\hat{R}, n_{eff}, \\text{se}_{mean}\\)", # icon = icon("bar-chart-o", "fa-2x"),
+                        tabPanel("\\(\\hat{R}, n_{eff}, \\text{se}_{mean}\\)", 
                                  fluidRow(
                                    column(9, uiOutput("ui_rhat_neff_mcse"),
                                           hr(),
@@ -114,25 +113,8 @@ tagList(
                                  ),
                                  plotOutput("autocorr_plot_out")
                         ),
-                        #                         #### multiparameter traceplot ####
-                        #                         tabPanel("Trace", # icon = icon("bar-chart-o", "fa-2x"),
-                        #                                  wellPanel(
-                        #                                    fluidRow(
-                        #                                      column(6, selectizeInput("multitrace_params", width = '100%', 
-                        #                                                               label = h5("Select or enter parameter names"), 
-                        #                                                               choices = .make_param_list_with_groups(object), multiple = TRUE)),
-                        #                                      column(3, offset = 1, sliderInput("multi_xzoom", width = "75%",
-                        #                                                                        label = h5("Iterations"), min = 1, max = object@nIter, 
-                        #                                                                        step = 1, value = c(object@nWarmup + 1, object@nIter), ticks = FALSE)),
-                        #                                      column(2, a_options("multitrace"))
-                        #                                    )
-                        #                                  ),
-                        #                                  uiOutput("ui_multitrace_customize"),
-                        #                                  plotOutput("multitrace_plot_out"),
-                        #                                  br()
-                        #                         ),
                         #### ppcheck ####
-                        tabPanel(title = "PPcheck", # icon = icon("bar-chart-o", "fa-2x"),
+                        tabPanel(title = "PPcheck", 
                                  h2("Graphical posterior predictive checks"),
                                  h6("Experimental feature"),
                                  uiOutput("ui_ppcheck_navlist")
