@@ -26,6 +26,7 @@ complimentary accent colors
 
 */
 
+
 @import url('//fonts.googleapis.com/css?family=Volkhov:400,400italic,700,700italic');
 @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro);
 
@@ -221,6 +222,10 @@ color: white;
 
 /***********************/
 
+code {
+  color: #590815;
+  background: #F5ECEC;
+}
 
 body {
   padding-top: 75px;

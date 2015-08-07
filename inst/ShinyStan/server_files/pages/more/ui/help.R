@@ -39,6 +39,27 @@ output$ui_help <- renderUI({
              You can then make changes to the plot using the functions in the 
              ggplot2 package."
                             )
+                   ),
+                   tabPanel("Large models and launch speed",
+                            h4("Launching ShinyStan faster"),
+                            p("For large models, the", code("launch_shinystan"), 
+                              "function will launch the app quick when used with a",
+                              "shinystan object (rather than a stanfit object)",
+                              "because no conversion is required."),
+                            p("If ShinyStan takes a long time to launch for your",
+                            "model then it can help to either first create a",
+                            "shinystan object using the ", code("as.shinystan"),
+                            "function. Alternatively, the first time you launch",
+                            "ShinyStan using a stanfit object, a shinystan",
+                            "object will be created if you assign the value of",
+                            code("launch_shinystan"), "to a name, e.g."),
+                            p(code("sso <- launch_shinystan(my_stanfit)")),
+                            p("rather than just"),
+                            p(code("launch_shinystan(my_stanfit)")),
+                            p("The next time you launch ShinyStan for the same",
+                              "model you can launch it using", code("sso"),
+                              "rather than", code("my_stanfit"), "and it should",
+                              "be quicker to launch.")
                    )
       )
   )

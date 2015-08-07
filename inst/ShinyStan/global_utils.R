@@ -1,3 +1,5 @@
+code <- shiny::code
+
 logo_and_name <- function() {
   div(
       div(img(src = "wide_ensemble.png", 
@@ -11,8 +13,8 @@ save_and_close_reminder <- function(id) {
   helpText(id = id,
            p("To make sure the changes aren't lost, use the",
              span(class = "save-close-reminder", "Save & Close"),
-             "button in the top left corner to exit the app instead", 
-             "of closing the browser window.")
+             "button in the top left corner to exit the app before", 
+             "closing the browser window.")
   )
 }
 toc_entry <- function(name, icon_name, ...) {
@@ -197,3 +199,14 @@ transform_helpText <- function(var = "x") {
 }
 
 
+
+# extra distributions for density comparisons -----------------------------
+# t distribution with location and scale
+.dt_loc_scale <- function(x, df, location, scale) {
+  1/scale * dt((x - location)/scale, df)
+}
+# inverse gamma distribution
+.dinversegamma <- function(x, shape, scale) {
+  logout <- log(scale)*shape - lgamma(shape) - (1+shape)*log(x) - (scale/x)
+  exp(logout)
+}

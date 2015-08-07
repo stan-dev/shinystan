@@ -4,8 +4,7 @@ output$ui_model_code <- renderUI({
                  br(),
                  h4("Model Code"),
                  helpText(style = "font-size: 12px;", 
-                          p("The code is saved in the", code("model_code"),
-                            "slot of your shinystan object and displayed here each", 
+                          p("Model code will be displayed here each", 
                             "time you launch ShinyStan with this shinystan object.")
                  ),
                  br(),
