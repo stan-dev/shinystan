@@ -535,10 +535,12 @@ a:active { /* selected link */
 
 
 
-
-
-/**************************************/
-
+/**************************************
+Transition effect for home page links with secondary text 
+modified from freely usable code at Codrops
+http://tympanus.net/codrops/
+http://tympanus.net/codrops/licensing/
+**************************************/
 #links_nav_div {
   text-align: center;
 }
