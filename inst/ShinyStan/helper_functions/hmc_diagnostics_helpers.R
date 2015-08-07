@@ -108,8 +108,7 @@ thm_no_yaxs <- thm + no_yaxs
   base <- ggplot(mdf, aes(x = value)) + 
     geom_histogram(binwidth = diff(range(mdf$value))/30, fill = base_fill, 
                    color = vline_base_clr, size = 0.2) + 
-    labs(x = if (missing(lab)) NULL else lab, y = "") + 
-    thm
+    labs(x = if (missing(lab)) NULL else lab, y = "") + thm
   if (chain == 0) {
     graph <- base + 
       geom_vline(xintercept = mean(mdf$value), color = vline_base_clr, size = .8) + 
