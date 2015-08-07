@@ -88,6 +88,7 @@ output$ui_diagnostics_customize <- renderUI({
 
 # model parameter ---------------------------------------------------------
 output$ui_diagnostics_parameter <- renderUI({
+  sp_nuts_check()
   div(
     fluidRow(
       column(7, help_dynamic,
@@ -106,6 +107,7 @@ output$ui_diagnostics_parameter <- renderUI({
 
 # sample (accept_stat, lp) ------------------------------------------------
 output$ui_diagnostics_sample <- renderUI({
+  sp_nuts_check()
   div(
     fluidRow(
       column(7,
@@ -126,6 +128,7 @@ output$ui_diagnostics_sample <- renderUI({
 
 # treedepth ---------------------------------------------------------------
 output$ui_diagnostics_treedepth <- renderUI({
+  sp_nuts_check()
   div(
     fluidRow(
       column(7, help_dynamic,
@@ -146,6 +149,7 @@ output$ui_diagnostics_treedepth <- renderUI({
 
 # N divergent -------------------------------------------------------------
 output$ui_diagnostics_ndivergent <- renderUI({
+  sp_nuts_check()
   fluidRow(
     column(7, #plotOutput_200px("ndivergent_trace_out"),
            help_dynamic,
@@ -158,6 +162,7 @@ output$ui_diagnostics_ndivergent <- renderUI({
 
 # stepsize ----------------------------------------------------------------
 output$ui_diagnostics_stepsize <- renderUI({
+  sp_nuts_check()
   fluidRow(
     column(7, help_dynamic,
            dygraphOutput_175px("dynamic_trace_diagnostic_stepsize_out"), 

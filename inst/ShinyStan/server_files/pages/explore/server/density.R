@@ -19,6 +19,16 @@ dens_transform_x <- eventReactive(
   input$dens_transform_x
 )
 
+user_xlim <- function(lim) {
+  xz <- strsplit(lim, split = "c(", fixed = TRUE)[[1L]][2]
+  xz <- strsplit(xz, split = ",", fixed = TRUE)[[1L]]
+  x_lim <- unlist(strsplit(xz, split = ")", fixed = TRUE))
+  x_lim <- gsub(" ", "", x_lim)
+  if (x_lim[1L] == "min") x_lim[1L] <- NA
+  if (x_lim[2L] == "max") x_lim[2L] <- NA
+  as.numeric(x_lim)
+}
+
 density_plot <- reactive({
   validate(need(input$param, message = FALSE),
            need(!is.null(input$dens_chain), message = FALSE))
@@ -55,12 +65,13 @@ density_plot <- reactive({
 #     y_breaks    = input$dens_y_breaks,
     x_breaks    = input$dens_x_breaks,
     xzoom = xzoom,
-    x_lim = if (xzoom) eval(parse(text = input$dens_xzoom)) else NULL,
+    x_lim = if (xzoom) user_xlim(input$dens_xzoom) else NULL,
     prior_fam   = prior_fam,
     prior_params = prior_params,
     transform_x = dens_transform_x()
   ))
 })
+
 
 output$density_plot_out <- renderPlot({
   density_plot()

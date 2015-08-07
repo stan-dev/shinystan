@@ -67,10 +67,6 @@ function(input, output, session) {
       shinyjs::toggle(id = "help_div", anim = TRUE, animType = "slide")
       shinyjs::toggle(id = "glossary_div", anim = TRUE, animType = "slide")
     })
-#     shinyjs::onclick("toc_code", updateTabsetPanel(session, "nav", selected = "Model Code"))
-#     shinyjs::onclick("toc_help", updateTabsetPanel(session, "nav", selected = "Help"))
-#     shinyjs::onclick("toc_about", updateTabsetPanel(session, "nav", selected = "About"))
-#     shinyjs::onclick("toc_quit", updateTabsetPanel(session, "nav", selected = "Quit"))
   })
   observeEvent(input$shinystan_citation_show,
                shinyjs::toggle(id = "citation_div", anim = FALSE))
