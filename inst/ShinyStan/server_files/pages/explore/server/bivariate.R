@@ -79,9 +79,14 @@ output$bivariate_plot_out <- renderPlot({
 
 # download
 output$download_bivariate <- downloadHandler(
-  filename = 'shinystan_bivariate.RData',
+  filename = 'shinystan-bivariate-gg.RData',
   content = function(file) {
-    shinystan_bivariate <- bivariate_plot()
-    save(shinystan_bivariate, file = file)
+    shinystan_bivariate_gg <- bivariate_plot()
+    save(shinystan_bivariate_gg, file = file)
   }
 )
+output$save_pdf_bivariate = downloadHandler(
+  filename = "shinstan-bivariate.pdf",
+  content = function(file) {
+    ggsave(file, plot = bivariate_plot(), device = pdf)
+})

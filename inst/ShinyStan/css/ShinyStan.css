@@ -30,22 +30,6 @@ complimentary accent colors
 @import url('//fonts.googleapis.com/css?family=Volkhov:400,400italic,700,700italic');
 @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro);
 
-
-.plot-download {
-  font-size: 13px;
-  height: 30px;
-  width: 85px;
-  padding: 5px;
-  margin: 3px;
-}
-.pdf-download {
-  font-size: 13px;
-  height: 30px;
-  width: 60px;
-  padding: 5px;
-  margin: 3px;
-}
-
 #save_and_close_button{
   position: absolute;
   top: 5px;
@@ -680,3 +664,20 @@ http://tympanus.net/codrops/licensing/
 	-o-transform: translateY(0%);
 	transform: translateY(0%);
 }
+
+.plot-download {
+  color: white;
+  background: #222222;
+  font-size: 12px;
+  height: 30px;
+  width: 85px;
+  padding: 5px;
+  margin: 3px;
+  border-radius: 10px;
+}
+.pdf-download {
+  color: white;
+  width: 60px;
+}
+
+

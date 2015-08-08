@@ -79,9 +79,14 @@ output$density_plot_out <- renderPlot({
 
 # download plot
 output$download_density <- downloadHandler(
-  filename = 'shinystan_density.RData',
+  filename = 'shinystan-density-gg.RData',
   content = function(file) {
-    shinystan_density <- density_plot()
-    save(shinystan_density, file = file)
+    shinystan_density_gg <- density_plot()
+    save(shinystan_density_gg, file = file)
   }
 )
+output$save_pdf_density = downloadHandler(
+  filename = "shinstan-density.pdf",
+  content = function(file) {
+    ggsave(file, plot = density_plot(), device = pdf)
+})

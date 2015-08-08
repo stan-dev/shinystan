@@ -31,9 +31,9 @@ absolutePanel(id = "controls_multiparam",
                                        checkboxInput("param_plot_show_density", label = "Kernal density estimates", value = FALSE),
                                        checkboxInput("param_plot_show_ci_line", label = "95% interval line", value = TRUE),
                                        radioButtons("param_plot_point_est", label = "Point estimate", choices = c("Median", "Mean"), selected = "Median", inline = TRUE),
+                                       hr(class = "hroptions"),
                                        downloadButton("download_multiparam_plot", "ggplot2", class = "plot-download"),
                                        downloadButton('save_pdf_multiparam', "pdf", class = "plot-download pdf-download")
-                                       
                       ),
                       conditionalPanel(condition = "input.multiparam_options_display == 'Aesthetics'",
                                        withMathJax(),
@@ -46,10 +46,10 @@ absolutePanel(id = "controls_multiparam",
                                                         selectInput("param_plot_rhat_palette", span(style = "font-size: 12px", "Rhat palette"), choices = c("Blues", "Grays", "Greens", "Oranges", "Purples", "Reds"), selected = "Blues", selectize=TRUE))
                       ),
                       conditionalPanel(condition = "input.multiparam_options_display == 'Sorting'",
-                                       radioButtons("param_plot_sort_j", label = "Sort parameters in select list by", choices = c(Row = TRUE, Column = FALSE), selected = TRUE, inline = TRUE),
+                                       radioButtons("param_plot_sort_j", label = "Sort parameters in select list by", 
+                                                    hoices = c(Row = TRUE, Column = FALSE), selected = TRUE, inline = TRUE),
                                        helpText(style = "font-size: 12px;","If applicable, sort with x[1,2] before x[2,1] or vice-versa")
-                      ),
-                      br()
+                      )
                     )
                 )
               )

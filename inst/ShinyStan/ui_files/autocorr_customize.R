@@ -33,8 +33,9 @@ absolutePanel(id = "controls_autocorr",
                       checkboxInput("ac_warmup", label = "Include warmup", FALSE),
                       checkboxInput("ac_combine", label = "Combine chains", FALSE),
                       checkboxInput("ac_flip", label = "Flip facets", FALSE),
-                      downloadButton("download_autocorr", "Save ggplot2 object"),
-                      br(),br()
+                      hr(class = "hroptions"),
+                      downloadButton("download_autocorr", "ggplot2", class = "plot-download"),
+                      downloadButton('save_pdf_autocorr', "pdf", class = "plot-download pdf-download")
                     )
                 )
               )

@@ -61,9 +61,14 @@ output$multiparam_plot_out <- renderPlot({
 
 # download the plot
 output$download_multiparam_plot <- downloadHandler(
-  filename = 'shinystan_multiparam_plot.RData',
+  filename = 'shinystan-multiparam-gg.RData',
   content = function(file) {
-    shinystan_multiparam_plot <- multiparam_plot()
-    save(shinystan_multiparam_plot, file = file)
+    shinystan_multiparam_gg <- multiparam_plot()
+    save(shinystan_multiparam_gg, file = file)
   }
 )
+output$save_pdf_multiparam = downloadHandler(
+  filename = "shinstan-multiparam.pdf",
+  content = function(file) {
+    ggsave(file, plot = multiparam_plot(), device = pdf)
+})

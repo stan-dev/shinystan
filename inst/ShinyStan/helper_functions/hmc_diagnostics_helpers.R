@@ -191,7 +191,8 @@ thm_no_yaxs <- thm + no_yaxs
                         drawXAxis = TRUE, drawYAxis = !fill_graph, 
                         drawAxesAtZero = TRUE, axisLineColor = "black") %>%
     dygraphs::dyAxis("x", pixelsPerLabel = 1e6, axisLineWidth = 3) %>%
-    dygraphs::dyAxis("y", pixelsPerLabel = 30, axisLabelWidth = 20) %>%
+    dygraphs::dyAxis("y", pixelsPerLabel = 30, axisLabelWidth = 30,
+                     axisLabelFontSize = 11) %>%
     dygraphs::dyRangeSelector(height = 1, retainDateWindow = TRUE) %>%
     dygraphs::dyLegend(show = "never") %>%
     dygraphs::dyHighlight(highlightCircleSize = 2,

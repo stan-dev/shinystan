@@ -13,8 +13,6 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-
-
 metrop_lab <- "Mean Metrop. Acceptance"
 stepsize_lab <- "Sampled Step Size"
 lp_lab <- "Log Posterior"

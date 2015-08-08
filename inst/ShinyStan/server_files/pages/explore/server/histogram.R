@@ -20,7 +20,7 @@ hist_transform_x <- eventReactive(
   input$hist_transform_x
 )
 
-hist_plot <- reactive({
+histogram_plot <- reactive({
   validate(need(input$param, message = FALSE),
            need(!is.null(input$hist_chain), message = FALSE))
   chain <- input$hist_chain
@@ -40,15 +40,20 @@ hist_plot <- reactive({
 })
 
 output$hist_plot_out <- renderPlot({
-  x <- hist_plot()
+  x <- histogram_plot()
   suppress_and_print(x)
 }, bg = "transparent")
 
 # download plot
 output$download_histogram <- downloadHandler(
-  filename = 'shinystan_histogram.RData',
+  filename = 'shinystan-histogram-gg.RData',
   content = function(file) {
-    shinystan_histogram <- hist_plot()
-    save(shinystan_histogram, file = file)
+    shinystan_histogram_gg <- histogram_plot()
+    save(shinystan_histogram_gg, file = file)
   }
 )
+output$save_pdf_histogram = downloadHandler(
+  filename = "shinstan-histogram.pdf",
+  content = function(file) {
+    ggsave(file, plot = histogram_plot(), device = pdf)
+})

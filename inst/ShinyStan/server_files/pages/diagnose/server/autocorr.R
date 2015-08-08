@@ -48,9 +48,13 @@ output$autocorr_plot_out <- renderPlot({
 
 # download the plot
 output$download_autocorr <- downloadHandler(
-  filename = paste0('shinystan_autocorr.RData'),
+  filename = paste0('shinystan-autocorr-gg.RData'),
   content = function(file) {
-    shinystan_autocorr <- autocorr_plot
-    save(shinystan_autocorr, file = file)
-  }
-)
+    shinystan_autocorr_gg <- autocorr_plot()
+    save(shinystan_autocorr_gg, file = file)
+})
+output$save_pdf_autocorr = downloadHandler(
+  filename = "shinstan-autocorr.pdf",
+  content = function(file) {
+    ggsave(file, plot = autocorr_plot(), device = pdf)
+})
