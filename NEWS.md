@@ -14,14 +14,14 @@ unique url.
 ### Some of the new plots and features in ShinyStan app 
 * Rebranding (new look to reflect changes to Stan logo and website)
 * HMC/NUTS diagnostic plots ('Diagnose' page, 'HMC/NUTS (plots)' tab)
-* Specify arbitrary transformations (e.g. log, logit, sqrt, etc.) for density, 
+* Specify transformations (e.g. log, logit, sqrt, etc.) for density, 
 histogram, bivariate, trivariate plots (on 'Explore' page) and HMC/NUTS diagnostics
 plots.
-* Bivariate scatterplot plot also shows divergent iterations and max treedepth 
+* Many plots can now also be saved as pdf
+* Bivariate scatterplot plot also shows divergent transitions and max treedepth 
 saturation (on 'Explore' page)
 * (Experimental) Introduce basic graphical posterior predictive 
 checking ('Diagnose' page, 'PPcheck' tab) for limited class of models
-* Option to show partial autocorrelations 
-('Diagnose' page, 'Autocorrelation' tab)
+* Option to show partial autocorrelations ('Diagnose' page, 'Autocorrelation' tab)
 * Better customization of of posterior summary statistics table
 * Many improvements to GUI design
