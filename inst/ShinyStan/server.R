@@ -14,11 +14,12 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 # options(shiny.trace=TRUE)
+# helpers <- list.files("helper_functions", full.names = TRUE, recursive = TRUE)
+# for (h in helpers) source(h, local = TRUE)
+# source("server_files/utilities/ppcheck_names_descriptions.R", local = TRUE)
+object <- get(".shinystan_temp_object")
 source("global_utils.R", local = TRUE)
-helpers <- list.files("helper_functions", full.names = TRUE, recursive = TRUE)
-for (h in helpers) source(h, local = TRUE)
-source("server_files/utilities/ppcheck_names_descriptions.R", local = TRUE)
-source("server_files/utilities/extract_sso.R", local=TRUE)
+source(file.path("server_files","utilities","extract_sso.R"), local=TRUE)
 
 # Begin shinyServer -------------------------------------------------------
 # _________________________________________________________________________

@@ -13,17 +13,16 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-# output$ui_about <- renderUI({
-  div(style = "text-align: center; margin-top: 100px;",
-      a(style = "font-size: 16px;", strong("Stan Development Team"), 
-        href="http://mc-stan.org/team/"),
-      br(),
-      a(style = "font-size: 14px;", strong("mc-stan.org"), 
-        href="http://mc-stan.org/team/"),
-  div(class = "aoptions",
-      actionLink(inputId = "shinystan_citation_show", label = "Show Citation")),
-  div(style = "text-align: left;", 
-    shinyjs::hidden(wellPanel(id = "citation_div", pre(id = "citation_text", 
+div(style = "text-align: center; margin-top: 100px;",
+    a(style = "font-size: 16px;", strong("Stan Development Team"), 
+      href="http://mc-stan.org/team/"),
+    br(),
+    a(style = "font-size: 14px;", strong("mc-stan.org"), 
+      href="http://mc-stan.org/team/"),
+    div(class = "aoptions",
+        actionLink(inputId = "shinystan_citation_show", label = "Show Citation")),
+    div(style = "text-align: left;", 
+        shinyjs::hidden(wellPanel(id = "citation_div", pre(id = "citation_text", 
 "@Misc{shinystan-software:2015,
 title = {{shinystan}: {R} Package for Interactive Exploration of {MCMC} samples, Version 2.0.0},
 author = {Jonah Gabry and Stan Development Team},
@@ -38,7 +37,7 @@ url = {https://mc-stan.org}
     h6(style = "font-size: 12px;", "Contributors"),
     helpText(style = "font-size: 12px;", 
              includeHTML("html/contribs.html")
-             ),
+    ),
     br(),
     h6("Logo"),
     helpText(style = "font-size: 12px;", "Michael Betancourt"),
@@ -49,5 +48,4 @@ url = {https://mc-stan.org}
     helpText(style = "font-size: 12px;", "ShinyStan is powered by the", 
              a(href = "http://shiny.rstudio.com", 
                "Shiny web application framework"), "(RStudio)")
-  )
-# })
+)

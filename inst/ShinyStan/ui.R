@@ -13,14 +13,9 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-source("global_utils.R", local = TRUE)
-helpers <- list.files("helper_functions", full.names = TRUE, recursive = TRUE)
-for (h in helpers) source(h, local = TRUE)
-# load pp_check plot_names and plot_descriptions
-source("server_files/utilities/ppcheck_names_descriptions.R", local = TRUE)
-
-
 object <- get(".shinystan_temp_object")
+source("global_utils.R", local = TRUE)
+
 corner_link <- HTML(paste0('<a href=',
                            shQuote(paste0("http://mc-stan.org",sep='')), 
                            '>', 'Stan', '</a>'))
@@ -53,17 +48,10 @@ tagList(
                               h2(paste("Model:")),
                               h4(object@model_name)
                           )
-                          #                           div(id = "links_nav", class = "cl-effect-9",
-                          #                               h3(toc_entry("Diagnose")),
-                          #                               h3(toc_entry("Estimate")),
-                          #                               h3(toc_entry("Explore"))
-                          #                           )
                       ),
                       br(),br(),br(),br(),
                       includeHTML("html/home_page_links.html")
              ),
-             
-             
              
              #### PAGE: DIAGNOSE ####
              tabPanel(title = "Diagnose", icon = icon("medkit"),
@@ -71,13 +59,13 @@ tagList(
                         
                         #### hmc/nuts plots ####
                         tabPanel("HMC/NUTS (plots)",
-                                 uiOutput("ui_diagnostics_customize"),
+                                 source(file.path("ui_files", "diagnostics_customize.R"), local = TRUE)$value,
                                  navlistPanel(id = "diagnostics_navlist",
-                                              tabPanel("By model parameter", uiOutput("ui_diagnostics_parameter")),
-                                              tabPanel("Sample information", uiOutput("ui_diagnostics_sample")),
-                                              tabPanel("Treedepth information", uiOutput("ui_diagnostics_treedepth")),
-                                              tabPanel("N divergent information", uiOutput("ui_diagnostics_ndivergent")),
-                                              tabPanel("Step size information", uiOutput("ui_diagnostics_stepsize")),
+                                              tabPanel("By model parameter", source(file.path("ui_files", "diagnostics_by_parameter.R"), local = TRUE)$value),
+                                              tabPanel("Sample information", source(file.path("ui_files", "diagnostics_sample.R"), local = TRUE)$value),
+                                              tabPanel("Treedepth information", source(file.path("ui_files", "diagnostics_treedepth.R"), local = TRUE)$value),
+                                              tabPanel("N divergent information", source(file.path("ui_files", "diagnostics_ndivergent.R"), local = TRUE)$value),
+                                              tabPanel("Step size information", source(file.path("ui_files", "diagnostics_stepsize.R"), local = TRUE)$value),
                                               # tabPanel("Help", uiOutput("ui_diagnostics_help")),
                                               well = FALSE,
                                               widths = c(2, 10)
@@ -88,26 +76,18 @@ tagList(
                                  fluidRow(
                                    column(5, h2("Summary of sampler parameters")),
                                    column(3, offset = 4, a_glossary("open_glossary_from_nuts_table"))
-                                ), 
-                                 uiOutput("ui_sampler_stats_customize"),
+                                 ), 
+                                 source(file.path("ui_files", "sampler_stats_customize.R"), local = TRUE)$value,
                                  DT::dataTableOutput("sampler_summary"),
                                  br()
                         ),
                         #### rhat, n_eff, mcse ####
                         tabPanel("\\(\\hat{R}, n_{eff}, \\text{se}_{mean}\\)", 
-                                 fluidRow(
-                                   column(9, uiOutput("ui_rhat_neff_mcse"),
-                                          hr(),
-                                          uiOutput("ui_rhat_neff_mcse_warnings")),
-                                   column(3, 
-                                          a_glossary("open_glossary_from_rhat"),
-                                          a_options("rhat_warnings"),
-                                          uiOutput("ui_warnings_customize"))
-                                 )
+                                 source(file.path("ui_files", "rhat_neff_mcse_layout.R"), local = TRUE)$value
                         ),
                         #### autocorrelation ####
                         tabPanel("Autocorrelation", 
-                                 uiOutput("ui_autocorr_customize"),
+                                 source(file.path("ui_files", "autocorr_customize.R"), local = TRUE)$value,
                                  wellPanel(
                                    fluidRow(
                                      column(8, selectizeInput("ac_params", width = "100%", label = h5("Select or enter parameter names"), 
@@ -121,7 +101,7 @@ tagList(
                         tabPanel(title = "PPcheck", 
                                  h2("Graphical posterior predictive checks"),
                                  h6("Experimental feature"),
-                                 uiOutput("ui_ppcheck_navlist"),
+                                 source(file.path("ui_files", "pp_navlist.R"), local = TRUE)$value,
                                  br()
                         )
                         
@@ -145,61 +125,20 @@ tagList(
                                      column(2, a_options("multiparam"))
                                    )
                                  ),
-                                 uiOutput("ui_multiparam_customize"),
+                                 source(file.path("ui_files", "multiparam_customize.R"), local = TRUE)$value,
                                  plotOutput("multiparam_plot_out", width = "90%")
                         ),
                         #### posterior summary statistics ####
                         tabPanel("Posterior summary statistics", #icon = icon("table", "fa-2x"),
-                                 # br(),
-                                 fluidRow(
-                                   column(4, 
-                                          helpText(style = "margin-bottom: 2px;", "Table tips:"),
-                                          helpText(style = "margin-top: 2px; font-size: 11px;", 
-                                                   "Drag column names to rearrange the table columns."
-                                          )),
-                                   column(2, offset = 4, 
-                                          div(
-                                            strong(id = "table_digits_txt", "Digits"),
-                                            numericInput("table_digits", label = NULL, 
-                                                         value = 1, min = 0, max = 7, step = 1)
-                                          )
-                                   ),
-                                   column(2, a_glossary("open_glossary_from_table"))
-                                 ),
+                                 source(file.path("ui_files", "table_customize.R"), local = TRUE)$value,
                                  div(DT::dataTableOutput("all_summary_out"), 
                                      style = "overflow-x: auto")
                         ),
                         tabPanel("Generate LaTeX table", #icon = icon("table", "fa-2x"),
                                  br(),
                                  sidebarLayout(
-                                   mainPanel= mainPanel(width = 8,
-                                                        actionButton("tex_go", withMathJax("Update \\(\\LaTeX\\)"), 
-                                                                     icon = icon("print", lib = "glyphicon")),
-                                                        br(),br(),
-                                                        verbatimTextOutput("summary_stats_latex_out")
-                                   ),
-                                   sidebarPanel = sidebarPanel(width = 4, 
-                                                               h4(strong(withMathJax("\\(\\LaTeX\\) table generator"))),
-                                                               selectInput("tex_params", width = "100%", 
-                                                                              label = "Parameters (blank = all)", multiple = TRUE,
-                                                                              choices = .make_param_list_with_groups(object),
-                                                                              selected = if (length(object@param_names) == 1) object@param_names else object@param_names[1:2]),
-                                                               numericInput("tex_digits", label = "Digits", value = 1, min = 0),
-                                                               div(style = "padding: 1px;",
-                                                                   checkboxGroupInput("tex_columns", label = "Columns",
-                                                                                      choices = c("Rhat", "Effective sample size" = "n_eff", "Posterior mean" = "mean", 
-                                                                                                  "Posterior standard deviation" = "sd", "Monte Carlo error" = "se_mean", 
-                                                                                                  "Quantile: 2.5%" = "2.5%", "Quantile: 25%" = "25%", "Quantile: 50%" = "50%", 
-                                                                                                  "Quantile: 75%" = "75%", "Quantile: 97.5%" = "97.5%"),
-                                                                                      selected = c("Rhat", "n_eff", "mean", "sd", "2.5%", "50%", "97.5%"))
-                                                               ),
-                                                               textInput("tex_caption", label = "Caption"),
-                                                               checkboxGroupInput("tex_pkgs", "Packages",
-                                                                                  choices = c("Booktabs", "Longtable"),
-                                                                                  selected = "Booktabs", inline = TRUE
-                                                               ),
-                                                               br()
-                                   )
+                                   mainPanel = source(file.path("ui_files", "table_latex_main.R"), local = TRUE)$value,
+                                   sidebarPanel = source(file.path("ui_files", "table_latex_sidebar.R"), local = TRUE)$value
                                  )
                         )
                       ) # End tabsetPanel
@@ -225,7 +164,7 @@ tagList(
                                             ),
                                             h5("Trace"),
                                             dygraphs::dygraphOutput("multiview_trace_out", height = "200px"),
-                                            uiOutput("ui_dynamic_trace_helptext")
+                                            source(file.path("ui_files", "dynamic_trace_helptext.R"), local = TRUE)$value
                                    ),
                                    #### bivariate #####
                                    tabPanel("Bivariate",
@@ -243,9 +182,9 @@ tagList(
                                    ),
                                    #### trivariate #####
                                    tabPanel("Trivariate", 
-                                            uiOutput("ui_trivariate_select"),
+                                            source(file.path("ui_files", "trivariate_select.R"), local = TRUE)$value,
                                             a_options("trivariate"),
-                                            uiOutput("ui_triviariate_customize"),
+                                            source(file.path("ui_files", "trivariate_customize.R"), local = TRUE)$value,
                                             br(),
                                             threejs::scatterplotThreeOutput("trivariate_plot_out", height = "400px"),
                                             helpText(style = "font-size: 12px;", "Use your mouse and trackpad to rotate the plot and zoom in or out.")
@@ -253,7 +192,7 @@ tagList(
                                    #### density #####
                                    tabPanel("Density",
                                             a_options("density"),
-                                            uiOutput("ui_density_customize"),
+                                            source(file.path("ui_files", "density_customize.R"), local = TRUE)$value,
                                             plotOutput("density_plot_out", height = "250px"),
                                             hr(),
                                             downloadButton("download_density", "Save as ggplot2 object")
@@ -261,7 +200,7 @@ tagList(
                                    #### histogram #####
                                    tabPanel("Histogram", 
                                             a_options("hist"),
-                                            uiOutput("ui_hist_customize"),
+                                            source(file.path("ui_files", "hist_customize.R"), local = TRUE)$value,
                                             plotOutput("hist_plot_out", height = "250px"),
                                             hr(),
                                             downloadButton("download_histogram", "Save as ggplot2 object")
@@ -275,23 +214,21 @@ tagList(
                         
                         #### PAGE: Model Code ####
                         tabPanel(title = "Model Code", 
-                                 uiOutput("ui_model_code")
+                                 source(file.path("ui_files", "model_code.R"), local = TRUE)$value
                         ), # End Model Code
                         
                         #### PAGE: Notepad ####
                         tabPanel(title = "Notepad",
-                                 uiOutput("ui_notepad")
+                                 source(file.path("ui_files", "notepad.R"), local = TRUE)$value
                         ), # End Notepad
                         
                         #### PAGE: About ####
                         tabPanel(title = "About", 
                                  logo_and_name(),
                                  div(style = "margin-top: 75px;",
-                                   # uiOutput("ui_about")
-                                   source(file.path("server_files", "pages", "more", 
-                                                    "ui", "about.R"))$value
+                                     source(file.path("ui_files", "about.R"), local = TRUE)$value
                                    )
-                        ), 
+                        ), # End About
                         
                         #### PAGE: Help ####
                         tabPanel(title = "Help",
@@ -301,8 +238,8 @@ tagList(
                                                 inputId = "toggle_help_glossary", 
                                                 label = h4("Toggle Help/Glossary"))
                                  ),
-                                 uiOutput("ui_help"),
-                                 uiOutput("ui_glossary")
+                                 source(file.path("ui_files", "help.R"), local = TRUE)$value,
+                                 source(file.path("ui_files", "glossary.R"), local = TRUE)$value
                         )
                         
              ) # End navbarMenu
