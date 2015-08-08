@@ -49,7 +49,7 @@ Imports:
     gtools,
     markdown (>= 0.7.4),
     methods,
-    reshape2 (>= 1.4.1),
+    reshape2,
     stats,
     shinyjs (>= 0.0.7.0),
     shinythemes (>= 1.0.1),
