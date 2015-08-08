@@ -31,7 +31,9 @@ absolutePanel(id = "controls_multiparam",
                                        checkboxInput("param_plot_show_density", label = "Kernal density estimates", value = FALSE),
                                        checkboxInput("param_plot_show_ci_line", label = "95% interval line", value = TRUE),
                                        radioButtons("param_plot_point_est", label = "Point estimate", choices = c("Median", "Mean"), selected = "Median", inline = TRUE),
-                                       downloadButton("download_multiparam_plot", "Save ggplot2 object")
+                                       downloadButton("download_multiparam_plot", "ggplot2", class = "plot-download"),
+                                       downloadButton('save_pdf_multiparam', "pdf", class = "plot-download pdf-download")
+                                       
                       ),
                       conditionalPanel(condition = "input.multiparam_options_display == 'Aesthetics'",
                                        withMathJax(),

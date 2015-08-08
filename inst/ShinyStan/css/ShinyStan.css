@@ -31,6 +31,21 @@ complimentary accent colors
 @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro);
 
 
+.plot-download {
+  font-size: 13px;
+  height: 30px;
+  width: 85px;
+  padding: 5px;
+  margin: 3px;
+}
+.pdf-download {
+  font-size: 13px;
+  height: 30px;
+  width: 60px;
+  padding: 5px;
+  margin: 3px;
+}
+
 #save_and_close_button{
   position: absolute;
   top: 5px;

@@ -174,7 +174,8 @@ tagList(
                                                      "Yellow points indicate a transition that hit the maximum treedepth",
                                                      "rather than terminated its evolution normally."),
                                             hr(),
-                                            downloadButton("download_bivariate", "Save as ggplot2 object")
+                                            downloadButton("download_bivariate", "ggplot2",  class = "plot-download"),
+                                            downloadButton('save_pdf_bivariate', "pdf", class = "plot-download pdf-download")
                                    ),
                                    #### trivariate #####
                                    tabPanel("Trivariate", 
@@ -191,7 +192,8 @@ tagList(
                                             source(file.path("ui_files", "density_customize.R"), local = TRUE)$value,
                                             plotOutput("density_plot_out", height = "250px"),
                                             hr(),
-                                            downloadButton("download_density", "Save as ggplot2 object")
+                                            downloadButton("download_density", "ggplot2",  class = "plot-download"),
+                                            downloadButton('save_pdf_density', "pdf", class = "plot-download pdf-download")
                                    ),
                                    #### histogram #####
                                    tabPanel("Histogram", 
@@ -199,7 +201,8 @@ tagList(
                                             source(file.path("ui_files", "hist_customize.R"), local = TRUE)$value,
                                             plotOutput("hist_plot_out", height = "250px"),
                                             hr(),
-                                            downloadButton("download_histogram", "Save as ggplot2 object")
+                                            downloadButton("download_histogram", "ggplot2",  class = "plot-download"),
+                                            downloadButton('save_pdf_histogram', "pdf", class = "plot-download pdf-download")
                                    )
                                    
                       ) # End navlist
