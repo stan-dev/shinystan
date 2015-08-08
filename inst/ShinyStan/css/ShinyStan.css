@@ -665,6 +665,8 @@ http://tympanus.net/codrops/licensing/
 	transform: translateY(0%);
 }
 
+
+/* ggplot, pdf download buttons */
 .plot-download {
   color: white;
   background: #222222;
@@ -673,11 +675,34 @@ http://tympanus.net/codrops/licensing/
   width: 85px;
   padding: 5px;
   margin: 3px;
-  border-radius: 10px;
+  border-radius: 15px;
 }
 .pdf-download {
-  color: white;
   width: 60px;
 }
+.plot-download:hover {
+  background: #8B69AA;
+  color: #222222;
+  font-weight: bold;
+}
+.pdf-download:hover {
+  background: #00888B;
+}
 
-
+/* transform action buttons */
+.transform-go {
+  color: white;
+  background: #222222;
+  font-size: 12px;
+  font-weight: bold;
+  height: 30px;
+  width: 100px;
+  padding: 5px;
+  margin: 3px;
+  border-radius: 15px;
+}
+.transform-go:hover {
+  background: white;
+  color: #222222;
+  font-weight: bolder;
+}

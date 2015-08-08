@@ -51,7 +51,8 @@ output$ui_bivariate_customize <- renderUI({
           fluidRow(
             column(3, transformation_selectInput("bivariate_transform_x")),
             column(3, transformation_selectInput("bivariate_transform_y")),
-            column(2, actionButton("bivariate_transform_go", label = "Transform"))
+            column(2, actionButton("bivariate_transform_go", label = "Transform",
+                                   class = "transform-go"))
           ),
           hr(class = "hroptions"),
           selectInput("bivariate_options_display", label = strongBig("Control"),

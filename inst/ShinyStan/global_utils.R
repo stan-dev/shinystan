@@ -1,7 +1,6 @@
 
 helpers <- file.path("helper_functions", list.files("helper_functions", full.names = FALSE))
 for (h in helpers) source(h, local = TRUE)
-# source(file.path("server_files","utilities","extract_sso.R"), local=TRUE)
 source(file.path("server_files","utilities","ppcheck_names_descriptions.R"), local = TRUE)
 
 # avoid conflict with inline::code if rstan is loaded

@@ -14,7 +14,7 @@ div(id = "diagnostics_customize",
           choices = .param_list, 
           selected = .param_list[1])),
         column(3, transformation_selectInput("diagnostic_param_transform")),
-        column(2, actionButton("diagnostic_param_transform_go", "Transform"))
+        column(2, actionButton("diagnostic_param_transform_go", "Transform", class = "transform-go"))
       ),
       helpText(strong(style = "color: red; font-size: 13px;", 
                       textOutput("diagnostics_warnings_text")))

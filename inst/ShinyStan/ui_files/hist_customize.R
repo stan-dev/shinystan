@@ -22,7 +22,8 @@ shinyjs::hidden(
         transform_helpText("x"),
         fluidRow(
           column(4, transformation_selectInput("hist_transform_x")),
-          column(2, actionButton("hist_transform_x_go", label = "Transform"))
+          column(2, actionButton("hist_transform_x_go", label = "Transform",
+                                 class = "transform-go"))
         ),
         hr(class = "hroptions"),
         fluidRow(

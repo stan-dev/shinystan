@@ -24,7 +24,8 @@ shinyjs::hidden(
           column(3, transformation_selectInput("trivariate_transform_x")),
           column(3, transformation_selectInput("trivariate_transform_y")),
           column(3, transformation_selectInput("trivariate_transform_z")),
-          column(2, actionButton("trivariate_transform_go", label = "Transform"))
+          column(2, actionButton("trivariate_transform_go", label = "Transform",
+                                 class = "transform-go"))
         ),
         hr(class = "hroptions"),
         fluidRow(
