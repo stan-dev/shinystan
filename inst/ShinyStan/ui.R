@@ -15,17 +15,13 @@
 
 object <- get(".shinystan_temp_object")
 source("global_utils.R", local = TRUE)
+rm(object)
+gc()
 
 corner_link <- HTML(paste0('<a href=',
                            shQuote(paste0("http://mc-stan.org",sep='')), 
                            '>', 'Stan', '</a>'))
-save_and_close <- tags$button(
-  id = 'save_and_close_button',
-  type = "button",
-  class = "btn action-button",
-  onclick = "window.close();",
-  "Save & Close"
-)
+
 # Begin shinyUI -----------------------------------------------------------
 # _________________________________________________________________________
 tagList(
@@ -46,7 +42,7 @@ tagList(
                           div(id = "model-name",
                               br(),
                               h2(paste("Model:")),
-                              h4(object@model_name)
+                              h4(.model_name)
                           )
                       ),
                       br(),br(),br(),br(),
@@ -91,7 +87,7 @@ tagList(
                                  wellPanel(
                                    fluidRow(
                                      column(8, selectizeInput("ac_params", width = "100%", label = h5("Select or enter parameter names"), 
-                                                              choices = .make_param_list_with_groups(object), multiple = TRUE)),
+                                                              choices = .param_list_with_groups, multiple = TRUE)),
                                      column(3, offset = 1, a_options("autocorr"))
                                    )
                                  ),
@@ -148,8 +144,8 @@ tagList(
              tabPanel(title = "Explore", icon = icon("eye-open", lib = "glyphicon"),
                       fluidRow(
                         column(3, selectizeInput(inputId = "param", label = h4("Select parameter"), 
-                                                 choices = .make_param_list(object), 
-                                                 selected = .make_param_list(object)[1], 
+                                                 choices = .param_list, 
+                                                 selected = .param_list[1], 
                                                  multiple = FALSE)),
                         column(7, offset = 1, DT::dataTableOutput("parameter_summary_out"))
                       ),
@@ -169,8 +165,8 @@ tagList(
                                    #### bivariate #####
                                    tabPanel("Bivariate",
                                             selectizeInput("bivariate_param_y", label = strong(style = "color: #006DCC;", "y-axis"), 
-                                                           choices = rev(.make_param_list(object)), 
-                                                           selected = rev(.make_param_list(object))[1], multiple = FALSE),
+                                                           choices = rev(.param_list), 
+                                                           selected = rev(.param_list)[1], multiple = FALSE),
                                             a_options("bivariate"),
                                             uiOutput("ui_bivariate_customize"),
                                             plotOutput("bivariate_plot_out", height = "350px"),

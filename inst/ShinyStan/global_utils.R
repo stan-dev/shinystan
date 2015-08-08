@@ -7,6 +7,14 @@ source(file.path("server_files","utilities","ppcheck_names_descriptions.R"), loc
 # avoid conflict with inline::code if rstan is loaded
 code <- shiny::code
 
+save_and_close <- tags$button(
+  id = 'save_and_close_button',
+  type = "button",
+  class = "btn action-button",
+  onclick = "window.close();",
+  "Save & Close"
+)
+
 logo_and_name <- function() {
   div(
       div(img(src = "wide_ensemble.png", 
@@ -228,7 +236,10 @@ help_dynamic <- hT11(
 # help_violin <- helpText("The violin plot ")
 
 # to use in ui.R
+.model_name <- slot(object, "model_name")
+.param_names <- slot(object, "param_names")
 .param_list <- .make_param_list(object)
+.param_list_with_groups <- .make_param_list_with_groups(object)
 .nChains <- slot(object, "nChains")
 .nIter <- slot(object, "nIter")
 .nWarmup <- slot(object, "nWarmup")
