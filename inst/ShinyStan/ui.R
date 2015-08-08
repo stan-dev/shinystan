@@ -37,6 +37,7 @@ tagList(
              theme = shinythemes::shinytheme("flatly"),
              
              tabPanel(title = strong(style = "color: #B2011D;", "ShinyStan"),
+                      value = "home",
                       logo_and_name(),
                       div(class = "home-links",
                           div(id = "model-name",

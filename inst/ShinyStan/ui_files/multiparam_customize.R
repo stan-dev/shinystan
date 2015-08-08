@@ -47,7 +47,7 @@ absolutePanel(id = "controls_multiparam",
                       ),
                       conditionalPanel(condition = "input.multiparam_options_display == 'Sorting'",
                                        radioButtons("param_plot_sort_j", label = "Sort parameters in select list by", 
-                                                    hoices = c(Row = TRUE, Column = FALSE), selected = TRUE, inline = TRUE),
+                                                    choices = c(Row = TRUE, Column = FALSE), selected = TRUE, inline = TRUE),
                                        helpText(style = "font-size: 12px;","If applicable, sort with x[1,2] before x[2,1] or vice-versa")
                       )
                     )

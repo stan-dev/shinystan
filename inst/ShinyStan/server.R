@@ -54,14 +54,6 @@ function(input, output, session) {
         shinyjs::onclick(id, updateTabsetPanel(session, "nav", selected = x))
        })
     })
-#     shinyjs::onclick("toc_estimate", 
-#                      updateTabsetPanel(session, "nav", selected = "Estimate"))
-#     shinyjs::onclick("toc_diagnose", 
-#                      updateTabsetPanel(session, "nav", selected = "Diagnose"))
-#     shinyjs::onclick("toc_explore", 
-#                      updateTabsetPanel(session, "nav", selected = "Explore"))
-#     shinyjs::onclick("toc_more", 
-#                      updateTabsetPanel(session, "nav", selected = "Model Code"))
     shinyjs::onclick("open_glossary_from_table",
                      updateTabsetPanel(session, "nav", selected = "Help"))
     shinyjs::onclick("open_glossary_from_nuts_table", 
