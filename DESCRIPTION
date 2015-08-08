@@ -2,9 +2,9 @@ Package: shinystan
 Title: Interactive Visual and Numerical Diagnostics and Posterior Analysis for 
   for Bayesian Models
 Version: 2.0.0
-Date: 2015-08-07
+Date: 2015-08-08
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"),
-    email = "jsg2201@columbia.edu", comment = "Stan Development Team"),
+    email = "jsg2201@columbia.edu"),
       person(family = "Stan Development Team", role = "ctb"),
       person("Michael", "Andreae", role = "ctb"),
       person("Michael", "Betancourt", role = "ctb"),
@@ -37,7 +37,7 @@ Depends:
 License: GPL (>=3)
 LazyData: true
 Suggests: 
-    coda (>= 0.17-1),
+    coda,
     knitr (>= 1.9),
     rstan (>= 2.7),
     shinyapps (>= 0.4),

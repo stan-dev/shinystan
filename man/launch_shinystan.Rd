@@ -11,11 +11,10 @@ launch_shinystan(object, rstudio = getOption("shinystan.rstudio"), ...)
 \code{\link{as.shinystan}} for converting other objects to a shinystan
 object (sso).}
 
-\item{rstudio}{For RStudio users, should the app launch in RStudio's Viewer?
-The default is to launch the app in the user's default web browser instead
-of the RStudio viewer unless the user has set
-\code{options(shinystan.rstudio = TRUE)}, in which case the default is to
-launch in RStudio's Viewer.}
+\item{rstudio}{Only relevant for RStudio users. If \code{TRUE} (the default),
+the app will launch in RStudio's pop-up Viewer rather than the default web
+browser. Users can change the default to \code{FALSE} by setting the global
+option \code{options(shinystan.rstudio = FALSE)}.}
 
 \item{...}{Optional arguments to pass to \code{\link[shiny]{runApp}}.}
 }
