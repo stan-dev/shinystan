@@ -58,13 +58,16 @@ function(input, output, session) {
                      updateTabsetPanel(session, "nav", selected = "Glossary"))
     shinyjs::onclick("open_glossary_from_nuts_table", 
                      updateTabsetPanel(session, "nav", selected = "Glossary"))
-    shinyjs::onclick("open_glossary_from_rhat", 
-                     updateTabsetPanel(session, "nav", selected = "Glossary"))
-#     shinyjs::onclick("toggle_help_glossary", {
-#       shinyjs::toggle(id = "help_div", anim = TRUE, animType = "slide")
-#       shinyjs::toggle(id = "glossary_div", anim = TRUE, animType = "slide")
-#     })
+#     shinyjs::onclick("open_glossary_from_rhat", 
+#                      updateTabsetPanel(session, "nav", selected = "Glossary"))
   })
+  observeEvent(input$open_quick_rhat, 
+               shinyjs::info(includeText("text/quick_rhat.txt")))
+  observeEvent(input$open_quick_neff, 
+               shinyjs::info(includeText("text/quick_neff.txt")))
+  observeEvent(input$open_quick_mcse, 
+               shinyjs::info(includeText("text/quick_mcse.txt")))
+  
   
   diagnostic_inputs <- paste0("diagnostic_", 
                              c("param", "param_transform", "param_transform_go"))

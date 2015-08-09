@@ -29,8 +29,6 @@ tagList(
                 "Please enable JavaScript to use ShinyStan."),
   shinyjs::useShinyjs(),
   includeCSS("css/ShinyStan.css"),
-  # includeCSS("css/ShinyStan_datatables.css"),
-  includeCSS("css/ShinyStan_dygraphs.css"),
   navbarPage(save_and_close, id = "nav", #title = NULL,
              windowTitle = "ShinyStan", collapsible = TRUE, 
              inverse = FALSE, position = "fixed-top",
@@ -63,7 +61,7 @@ tagList(
                                               tabPanel("Treedepth information", source(file.path("ui_files", "diagnostics_treedepth.R"), local = TRUE)$value),
                                               tabPanel("N divergent information", source(file.path("ui_files", "diagnostics_ndivergent.R"), local = TRUE)$value),
                                               tabPanel("Step size information", source(file.path("ui_files", "diagnostics_stepsize.R"), local = TRUE)$value),
-                                              # tabPanel("Help", uiOutput("ui_diagnostics_help")),
+                                              tabPanel("Help", source(file.path("ui_files", "diagnostics_help.R"), local = TRUE)$value),
                                               well = FALSE,
                                               widths = c(2, 10)
                                  ) # End navlistPanel

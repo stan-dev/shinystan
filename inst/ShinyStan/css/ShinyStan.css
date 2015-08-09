@@ -471,6 +471,13 @@ a:active { /* selected link */
   overflow-y: scroll;
 }
 
+#diagnostics_help_navlist {
+  background-color: #F5ECEC; /*#FCFAFA; (Lightest)*/
+}
+#diagnostics_help_navlist:hover {
+  background-color: #F5ECEC;
+}
+
 #dens_xzoom {
   width: 50%;
 }

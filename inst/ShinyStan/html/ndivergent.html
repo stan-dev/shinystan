@@ -24,8 +24,8 @@ should be only 0 or 1.
 <br><br>
 <strong>
 If there are any post-warmup iterations for which <code>n_divergent = 1</code> 
-then the validity of the results is dubious and you should try rerunning the 
-model with a higher target acceptance probability (which will decrease the
+then the results may be biased and should not be used. You should try rerunning 
+the model with a higher target acceptance probability (which will decrease the
 step size) until <code>n_divergent = 0</code> for all post-warmup iterations.
 </strong>
 </div>

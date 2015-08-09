@@ -185,14 +185,13 @@ thm_no_yaxs <- thm + no_yaxs
   dygraphs::dygraph(param_chains, xlab = param_name, ylab = NULL, 
                     group = group) %>%
     dygraphs::dyOptions(colors = clrs, stackedGraph = stack, drawGrid = grid,
-                        stepPlot = step_plot, 
+                        stepPlot = step_plot, #axisLabelFontSize = 11,
                         fillGraph = fill_graph, fillAlpha = 0.5,
                         strokeWidth = 0.75, animatedZooms = TRUE, 
                         drawXAxis = TRUE, drawYAxis = !fill_graph, 
                         drawAxesAtZero = TRUE, axisLineColor = "black") %>%
     dygraphs::dyAxis("x", pixelsPerLabel = 1e6, axisLineWidth = 3) %>%
-    dygraphs::dyAxis("y", pixelsPerLabel = 30, axisLabelWidth = 30,
-                     axisLabelFontSize = 11) %>%
+    dygraphs::dyAxis("y", pixelsPerLabel = 30, axisLabelWidth = 30) %>%
     dygraphs::dyRangeSelector(height = 1, retainDateWindow = TRUE) %>%
     dygraphs::dyLegend(show = "never") %>%
     dygraphs::dyHighlight(highlightCircleSize = 2,
