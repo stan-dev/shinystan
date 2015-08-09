@@ -34,14 +34,16 @@ sampler_params_post_warmup <-
           out
         })
       }
-.stepsize_pw <- .sampler_param_pw(sampler_params_post_warmup, which = "stepsize__", 
-                               warmup_val = object@nWarmup)
-.ndivergent_pw <- .sampler_param_pw(sampler_params_post_warmup, which = "n_divergent__", 
-                                  warmup_val = object@nWarmup)
-.treedepth_pw <- .sampler_param_pw(sampler_params_post_warmup, which = "treedepth__", 
+if (!identical(FALSE, sampler_params_post_warmup)) {
+  .stepsize_pw <- .sampler_param_pw(sampler_params_post_warmup, which = "stepsize__", 
                                     warmup_val = object@nWarmup)
-.accept_stat_pw <- .sampler_param_pw(sampler_params_post_warmup, which = "accept_stat__", 
-                                    warmup_val = object@nWarmup)
+  .ndivergent_pw <- .sampler_param_pw(sampler_params_post_warmup, which = "n_divergent__", 
+                                      warmup_val = object@nWarmup)
+  .treedepth_pw <- .sampler_param_pw(sampler_params_post_warmup, which = "treedepth__", 
+                                     warmup_val = object@nWarmup)
+  .accept_stat_pw <- .sampler_param_pw(sampler_params_post_warmup, which = "accept_stat__", 
+                                       warmup_val = object@nWarmup)
+}
 
 table_stats <- fit_summary <- object@summary
 sel <- colnames(table_stats) %in% c("Rhat", "n_eff")
