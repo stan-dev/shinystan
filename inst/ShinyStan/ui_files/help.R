@@ -13,15 +13,13 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-
-
-div(id = "help_div", 
-    style = "padding-top: 10px;",
-    h1(style = "text-align: center;", "Help"),
-    br(),
-    navlistPanel(well = TRUE,
-                 "Help Topics",
+div(class = "help-glossary-div", 
+    br(),br(),
+    div(class = "help-glossary-nav-container",
+    navlistPanel(well = TRUE, id = "help_navlist",
+                 "Topics",
                  tabPanel("Questions, bugs, and new features",
+                          div(class = "glossary-entry",
                           h4("Stan users group"),
                           p("To ask a question or suggest a new feature visit the",
                             a("Stan users message board.", 
@@ -31,17 +29,23 @@ div(id = "help_div",
                           p("To report a bug  or suggest a new feature visit the",
                             a("GitHub issue tracker.", 
                               href = "https://github.com/stan-dev/shinystan/issues"))
+                          )
                  ),             
                  tabPanel("Saving plots",
+                          div(class = "glossary-entry",
                           h4("Saving plots as ggplot2 objects"),
                           p("Clicking on a 'Save ggplot2 object' button will be save an .RData 
                           file that you can load into your Global Environment using the",
                             code("load"), "function in R. 
              You can then make changes to the plot using the functions in the 
              ggplot2 package."
+                          ),
+                          p("Any plot that can be saved as a ggplot2 object can also be saved 
+                            as a PDF.")
                           )
                  ),
                  tabPanel("Large models and launch speed",
+                          div(class = "glossary-entry",
                           h4("Launching ShinyStan faster"),
                           p("For large models, the", code("launch_shinystan"), 
                             "function will launch the app quick when used with a",
@@ -62,5 +66,8 @@ div(id = "help_div",
                             "rather than", code("my_stanfit"), "and it should",
                             "be quicker to launch.")
                  )
+                 )
     )
+    ),
+    br(),br()
 )

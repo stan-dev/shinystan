@@ -55,7 +55,7 @@ tagList(
                       tabsetPanel(
                         
                         #### hmc/nuts plots ####
-                        tabPanel("HMC/NUTS (plots)",
+                        tabPanel("NUTS (plots)",
                                  source(file.path("ui_files", "diagnostics_customize.R"), local = TRUE)$value,
                                  navlistPanel(id = "diagnostics_navlist",
                                               tabPanel("By model parameter", source(file.path("ui_files", "diagnostics_by_parameter.R"), local = TRUE)$value),
@@ -70,10 +70,9 @@ tagList(
                         ),
                         #### hmc/nuts stats ####
                         tabPanel("HMC/NUTS (stats)",
-                                 fluidRow(
-                                   column(5, h2("Summary of sampler parameters")),
-                                   column(3, offset = 4, a_glossary("open_glossary_from_nuts_table"))
-                                 ), 
+                                 h2("Summary of sampler parameters"),
+                                 a_glossary("open_glossary_from_nuts_table"),
+                                 br(),
                                  source(file.path("ui_files", "sampler_stats_customize.R"), local = TRUE)$value,
                                  DT::dataTableOutput("sampler_summary"),
                                  br()
@@ -230,16 +229,19 @@ tagList(
                                    )
                         ), # End About
                         
+                        tabPanel(title = "Glossary",
+                                 div(style = "background-color: white;",
+                                 h1(style = "text-align: center;", "Glossary"),
+                                 source(file.path("ui_files", "glossary.R"), local = TRUE)$value,
+                                 hr(),
+                                 stan_manual()
+                                 )
+                                 ),
+                        
                         #### PAGE: Help ####
                         tabPanel(title = "Help",
-                                 # br(),br(),
-                                 div(class = "home-links",
-                                     actionLink(class = "help-links-active", 
-                                                inputId = "toggle_help_glossary", 
-                                                label = h4("Toggle Help/Glossary"))
-                                 ),
-                                 source(file.path("ui_files", "help.R"), local = TRUE)$value,
-                                 source(file.path("ui_files", "glossary.R"), local = TRUE)$value
+                                 h1(style = "text-align: center;", "Help"),
+                                 source(file.path("ui_files", "help.R"), local = TRUE)$value
                         )
                         
              ) # End navbarMenu

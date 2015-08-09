@@ -249,6 +249,15 @@ a:active { /* selected link */
     color: #590815;
 }
 
+.well {
+  padding-top: 5px;
+  padding-bottom: 0;
+}
+
+.table .alignRight {
+  text-align:right;
+}
+
 /**************************************/
 /* customization control panels */
 .optionswell, .tableoptionswell {
@@ -296,17 +305,6 @@ a:active { /* selected link */
   box-shadow: inset 2px 1px 2px 0 rgba(189,189,189,0.5);
 }
 /**************************************/
-
-
-.well {
-  padding-top: 5px;
-  padding-bottom: 0;
-}
-
-.table .alignRight {
-  text-align:right;
-}
-
 
 /**************************************/
 /* don't blink when recalculating */
@@ -459,6 +457,19 @@ a:active { /* selected link */
 }
 /**************************************/
 
+.help-glossary-div {
+  background: white;
+  font-family: Verdana, Geneva, sans-serif; 
+  font-weight: lighter;
+}
+.help-glossary-nav-container {
+  background-color: #FCFAFA; /*#F6F6F6;*/
+}
+.glossary-entry {
+  font-size: 13px;
+  max-height: 475px; 
+  overflow-y: scroll;
+}
 
 #dens_xzoom {
   width: 50%;

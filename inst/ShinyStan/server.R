@@ -55,15 +55,15 @@ function(input, output, session) {
        })
     })
     shinyjs::onclick("open_glossary_from_table",
-                     updateTabsetPanel(session, "nav", selected = "Help"))
+                     updateTabsetPanel(session, "nav", selected = "Glossary"))
     shinyjs::onclick("open_glossary_from_nuts_table", 
-                     updateTabsetPanel(session, "nav", selected = "Help"))
+                     updateTabsetPanel(session, "nav", selected = "Glossary"))
     shinyjs::onclick("open_glossary_from_rhat", 
-                     updateTabsetPanel(session, "nav", selected = "Help"))
-    shinyjs::onclick("toggle_help_glossary", {
-      shinyjs::toggle(id = "help_div", anim = TRUE, animType = "slide")
-      shinyjs::toggle(id = "glossary_div", anim = TRUE, animType = "slide")
-    })
+                     updateTabsetPanel(session, "nav", selected = "Glossary"))
+#     shinyjs::onclick("toggle_help_glossary", {
+#       shinyjs::toggle(id = "help_div", anim = TRUE, animType = "slide")
+#       shinyjs::toggle(id = "glossary_div", anim = TRUE, animType = "slide")
+#     })
   })
   
   diagnostic_inputs <- paste0("diagnostic_", 

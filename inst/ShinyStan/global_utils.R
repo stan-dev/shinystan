@@ -46,7 +46,7 @@ a_glossary <- function(id) {
   div(class = "aoptions",
       actionLink(inputId = id, 
                  label = strong(style = "margin-top: 20px; color: #222222;", 
-                                "Help/Glossary"), 
+                                "Glossary"), 
                  icon = icon("book", lib = "glyphicon")))
 }
 strongMed <- function(...) {
@@ -233,6 +233,16 @@ help_dynamic <- hT11(
   "traceplot to zoom into. The other plots on the screen", 
   "will update accordingly. Double-click to reset.")
 # help_violin <- helpText("The violin plot ")
+
+# stan manual 
+stan_manual <- function() {
+  helpText(style = "font-size: 12px;",
+           "Glossary entries are compiled (with minor edits) from various excepts of the",
+           a("Stan Modeling Language User's Guide and Reference Manual", 
+             href = "http://mc-stan.org/documentation/"),
+           "(",a(href = "http://creativecommons.org/licenses/by/3.0/", "CC BY (v3)"),")"
+  )
+}
 
 # to use in ui.R
 .model_name <- slot(object, "model_name")
