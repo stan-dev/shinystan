@@ -7,10 +7,11 @@
 launch_shinystan_demo(rstudio = getOption("shinystan.rstudio"), ...)
 }
 \arguments{
-\item{rstudio}{Only relevant for RStudio users. If \code{TRUE} (the default),
-the app will launch in RStudio's pop-up Viewer rather than the default web
-browser. Users can change the default to \code{FALSE} by setting the global
-option \code{options(shinystan.rstudio = FALSE)}.}
+\item{rstudio}{Only relevant for RStudio users. The default
+(\code{rstudio=FALSE}) is to launch the app in the default web browser
+rather than RStudio's pop-up Viewer. Users can change the default to
+\code{TRUE} by setting the global option \code{options(shinystan.rstudio =
+TRUE)}.}
 
 \item{...}{Optional arguments to pass to \code{\link[shiny]{runApp}}.}
 }
