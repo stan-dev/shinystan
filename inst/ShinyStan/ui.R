@@ -18,9 +18,9 @@ source("global_utils.R", local = TRUE)
 rm(object)
 gc()
 
-corner_link <- HTML(paste0('<a href=',
-                           shQuote(paste0("http://mc-stan.org",sep='')), 
-                           '>', 'Stan', '</a>'))
+# corner_link <- HTML(paste0('<a href=',
+#                            shQuote(paste0("http://mc-stan.org",sep='')), 
+#                            '>', 'Stan', '</a>'))
 
 # Begin shinyUI -----------------------------------------------------------
 # _________________________________________________________________________
@@ -166,7 +166,7 @@ tagList(
                                                            choices = rev(.param_list), 
                                                            selected = rev(.param_list)[1], multiple = FALSE),
                                             a_options("bivariate"),
-                                            uiOutput("ui_bivariate_customize"),
+                                            source(file.path("ui_files", "bivariate_customize.R"), local = TRUE)$value,
                                             plotOutput("bivariate_plot_out", height = "350px"),
                                             helpText(style = "font-size: 11px", "For Stan models using the NUTS algorithm, red points indicate iterations that encountered a divergent transition.",  
                                                      "Yellow points indicate a transition that hit the maximum treedepth",

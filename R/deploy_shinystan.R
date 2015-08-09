@@ -93,8 +93,8 @@ deploy_shinystan <- function(sso, appName, account = NULL, ...) {
   }
 
   # save shinystan_object to deployDir
-  shinystan_temp_object <- sso
-  save(shinystan_temp_object, 
+  .shinystan_temp_object <- sso
+  save(.shinystan_temp_object, 
        file = file.path(deployDir, "shinystan_temp_object.RData"))
   
   # save ppcheck_data and set ppcheck defaults
@@ -106,7 +106,6 @@ deploy_shinystan <- function(sso, appName, account = NULL, ...) {
       set_ppcheck_defaults(appDir = deployDir, yrep_name = pp$ppcheck_yrep, 
                            y_name = "y")
   }
-  
   shinyapps::deployApp(appDir = deployDir, appName = appName, 
                        account = account, lint = FALSE)
 }

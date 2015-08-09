@@ -165,6 +165,21 @@ color_vector_chain <- function(n) {
   hcl(h=hues, l=80, c=50)[1:n]
 }
 
+alpha_calc_pt <- function(N) {
+  if (N <= 100) return(1)
+  else if (N <= 200) return(0.75)
+  else if (N >= 1500) return(0.15) 
+  else 1 - pnorm(N/1500)
+}
+
+alpha_calc_lines <- function(N) {
+  if (N < 50) return(0.5)
+  if (N < 500) return(0.4)
+  if (N < 1000) return(0.3)
+  if (N < 5000) return(0.2)
+  else return(0.1)
+}
+
 # transformations ---------------------------------------------------------
 transformation_choices <- 
   c("abs", "atanh", cauchit = "pcauchy", "cloglog",
