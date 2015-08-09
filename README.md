@@ -1,24 +1,19 @@
 [![Travis-CI Build Status](https://travis-ci.org/stan-dev/shinystan.svg?branch=shinystan2)](https://travis-ci.org/stan-dev/shinystan)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/shinystan)](http://cran.r-project.org/web/packages/shinystan)
 
-# ShinyStan
+# ShinyStan 2.0.0
+
+[![shinystan](http://i59.tinypic.com/30ho2sn.jpg)](https://jgabry.shinyapps.io/ShinyStan2Preview)
 
 The ShinyStan graphical user interface for exploring Bayesian models is available in
 the [shinystan](https://github.com/stan-dev/shinystan/wiki/Installing-shinyStan) 
 R package. ShinyStan provides immediate, informative, customizable visual and 
 numerical summaries of model parameters and convergence diagnostics for 
-MCMC simulations.
-
-
-[![shinystan](http://i59.tinypic.com/30ho2sn.jpg)](https://jgabry.shinyapps.io/ShinyStan2Preview)
-
-[Try the online demo](https://jgabry.shinyapps.io/ShinyStan2Preview)
-![shinystan screens](http://i60.tinypic.com/an1p29.png)
-
+MCMC simulations. [Try the online demo.](https://jgabry.shinyapps.io/ShinyStan2Preview)
 
 ## Installing the R package
 
-    devtools::install_github("stan-dev/shinystan", dependencies = TRUE, 
+    devtools::install_github("stan-dev/shinystan@shinystan2", dependencies = TRUE, 
                              build_vignettes = TRUE)
 
 ## About ShinyStan
