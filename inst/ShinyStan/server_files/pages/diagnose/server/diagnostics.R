@@ -422,6 +422,7 @@ output$diagnostic_chain_text <- renderText({
 })
 
 output$diagnostics_warnings_text <- renderText({
+  sp_nuts_check()
   divs <- sum(.ndivergent_pw[,-1])
   hits <- sum(.treedepth_pw[,-1] == MISC$max_td)
   d <- divs > 0
