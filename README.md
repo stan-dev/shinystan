@@ -1,4 +1,4 @@
-[![Travis-CI Build Status](https://travis-ci.org/stan-dev/shinystan.svg?branch=shinystan2)](https://travis-ci.org/stan-dev/shinystan)
+[![Travis-CI Build Status](https://travis-ci.org/stan-dev/shinystan.svg?branch=develop)](https://travis-ci.org/stan-dev/shinystan)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/shinystan)](http://cran.r-project.org/web/packages/shinystan)
 
 # ShinyStan 2.0.0
