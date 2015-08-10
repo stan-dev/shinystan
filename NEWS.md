@@ -3,6 +3,8 @@
 Version 2.0.0 has a new look, a new(ish) name, and a lot of new functionality. 
 Many bugs have also been fixed (see GitHub issue tracker). 
 
+It's also now [available on CRAN](https://cran.rstudio.com/web/packages/shinystan/index.html).
+
 ### Names
 * The name of the R package is **shinystan** and the app/GUI is **ShinyStan**. 
 
