@@ -3,9 +3,7 @@ sudo: required
 
 r_github_packages:
   -stan-dev/rstan/StanHeaders
-  -stan-dev/rstan/rstan
-
-cran: http://cran.rstudio.com/
+  -stan-dev/rstan/rstan/rstan
   
 notifications:
   email:
@@ -13,5 +11,3 @@ notifications:
       - jgabry@gmail.com
     on_success: change
     on_failure: change
-
-
