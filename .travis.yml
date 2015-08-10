@@ -1,6 +1,12 @@
 language: r
 sudo: required
 
+r_github_packages:
+  -stan-dev/rstan/StanHeaders
+  -stan-dev/rstan/rstan
+
+cran: http://cran.rstudio.com/
+  
 notifications:
   email:
     recipients:
