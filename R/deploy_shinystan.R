@@ -17,8 +17,7 @@
 #' Deploy a ShinyStan app to shinyapps.io
 #' 
 #' Requires a (free or paid) ShinyApps account. Visit 
-#' \url{http://www.shinyapps.io/} to sign up. Also requires the \pkg{shinyapps} 
-#' package.
+#' \url{http://www.shinyapps.io/} to sign up. 
 #' 
 #' @export
 #' 
@@ -27,9 +26,8 @@
 #'   at least four characters long and may only contain letters, numbers, dashes
 #'   and underscores.
 #' @param account ShinyApps account username. Only required if more than one 
-#'   ShinyApps account is configured on the system. See the \pkg{shinyapps} 
-#'   package documentation or \url{http://www.shinyapps.io/} for help
-#'   configuring your account.
+#'   ShinyApps account is configured on the system. See 
+#'   \url{http://www.shinyapps.io/} for help configuring your account.
 #' @param ... Optional arguments. See Details.
 #' 
 #' @details In \code{...}, the arguments \code{ppcheck_data} and 
@@ -62,10 +60,6 @@
 
 deploy_shinystan <- function(sso, appName, account = NULL, ...) {
   sso_check(sso)
-  if (!requireNamespace("shinyapps", quietly = TRUE)) 
-    stop("Deploying a ShinyStan app requires the shinyapps package.",
-        "\nTo install use devtools::install_github('rstudio/shinyapps')", 
-        call. = FALSE)
   if (missing(appName)) 
     stop("Please specify a name for your app using the 'appName' argument", 
          call. = FALSE)
@@ -96,7 +90,7 @@ deploy_shinystan <- function(sso, appName, account = NULL, ...) {
   .shinystan_temp_object <- sso
   save(.shinystan_temp_object, 
        file = file.path(deployDir, "shinystan_temp_object.RData"))
-  
+  deploy <- getFromNamespace("deployApp", "shinyapps")
   # save ppcheck_data and set ppcheck defaults
   pp <- list(...)
   if ("ppcheck_data" %in% names(pp)) {
@@ -106,6 +100,6 @@ deploy_shinystan <- function(sso, appName, account = NULL, ...) {
       set_ppcheck_defaults(appDir = deployDir, yrep_name = pp$ppcheck_yrep, 
                            y_name = "y")
   }
-  shinyapps::deployApp(appDir = deployDir, appName = appName, 
+  deploy(appDir = deployDir, appName = appName, 
                        account = account, lint = FALSE)
 }

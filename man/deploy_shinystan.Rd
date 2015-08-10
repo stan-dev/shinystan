@@ -14,16 +14,14 @@ at least four characters long and may only contain letters, numbers, dashes
 and underscores.}
 
 \item{account}{ShinyApps account username. Only required if more than one
-ShinyApps account is configured on the system. See the \pkg{shinyapps}
-package documentation or \url{http://www.shinyapps.io/} for help
-configuring your account.}
+ShinyApps account is configured on the system. See
+\url{http://www.shinyapps.io/} for help configuring your account.}
 
 \item{...}{Optional arguments. See Details.}
 }
 \description{
 Requires a (free or paid) ShinyApps account. Visit
-\url{http://www.shinyapps.io/} to sign up. Also requires the \pkg{shinyapps}
-package.
+\url{http://www.shinyapps.io/} to sign up.
 }
 \details{
 In \code{...}, the arguments \code{ppcheck_data} and

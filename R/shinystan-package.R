@@ -64,6 +64,7 @@
 #' @import shiny
 #' @import dygraphs
 #' @import threejs
+#' @import utils
 #' @import xts
 #' @importFrom stats acf quantile time var
 #' @importFrom shinythemes shinytheme
