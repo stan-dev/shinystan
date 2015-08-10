@@ -1,5 +1,5 @@
 [![Travis-CI Build Status](https://travis-ci.org/stan-dev/shinystan.svg?branch=develop)](https://travis-ci.org/stan-dev/shinystan)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/shinystan)](http://cran.r-project.org/web/packages/shinystan)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/shinystan?color=blue)](http://cran.r-project.org/web/packages/shinystan)
 
 # ShinyStan 2.0.0
 
@@ -12,9 +12,13 @@ numerical summaries of model parameters and convergence diagnostics for
 MCMC simulations. [Try the online demo.](https://jgabry.shinyapps.io/ShinyStan2Preview)
 
 ## Installing the R package
+* Install from CRAN:
 
-    devtools::install_github("stan-dev/shinystan@shinystan2", dependencies = TRUE, 
-                             build_vignettes = TRUE)
+    `install.packages("shinystan", type = "source", repos = "http://cran.rstudio.com")`
+    
+* Install from GitHub:
+
+    `devtools::install_github("stan-dev/shinystan@develop", build_vignettes = TRUE)`
 
 ## About ShinyStan
 
