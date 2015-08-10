@@ -1,10 +1,29 @@
-language: r
+# Sample .travis.yml for R projects.
+#
+# See README.md for instructions, or for more configuration options,
+# see the wiki:
+#   https://github.com/craigcitro/r-travis/wiki
+
+language: c
 sudo: required
 
-r_github_packages:
-  -stan-dev/rstan/StanHeaders
-  -stan-dev/rstan/rstan/rstan
-  
+script: ./travis-tool.sh run_tests
+
+env:
+  global:
+    - _R_CHECK_FORCE_SUGGESTS_=false
+
+before_install:
+  - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
+  - chmod 755 ./travis-tool.sh
+  - ./travis-tool.sh bootstrap
+install:
+  - ./travis-tool.sh install_deps
+
+
+after_failure:
+  - ./travis-tool.sh dump_logs
+
 notifications:
   email:
     recipients:
