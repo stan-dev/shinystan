@@ -1,118 +1,48 @@
-# This file is part of shinyStan
-# Copyright (C) 2015 Jonah Sol Gabry & Stan Development Team
+# This file is part of shinystan
+# Copyright (C) Jonah Gabry
 #
-# shinyStan is free software; you can redistribute it and/or modify it under the
+# shinystan is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
 # Foundation; either version 3 of the License, or (at your option) any later
 # version.
 # 
-# shinyStan is distributed in the hope that it will be useful, but WITHOUT ANY
+# shinystan is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 # 
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-
-
-# throw error if object is not shinystan object ---------------------------
 sso_check <- function(sso) {
-  if (!is.shinystan(sso)) stop("Please specify a shinystan object", call. = FALSE)
-  else return(invisible(TRUE))
+  if (!is.shinystan(sso)) 
+    stop("Please specify a shinystan object", call. = FALSE)
+  else 
+    invisible(TRUE)
 }
-
-# checks if an object is a stanfit object ---------------------------------
-is_stan <- function(X) inherits(X, "stanfit")
-
-# checks for rstan package ------------------------------------------------
+is_stan <- function(X) {
+  inherits(X, "stanfit")
+}
 rstan_check <- function() {
-  msg <- paste("You need to have the RStan package installed to use this option.",
-               "\nTry runnning the default shinyStan demo instead.")
-  has_rstan <- requireNamespace("rstan", quietly = TRUE)  
-  if (!has_rstan) stop(msg, call. = FALSE)
+  if (!requireNamespace("rstan", quietly = TRUE)) 
+    stop("You need to have the RStan package installed to use this option.", 
+         call. = FALSE)
 }
-
-# checks for coda package  ------------------------------------------------
 coda_check <- function() {
-  msg <- paste("You need to have the coda package installed to use this option.")
-  has_coda <- requireNamespace("coda", quietly = TRUE)  
-  if (!has_coda) stop(msg, call. = FALSE)
+  if (!requireNamespace("coda", quietly = TRUE)) 
+    stop("You need to have the coda package installed to use this option.", 
+         call. = FALSE)
+}
+cleanup_shinystan <- function() {
+  rm(list = ".shinystan_temp_object", envir = .GlobalEnv)
 }
 
-# wrapper for grepl with ignore.case = TRUE -------------------------------
-grepl_ic <- function(pattern, x, ignore.case = TRUE) {
-  grepl(pattern = pattern, x = x, ignore.case = ignore.case)
-}
-
-# remove slot -------------------------------------------------------------
-remove_slot <- function(sso, slot_name) {
-  sso_new <- new("shinystan")
-  for (sn in slotNames("shinystan")) {
-    slot(sso_new, sn) <- slot(sso, sn)
-  }
-  sso_new
-}
-
-# check or remove slot ----------------------------------------------------
-check_or_remove_slot <- function(sso, slot_name) {
-  sso_check(sso)
-  pass <- !.hasSlot(sso, slot_name)
-  if (pass) return(sso)
-  remove_slot(sso, slot_name)
-}
-
-# gets names of all shinystan objects in user's global environment --------
-get_sso_names <- function() {
-  Filter(function(x) "shinystan" %in% class(get(x)), objects(envir = .GlobalEnv))
-}
-
-# generates new name for shinystan object if default name is taken --------
-rename_sso <- function(out_name, sso_names) {
-  
-  renamer <- function(i) {
-    check_name <- paste0(out_name,".",i)
-    check_name %in% sso_names
-  }
-  rename  <- out_name %in% sso_names  
-  i <- 1
-  while (rename) {
-    rename <- renamer(i)
-    i <- i + 1
-  }
-  new_out_name <- paste0(out_name,".",i-1)
-  new_out_name
-}
-
-
-# cleanup function to run on exiting launch_shinystan -----------------------------
-cleanup_shinystan <- function(shinystan_object, out_name, is_stanfit_object) {
-  rename <- out_name %in% objects(envir = .GlobalEnv)
-  if (is_stanfit_object && rename) {
-    sso_names <- get_sso_names()
-    out_name <- rename_sso(out_name, sso_names)
-  }
-  assign(out_name, shinystan_object, inherits = TRUE)
-  message(paste("\n Name of shinystan object:", out_name))
-  rm(list = "shinystan_object", envir = globalenv())
-}
-
-# assignment function -----------------------------------------------------
-assign_shinystan <- function(X) {
-  assign("shinystan_object", X, inherits = TRUE)
-}
-
-# launch the app ----------------------------------------------------------
-launch <- function(object, ...) {
-  if (is.shinystan(object)) assign_shinystan(object)
-  else assign_shinystan(stan2shinystan(object))
-
-  shiny::runApp(system.file("shinyStan", package = "shinyStan"), ...)
-}
-
-# launch the demo ---------------------------------------------------------
-launch_demo <- function(object) {
-  assign_shinystan(object)
-  shiny::runApp(system.file("shinyStan", package = "shinyStan"))
+launch <- function(object, rstudio = FALSE, ...) {
+  stopifnot(is.shinystan(object))
+  launch.browser <- if (!rstudio) 
+    TRUE else getOption("shiny.launch.browser", interactive())
+  assign(".shinystan_temp_object", object, inherits = TRUE)
+  shiny::runApp(system.file("ShinyStan", package = "shinystan"), 
+                launch.browser = launch.browser, ...)
 }
 
 # mcmclist to matrix (adapted from Coda package) --------------------------
@@ -129,16 +59,20 @@ mcmclist2matrix <- function(x) {
   out
 }
 
-# check objects for as.shinystan ------------------------------------------
-get_type <- function(x) {
-  if (is.shinystan(x)) return("shinystan")
-  if (is_stan(x)) return("stanfit")
-  if (inherits(x, "mcmc.list")) return("mcmclist")
-  if (is.list(x) & !inherits(x, "mcmc.list")) return("chainlist")
-  return("other")
+grepl_ic <- function(pattern, x, ignore.case = TRUE) {
+  grepl(pattern = pattern, x = x, ignore.case = ignore.case)
 }
 
-# functions to set defaults for ppcheck selectInputs for y and y_rep ---------------
+get_type <- function(x) {
+  if (is.shinystan(x)) return("shinystan")
+  else if (is_stan(x)) return("stanfit")
+  else if (inherits(x, "mcmc.list")) return("mcmclist")
+  else if (is.list(x) & !inherits(x, "mcmc.list")) return("chainlist")
+  else if (inherits(x, "stanreg")) return("stanreg")
+  else return("other")
+}
+
+# functions to set defaults for ppcheck selectInputs for y and y_rep 
 y_lines <- function(y_name = "y") {
   paste0(
     "output$ui_pp_y_from_r <- renderUI({
@@ -175,10 +109,10 @@ write_files <- function(files, lines) {
 }
 
 set_ppcheck_defaults <- function(appDir, yrep_name, y_name = "y") {
-  fileDir <- file.path(appDir, "server_files", "pp_check", "dynamic_ui")
-  y_file <- file.path(fileDir, "ui_pp_y_from_r.R")
-  yrep_file <- file.path(fileDir, "ui_pp_yrep_from_sso.R")
-  
+  fileDir <- file.path(appDir, "server_files", "pages", "diagnose", 
+                       "ppcheck", "ui")
+  y_file <- file.path(fileDir, "pp_y_from_r.R")
+  yrep_file <- file.path(fileDir, "pp_yrep_from_sso.R")
   for (file in c("y_file", "yrep_file")) {
     f <- get(file)
     if (file.exists(f)) {
@@ -186,9 +120,44 @@ set_ppcheck_defaults <- function(appDir, yrep_name, y_name = "y") {
       file.create(f)
     }
   }
-  
   write_files(
     files = c(y_file, yrep_file), 
     lines = c(y_lines(y_name), yrep_lines(yrep_name))
   )
+}
+
+.retrieve <- function(sso, what, ...) {
+  if (what %in% c("rhat", "rhats", "Rhat", "Rhats", "r_hat", "R_hat")) {
+    return(retrieve_rhat(sso, ...))
+  }
+  if (what %in% c("N_eff","n_eff", "neff", "Neff", "ess","ESS")) {
+    return(retrieve_neff(sso, ...))
+  }
+  if (grepl_ic("mean", what)) {
+    return(retrieve_mean(sso, ...))
+  }
+  if (grepl_ic("sd", what)) {
+    return(retrieve_sd(sso, ...))
+  }
+  if (what %in% c("se_mean", "mcse")) {
+    return(retrieve_mcse(sso, ...))
+  }
+  if (grepl_ic("quant", what)) {
+    return(retrieve_quant(sso, ...))
+  }
+  if (grepl_ic("median", what)) {
+    return(retrieve_median(sso, ...))
+  }
+  if (grepl_ic("tree", what) | grepl_ic("depth", what)) {
+    return(retrieve_max_treedepth(sso, ...))
+  }
+  if (grepl_ic("step", what)) {
+    return(retrieve_avg_stepsize(sso, ...))
+  }
+  if (grepl_ic("diverg", what)) {
+    return(retrieve_prop_divergent(sso, ...))
+  }
+  if (grepl_ic("accept", what)) {
+    return(retrieve_avg_accept(sso, ...))
+  }
 }

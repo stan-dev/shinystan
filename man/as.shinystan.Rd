@@ -3,17 +3,17 @@
 \name{as.shinystan}
 \alias{as.shinystan}
 \alias{is.shinystan}
-\title{Create and test \code{shinystan} objects}
+\title{Create and test shinystan objects}
 \usage{
 as.shinystan(X, ...)
 
-is.shinystan(Y)
+is.shinystan(object)
 }
 \arguments{
-\item{X}{An object to be converted to a \code{shinystan} object. Can be
+\item{X}{An object to be converted to a shinystan object. Can be
 one of the following:
 \describe{
-  \item{stanfit}{An object of class \code{stanfit} (\pkg{rstan})}
+  \item{stanfit}{An object of class stanfit (\pkg{rstan})}
   \item{mcmc.list}{An object of class \code{mcmc.list} (\pkg{coda})}
   \item{3D array}{A 3D array of posterior simulations with dimensions corresponding
   to iterations, chains, and parameters, in that order.}
@@ -22,35 +22,33 @@ one of the following:
   }
 }}
 
-\item{...}{Additional arguments. See \strong{Details}, below, for instructions.}
+\item{...}{Additional arguments. See Details, below.}
 
-\item{Y}{An object to test.}
+\item{object}{An object to test.}
 }
 \value{
-For \code{as.shinystan} an object of class \code{shinystan} that can
-be used with \code{\link[shinyStan]{launch_shinystan}}. For
-\code{is.shinystan} a logical value indicating whether the tested object
-is a \code{shinystan} object.
+For \code{as.shinystan} an object of class shinystan that can be used
+  with \code{\link{launch_shinystan}}. For \code{is.shinystan} a logical value
+  indicating whether the tested object is a shinystan object.
 }
 \description{
-Create and test \code{shinystan} objects
+Create and test shinystan objects
 }
 \details{
-If \code{X} is a \code{stanfit} object then no additional arguments
-should be specified in \code{...} (they are taken automatically from the \code{stanfit}
-object). If \code{X} is not a \code{stanfit} object then the following arguments can be
-specified but are not required:
+If \code{X} is a stanfit object then no additional arguments should
+  be specified in \code{...} (they are taken automatically from the stanfit
+  object). If \code{X} is not a stanfit object then the following arguments
+  can be specified but are not required:
+
 \describe{
   \item{\code{model_name}}{A character string giving a name for the model.}
   \item{\code{burnin}}{The number of burnin (warmup) iterations. \code{burnin}
   should only be specified if the burnin samples are included in \code{X}.}
-  \item{\code{param_dims}}{Rarely used and never necessary. A named list giving the dimensions for all parameters.
-  For scalar parameters use \code{0} as the dimension. See \strong{Examples}.}
-  \item{\code{model_code}}{A character string with the code you used to run your model.
-  This can also be added to your \code{shinystan} object later using the
-  \code{\link[shinyStan]{include_model_code}} function. See \code{\link[shinyStan]{include_model_code}}
-  for additional formatting instructions. After launching the app \code{model_code}
-  will be viewable in the \strong{Model Code} tab.}
+  \item{\code{param_dims}}{Rarely used and never necessary. A named list
+  giving the dimensions for all parameters. (For scalar parameters use
+  \code{0} as the dimension.) This allows shinystan to group parameters in
+  vectors/arrays/etc together for certain features. See \strong{Examples}.}
+  \item{\code{model_code}}{A character string with the code for your model.}
 }
 }
 \examples{
@@ -59,10 +57,11 @@ specified but are not required:
 ### Example 1 ###
 #################
 
-# If X is a stanfit, mcmc.list, 3D array
-# or list of 2D chains then just do:
-X_shinystan <- as.shinystan(X)
-launch_shinystan(X_shinystan)
+# If X is a mcmc.list, 3D array or list of 2D chains then just do:
+X_sso <- as.shinystan(X, ...) # replace ... with optional arguments or omit it
+
+# You can also do the above if X is a stanfit object although it is not
+# necessary since launch_shinystan accepts stanfit objects.
 
 
 ##############################################
@@ -72,24 +71,20 @@ launch_shinystan(X_shinystan)
 # Generate some fake data
 chain1 <- cbind(beta1 = rnorm(100), beta2 = rnorm(100), sigma = rexp(100))
 chain2 <- cbind(beta1 = rnorm(100), beta2 = rnorm(100), sigma = rexp(100))
-
-# We can make a shinystan object without specifying any optional arguments
-my_shinystan <- as.shinystan(X = list(chain1, chain2))
-launch_shinystan(my_shinystan)
+X <- list(chain1, chain2)
+X_sso <- as.shinystan(X)
 
 # We can also specify some or all of the optional arguments
- # note: in order to use param_dims we need to rename 'beta1' and 'beta2'
- # to 'beta[1]' and 'beta[2]'
+# note: in order to use param_dims we need to rename 'beta1' and 'beta2'
+# to 'beta[1]' and 'beta[2]'
 colnames(chain1) <- colnames(chain2) <- c(paste0("beta[",1:2,"]"), "sigma")
-my_shinystan <- as.shinystan(X = list(chain1, chain2),
-                             param_dims = list(beta = 2, sigma = 0),
-                             model_name = "example",
-                             burnin = 0
-                             )
+X_sso <- as.shinystan(X, param_dims = list(beta = 2, sigma = 0),
+                         model_name = "Example",
+                         burnin = 0)
 launch_shinystan(my_shinystan)
 }
 }
 \seealso{
-\code{\link[shinyStan]{launch_shinystan}}, \code{\link[shinyStan]{launch_shinystan_demo}}
+\code{\link{launch_shinystan}}, \code{\link{launch_shinystan_demo}}
 }
 

@@ -1,12 +1,12 @@
-# This file is part of shinyStan
-# Copyright (C) 2015 Jonah Sol Gabry & Stan Development Team
+# This file is part of shinystan
+# Copyright (C) Jonah Gabry
 #
-# shinyStan is free software; you can redistribute it and/or modify it under the
+# shinystan is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
 # Foundation; either version 3 of the License, or (at your option) any later
 # version.
 # 
-# shinyStan is distributed in the hope that it will be useful, but WITHOUT ANY
+# shinystan is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 # 
@@ -14,31 +14,35 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-
-#' Deploy to shinyapps.io
+#' Deploy a ShinyStan app to shinyapps.io
 #' 
-#' Requires a ShinyApps account. Visit http://www.shinyapps.io/ to sign up. 
-#' Also see the 'Deploying to shinyapps.io' vignette for a 
-#' step-by-step guide.  
+#' Requires a (free or paid) ShinyApps account. Visit 
+#' \url{http://www.shinyapps.io/} to sign up. 
 #' 
-#' @param sso The \code{shinystan} object (\code{sso}) for the model you want to use. 
-#' @param account ShinyApps account username. Not required if only one 
-#' ShinyApps account is configured on the system. 
-#' @param appName The name to use for the application as a character string. 
-#' Application names must be at least four characters long and may only contain 
-#' letters, numbers, dashes and underscores.
-#' @param ppcheck_data Optional vector of observations to use for 
-#' graphical posterior predictive checking. 
-#' @param ppcheck_yrep Optional character string naming the parameter in \code{sso}
-#' containing the posterior predictive simulations/replications. This is only used to
-#' preselect ppcheck_yrep as the parameter to use for the posterior predictive checking.
-#' This can also be set interactively while using the app. 
-#' 
-#' @note See the 'Deploying to shinyapps.io' vignette for more detailed
-#' examples. 
-#' 
-#' @seealso \code{\link[shinyapps]{deployApp}}, \code{\link[shinyapps]{accounts}}
 #' @export
+#' 
+#' @param sso shinystan object.
+#' @param appName The name to use for the application. Application names must be
+#'   at least four characters long and may only contain letters, numbers, dashes
+#'   and underscores.
+#' @param account ShinyApps account username. Only required if more than one 
+#'   ShinyApps account is configured on the system. See 
+#'   \url{http://www.shinyapps.io/} for help configuring your account.
+#' @param ... Optional arguments. See Details.
+#' 
+#' @details In \code{...}, the arguments \code{ppcheck_data} and 
+#'   \code{ppcheck_yrep} can be specified. \code{ppcheck_data} should be a
+#'   vector of observations to use for graphical posterior predictive checking
+#'   and \code{ppcheck_yrep} should be a character string naming the parameter
+#'   in \code{sso} containing the posterior predictive simulations/replications.
+#'   The value of \code{ppcheck_yrep} is only used to preselect the appropriate
+#'   parameter/generated quantity to use for the posterior predictive checking. 
+#'   \code{ppcheck_yrep} (but not \code{ppcheck_data}) can also be set
+#'   interactively on shinyapps.io when using the app.
+#' 
+#' @note See the 'Deploying to shinyapps.io' vignette for a more detailed 
+#'   example.
+#' 
 #' @examples
 #' \dontrun{
 #' # For this example assume my_sso is the name of the shinystan object for 
@@ -47,45 +51,55 @@
 #'
 #' deploy_shinystan(sso = my_sso, appName = "my-model", account = "username") 
 #'
-#' # If you only have one ShinyApps account configured then you also omit 
+#' # If you only have one ShinyApps account configured then you can also omit 
 #' # the 'account' argument. 
 #'
 #' deploy_shinystan(sso = my_sso, appName = "my-model")
 #' }
 #' 
 
-deploy_shinystan <- function(sso, account, appName, ppcheck_data, ppcheck_yrep) {
+deploy_shinystan <- function(sso, appName, account = NULL, ...) {
   sso_check(sso)
-  
-  # check for possible problems
-  has_shinyapps <- requireNamespace("shinyapps", quietly = TRUE)
-  if (!has_shinyapps) stop("Deploying a shinyStan app requires the shinyapps package. 
-                           To download the package use devtools::install_github('rstudio/shinyapps')", 
-                           call. = FALSE)
-  
-  if (missing(appName)) stop("Please specify a name for your app using the 'appName' argument", call. = FALSE)
-  if (missing(account)) account <- NULL
-  
-  # copy from shinyStanApp_contents to temporary directory
+  if (missing(appName)) 
+    stop("Please specify a name for your app using the 'appName' argument", 
+         call. = FALSE)
+
+  # copy contents to temporary directory and write necessary additional lines to
+  # ui, server, and global
   appDir <- tempdir()
-  contents <- system.file("shinyStanApp_contents", package = "shinyStan")
+  deployDir <- file.path(appDir, "ShinyStan")
+  contents <- system.file("ShinyStan", package = "shinystan")
   file.copy(from = contents, to = appDir, recursive = TRUE)
-  deployDir <- file.path(appDir, "shinyStanApp_contents")
-  
-  # save shinystan_object to shinyStanApp_contents
-  shinystan_object <- sso
-  save(shinystan_object, file = file.path(deployDir, "shinystan_object.RData"))
-  
-  # save ppcheck_data and set ppcheck defaults 
-  if (!missing(ppcheck_data)) {
-    y <- ppcheck_data
-    save(y, file = file.path(deployDir, "y.RData"))
-    
-    if (!missing(ppcheck_yrep)) {
-      set_ppcheck_defaults(appDir = deployDir, yrep_name = ppcheck_yrep, y_name = "y")
-    }
+  server_pkgs <- c("shiny", "shinyjs", "markdown", "shinythemes")
+  ui_pkgs <- c(server_pkgs, "ggplot2", "gtools", "reshape2", 
+               "dygraphs", "xts", "xtable", "gridExtra", "DT", "threejs")
+  server_lines <- paste0("library(", server_pkgs,");")
+  ui_lines <- paste0("library(", ui_pkgs,");")
+  global_lines <- paste("load('shinystan_temp_object.RData');", 
+                        "if (file.exists('y.RData')) load('y.RData')")
+  for (ff in c("ui", "server", "global")) {
+    file_name <- file.path(deployDir, paste0(ff, ".R"))
+    fconn <- file(file_name, 'r+') 
+    original_content <- readLines(fconn) 
+    new_lines <- get(paste0(ff, "_lines"))
+    writeLines(c(new_lines, original_content), con = fconn) 
+    close(fconn) 
   }
-  
-  # deploy
-  shinyapps::deployApp(appDir = deployDir, appName = appName, account = account, lint = FALSE)
+
+  # save shinystan_object to deployDir
+  .shinystan_temp_object <- sso
+  save(.shinystan_temp_object, 
+       file = file.path(deployDir, "shinystan_temp_object.RData"))
+  deploy <- getFromNamespace("deployApp", "shinyapps")
+  # save ppcheck_data and set ppcheck defaults
+  pp <- list(...)
+  if ("ppcheck_data" %in% names(pp)) {
+    y <- pp$ppcheck_data
+    save(y, file = file.path(deployDir, "y.RData"))
+    if ("ppcheck_yrep" %in% names(pp))
+      set_ppcheck_defaults(appDir = deployDir, yrep_name = pp$ppcheck_yrep, 
+                           y_name = "y")
+  }
+  deploy(appDir = deployDir, appName = appName, 
+                       account = account, lint = FALSE)
 }

@@ -1,32 +1,28 @@
-# This file is part of shinyStan
-# Copyright (C) 2015 Jonah Sol Gabry & Stan Development Team
+# This file is part of shinystan
+# Copyright (C) Jonah Gabry
 #
-# shinyStan is free software; you can redistribute it and/or modify it under the
+# shinystan is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
 # Foundation; either version 3 of the License, or (at your option) any later
 # version.
 # 
-# shinyStan is distributed in the hope that it will be useful, but WITHOUT ANY
+# shinystan is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 # 
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-
-
-#' Change the model name associated with a \code{shinystan} object
+#' Change the model name associated with a shinystan object
 #' 
-#' 
-#' @param sso The \code{shinystan} object (\code{sso}) you want to edit. 
-#' @param new_model_name Character string giving the new model name to use. 
-#' 
-#' @seealso \code{\link[shinyStan]{as.shinystan}}
+#' @param sso shinystan object.
+#' @param new_model_name Character string giving the new model name to use.
+#' @return sso, updated.
+#' @seealso \code{\link{as.shinystan}}
 #' @export
 #' @examples
 #' \dontrun{
-#' # Assume X is a shinystan object
-#' X <- rename_model(X, "Any character string")
+#' sso <- rename_model(sso, "new name for model")
 #' }
 #' 
 

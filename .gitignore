@@ -13,3 +13,8 @@ shinyStan.Rproj
 *.DS_Store
 .Rproj.user
 inst/doc
+^cran-comments\.md$
+
+cran-comments.md
+
+*.swf

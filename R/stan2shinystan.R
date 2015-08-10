@@ -1,27 +1,22 @@
-# This file is part of shinyStan
-# Copyright (C) 2015 Jonah Sol Gabry & Stan Development Team
+# This file is part of shinystan
+# Copyright (C) Jonah Gabry
 #
-# shinyStan is free software; you can redistribute it and/or modify it under the
+# shinystan is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
 # Foundation; either version 3 of the License, or (at your option) any later
 # version.
 # 
-# shinyStan is distributed in the hope that it will be useful, but WITHOUT ANY
+# shinystan is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 # 
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-
-
 # convert stanfit object to shinystan object
-
 stan2shinystan <- function(stanfit, model_name, notes) {
   # notes: text to add to user_model_info slot
-  
   rstan_check()
-  
   if (!inherits(stanfit, "stanfit")) {
     name <- deparse(substitute(stanfit))
     stop(paste(name, "is not a stanfit object."))
@@ -29,10 +24,19 @@ stan2shinystan <- function(stanfit, model_name, notes) {
   
   stan_args <- stanfit@stan_args[[1]]
   from_cmdstan_csv <- ("engine" %in% names(stan_args))
-  
-  stan_algorithm <- if (from_cmdstan_csv) toupper(stan_args$engine) else stan_args$algorithm
-  warmup <- if (from_cmdstan_csv) stanfit@sim$warmup2 else stanfit@sim$warmup
+  stan_algorithm <- if (from_cmdstan_csv) 
+    toupper(stan_args$engine) else stan_args$algorithm
+  warmup <- if (from_cmdstan_csv) stanfit@sim$warmup2[1L] else stanfit@sim$warmup
   nWarmup <- if (from_cmdstan_csv) warmup else floor(warmup / stanfit@sim$thin)
+  
+  max_td <- stanfit@stan_args[[1]]$control
+  if (is.null(max_td)) 
+    max_td <- 11
+  else {
+    max_td <- max_td$max_treedepth
+    if (is.null(max_td)) 
+      max_td <- 11
+  }
   
   samps_all <- rstan::extract(stanfit, permuted = FALSE, inc_warmup = TRUE)
   param_names <- dimnames(samps_all)[[3]] # stanfit@sim$fnames_oi
@@ -57,9 +61,8 @@ stan2shinystan <- function(stanfit, model_name, notes) {
   slots$nChains <- ncol(stanfit)
   slots$nIter <- nrow(samps_all) 
   slots$nWarmup <- nWarmup
-  slots$stan_algorithm <- stan_algorithm
   if (!missing(notes)) slots$user_model_info <- notes
   if (length(mcode) > 0) slots$model_code <- mcode
-  
+  slots$misc <- list(max_td = max_td, stan_algorithm = stan_algorithm)
   do.call("new", slots)
 }

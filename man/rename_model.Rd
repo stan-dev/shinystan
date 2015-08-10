@@ -2,25 +2,27 @@
 % Please edit documentation in R/rename_model.R
 \name{rename_model}
 \alias{rename_model}
-\title{Change the model name associated with a \code{shinystan} object}
+\title{Change the model name associated with a shinystan object}
 \usage{
 rename_model(sso, new_model_name)
 }
 \arguments{
-\item{sso}{The \code{shinystan} object (\code{sso}) you want to edit.}
+\item{sso}{shinystan object.}
 
 \item{new_model_name}{Character string giving the new model name to use.}
 }
+\value{
+sso, updated.
+}
 \description{
-Change the model name associated with a \code{shinystan} object
+Change the model name associated with a shinystan object
 }
 \examples{
 \dontrun{
-# Assume X is a shinystan object
-X <- rename_model(X, "Any character string")
+sso <- rename_model(sso, "new name for model")
 }
 }
 \seealso{
-\code{\link[shinyStan]{as.shinystan}}
+\code{\link{as.shinystan}}
 }
 

@@ -1,12 +1,12 @@
-# This file is part of shinyStan
-# Copyright (C) 2015 Jonah Sol Gabry & Stan Development Team
+# This file is part of shinystan
+# Copyright (C) Jonah Gabry
 #
-# shinyStan is free software; you can redistribute it and/or modify it under the
+# shinystan is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
 # Foundation; either version 3 of the License, or (at your option) any later
 # version.
 # 
-# shinyStan is distributed in the hope that it will be useful, but WITHOUT ANY
+# shinystan is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 # 
@@ -14,22 +14,17 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 .onAttach <- function(...) {
-  ver <- utils::packageVersion("shinyStan")
-  msg <- paste0("\nThis is shinyStan version ", ver,"\n")
-  # check shinyBS version
-  sbs_version <- utils::packageVersion("shinyBS") 
-  if (sbs_version != "0.50.1") {
-    msg <- paste0(msg, 
-                  "\nMessage:", 
-                  "\nshinyStan runs best with version ",
-                  "0.50.1 of the shinyBS package (you ",
-                  "have version ", sbs_version, ").",
-                  "\nTo install the preferred version ",
-                  "restart R and then run ",
-                  "\ndevtools::install_github('jgabry/shinyBS@shinyBS_for_shinyStan')"
-    )
-  }
+  ver <- utils::packageVersion("shinystan")
+  msg <- paste0("\nThis is shinystan version ", ver,"\n")
   packageStartupMessage(msg)
 } 
 
-.onLoad <- function(libname, pkgname) { }
+.onLoad <- function(libname, pkgname) {
+  op <- options()
+  op.shinystan <- list(
+    shinystan.rstudio = FALSE
+  )
+  set_ops <- !(names(op.shinystan) %in% names(op))
+  if (any(set_ops)) options(op.shinystan[set_ops])
+  invisible()
+}

@@ -2,72 +2,70 @@
 % Please edit documentation in R/launch_shinystan.R
 \name{launch_shinystan}
 \alias{launch_shinystan}
-\title{Launch shinyStan app}
+\title{ShinyStan app}
 \usage{
-launch_shinystan(object, ...)
+launch_shinystan(object, rstudio = getOption("shinystan.rstudio"), ...)
 }
 \arguments{
-\item{object}{An object of class \code{shinystan} or \code{stanfit}.
-See \code{\link[shinyStan]{as.shinystan}} for how to easily convert other types
-of objects to \code{shinystan} objects.}
+\item{object}{An object of class shinystan, stanfit, or stanreg. See
+\code{\link{as.shinystan}} for converting other objects to a shinystan
+object (sso).}
+
+\item{rstudio}{Only relevant for RStudio users. The default
+(\code{rstudio=FALSE}) is to launch the app in the default web browser
+rather than RStudio's pop-up Viewer. Users can change the default to
+\code{TRUE} by setting the global option \code{options(shinystan.rstudio =
+TRUE)}.}
 
 \item{...}{Optional arguments to pass to \code{\link[shiny]{runApp}}.}
 }
 \value{
-If \code{object} is a \code{shinystan} object then \code{object} will be
-returned (or a slightly modified version of \code{object} reflecting any changes saved while
-using the app). If \code{object} is a \code{stanfit} object then, in addition to launching
-the \strong{shinyStan} app, an S4 object of class \code{shinystan} is returned
-(see \strong{Note}).
+An S4 shinystan object.
 }
 \description{
-Launch shinyStan app
-}
-\details{
-Unless you are using RStudio, \code{launch_shinystan} will open the app
-in your system's default web browser. For RStudio users \strong{shinyStan} will
-launch in RStudio's (pop-up) Viewer pane by default. If you prefer to use \strong{shinyStan}
-in your web browser (or if you are having trouble with the RStudio Viewer pane) you
-can click on 'Open in Browser' at the top of the Viewer pane.
-}
-\note{
-The following note is only relevant for Stan users.
-
-If \code{object} is a \code{stanfit} object then the returned \code{shinystan} object
-will be named \code{object_shinystan}. For example, if \code{object} is a \code{stanfit} object
-named \code{my_stanfit} then the returned \code{shinystan} object will be named \code{my_stanfit_shinystan}.
-To avoid overwriting existing \code{shinystan} objects, if there is already an object named
-\code{my_stanfit_shinystan} then the \code{shinystan} objected returned will be named
-\code{my_stanfit_shinystan.1}. If there is also already an object named
-\code{my_stanfit_shinystan.1} then the returned \code{shinystan} object will be named
-\code{my_stanfit_shinystan.2}, etc.
-
-To avoid creating multiple \code{shinystan} objects for a single \code{stanfit} object
-you should use the returned \code{shinystan} object the next time you want to launch \strong{shinyStan}
-to explore the same \code{stanfit} object. For example, running \code{launch_shinystan(my_stanfit)}
-three times will create the \code{shinystan} objects \code{my_stanfit_shinystan},
-\code{my_stanfit_shinystan.1}, and \code{my_stanfit_shinystan.2}. On the other hand, once
-\code{my_stanfit_shinystan} is created after the first launch, it can then be used to launch
-\strong{shinyStan} as many times as you want without creating duplicate objects.
-\code{launch_shinystan(my_stanfit_shinystan)} will always return \code{my_stanfit_shinystan}
-(updated to reflect any saved changes while running the app). The only reasons to continue to use
-\code{my_stanfit} as the argument to \code{launch_shinystan} (instead of using \code{my_stanfit_shinystan})
-are 1) you intentionally want to create extra \code{shinystan} objects, or 2) you keep deleting
-\code{my_stanfit_shinystan} each time it's created.
+ShinyStan app
 }
 \examples{
 \dontrun{
-# If X is a shinystan object or stanfit object then
-# to launch the app just run
-launch_shinystan(X)
+#######################################
+# Example 1: 'sso' is a shinystan object
+#######################################
 
-# If X is not a shinystan or stanfit object then to launch the app first
-# convert X to a shinystan object using the as.shinystan function
-X_shinystan <- as.shinystan(X)
-launch_shinystan(X_shinystan)
+# Just launch shinystan
+launch_shinystan(sso)
+
+# Launch shinystan and replace sso with an updated version of itself
+# if any changes are made to sso while using the app
+sso <- launch_shinystan(sso)
+
+# Launch shinystan but save any changes made to sso while running the app
+# in a new shinystan object sso2. sso will remained unchanged.
+sso2 <- launch_shinystan(sso)
+
+#######################################
+# Example 2: 'sf' is a stanfit object
+#######################################
+
+# Just launch shinystan
+launch_shinystan(sf)
+
+# Launch shinystan and save the resulting shinystan object
+sf_sso <- launch_shinystan(sf)
+
+# Now sf_sso is a shinystan object and so Example 1 (above) applies when
+# using sf_sso.
+
+#######################################
+# Example 3: 'fit' is an mcmc.list, array or list of matrices
+#######################################
+
+# First create shinystan object (see ?as.shinystan for full details)
+fit_sso <- as.shinystan(fit, model_name = "Example")
+
+# Now fit_sso is a shinystan object and so Example 1 (above) applies.
 }
 }
 \seealso{
-\code{\link[shinyStan]{as.shinystan}}, \code{\link[shinyStan]{launch_shinystan_demo}}
+\code{\link{as.shinystan}}, \code{\link{launch_shinystan_demo}}
 }
 

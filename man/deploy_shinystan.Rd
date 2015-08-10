@@ -2,36 +2,41 @@
 % Please edit documentation in R/deploy_shinystan.R
 \name{deploy_shinystan}
 \alias{deploy_shinystan}
-\title{Deploy to shinyapps.io}
+\title{Deploy a ShinyStan app to shinyapps.io}
 \usage{
-deploy_shinystan(sso, account, appName, ppcheck_data, ppcheck_yrep)
+deploy_shinystan(sso, appName, account = NULL, ...)
 }
 \arguments{
-\item{sso}{The \code{shinystan} object (\code{sso}) for the model you want to use.}
+\item{sso}{shinystan object.}
 
-\item{account}{ShinyApps account username. Not required if only one
-ShinyApps account is configured on the system.}
+\item{appName}{The name to use for the application. Application names must be
+at least four characters long and may only contain letters, numbers, dashes
+and underscores.}
 
-\item{appName}{The name to use for the application as a character string.
-Application names must be at least four characters long and may only contain
-letters, numbers, dashes and underscores.}
+\item{account}{ShinyApps account username. Only required if more than one
+ShinyApps account is configured on the system. See
+\url{http://www.shinyapps.io/} for help configuring your account.}
 
-\item{ppcheck_data}{Optional vector of observations to use for
-graphical posterior predictive checking.}
-
-\item{ppcheck_yrep}{Optional character string naming the parameter in \code{sso}
-containing the posterior predictive simulations/replications. This is only used to
-preselect ppcheck_yrep as the parameter to use for the posterior predictive checking.
-This can also be set interactively while using the app.}
+\item{...}{Optional arguments. See Details.}
 }
 \description{
-Requires a ShinyApps account. Visit http://www.shinyapps.io/ to sign up.
-Also see the 'Deploying to shinyapps.io' vignette for a
-step-by-step guide.
+Requires a (free or paid) ShinyApps account. Visit
+\url{http://www.shinyapps.io/} to sign up.
+}
+\details{
+In \code{...}, the arguments \code{ppcheck_data} and
+  \code{ppcheck_yrep} can be specified. \code{ppcheck_data} should be a
+  vector of observations to use for graphical posterior predictive checking
+  and \code{ppcheck_yrep} should be a character string naming the parameter
+  in \code{sso} containing the posterior predictive simulations/replications.
+  The value of \code{ppcheck_yrep} is only used to preselect the appropriate
+  parameter/generated quantity to use for the posterior predictive checking.
+  \code{ppcheck_yrep} (but not \code{ppcheck_data}) can also be set
+  interactively on shinyapps.io when using the app.
 }
 \note{
-See the 'Deploying to shinyapps.io' vignette for more detailed
-examples.
+See the 'Deploying to shinyapps.io' vignette for a more detailed
+  example.
 }
 \examples{
 \dontrun{
@@ -41,13 +46,10 @@ examples.
 
 deploy_shinystan(sso = my_sso, appName = "my-model", account = "username")
 
-# If you only have one ShinyApps account configured then you also omit
+# If you only have one ShinyApps account configured then you can also omit
 # the 'account' argument.
 
 deploy_shinystan(sso = my_sso, appName = "my-model")
 }
-}
-\seealso{
-\code{\link[shinyapps]{deployApp}}, \code{\link[shinyapps]{accounts}}
 }
 

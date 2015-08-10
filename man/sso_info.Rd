@@ -2,7 +2,7 @@
 % Please edit documentation in R/sso_info.R
 \name{sso_info}
 \alias{sso_info}
-\title{Print summary of \code{shinystan} object}
+\title{Print summary of shinystan object}
 \usage{
 sso_info(sso)
 }

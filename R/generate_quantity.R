@@ -1,12 +1,12 @@
-# This file is part of shinyStan
-# Copyright (C) 2015 Jonah Sol Gabry & Stan Development Team
+# This file is part of shinystan
+# Copyright (C) Jonah Gabry
 #
-# shinyStan is free software; you can redistribute it and/or modify it under the
+# shinystan is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
 # Foundation; either version 3 of the License, or (at your option) any later
 # version.
 # 
-# shinyStan is distributed in the hope that it will be useful, but WITHOUT ANY
+# shinystan is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 # 
@@ -14,17 +14,17 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-#' Add to \code{shinystan} object a new parameter as a function of one or two
+#' Add to shinystan object a new parameter as a function of one or two 
 #' existing parameters
 #'
-#' @param sso The \code{shinystan} object to modify.
-#' @param fun Function to call, i.e. \code{function(param1)}
-#' or \code{function(param1,param2)}. See \strong{Examples}, below.
+#' @param sso shinystan object.
+#' @param fun Function to call, i.e. \code{function(param1)} or
+#'   \code{function(param1,param2)}. See \strong{Examples}, below.
 #' @param param1 Name of first parameter as character string.
 #' @param param2 Optional. Name of second paramter as character string.
 #' @param new_name Name for the new parameter as character string.
-#' @return A \code{shinystan} object with \code{new_name} included as a parameter.
-#' @seealso \code{\link[shinyStan]{as.shinystan}}, \code{\link[shinyStan]{launch_shinystan_demo}}
+#' @return sso, updated. See Examples.
+#' @seealso \code{\link{as.shinystan}}
 #' @export
 #'
 #' @examples

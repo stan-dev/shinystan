@@ -1,12 +1,12 @@
-# This file is part of shinyStan
-# Copyright (C) 2015 Jonah Sol Gabry & Stan Development Team
+# This file is part of shinystan
+# Copyright (C) Jonah Gabry
 #
-# shinyStan is free software; you can redistribute it and/or modify it under the
+# shinystan is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
 # Foundation; either version 3 of the License, or (at your option) any later
 # version.
 # 
-# shinyStan is distributed in the hope that it will be useful, but WITHOUT ANY
+# shinystan is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 # 
@@ -36,7 +36,8 @@ chains2shinystan <- function(chain_list, ...) {
   if (nChain > 1) {
     nIter <- sapply(chain_list, nrow)
     same_iters <- length(unique(nIter)) == 1
-    if (!same_iters) stop("Each chain should contain the same number of iterations.")
+    if (!same_iters) 
+      stop("Each chain should contain the same number of iterations.")
 
     cnames <- sapply(chain_list, colnames)
     if (is.array(cnames)) {
@@ -46,7 +47,8 @@ chains2shinystan <- function(chain_list, ...) {
       same_params <- length(unique(cnames)) == 1
       param_names <- cnames
     }
-    if (!same_params) stop("The parameters for each chain should be in the same order and have the same names.")
+    if (!same_params) 
+      stop("The parameters for each chain should be in the same order and have the same names.")
 
     nIter <- nIter[1]
   } else {

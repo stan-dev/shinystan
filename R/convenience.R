@@ -1,18 +1,17 @@
-# This file is part of shinyStan
-# Copyright (C) 2015 Jonah Sol Gabry & Stan Development Team
+# This file is part of shinystan
+# Copyright (C) Jonah Gabry
 #
-# shinyStan is free software; you can redistribute it and/or modify it under the
+# shinystan is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
 # Foundation; either version 3 of the License, or (at your option) any later
 # version.
 # 
-# shinyStan is distributed in the hope that it will be useful, but WITHOUT ANY
+# shinystan is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 # 
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
-
   
 retrieve_rhat <- function(sso, pars) {
   if (missing(pars)) {
@@ -66,11 +65,12 @@ retrieve_sd <- function(sso, pars) {
 
 
 sp_check <- function(sso) {
-  if (is.na(sso@sampler_params[[1]])) stop("Only available for Stan models.")
+  if (identical(sso@sampler_params, list(NA)))
+    stop("No sampler parameters found", call. = FALSE)
 }
 
-retrieve_max_treedepth <- function(sso, inc_warmup = TRUE) {
-  sp_check()
+retrieve_max_treedepth <- function(sso, inc_warmup = FALSE) {
+  sp_check(sso)
   rows <- if (inc_warmup) 1:sso@nIter else (sso@nWarmup+1):sso@nIter
   max_td <- sapply(sso@sampler_params,
                    function(x) max(x[rows,"treedepth__"]))
@@ -78,8 +78,8 @@ retrieve_max_treedepth <- function(sso, inc_warmup = TRUE) {
   max_td
 }
 
-retrieve_prop_divergent <- function(sso, inc_warmup = TRUE) {
-  sp_check()
+retrieve_prop_divergent <- function(sso, inc_warmup = FALSE) {
+  sp_check(sso)
   rows <- if (inc_warmup) 1:sso@nIter else (sso@nWarmup+1):sso@nIter
   prop_div <- sapply(sso@sampler_params,
                      function(x) mean(x[rows,"n_divergent__"]))
@@ -87,8 +87,8 @@ retrieve_prop_divergent <- function(sso, inc_warmup = TRUE) {
   prop_div
 }
 
-retrieve_avg_stepsize <- function(sso, inc_warmup = TRUE) {
-  sp_check()
+retrieve_avg_stepsize <- function(sso, inc_warmup = FALSE) {
+  sp_check(sso)
   rows <- if (inc_warmup) 1:sso@nIter else (sso@nWarmup+1):sso@nIter
   avg_ss <- sapply(sso@sampler_params,
                    function(x) mean(x[rows,"stepsize__"]))
@@ -96,8 +96,8 @@ retrieve_avg_stepsize <- function(sso, inc_warmup = TRUE) {
   avg_ss
 }
 
-retrieve_avg_accept <- function(sso, inc_warmup = TRUE) {
-  sp_check()
+retrieve_avg_accept <- function(sso, inc_warmup = FALSE) {
+  sp_check(sso)
   rows <- if (inc_warmup) 1:sso@nIter else (sso@nWarmup+1):sso@nIter
   avg_accept <- sapply(sso@sampler_params,
                        function(x) mean(x[rows,"accept_stat__"]))

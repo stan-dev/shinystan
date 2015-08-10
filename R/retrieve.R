@@ -1,34 +1,31 @@
-# This file is part of shinyStan
-# Copyright (C) 2015 Jonah Sol Gabry & Stan Development Team
+# This file is part of shinystan
+# Copyright (C) Jonah Gabry
 #
-# shinyStan is free software; you can redistribute it and/or modify it under the
+# shinystan is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
 # Foundation; either version 3 of the License, or (at your option) any later
 # version.
 # 
-# shinyStan is distributed in the hope that it will be useful, but WITHOUT ANY
+# shinystan is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 # 
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-
-
-#' Get summary statistics from \code{shinystan} object
+#' Get summary statistics from shinystan object
 #'
-#' From a \code{shinystan} object get rhat, effective sample size,
-#' posterior quantiles, means, standard deviations,
-#' sampler diagnostics, etc.
-#'
-#' @param sso A \code{shinystan} object
+#' From a shinystan object get rhat, effective sample size, posterior
+#' quantiles, means, standard deviations, sampler diagnostics, etc.
+#' 
+#' @param sso A shinystan object
 #' @param what What do you want to get? See \strong{Details}, below.
 #' @param ... Optional arguments, in particular \code{pars} to specify parameter
-#' names (by default all parameters will be used). For NUTS sampler parameters
-#' only (e.g. stepsize, treedepth) \code{inc_warmup} can also be specified to
-#' include/exclude warmup iterations (the default is \code{TRUE}, i.e. to
-#' include warmup iterations). See \strong{Details}, below.
-#'
+#'   names (by default all parameters will be used). For NUTS sampler parameters
+#'   only (e.g. stepsize, treedepth) \code{inc_warmup} can also be specified to 
+#'   include/exclude warmup iterations (the default is \code{FALSE}). See
+#'   \strong{Details}, below.
+#'   
 #' @details The argument \code{what} can take on the values below. Args: \code{arg}
 #' means that \code{arg} can be specified in \code{...} for this value of \code{what}.
 #' \describe{
@@ -45,7 +42,8 @@
 #'   \item{\code{"avg_stepsize" or any string with "step" in it (not case sensitive)}}{returns: Average stepsize for each chain. Args: \code{inc_warmup}}
 #' }
 #' 
-#' @note Sampler diagnostics (e.g. \code{"avg_accept_stat"}) only available for models originally fit using Stan.
+#' @note Sampler diagnostics (e.g. \code{"avg_accept_stat"}) only available for
+#'   models originally fit using Stan.
 #' 
 #' @export
 #' @examples
@@ -64,38 +62,5 @@
 
 retrieve <- function(sso, what, ...) {
   sso_check(sso)
-
-  if (what %in% c("rhat", "rhats", "Rhat", "Rhats", "r_hat", "R_hat")) {
-    return(retrieve_rhat(sso, ...))
-  }
-  if (what %in% c("N_eff","n_eff", "neff", "Neff", "ess","ESS")) {
-    return(retrieve_neff(sso, ...))
-  }
-  if (grepl_ic("mean", what)) {
-    return(retrieve_mean(sso, ...))
-  }
-  if (grepl_ic("sd", what)) {
-    return(retrieve_sd(sso, ...))
-  }
-  if (what %in% c("se_mean", "mcse")) {
-    return(retrieve_mcse(sso, ...))
-  }
-  if (grepl_ic("quant", what)) {
-    return(retrieve_quant(sso, ...))
-  }
-  if (grepl_ic("median", what)) {
-    return(retrieve_median(sso, ...))
-  }
-  if (grepl_ic("tree", what) | grepl_ic("depth", what)) {
-    return(retrieve_max_treedepth(sso, ...))
-  }
-  if (grepl_ic("step", what)) {
-    return(retrieve_avg_stepsize(sso, ...))
-  }
-  if (grepl_ic("diverg", what)) {
-    return(retrieve_prop_divergent(sso, ...))
-  }
-  if (grepl_ic("accept", what)) {
-    return(retrieve_avg_accept(sso, ...))
-  }
+  .retrieve(sso, what, ...)
 }

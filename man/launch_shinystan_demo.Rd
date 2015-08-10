@@ -2,36 +2,35 @@
 % Please edit documentation in R/launch_shinystan_demo.R
 \name{launch_shinystan_demo}
 \alias{launch_shinystan_demo}
-\title{Launch shinyStan app in demo mode}
+\title{ShinyStan demo}
 \usage{
-launch_shinystan_demo(...)
+launch_shinystan_demo(rstudio = getOption("shinystan.rstudio"), ...)
 }
 \arguments{
-\item{...}{Optional arguments to pass to \code{stan_demo} (\pkg{rstan}).}
+\item{rstudio}{Only relevant for RStudio users. The default
+(\code{rstudio=FALSE}) is to launch the app in the default web browser
+rather than RStudio's pop-up Viewer. Users can change the default to
+\code{TRUE} by setting the global option \code{options(shinystan.rstudio =
+TRUE)}.}
+
+\item{...}{Optional arguments to pass to \code{\link[shiny]{runApp}}.}
 }
 \value{
-In addition to launching the \strong{shinyStan} app an S4 object of
-class \code{shinystan} is returned.
+An S4 shinystan object.
 }
 \description{
-The user will be presented with the option of launching the default
-shinyStan demo (in which case the app will launch immediately)
-or running a Stan demo model (\pkg{rstan}), after which shinyStan
-will launch.
-}
-\details{
-Unless you are using RStudio, \code{launch_shinystan} will open your
-system's default web browser. For RStudio users \strong{shinyStan} will
-launch in RStudio's (pop-up) Viewer pane. If you prefer to use \strong{shinyStan}
-in your web browser (or if you are having trouble with the RStudio Viewer pane) you
-can click on 'Open in Browser' at the top of the Viewer pane.
+ShinyStan demo
 }
 \examples{
 \dontrun{
+# launch demo but don't save a shinystan object
 launch_shinystan_demo()
+
+# launch demo and save the shinystan object for the demo
+ssdemo <- launch_shinystan_demo()
 }
 }
 \seealso{
-\code{\link[shinyStan]{launch_shinystan}}, \code{\link[shinyStan]{as.shinystan}},
+\code{\link{launch_shinystan}}, \code{\link{as.shinystan}}
 }
 
