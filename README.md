@@ -6,8 +6,7 @@
 [![shinystan](http://i59.tinypic.com/30ho2sn.jpg)](https://jgabry.shinyapps.io/ShinyStan2Preview)
 
 The ShinyStan graphical user interface for exploring Bayesian models is available in
-the [shinystan](https://github.com/stan-dev/shinystan/wiki/Installing-shinyStan) 
-R package. ShinyStan provides immediate, informative, customizable visual and 
+the shinystan R package. ShinyStan provides immediate, informative, customizable visual and 
 numerical summaries of model parameters and convergence diagnostics for 
 MCMC simulations. [Try the online demo.](https://jgabry.shinyapps.io/ShinyStan2Preview)
 
