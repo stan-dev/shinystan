@@ -1,58 +1,45 @@
-#' Launch shinyStan app in demo mode
+# This file is part of shinystan
+# Copyright (C) Jonah Gabry
+#
+# shinystan is free software; you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 3 of the License, or (at your option) any later
+# version.
+# 
+# shinystan is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along with
+# this program; if not, see <http://www.gnu.org/licenses/>.
+
+#' ShinyStan demo
 #'
-#' The user will be presented with the option of launching the default
-#' shinyStan demo (in which case the app will launch immediately)
-#' or running a Stan demo model (\pkg{rstanDemo}), after which shinyStan
-#' will launch.
-#'
-#' @param ... Optional arguments to pass to \code{rstanDemo::stan_demo}.
-#'
-#' @details After running \code{launch_shinystan_demo} you will also
-#' have an S4 object of class \code{shinystan} in your Global Environment which can be
-#' used with \code{launch_shinystan}.
-#'
-#' @note Unless you are using RStudio, \code{launch_shinystan} will open your
-#' system's default web browser. For RStudio users \strong{shinyStan} will
-#' launch in RStudio's (pop-up) Viewer pane. If you prefer to view \strong{shinyStan}
-#' in your web browser you can then click on 'Open in Browser' at the top of
-#' the Viewer pane.
 #' @export
+#'
+#' @param rstudio Only relevant for RStudio users. The default 
+#'   (\code{rstudio=FALSE}) is to launch the app in the default web browser 
+#'   rather than RStudio's pop-up Viewer. Users can change the default to 
+#'   \code{TRUE} by setting the global option \code{options(shinystan.rstudio = 
+#'   TRUE)}.
+#' @param ... Optional arguments to pass to \code{\link[shiny]{runApp}}.
+#' @return An S4 shinystan object.
+#'   
+#' @seealso \code{\link{launch_shinystan}}, \code{\link{as.shinystan}}
+#' 
 #' @examples
 #' \dontrun{
-#' launch_shinystan_demo()
+#' # launch demo but don't save a shinystan object
+#' launch_shinystan_demo() 
+#' 
+#' # launch demo and save the shinystan object for the demo 
+#' ssdemo <- launch_shinystan_demo()
 #' }
 #'
-#'
 
-launch_shinystan_demo <- function(...) {
-  launch_demo <- function(object) {
-    shinystan_object <<- object
-    shiny::runApp(system.file("shinyStan", package = "shinyStan"))
-  }
-  cleanup_shinystan <- function(shinystan_object, out_name) {
-    assign(out_name, shinystan_object, inherits = TRUE)
-    shinystan_object <<- NULL
-    rm(list = "shinystan_object", envir = globalenv())
-  }
-
-  choices <- c("Default shinyStan demo (launches immediately)",
-               "Select a Stan demo (first runs RStan, then launches)")
-  choice <- select.list(choices)
-  if (choice == choices[1]) {
-    demo_name <- "eight_schools"
-    out_name <- paste0("shinystan_demo_", demo_name)
-    on.exit(cleanup_shinystan(shinystan_object, out_name))
-    launch_demo(eight_schools)
-  } else {
-    has_rstanDemo <- requireNamespace("rstanDemo", quietly = TRUE)
-    if (has_rstanDemo) {
-      stanfit <- rstanDemo::stan_demo(...)
-    } else {
-      has_rstan <- requireNamespace("rstan", quietly = TRUE)
-      if(!has_rstan) stop("You need to have the RStan package installed to use this option. Try runnning the default shinyStan demo instead.")
-      stanfit <- rstan::stan_demo(...)
-    }
-
-    launch_shinystan(stanfit)
-  }
+launch_shinystan_demo <- function(rstudio = getOption("shinystan.rstudio"), 
+                                  ...) {
+  demo_name <- "eight_schools"
+  on.exit(cleanup_shinystan())
+  invisible(launch(get(demo_name), rstudio, ...))
 }

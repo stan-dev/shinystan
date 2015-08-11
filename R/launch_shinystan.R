@@ -1,61 +1,89 @@
-#' Launch shinyStan app
-#'
-#' @param object An object of class \code{shinystan} or \code{stanfit}.
-#' See \code{\link[shinyStan]{as.shinystan}} for how to easily convert other types
-#' of objects to \code{shinystan} objects.
-#' @details If \code{object} is a \code{stanfit} object then, in addition to launching
-#' the shinyStan app, this function creates an S4 object of class \code{shinystan} in
-#' the Global Environment.
-#' @note Unless you are using RStudio, \code{launch_shinystan} will open the app
-#' in your system's default web browser. For RStudio users \strong{shinyStan} will
-#' launch in RStudio's (pop-up) Viewer pane by default. Once open in the Viewer pane
-#' it can then be opened in your web browser if you prefer by clicking on 'Open in Browser'
-#' at the top of the Viewer pane. 
-#'
-#' @seealso \code{\link[shinyStan]{as.shinystan}}, \code{\link[shinyStan]{launch_shinystan_demo}}
+# This file is part of shinystan
+# Copyright (C) Jonah Gabry
+#
+# shinystan is free software; you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 3 of the License, or (at your option) any later
+# version.
+# 
+# shinystan is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along with
+# this program; if not, see <http://www.gnu.org/licenses/>.
+
+#' ShinyStan app
+#' 
 #' @export
+#' 
+#' @param object An object of class shinystan, stanfit, or stanreg. See
+#'   \code{\link{as.shinystan}} for converting other objects to a shinystan
+#'   object (sso).
+#' @param rstudio Only relevant for RStudio users. The default 
+#'   (\code{rstudio=FALSE}) is to launch the app in the default web browser 
+#'   rather than RStudio's pop-up Viewer. Users can change the default to 
+#'   \code{TRUE} by setting the global option \code{options(shinystan.rstudio = 
+#'   TRUE)}.
+#' @param ... Optional arguments to pass to \code{\link[shiny]{runApp}}.
+#' @return An S4 shinystan object.
+#'
+#' @seealso \code{\link{as.shinystan}}, \code{\link{launch_shinystan_demo}}
 #' @examples
 #' \dontrun{
-#' # If X is a shinystan object or stanfit object then
-#' # to launch the app just run
-#' launch_shinystan(X)
+#' #######################################
+#' # Example 1: 'sso' is a shinystan object
+#' #######################################
+#' 
+#' # Just launch shinystan
+#' launch_shinystan(sso)
+#' 
+#' # Launch shinystan and replace sso with an updated version of itself
+#' # if any changes are made to sso while using the app
+#' sso <- launch_shinystan(sso)
+#' 
+#' # Launch shinystan but save any changes made to sso while running the app
+#' # in a new shinystan object sso2. sso will remained unchanged. 
+#' sso2 <- launch_shinystan(sso) 
+#' 
+#' #######################################
+#' # Example 2: 'sf' is a stanfit object
+#' #######################################
+#' 
+#' # Just launch shinystan
+#' launch_shinystan(sf)
+#' 
+#' # Launch shinystan and save the resulting shinystan object
+#' sf_sso <- launch_shinystan(sf)
+#' 
+#' # Now sf_sso is a shinystan object and so Example 1 (above) applies when
+#' # using sf_sso. 
+#' 
+#' #######################################
+#' # Example 3: 'fit' is an mcmc.list, array or list of matrices
+#' #######################################
 #'
-#' # If X is not a shinystan or stanfit object then to launch the app first
-#' # convert X to a shinystan object using the as.shinystan function
-#' X_shinystan <- as.shinystan(X)
-#' launch_shinystan(X_shinystan)
+#' # First create shinystan object (see ?as.shinystan for full details)
+#' fit_sso <- as.shinystan(fit, model_name = "Example")
+#' 
+#' # Now fit_sso is a shinystan object and so Example 1 (above) applies.
 #' }
 #'
-launch_shinystan <- function(object) {
-
-  launch <- function(object) {
-    if (is.shinystan(object)) {
-      shinystan_object <<- object
-    }
-    if (!is.shinystan(object)) {
-      shinystan_object <<- stan2shinystan(object)
-    }
-    shiny::runApp(system.file("shinyStan", package = "shinyStan"))
-  }
-
-  cleanup_shinystan <- function(shinystan_object, out_name) {
-    assign(out_name, shinystan_object, inherits = TRUE)
-    shinystan_object <<- NULL
-    rm(list = "shinystan_object", envir = globalenv())
-  }
-
-  is_stan <- function(X) inherits(X, "stanfit")
+launch_shinystan <- function(object, rstudio = getOption("shinystan.rstudio"), 
+                             ...) {
   name <- deparse(substitute(object))
   no_name <- substr(name, 1, 12) == "as.shinystan"
-
-  if (missing(object)) {
+  if (missing(object)) 
     stop("Please specify a shinystan or stanfit object.")
-  }
-  if (!is_stan(object) & !is.shinystan(object)) {
-    stop(paste(name, "is not a shinystan or stanfit object."))
-  }
-  out_name <- ifelse(is_stan(object), paste0(name,"_shinystan"), name)
-  if (no_name) out_name <- "unnamed_shinystan"
-  on.exit(cleanup_shinystan(shinystan_object, out_name))
-  launch(object)
+  message("\nLoading... \n", 
+          "Note: for large models ShinyStan may take a few moments to launch.")
+  
+  if (inherits(object, "stanreg"))
+    object <- object$stanfit
+  if (inherits(object, "stanfit"))
+    object <- stan2shinystan(object)
+  if (!is.shinystan(object))
+    stop(paste(name, "is not a valid input. See ?launch_shinystan"))
+  on.exit(cleanup_shinystan())
+  invisible(launch(object, rstudio, ...))
 }

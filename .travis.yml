@@ -1,0 +1,18 @@
+language: r
+sudo: required
+warnings_are_errors: false
+
+r_binary_packages:
+  - ggplot2
+  - jsonlite
+  - Rcpp
+  - knitr
+  
+env:
+  global:
+    - _R_CHECK_FORCE_SUGGESTS_=false
+
+notifications:
+  email:
+  on_success: change
+  on_failure: change

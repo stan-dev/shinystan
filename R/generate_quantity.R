@@ -1,14 +1,30 @@
-#' Add to \code{shinystan} object a new parameter as a function of one or two
+# This file is part of shinystan
+# Copyright (C) Jonah Gabry
+#
+# shinystan is free software; you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 3 of the License, or (at your option) any later
+# version.
+# 
+# shinystan is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along with
+# this program; if not, see <http://www.gnu.org/licenses/>.
+
+
+#' Add to shinystan object a new parameter as a function of one or two 
 #' existing parameters
 #'
-#' @param sso The \code{shinystan} object to modify
-#' @param fun Function to call, i.e. \code{function(param1)}
-#' or \code{function(param1,param2)}. See strong(Examples), below.
-#' @param param1 Name of first parameter as character string
-#' @param param2 Optional. Name of second paramter as character string
-#' @param new_name Name for the new parameter as character string
-#' @return A \code{shinystan} object including \code{new_name} as a parameter
-#' @seealso \code{\link[shinyStan]{as.shinystan}}, \code{\link[shinyStan]{launch_shinystan_demo}}
+#' @param sso shinystan object.
+#' @param fun Function to call, i.e. \code{function(param1)} or
+#'   \code{function(param1,param2)}. See \strong{Examples}, below.
+#' @param param1 Name of first parameter as character string.
+#' @param param2 Optional. Name of second paramter as character string.
+#' @param new_name Name for the new parameter as character string.
+#' @return sso, updated. See Examples.
+#' @seealso \code{\link{as.shinystan}}
 #' @export
 #'
 #' @examples
@@ -39,35 +55,34 @@
 #'}
 
 generate_quantity <- function(sso, param1, param2, fun, new_name) {
-  name_exists <- new_name %in% sso@param_names
-  if (name_exists) {
-    stop(paste("There is already a parameter named", new_name))
-  }
+  sso_check(sso)
   
-  message("This might take a moment for large shinystan objects")
+  name_exists <- new_name %in% sso@param_names  
+  if (name_exists) stop(paste("There is already a parameter named", new_name))
+  
+  message("\nThis might take a moment for large shinystan objects...\n")
   
   two_params <- !missing(param2)
   samps <- sso@samps_all
   dim_samps <- dim(samps)
   nDim <- length(dim_samps)
-  if (nDim == 3) {
+  if (nDim == 3) { # i.e. multiple chains
     x_samps <- samps[, , param1]
     if (two_params) y_samps <- samps[, , param2]
   }
-  if (nDim == 2) {
+  if (nDim == 2) { # i.e. only 1 chain
     x_samps <- samps[, param1]
     if (two_params) y_samps <- samps[, param2]
   }
   
-  if (!two_params) arglist <- list(x_samps)
-  if (two_params) arglist <- list(x_samps, y_samps)
+  arglist <- if (two_params) list(x_samps, y_samps) else list(x_samps)
   temp <- do.call(fun, args = arglist)
   
-  new_dim_samps <- dim_samps
-  new_dim_samps[[nDim]] <- new_dim_samps[[nDim]] + 1
+  new_dim <- dim_samps
+  new_dim[[nDim]] <- new_dim[[nDim]] + 1
   new_dim_names <- dimnames(samps)
   new_dim_names[[nDim]] <- c(new_dim_names[[nDim]], new_name)
-  samps <- array(data = c(samps, temp), dim = new_dim_samps, dimnames = new_dim_names)
+  samps <- array(data = c(samps, temp), dim = new_dim, dimnames = new_dim_names)
   
   param_dims_new <- sso@param_dims
   param_dims_new[[new_name]] <- numeric(0)
@@ -78,8 +93,8 @@ generate_quantity <- function(sso, param1, param2, fun, new_name) {
   sso_new@summary <- shinystan_monitor(samps, warmup = sso@nWarmup)
   
   slot_names <- c("stan_algorithm", "sampler_params", "model_code", "user_model_info")
-  for (name in slot_names) {
-    slot(sso_new, name) <- slot(sso, name)
+  for (sn in slot_names) {
+    slot(sso_new, sn) <- slot(sso, sn)
   }
   
   return(sso_new)

@@ -1,6 +1,40 @@
-# Convert 3D array of iters, chains, params to shinystan object
+# This file is part of shinystan
+# Copyright (C) Jonah Gabry
+#
+# shinystan is free software; you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 3 of the License, or (at your option) any later
+# version.
+# 
+# shinystan is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along with
+# this program; if not, see <http://www.gnu.org/licenses/>.
 
-array2shinystan <- function(X, model_name = "unnamed model", burnin = 0, param_dims = list(),
+# Convert 3D array to shinystan object
+# 
+# @param X A 3D array of posterior simulations with dimensions corresponding to 
+# iterations, chains, and parameters, in that order.
+# @param model_name A character string giving a name for the model
+# @param burnin The number of burnin (warmup) iterations. Should only be specified if the 
+# burnin samples are included in \code{X}.
+# @param param_dims Rarely used and never necessary. A named list giving the dimensions for 
+# all parameters. For scalar parameters use \code{0} as the dimension. 
+# See Examples in \code{\link[shinyStan]{as.shinystan}}.
+# @param model_code A character string with the code you used to run your model. This can 
+# also be added to your \code{shinystan} object later using the 
+# \code{\link[shinyStan]{include_model_code}} function. 
+# See \code{\link[shinyStan]{include_model_code}} for additional formatting instructions. 
+# After launching the app \code{model_code} will be viewable in the \strong{Model Code} tab.
+# 
+# @return An object of class \code{shinystan} that can be used with 
+# \code{\link[shinyStan]{launch_shinystan}}. 
+# 
+
+array2shinystan <- function(X, model_name = "unnamed model", burnin = 0, 
+                            param_dims = list(),
                             model_code) {
 
   Xname <- deparse(substitute(X))
@@ -23,7 +57,7 @@ array2shinystan <- function(X, model_name = "unnamed model", burnin = 0, param_d
   if (length(param_dims) == 0) {
     param_dims <- list()
     param_dims[1:length(param_names)] <- NA
-    names(param_dims) <- param_groups <- param_names
+    names(param_dims) <- param_names
     for(i in 1:length(param_names)) {
       param_dims[[i]] <- numeric(0)
     }
@@ -34,8 +68,6 @@ array2shinystan <- function(X, model_name = "unnamed model", burnin = 0, param_d
     for (i in which(zeros)) {
       param_dims[[i]] <- numeric(0)
     }
-
-    param_groups <- names(param_dims)
   }
 
   slots <- list()
@@ -43,7 +75,6 @@ array2shinystan <- function(X, model_name = "unnamed model", burnin = 0, param_d
   slots$model_name <- model_name
   slots$param_names <- param_names
   slots$param_dims <- param_dims
-  slots$param_groups <- param_groups
   slots$samps_all <- X
   slots$summary <- shinystan_monitor(X, warmup = burnin)
   slots$sampler_params <- list(NA)

@@ -1,19 +1,43 @@
+# This file is part of shinystan
+# Copyright (C) Jonah Gabry
+#
+# shinystan is free software; you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 3 of the License, or (at your option) any later
+# version.
+# 
+# shinystan is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along with
+# this program; if not, see <http://www.gnu.org/licenses/>.
+
+
+# Convert list of chains to shinystan object
+# 
+# @param chain_list A list of 2D-arrays or matrices of iterations (rows) and parameters (columns). 
+# Each chain in chain_list should have the same number of iterations and the same parameters 
+# (with the same names and in the same order).
+# @param ... Arguments to pass to \code{array2shinystan}
+# 
+# @return An object of class \code{shinystan} that can be used with 
+# \code{\link[shinyStan]{launch_shinystan}}. 
+# 
+
 chains2shinystan <- function(chain_list, ...) {
-#   chain_list: a list of 2D-arrays or matrices of iterations (rows) and
-#   parameters (columns). each chain in chain_list should have the same number
-#   of iterations and the same parameters (with the same names and in the same
-#   order)
 
   if (!is.list(chain_list)) {
     name <- deparse(substitute(chain_list))
-    stop (paste(name, "is not a list."))
+    stop(paste(name, "is not a list."), call. = FALSE)
   }
 
   nChain <- length(chain_list)
   if (nChain > 1) {
     nIter <- sapply(chain_list, nrow)
     same_iters <- length(unique(nIter)) == 1
-    if (!same_iters) stop("Each chain should contain the same number of iterations.")
+    if (!same_iters) 
+      stop("Each chain should contain the same number of iterations.")
 
     cnames <- sapply(chain_list, colnames)
     if (is.array(cnames)) {
@@ -23,13 +47,12 @@ chains2shinystan <- function(chain_list, ...) {
       same_params <- length(unique(cnames)) == 1
       param_names <- cnames
     }
-    if (!same_params) stop("The parameters for each chain should be in the same order and have the same names.")
+    if (!same_params) 
+      stop("The parameters for each chain should be in the same order and have the same names.")
 
     nIter <- nIter[1]
   } else {
     if (nChain == 1) {
-#       message("NOTE: a few of shinyStan's features don't work if you only have one chain.
-#               Please consider running multiple chains.")
       nIter <- nrow(chain_list[[1]])
       param_names <- colnames(chain_list[[1]])
     } else {
