@@ -13,16 +13,22 @@ numerical summaries of model parameters and convergence diagnostics for
 MCMC simulations. The ShinyStan graphical user interface is available 
 via the shinystan R package. [Try the online demo.](https://jgabry.shinyapps.io/ShinyStan2Preview)
 
-## Installing the R package
+## Installing the shinystan R package
 * Install from CRAN:
 
     `install.packages("shinystan", type = "source", repos = "http://cran.rstudio.com")`
     
-* Install from GitHub:
+* Install from GitHub (requires [devtools](https://github.com/hadley/devtools) package):
 
     `devtools::install_github("stan-dev/shinystan@develop", build_vignettes = TRUE)`
+    
+To take advantage of all the features in the shinystan package, it is also 
+recommended to install the [shinyapps](https://github.com/rstudio/shinyapps) 
+package. You can do this by running
 
-## About ShinyStan
+    devtools::install_github("rstudio/shinyapps")
+
+### About ShinyStan
 
 Applied Bayesian data analysis is primarily implemented through the MCMC 
 algorithms offered by various software packages. When analyzing a posterior sample 
