@@ -1,14 +1,17 @@
 [![Travis-CI Build Status](https://travis-ci.org/stan-dev/shinystan.svg?branch=develop)](https://travis-ci.org/stan-dev/shinystan)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/shinystan?color=blue)](http://cran.r-project.org/web/packages/shinystan)
 
-# ShinyStan 2.0.0
+-------------------
+<a href="http://mc-stan.org">
+<img src="https://raw.githubusercontent.com/stan-dev/logos/master/logo.png" width=200 alt="Stan Logo"/>
+</a>
 
-[![shinystan](http://i59.tinypic.com/30ho2sn.jpg)](https://jgabry.shinyapps.io/ShinyStan2Preview)
-
-The ShinyStan graphical user interface for exploring Bayesian models is available in
-the shinystan R package. ShinyStan provides immediate, informative, customizable visual and 
+ShinyStan v2.0.0
+-----------------
+**ShinyStan** provides immediate, informative, customizable visual and 
 numerical summaries of model parameters and convergence diagnostics for 
-MCMC simulations. [Try the online demo.](https://jgabry.shinyapps.io/ShinyStan2Preview)
+MCMC simulations. The ShinyStan graphical user interface is available 
+via the shinystan R package. [Try the online demo.](https://jgabry.shinyapps.io/ShinyStan2Preview)
 
 ## Installing the R package
 * Install from CRAN:
@@ -34,11 +37,8 @@ posterior sample, with particular attention to identifying potential problems
 with the performance of the MCMC algorithm or the specification of the model. 
 ShinyStan is powered by RStudio's Shiny web application framework and works with 
 the output of MCMC programs written in any programming language (and has extended 
-functionality for models fit using the rstan package and the No-U-Turn sampler). 
-
- ShinyStan has extended functionality for 
-[Stan](http://mc-stan.org/interfaces/rstan.html) models. 
-
+functionality for models fit using [RStan](http://mc-stan.org/interfaces/rstan.html) 
+and the No-U-Turn sampler). 
 
 ### Saving and deploying (sharing)
 
