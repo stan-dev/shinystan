@@ -16,7 +16,9 @@ via the shinystan R package. [Try the online demo.](https://jgabry.shinyapps.io/
 ## Installing the shinystan R package
 * Install from CRAN:
 
-    `install.packages("shinystan", type = "source", repos = "http://cran.rstudio.com")`
+    `install.packages("shinystan")`
+    
+    If this fails, try adding the arguments `type='source'` and/or `repos='http://cran.rstudio.com'`.
     
 * Install from GitHub (requires [devtools](https://github.com/hadley/devtools) package):
 

@@ -3,10 +3,14 @@ sudo: required
 warnings_are_errors: false
 
 r_binary_packages:
+  - reshape2
   - ggplot2
   - jsonlite
   - Rcpp
+  - gtools
+  - markdown
   - knitr
+  - xts
   
 env:
   global:
