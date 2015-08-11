@@ -20,7 +20,7 @@ via the shinystan R package. [Try the online demo.](https://jgabry.shinyapps.io/
     
 * Install from GitHub (requires [devtools](https://github.com/hadley/devtools) package):
 
-    `devtools::install_github("stan-dev/shinystan@develop", build_vignettes = TRUE)`
+    `devtools::install_github("stan-dev/shinystan", build_vignettes = TRUE)`
     
 To take advantage of all the features in the shinystan package, it is also 
 recommended to install the [shinyapps](https://github.com/rstudio/shinyapps) 
