@@ -149,7 +149,7 @@ sample_id_for_resids <- reactive({
     graph <- graph + 
       geom_hline(yintercept = 0, size = 3, color = axis_line_color) + 
       geom_vline(xintercept = 0, size = 0.5, color = axis_line_color) +
-      thm %+replace% theme(axis.line = element_blank())
+      thm %+replace% theme(axis.line = ggplot2::element_blank())
   }
   
   graph 
