@@ -9,7 +9,7 @@ It's also now [available on CRAN](https://cran.rstudio.com/web/packages/shinysta
 * The name of the R package is **shinystan** and the app/GUI is **ShinyStan**. 
 
 ### Deploy ShinyStan apps to shinyapps.io (RStudio's ShinyApps service)
-* The 'deploy_shinystan' function lets you easily deploying ShinyStan apps 
+* The 'deploy_shinystan' function lets you easily deploy ShinyStan apps 
 to RStudio's shinyapps.io for any of your models. Each of your apps 
 (i.e. each of your models) will have a unique url.
 
