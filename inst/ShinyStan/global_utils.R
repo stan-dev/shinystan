@@ -1,3 +1,7 @@
+ggplot_fns <- readRDS("ggplot_fns.rds")
+lapply(ggplot_fns, function(f) {
+  assign(f, getFromNamespace(f, "ggplot2"), envir = parent.frame(2))
+})
 
 helpers <- file.path("helper_functions", list.files("helper_functions", full.names = FALSE))
 for (h in helpers) source(h, local = TRUE)
