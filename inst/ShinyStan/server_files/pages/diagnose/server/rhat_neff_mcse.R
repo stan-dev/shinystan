@@ -16,7 +16,7 @@
 # rhat, n_eff, mcse -------------------------------------------------------
 n_eff_plot <- reactive({
   dat <- fit_summary[,"n_eff"]
-  N <- nrow(samps_post_warmup)
+  N <- prod(dim(samps_post_warmup)[1:2])
   dat <- data.frame(parameter = names(dat), x = dat / N)
   do.call(".rhat_neff_mcse_hist", args = list(
     dat = dat,
