@@ -119,7 +119,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                         fill_color = NULL, line_color = NULL,
                         point_est = "None", CI,
                         x_breaks = "Some", # y_breaks = "None",
-                        xzoom = FALSE, x_lim = NULL,
+                        x_lim = NULL,
                         chain_split = FALSE,
                         title = TRUE,
                         transform_x = "identity",
@@ -199,7 +199,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                 annotate("segment", x = quant, xend = quant, y = 0, yend = max(dens_dat$y), color = lclr, lty = rep(1:length(CI),2))
     )
   }
-  if (xzoom) graph <- graph + scale_x_continuous(limits = x_lim)
+  if (!is.null(x_lim)) graph <- graph + scale_x_continuous(limits = x_lim)
   graph
 }
 
