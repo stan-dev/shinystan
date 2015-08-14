@@ -1,25 +1,28 @@
 language: r
 sudo: required
 
-env:
-  global:
-    - _R_CHECK_FORCE_SUGGESTS_=false
+cran: http://cran.rstudio.com/
+r_check_revdep: false
+pandoc: false
 
 r_binary_packages:
   - coda
   - dygraphs
   - ggplot2
   - gtools
+  - httpuv
   - inline
   - jsonlite
   - knitr
   - markdown
   - Rcpp
-  - reshape2
+  - reshape
+  - RUnit
   - shiny
   - testthat
   - xtable
   - xts
+  - yaml
 
 notifications:
   email:
