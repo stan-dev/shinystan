@@ -13,13 +13,14 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
+
 .rename_scalar <- function(sso, oldname = "lp__", newname = "log-posterior") {
   p <- which(sso@param_names == oldname)
   if (identical(integer(0), p)) 
     return(sso)
   sso@param_names[p] <- 
-    names(sso@param_dims)[p]<-  
-      dimnames(sso@samps_all)$parameters[p] <- newname
+    dimnames(sso@samps_all)$parameters[p] <-
+      names(sso@param_dims)[which(names(sso@param_dims) == oldname)] <- newname
   sso
 }
 
@@ -74,6 +75,6 @@ stan2shinystan <- function(stanfit, model_name, notes) {
   if (length(mcode) > 0) slots$model_code <- mcode
   slots$misc <- list(max_td = max_td, stan_algorithm = stan_algorithm)
   sso <- do.call("new", slots)
-  .rename_lp(sso)
+  .rename_scalar(sso)
 }
 
