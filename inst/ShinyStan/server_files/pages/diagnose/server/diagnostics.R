@@ -13,9 +13,10 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
+lp_name <- "log-posterior"
+lp_lab <- "Log Posterior"
 metrop_lab <- "Mean Metrop. Acceptance"
 stepsize_lab <- "Sampled Step Size"
-lp_lab <- "Log Posterior"
 treedepth_lab <- "Treedepth"
 ndivergent_lab <- "N Divergent"
 
@@ -79,7 +80,7 @@ stepsize_vs_lp <- reactive({
   chain <- diagnostic_chain()
   sel <- selected_range()
   stepsize <- .stepsize_pw[if (!is.null(sel)) sel, -1L] # drop iterations column
-  lp <- samps_post_warmup[if (!is.null(sel)) sel,,"lp__"]
+  lp <- samps_post_warmup[if (!is.null(sel)) sel,,lp_name]
   .sampler_param_vs_param(p = lp, sp = stepsize, 
                           p_lab = lp_lab,
                           sp_lab = stepsize_lab, 
@@ -102,7 +103,7 @@ stepsize_vs_accept_stat <- reactive({
 dynamic_trace_diagnostic_lp <- reactive({
   sp_nuts_check()
   chain <- diagnostic_chain()
-  samps <- samps_post_warmup[,, "lp__"]
+  samps <- samps_post_warmup[,, lp_name]
   lab <- "Log Posterior"
   stack <- FALSE  
   do.call(".dynamic_trace_diagnostics", args = list(
@@ -130,7 +131,7 @@ lp_hist <- reactive({
   sp_nuts_check()
   chain <- diagnostic_chain()
   sel <- selected_range()
-  lp <- samps_post_warmup[if (!is.null(sel)) sel,, "lp__"]
+  lp <- samps_post_warmup[if (!is.null(sel)) sel,, lp_name]
   df <- as.data.frame(cbind(iterations = 1:nrow(lp), lp))
   .p_hist(df, lab = lp_lab, chain)
 })
@@ -145,7 +146,7 @@ accept_stat_vs_lp <- reactive({
   sp_nuts_check()
   sel <- selected_range()
   metrop <- .accept_stat_pw[if (!is.null(sel)) sel,-1L] # drop iterations column
-  lp <- samps_post_warmup[if (!is.null(sel)) sel,,"lp__"]
+  lp <- samps_post_warmup[if (!is.null(sel)) sel,,lp_name]
   chain <- input$diagnostic_chain
   divergent <- .ndivergent_pw[if (!is.null(sel)) sel,-1L]
   td <- .treedepth_pw[if (!is.null(sel)) sel,-1L]
@@ -208,7 +209,7 @@ treedepth_vs_lp <- reactive({
   chain <- diagnostic_chain()
   sel <- selected_range()
   treedepth <- .treedepth_pw[if (!is.null(sel)) sel, -1L] # drop iterations column
-  lp <- samps_post_warmup[if (!is.null(sel)) sel,,"lp__"]
+  lp <- samps_post_warmup[if (!is.null(sel)) sel,,lp_name]
   .sampler_param_vs_param(p = lp, sp = treedepth, 
                           p_lab = lp_lab,
                           sp_lab = treedepth_lab, 
@@ -249,7 +250,7 @@ ndivergent_vs_lp <- reactive({
   chain <- diagnostic_chain()
   sel <- selected_range()
   ndivergent <- .ndivergent_pw[if (!is.null(sel)) sel, -1L] # drop iterations column
-  lp <- samps_post_warmup[if (!is.null(sel)) sel,,"lp__"]
+  lp <- samps_post_warmup[if (!is.null(sel)) sel,,lp_name]
   .sampler_param_vs_param(p = lp, sp = ndivergent, 
                           p_lab = lp_lab,
                           sp_lab = ndivergent_lab,
@@ -295,7 +296,7 @@ param_vs_lp <- reactive({
   param <- diagnostic_param()
   chain <- diagnostic_chain()
   sel <- selected_range()
-  lp <- samps_post_warmup[if (!is.null(sel)) sel,, "lp__"]
+  lp <- samps_post_warmup[if (!is.null(sel)) sel,, lp_name]
   transform_x <- diagnostic_param_transform()
   samps <- samps_post_warmup[if (!is.null(sel)) sel,, param]
   divergent <- .ndivergent_pw[if (!is.null(sel)) sel, -1L]

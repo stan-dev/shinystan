@@ -332,8 +332,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   dim.samps <- dim(samps) #nIter, nChain, nParam
   if(length(params) == 0) {
     params <- dimnames(samps)$parameters[1:min(12, dim.samps[3])]
-    if ("lp__" %in% params) {
-      params <- params[-which(params == "lp__")]
+    if ("log-posterior" %in% params) {
+      params <- params[-which(params == "log-posterior")]
     }
   }
   params <- unique(params)
