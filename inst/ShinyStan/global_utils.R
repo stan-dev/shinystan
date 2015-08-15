@@ -128,7 +128,7 @@ suppress_and_print <- function(x) {
       #       beta[2,2]"
       if (sort_j == TRUE & LL[i] > 1) ch <- gtools::mixedsort(ch) 
       
-      ch_out <- c(paste0(group,"_as_shiny_stan_group"), ch)
+      ch_out <- c(paste0(group,"_as_shinystan_group"), ch)
       names(ch_out) <- c(paste("ALL", group), ch)
       choices[[i]] <- ch_out
     }
@@ -140,15 +140,14 @@ suppress_and_print <- function(x) {
 # update_params_with_groups -----------------------------------------------
 # update parameter selection for multi-parameter plots
 .update_params_with_groups <- function(params, all_param_names) {
-  as_group <- grep("_as_shiny_stan_group", params)
+  as_group <- grep("_as_shinystan_group", params)
   if (length(as_group) == 0) return(params)
-  
   make_group <- function(group_name) {
     all_param_names[grep(paste0("^",group_name,"\\["), all_param_names)]
   }
   single_params <- params[-as_group]
   grouped_params <- params[as_group]
-  groups <- gsub("_as_shiny_stan_group", "", grouped_params)
+  groups <- gsub("_as_shinystan_group", "", grouped_params)
   groups <- sapply(groups, make_group)
   updated_params <- c(single_params, unlist(groups))
   updated_params
