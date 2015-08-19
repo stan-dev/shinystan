@@ -1,4 +1,4 @@
-ggplot_fns <- readRDS("ggplot_fns.rds")
+load("ggplot_fns.rda")
 lapply(ggplot_fns, function(f) {
   assign(f, getFromNamespace(f, "ggplot2"), envir = parent.frame(2))
 })
