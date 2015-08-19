@@ -14,7 +14,13 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 # rhat, n_eff, mcse -------------------------------------------------------
+vb_check <- function() {
+  validate(need(stan_method != "variational", 
+                message = "Not available for variational inference"))
+}
+
 n_eff_plot <- reactive({
+  vb_check()
   dat <- fit_summary[,"n_eff"]
   N <- prod(dim(samps_post_warmup)[1:2])
   dat <- data.frame(parameter = names(dat), x = dat / N)
@@ -25,6 +31,7 @@ n_eff_plot <- reactive({
   ))
 })
 rhat_plot <- reactive({
+  vb_check()
   dat <- fit_summary[,"Rhat"]
   dat <- data.frame(parameter = names(dat), x = dat)
   do.call(".rhat_neff_mcse_hist", args = list(
@@ -33,6 +40,7 @@ rhat_plot <- reactive({
   ))
 })
 mcse_over_sd_plot <- reactive({
+  vb_check()
   dat <- fit_summary[, c("se_mean", "sd")]
   dat <- dat[,1] / dat[,2]
   dat <- data.frame(parameter = names(dat), x = dat)
@@ -42,14 +50,17 @@ mcse_over_sd_plot <- reactive({
   ))
 })
 n_eff_warnings <- reactive({
+  vb_check()
   paste(.n_eff_warnings(fit_summary, threshold = input$n_eff_threshold), 
         collapse = "\n")
 })
 rhat_warnings <- reactive({
+  vb_check()
   paste(.rhat_warnings(fit_summary, threshold = input$rhat_threshold), 
         collapse = "\n")
 })
 mcse_over_sd_warnings <- reactive({
+  vb_check()
   paste(.mcse_over_sd_warnings(fit_summary, threshold = input$mcse_threshold), 
         collapse = "\n")
 })

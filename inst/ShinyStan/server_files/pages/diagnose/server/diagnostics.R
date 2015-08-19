@@ -22,8 +22,8 @@ ndivergent_lab <- "N Divergent"
 
 sp_nuts_check <- reactive({
   validate(
-    need(sampler_params_post_warmup, message = "Only available for Stan models"),
     need(stan_algorithm == "NUTS", message = "Only available for algorithm = NUTS"),
+    # need(sampler_params_post_warmup, message = "Only available for Stan models"),
     need(input$diagnostic_chain, message = "Loading..."))
 })
 

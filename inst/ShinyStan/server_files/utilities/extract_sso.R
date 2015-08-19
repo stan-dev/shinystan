@@ -16,12 +16,19 @@
 
 # Extract the contents of the shiny_stan_object slots
 model_name <- object@model_name
+param_names <- object@param_names
 samps_all <- object@samps_all
 sampler_params <- object@sampler_params
 nIter <- object@nIter
 nChains <- object@nChains
 warmup_val <- object@nWarmup
 samps_post_warmup <- samps_all[(warmup_val + 1):nIter,, ,drop = FALSE]
+
+MISC <- object@misc
+stan_method <- if ("stan_method" %in% names(MISC))
+  MISC$stan_method else "Not Stan"
+stan_algorithm <- if ("stan_algorithm" %in% names(MISC)) 
+  MISC$stan_algorithm else "Not Stan"
 
 sampler_params_post_warmup <- 
   if (!is.list(sampler_params) | identical(sampler_params, list(NA))) 
@@ -46,12 +53,11 @@ if (!identical(FALSE, sampler_params_post_warmup)) {
 }
 
 table_stats <- fit_summary <- object@summary
-sel <- colnames(table_stats) %in% c("Rhat", "n_eff")
-table_stats <- cbind(table_stats[, sel], table_stats[, !sel])
-sel <- NULL
-table_stats[,"n_eff"] <- round(table_stats[,"n_eff"])
+if (!stan_method == "variational") {
+  sel <- colnames(table_stats) %in% c("Rhat", "n_eff")
+  table_stats <- cbind(table_stats[, sel], table_stats[, !sel])
+  sel <- NULL
+  table_stats[,"n_eff"] <- round(table_stats[,"n_eff"])
+}
 
-param_names <- object@param_names
-MISC <- object@misc
-stan_algorithm <- if ("stan_algorithm" %in% names(MISC)) 
-  MISC$stan_algorithm else "Not Stan"
+
