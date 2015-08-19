@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-object <- get(".shinystan_temp_object")
+object <- get(".shinystan_temp_object", envir = shinystan:::.sso_env)
 source("global_utils.R", local = TRUE)
 rm(object)
 gc()
