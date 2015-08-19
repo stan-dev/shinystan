@@ -38,7 +38,7 @@ launch <- function(object, rstudio = FALSE, ...) {
   launch.browser <- if (!rstudio) 
     TRUE else getOption("shiny.launch.browser", interactive())
   .sso_env$.shinystan_temp_object <- object
-  on.exit(.sso_env$.shinystan_temp_object <- NULL, add=TRUE)
+  on.exit(.sso_env$.shinystan_temp_object <- NULL, add = TRUE)
   shiny::runApp(system.file("ShinyStan", package = "shinystan"), 
                           launch.browser = launch.browser, ...)
 }
