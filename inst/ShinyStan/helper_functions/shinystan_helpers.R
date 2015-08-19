@@ -49,7 +49,7 @@
   if(palette == "Brewer (spectral)") clrs <- scale_color_brewer(name = lgnd_title, palette = "Spectral")
   if(palette == "Rainbow") clrs <- scale_colour_manual(name = lgnd_title, values = rainbow(nclrs))
 
-  lgnd_txt <- theme(legend.text =  ggplot2::element_text(size = 13, face = "bold"))
+  lgnd_txt <- theme(legend.text =  element_text(size = 13, face = "bold"))
   
   graph <- ggplot(dat, aes(x = iterations, y = value, color = chains))
   graph <- graph + xy_labs + clrs + theme_classic() %+replace% (axis_color + axis_labs + fat_axis + h_lines + lgnd_top + lgnd_txt + strip_txt + transparent)
@@ -277,7 +277,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
     (axis_color + axis_labs + fat_axis + no_lgnd + strip_txt + transparent)
   y_scale <- scale_y_continuous(breaks = seq(0, 1, 0.25), 
                                 labels = c("0","","0.5","",""))
-  title_theme <- theme(plot.title =  ggplot2::element_text(face = "bold", size = 18))
+  title_theme <- theme(plot.title =  element_text(face = "bold", size = 18))
   if (combine_chains) {
     graph <- ggplot(ac_dat, aes(x= lag, y = ac))
     graph <- graph +
@@ -353,8 +353,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                                     values = rhat_pal,
                                     drop = FALSE)
   rhat_lgnd <- theme(legend.position = "top",
-                     legend.title =  ggplot2::element_text(size = 13, face = "bold"),
-                     legend.text =  ggplot2::element_text(size = 12))
+                     legend.title =  element_text(size = 13, face = "bold"),
+                     legend.text =  element_text(size = 12))
 
   nParams <- length(params)
   nIter <- prod(dim.samps[1:2])
@@ -381,17 +381,17 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   }
   p.base <- ggplot(xy.df, environment = .e)
   p.name <- scale_y_continuous(breaks = y, labels = params, limits = c(0.5, nParams + 1))
-  p.theme <- theme(axis.title= ggplot2::element_blank(),
-                   panel.background =  ggplot2::element_blank(),
-                   panel.border =  ggplot2::element_blank(),
-                   axis.ticks.y =  ggplot2::element_blank(),
-                   axis.text= ggplot2::element_text(size=12),
-                   axis.text.y= ggplot2::element_text(face = "bold"),
-                   axis.line= ggplot2::element_line(size = 4, color = axis_line_color),
-                   axis.line.y= ggplot2::element_line(size = 0.5, color = axis_line_color),
+  p.theme <- theme(axis.title= element_blank(),
+                   panel.background =  element_blank(),
+                   panel.border =  element_blank(),
+                   axis.ticks.y =  element_blank(),
+                   axis.text= element_text(size=12),
+                   axis.text.y= element_text(face = "bold"),
+                   axis.line= element_line(size = 4, color = axis_line_color),
+                   axis.line.y= element_line(size = 0.5, color = axis_line_color),
                    legend.position = "none",
-                   panel.grid.major =  ggplot2::element_line(size = 0.4),
-                   panel.grid.minor.y =  ggplot2::element_blank())
+                   panel.grid.major =  element_line(size = 0.4),
+                   panel.grid.minor.y =  element_blank())
 
   p.all <- p.base + xlim(xlim.use) + p.name + theme_bw() + p.theme + transparent
 
