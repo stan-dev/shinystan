@@ -84,6 +84,5 @@ launch_shinystan <- function(object, rstudio = getOption("shinystan.rstudio"),
     object <- stan2shinystan(object)
   if (!is.shinystan(object))
     stop(paste(name, "is not a valid input. See ?launch_shinystan"))
-  on.exit(cleanup_shinystan())
   invisible(launch(object, rstudio, ...))
 }

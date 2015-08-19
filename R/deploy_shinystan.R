@@ -81,15 +81,18 @@ deploy_shinystan <- function(sso, appName, account = NULL, ...) {
     file_name <- file.path(deployDir, paste0(ff, ".R"))
     fconn <- file(file_name, 'r+') 
     original_content <- readLines(fconn) 
+    if (ff %in% c("ui", "server")) {
+      sel <- grep(".shinystan_temp_object", original_content)
+      original_content <- original_content[-sel] 
+    }
     new_lines <- get(paste0(ff, "_lines"))
     writeLines(c(new_lines, original_content), con = fconn) 
     close(fconn) 
   }
 
   # save shinystan_object to deployDir
-  .shinystan_temp_object <- sso
-  save(.shinystan_temp_object, 
-       file = file.path(deployDir, "shinystan_temp_object.RData"))
+  object <- sso
+  save(object, file = file.path(deployDir, "shinystan_temp_object.RData"))
   deploy <- getFromNamespace("deployApp", "shinyapps")
   # save ppcheck_data and set ppcheck defaults
   pp <- list(...)

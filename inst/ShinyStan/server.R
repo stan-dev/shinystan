@@ -14,7 +14,7 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 # options(shiny.trace=TRUE)
-object <- get(".shinystan_temp_object")
+object <- get(".shinystan_temp_object", envir = shinystan:::.sso_env)
 source("global_utils.R", local = TRUE)
 source(file.path("server_files","utilities","extract_sso.R"), local=TRUE)
 

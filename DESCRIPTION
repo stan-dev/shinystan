@@ -47,6 +47,6 @@ Imports:
     shinythemes (>= 1.0.1),
     threejs (>= 0.2.1),
     utils,
-    xtable (>= 1.7-4),
+    xtable,
     xts (>= 0.9-7)
 VignetteBuilder: knitr

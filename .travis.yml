@@ -5,6 +5,10 @@ cran: http://cran.rstudio.com/
 r_check_revdep: false
 pandoc: false
 
+env:
+  global:
+    - _R_CHECK_FORCE_SUGGESTS_=false
+
 r_binary_packages:
   - coda
   - dygraphs
@@ -20,7 +24,6 @@ r_binary_packages:
   - RUnit
   - shiny
   - testthat
-  - xtable
   - xts
   - yaml
 
