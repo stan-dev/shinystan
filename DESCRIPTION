@@ -32,6 +32,7 @@ Suggests:
     coda,
     knitr (>= 1.9),
     rstan (>= 2.7),
+    rstanarm,
     testthat
 Imports: 
     DT (>= 0.1),

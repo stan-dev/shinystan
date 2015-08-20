@@ -64,9 +64,9 @@ grepl_ic <- function(pattern, x, ignore.case = TRUE) {
 get_type <- function(x) {
   if (is.shinystan(x)) return("shinystan")
   else if (is_stan(x)) return("stanfit")
+  else if (inherits(x, "stanreg")) return("stanreg")
   else if (inherits(x, "mcmc.list")) return("mcmclist")
   else if (is.list(x) & !inherits(x, "mcmc.list")) return("chainlist")
-  else if (inherits(x, "stanreg")) return("stanreg")
   else return("other")
 }
 
