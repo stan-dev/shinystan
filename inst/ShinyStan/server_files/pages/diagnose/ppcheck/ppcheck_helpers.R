@@ -16,72 +16,26 @@
 pp_yrep_clr <- "#487575"
 pp_yrep_fill <- "#6B8E8E"
 
-
-# validate input tests ----------------------------------------------------
-pp_tests <- reactive({
-  t1 <- need(input$y_name != "", message = "Waiting for y \n")
-  t2 <- need(input$yrep_name != "", message = "Waiting for y_rep \n")
-  validate(t1, t2)
-})
-
-# y_rep -------------------------------------------------------------------
-y_rep <- reactive({
-  yreps <- grep(paste0("^",input$yrep_name,"\\["), param_names)
-  y_rep <- samps_post_warmup[,,yreps]
-  dd <- dim(y_rep)
-  y_rep <- array(y_rep, dim = c(prod(dd[1:2]), dd[3]))
-  y_rep
-})
-
-# sample_ids_for_hist ------------------------------------------------------
-sample_ids_for_hist <- reactive({
-  go <- input$resample_hist_go          
-  isolate({
-    y_rep <- y_rep()
-    sample_ids <- sample(nrow(y_rep), 8)  
-    sample_ids
-  })
-})
-# sample_ids_for_dens ------------------------------------------------------
-sample_ids_for_dens <- reactive({
-  go <- input$resample_dens_go          
-  isolate({
-    y_rep <- y_rep()
-    sample_ids <- sample(nrow(y_rep), min(50, nrow(y_rep)))  
-    sample_ids
-  })
-})
-# sample_id_for_resids ------------------------------------------------------
-sample_id_for_resids <- reactive({
-  go <- input$resample_resids_go          
-  isolate({
-    y_rep <- y_rep()
-    sample_id <- sample(nrow(y_rep), 1)  
-    sample_id
-  })
-})
-
-
-.pp_hists_rep_vs_obs <- function(y, y_rep_samp, geom = "histogram") {
+.pp_hists_rep_vs_obs <- function(y, yrep_samp, geom = "histogram") {
   thm <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + no_lgnd)
-  graphs <- lapply(1:(1 + nrow(y_rep_samp)), function(i) {
+  graphs <- lapply(1:(1 + nrow(yrep_samp)), function(i) {
     if (i == 1) 
       g <-  qplot(x = y, geom = geom, color = I(vline_base_clr), 
                   size = I(0.2), fill = I(base_fill)) + labs(y = "", x = "y")
     else 
-      g <- qplot(x = y_rep_samp[i-1, ], geom = geom, 
+      g <- qplot(x = yrep_samp[i-1, ], geom = geom, 
                  color = I(pp_yrep_clr), fill = I(pp_yrep_fill),
-                 size = I(0.2)) + labs(y = "", x = rownames(y_rep_samp)[i-1])
+                 size = I(0.2)) + labs(y = "", x = rownames(yrep_samp)[i-1])
     g + thm 
   })
   graphs
 }
 
-.pp_dens_rep_vs_obs <- function(y, y_rep_samp, x_lim) {
-  dat <- data.frame(t(y_rep_samp))
+.pp_dens_rep_vs_obs <- function(y, yrep_samp, x_lim) {
+  dat <- data.frame(t(yrep_samp))
   dat <- cbind(y = y, dat)
   mdat <- reshape2::melt(dat)
-  mdat$which <- "y_rep"
+  mdat$which <- "yrep"
   mdat$which[mdat$variable == "y"] <- "y"
   graph <- ggplot(mdat, aes(x = value, group = variable, fill = which, 
                             color = which, alpha = which, size = which))
@@ -96,9 +50,9 @@ sample_id_for_resids <- reactive({
     theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + no_lgnd)
 }
 
-.pp_hists_test_statistics <- function(stat_y, stat_y_rep, which, geom = "histogram") {
+.pp_hists_test_statistics <- function(stat_y, stat_yrep, which, geom = "histogram") {
   thm <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs)
-  graph <- ggplot(data.frame(x = stat_y_rep), aes(x = x)) 
+  graph <- ggplot(data.frame(x = stat_yrep), aes(x = x)) 
   if (geom == "histogram") { 
     graph <- graph + stat_bin(aes(y=..count../sum(..count..)), 
                               color = pp_yrep_clr, fill = pp_yrep_fill, size = 0.2) 
@@ -109,7 +63,7 @@ sample_id_for_resids <- reactive({
   }
   graph + 
     geom_vline(xintercept = stat_y, color = vline_base_clr, size = 1.5, alpha = 1) +
-    labs(y = "", x = paste0(which, "(y_rep)")) +
+    labs(y = "", x = paste0(which, "(yrep)")) +
     thm 
 }
 
@@ -121,9 +75,9 @@ sample_id_for_resids <- reactive({
   graph + thm + labs(y = "", x = names(resids))
 }
 
-.pp_avg_rep_vs_avg_resid_rep <- function(rowMeans_y_rep, rowMeans_resids){
-  dat <- data.frame(x = rowMeans_y_rep, y = rowMeans_resids)
-  xy_labs <- labs(x = "Average y_rep", y = "Average residual")
+.pp_avg_rep_vs_avg_resid_rep <- function(rowMeans_yrep, rowMeans_resids){
+  dat <- data.frame(x = rowMeans_yrep, y = rowMeans_resids)
+  xy_labs <- labs(x = "Average yrep", y = "Average residual")
   thm <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_lgnd)
   graph <- ggplot(dat, aes(x, y)) + 
     geom_hline(yintercept = 0, color = vline_base_clr, size = 0.75) + 
@@ -135,9 +89,9 @@ sample_id_for_resids <- reactive({
 }
 
 
-.pp_y_vs_avg_rep <- function(y, colMeans_y_rep, zoom_to_zero = FALSE){
-  dat <- data.frame(x = y, y = colMeans_y_rep, z = abs(y-colMeans_y_rep))
-  xy_labs <- labs(x = "y", y = "Average y_rep")
+.pp_y_vs_avg_rep <- function(y, colMeans_yrep, zoom_to_zero = FALSE){
+  dat <- data.frame(x = y, y = colMeans_yrep, z = abs(y-colMeans_yrep))
+  xy_labs <- labs(x = "y", y = "Average yrep")
   thm <- theme_classic() %+replace% (axis_color + axis_labs + fat_axis)
   graph <- ggplot(dat, aes(x, y)) + 
     geom_abline(intercept = 0, slope = 1, color = vline_base_clr, size = 0.75) +

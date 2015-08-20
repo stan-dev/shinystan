@@ -16,22 +16,22 @@
 pp_hists_rep_vs_obs <- reactive({
   pp_tests()
   validate(need(input$pp_hists_rep_vs_obs_type, message = "Loading..."))
-  y <- get(input$y_name)
-  y_rep <- y_rep()
+  y <- get_y()
+  yrep <- get_yrep()
   sample_ids <- sample_ids_for_hist()
-  y_rep_samp <- y_rep[sample_ids, ]
-  rownames(y_rep_samp) <- paste("y_rep", sample_ids)
+  yrep_samp <- yrep[sample_ids, ]
+  rownames(yrep_samp) <- paste("yrep", sample_ids)
   geom <- input$pp_hists_rep_vs_obs_type 
   if (geom == "density" & input$pp_hists_rep_vs_obs_overlay == TRUE) {
-    x_lim <- range(c(y, y_rep))
+    x_lim <- range(c(y, yrep))
     out <- do.call(".pp_dens_rep_vs_obs", args = list(
       y = y, 
-      y_rep_samp = y_rep_samp,
+      yrep_samp = yrep_samp,
       x_lim = x_lim
     ))
     return(out)
   }
-  graphs <- .pp_hists_rep_vs_obs(y = y, y_rep_samp = y_rep_samp, geom = geom)
+  graphs <- .pp_hists_rep_vs_obs(y = y, yrep_samp = yrep_samp, geom = geom)
   suppressMessages(do.call(gridExtra::grid.arrange, c(graphs, ncol = 3)))
 })
 

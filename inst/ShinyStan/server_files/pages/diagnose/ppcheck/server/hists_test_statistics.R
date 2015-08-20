@@ -16,52 +16,52 @@
 
 pp_hists_test_statistics_mean <- reactive({
   pp_tests()
-  y <- get(input$y_name)
-  y_rep <- y_rep()
+  y <- get_y()
+  yrep <- get_yrep()
   mean_y <- mean(y)
-  mean_y_rep <- apply(y_rep, 1, mean)
+  mean_yrep <- apply(yrep, 1, mean)
   do.call(".pp_hists_test_statistics", args = list(
     stat_y = mean_y,
-    stat_y_rep = mean_y_rep,
+    stat_yrep = mean_yrep,
     which = "mean",
     geom = input$pp_hists_test_statistics_type
   ))
 })
 pp_hists_test_statistics_sd <- reactive({
   pp_tests()
-  y <- get(input$y_name)
-  y_rep <- y_rep()
+  y <- get_y()
+  yrep <- get_yrep()
   sd_y <- sd(y)
-  sd_y_rep <- apply(y_rep, 1, sd)
+  sd_yrep <- apply(yrep, 1, sd)
   do.call(".pp_hists_test_statistics", args = list(
     stat_y = sd_y,
-    stat_y_rep = sd_y_rep,
+    stat_yrep = sd_yrep,
     which = "sd",
     geom = input$pp_hists_test_statistics_type
   ))
 })
 pp_hists_test_statistics_min <- reactive({
   pp_tests()
-  y <- get(input$y_name)
-  y_rep <- y_rep()  
+  y <- get_y()
+  yrep <- get_yrep()  
   min_y <- min(y)
-  min_y_rep <- apply(y_rep, 1, min)
+  min_yrep <- apply(yrep, 1, min)
   do.call(".pp_hists_test_statistics", args = list(
     stat_y = min_y,
-    stat_y_rep = min_y_rep,
+    stat_yrep = min_yrep,
     which = "min",
     geom = input$pp_hists_test_statistics_type
   ))
 })
 pp_hists_test_statistics_max <- reactive({
   pp_tests()
-  y <- get(input$y_name)
-  y_rep <- y_rep()
+  y <- get_y()
+  yrep <- get_yrep()
   max_y <- max(y)
-  max_y_rep <- apply(y_rep, 1, max)
+  max_yrep <- apply(yrep, 1, max)
   do.call(".pp_hists_test_statistics", args = list(
     stat_y = max_y,
-    stat_y_rep = max_y_rep,
+    stat_yrep = max_yrep,
     which = "max",
     geom = input$pp_hists_test_statistics_type
   ))
@@ -81,22 +81,22 @@ for (i in seq_along(pp_test_stats)) {
 # pp_hists_test_statistics_custom1 <- reactive({
 #   tests()
 #   validate(need(input$pp_test_statistics_fun1, message = ""))
-#   y <- get(input$y_name)
-#   y_rep <- y_rep()
+#   y <- get_y()
+#   yrep <- get_yrep()
 #   
 #   fun <- input$pp_test_statistics_fun1
 #   if (grepl("function", fun)) {
 #     f <- eval(parse(text = fun))
 #     stat_y <- f(y)
-#     stat_y_rep <- apply(y_rep, 1, FUN = f)
+#     stat_yrep <- apply(yrep, 1, FUN = f)
 #   } else {
 #     stat_y <- do.call(fun, args = list(y))
-#     stat_y_rep <- apply(y_rep, 1, paste(fun))
+#     stat_yrep <- apply(yrep, 1, paste(fun))
 #   }
 #   
 #   do.call(".pp_hists_test_statistics", args = list(
 #     stat_y = stat_y,
-#     stat_y_rep = stat_y_rep,
+#     stat_yrep = stat_yrep,
 #     which = "f",
 #     geom = input$pp_hists_test_statistics_type
 #   ))
@@ -106,14 +106,14 @@ for (i in seq_along(pp_test_stats)) {
 #   if (is.null(input$pp_test_statistics_fun2) | is.na(input$pp_test_statistics_fun2)) {
 #     return(last_plot())
 #   }
-#   y <- get(input$y_name)
-#   y_rep <- y_rep()
+#   y <- get_y()
+#   yrep <- get_yrep()
 #   stat_y <- do.call(input$pp_test_statistics_fun2, args = list(y))
-#   stat_y_rep <- apply(y_rep, 1, paste(input$pp_test_statistics_fun2))
+#   stat_yrep <- apply(yrep, 1, paste(input$pp_test_statistics_fun2))
 #   
 #   do.call(".pp_hists_test_statistics", args = list(
 #     stat_y = stat_y,
-#     stat_y_rep = stat_y_rep,
+#     stat_yrep = stat_yrep,
 #     which = paste(input$pp_test_statistics_fun2),
 #     geom = input$pp_hists_test_statistics_type
 #   ))
