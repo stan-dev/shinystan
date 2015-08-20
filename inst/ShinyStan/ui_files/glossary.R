@@ -9,8 +9,7 @@ div(class = "help-glossary-div",
                  ),
                  tabPanel("Monte Carlo uncertainty",
                           withMathJax(),
-                          includeHTML("html/mcse.html"),
-                          a(href = "#glossary_navlist-3", "rhat")
+                          includeHTML("html/mcse.html")
                  ),
                  tabPanel("Rhat",
                           div(id = "rhat_glossary",
