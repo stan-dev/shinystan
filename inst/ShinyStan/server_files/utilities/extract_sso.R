@@ -33,8 +33,6 @@ stan_algorithm <- if ("stan_algorithm" %in% names(MISC))
 pp_yrep <- if ("pp_yrep" %in% names(MISC)) MISC[["pp_yrep"]] else NULL
 pp_y <- if ("pp_y" %in% names(MISC)) MISC[["pp_y"]] else NULL
   
-
-
 sampler_params_post_warmup <- 
   if (!is.list(sampler_params) | identical(sampler_params, list(NA))) 
     FALSE else if (!is.matrix(sampler_params[[1L]])) 

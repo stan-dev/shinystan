@@ -34,7 +34,7 @@ pp_yrep_fill <- "#6B8E8E"
 .pp_dens_rep_vs_obs <- function(y, yrep_samp, x_lim) {
   dat <- data.frame(t(yrep_samp))
   dat <- cbind(y = y, dat)
-  mdat <- reshape2::melt(dat)
+  mdat <- suppressMessages(reshape2::melt(dat))
   mdat$which <- "yrep"
   mdat$which[mdat$variable == "y"] <- "y"
   graph <- ggplot(mdat, aes(x = value, group = variable, fill = which, 

@@ -19,9 +19,9 @@ sso_check <- function(sso) {
   else 
     invisible(TRUE)
 }
-is_stan <- function(X) {
-  inherits(X, "stanfit")
-}
+is.stanfit <- function(X) inherits(X, "stanfit")
+is.stanreg <- function(X) inherits(X, "stanreg")
+
 rstan_check <- function() {
   if (!requireNamespace("rstan", quietly = TRUE)) 
     stop("You need to have the RStan package installed to use this option.", 
@@ -63,8 +63,8 @@ grepl_ic <- function(pattern, x, ignore.case = TRUE) {
 
 get_type <- function(x) {
   if (is.shinystan(x)) return("shinystan")
-  else if (is_stan(x)) return("stanfit")
-  else if (inherits(x, "stanreg")) return("stanreg")
+  else if (is.stanfit(x)) return("stanfit")
+  else if (is.stanreg(x)) return("stanreg")
   else if (inherits(x, "mcmc.list")) return("mcmclist")
   else if (is.list(x) & !inherits(x, "mcmc.list")) return("chainlist")
   else return("other")

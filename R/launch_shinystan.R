@@ -74,7 +74,7 @@ launch_shinystan <- function(object, rstudio = getOption("shinystan.rstudio"),
   name <- deparse(substitute(object))
   no_name <- substr(name, 1, 12) == "as.shinystan"
   if (missing(object)) 
-    stop("Please specify a shinystan or stanfit object.")
+    stop("Please specify a shinystan or stanfit object.", call. = FALSE)
   message("\nLoading... \n", 
           "Note: for large models ShinyStan may take a few moments to launch.")
   
