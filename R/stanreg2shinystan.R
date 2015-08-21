@@ -1,5 +1,5 @@
 stanreg2shinystan <- function(X, ...) {
-  stopifnot(inherits(X, "stanreg"))
+  stopifnot(is.stanreg(X))
   ok <- requireNamespace("rstanarm", quietly = TRUE)
   if (!ok) {
     message("Please install the rstanarm package to use this feature.")

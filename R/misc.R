@@ -66,7 +66,7 @@ get_type <- function(x) {
   else if (is.stanfit(x)) return("stanfit")
   else if (is.stanreg(x)) return("stanreg")
   else if (inherits(x, "mcmc.list")) return("mcmclist")
-  else if (is.list(x) & !inherits(x, "mcmc.list")) return("chainlist")
+  else if (is.list(x)) return("chainlist")
   else return("other")
 }
 
