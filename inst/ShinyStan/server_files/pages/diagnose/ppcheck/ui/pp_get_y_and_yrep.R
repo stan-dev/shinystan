@@ -23,7 +23,7 @@ output$ui_pp_get_y <- renderUI({
     )
   } 
   else {
-    helpText("All set. y found in shinystan object.")  
+    helpText("All set: y found in shinystan object.")  
   }
   
 })
@@ -44,6 +44,6 @@ output$ui_pp_get_yrep <- renderUI({
     )
   }
   else {
-    helpText("All set. yrep found in shinystan object.")   
+    helpText("All set: yrep found in shinystan object. Select a plot to view.")   
   }
 })
