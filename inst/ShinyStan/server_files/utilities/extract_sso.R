@@ -25,10 +25,14 @@ warmup_val <- object@nWarmup
 samps_post_warmup <- samps_all[(warmup_val + 1):nIter,, ,drop = FALSE]
 
 MISC <- object@misc
-stan_method <- if ("stan_method" %in% names(MISC))
+MISC_nms <- names(MISC)
+stan_method <- if ("stan_method" %in% MISC_nms)
   MISC$stan_method else "Not Stan"
-stan_algorithm <- if ("stan_algorithm" %in% names(MISC)) 
+stan_algorithm <- if ("stan_algorithm" %in% MISC_nms) 
   MISC$stan_algorithm else "Not Stan"
+
+pp_yrep <- if ("pp_yrep" %in% MISC_nms) MISC[["pp_yrep"]] else NULL
+pp_y <- if ("pp_y" %in% MISC_nms) MISC[["pp_y"]] else NULL
 
 sampler_params_post_warmup <- 
   if (!is.list(sampler_params) | identical(sampler_params, list(NA))) 

@@ -266,7 +266,6 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
     dat$chains <- "chain:1"
     dat$iterations <- 1:nrow(dat)
   }
-  # browser()
   ac_type <- if (partial) "partial" else "correlation"
   if (nParams == 1) ac_dat <- .ac_plot_data(dat, lags = lags, partial = partial)
   else ac_dat <- .ac_plot_data_multi(dat, lags = lags, partial = partial)
