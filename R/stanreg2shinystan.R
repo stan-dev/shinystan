@@ -12,7 +12,7 @@ stanreg2shinystan <- function(X, ...) {
   sso@misc$pp_y <- if ("y" %in% names(X)) 
     X$y else model.response(model.frame(X))
   
-  if (exists("posterior_predict")) {
+  if (exists("posterior_predict", mode = "function")) {
     sso@misc$pp_yrep <- posterior_predict(X)
   } else {
     stop("Please load or install the 'rstanarm' package.")
