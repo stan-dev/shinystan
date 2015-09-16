@@ -19,8 +19,8 @@ r_binary_packages:
   - jsonlite
   - knitr
   - markdown
+  - reshape2
   - Rcpp
-  - reshape
   - RUnit
   - shiny
   - testthat
