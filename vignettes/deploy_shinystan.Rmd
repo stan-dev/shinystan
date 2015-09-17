@@ -1,13 +1,17 @@
 ---
-title: "Deploying to shinyapps.io"
-output: 
-  rmarkdown::html_vignette:
-    toc: true    
-vignette: >
-  %\VignetteIndexEntry{Deploying to shinyapps.io}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\usepackage[utf8]{inputenc}
+title: 'ShinyStan: Deploying to shinyapps.io'
+output:
+  pdf_document:
+    toc: yes
+  html_document:
+    fig_caption: yes
+    toc: yes
+date: "09/17/2015"
 ---
+<!--
+%\VignetteEngine{knitr::rmarkdown}
+%\VignetteIndexEntry{ShinyStan: Deploying to shinyapps.io}
+-->
 
 ### About
 
