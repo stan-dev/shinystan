@@ -1,3 +1,7 @@
+## Version 2.0.1
+* Fixes small bugs found after release of v2.0.0
+* Support for stanreg objects
+
 ## ShinyStan version 2.0.0 (major update)
 
 Version 2.0.0 has a new look, a new(ish) name, and a lot of new functionality. 
