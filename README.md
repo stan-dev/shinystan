@@ -6,7 +6,7 @@
 <img src="https://raw.githubusercontent.com/stan-dev/logos/master/logo.png" width=200 alt="Stan Logo"/>
 </a>
 
-ShinyStan v2.0.0
+ShinyStan
 -----------------
 **ShinyStan** provides immediate, informative, customizable visual and 
 numerical summaries of model parameters and convergence diagnostics for 
