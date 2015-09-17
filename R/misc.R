@@ -19,9 +19,9 @@ sso_check <- function(sso) {
   else 
     invisible(TRUE)
 }
-is_stan <- function(X) {
-  inherits(X, "stanfit")
-}
+is.stanfit <- function(X) inherits(X, "stanfit")
+is.stanreg <- function(X) inherits(X, "stanreg")
+
 rstan_check <- function() {
   if (!requireNamespace("rstan", quietly = TRUE)) 
     stop("You need to have the RStan package installed to use this option.", 
@@ -32,15 +32,13 @@ coda_check <- function() {
     stop("You need to have the coda package installed to use this option.", 
          call. = FALSE)
 }
-cleanup_shinystan <- function() {
-  rm(list = ".shinystan_temp_object", envir = .GlobalEnv)
-}
 
 launch <- function(object, rstudio = FALSE, ...) {
   stopifnot(is.shinystan(object))
   launch.browser <- if (!rstudio) 
     TRUE else getOption("shiny.launch.browser", interactive())
-  assign(".shinystan_temp_object", object, inherits = TRUE)
+  .sso_env$.shinystan_temp_object <- object
+  on.exit(.sso_env$.shinystan_temp_object <- NULL, add = TRUE)
   shiny::runApp(system.file("ShinyStan", package = "shinystan"), 
                 launch.browser = launch.browser, ...)
 }
@@ -65,10 +63,10 @@ grepl_ic <- function(pattern, x, ignore.case = TRUE) {
 
 get_type <- function(x) {
   if (is.shinystan(x)) return("shinystan")
-  else if (is_stan(x)) return("stanfit")
+  else if (is.stanfit(x)) return("stanfit")
+  else if (is.stanreg(x)) return("stanreg")
   else if (inherits(x, "mcmc.list")) return("mcmclist")
-  else if (is.list(x) & !inherits(x, "mcmc.list")) return("chainlist")
-  else if (inherits(x, "stanreg")) return("stanreg")
+  else if (is.list(x)) return("chainlist")
   else return("other")
 }
 

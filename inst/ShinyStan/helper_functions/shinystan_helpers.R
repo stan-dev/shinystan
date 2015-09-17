@@ -49,7 +49,7 @@
   if(palette == "Brewer (spectral)") clrs <- scale_color_brewer(name = lgnd_title, palette = "Spectral")
   if(palette == "Rainbow") clrs <- scale_colour_manual(name = lgnd_title, values = rainbow(nclrs))
 
-  lgnd_txt <- theme(legend.text = element_text(size = 13, face = "bold"))
+  lgnd_txt <- theme(legend.text =  element_text(size = 13, face = "bold"))
   
   graph <- ggplot(dat, aes(x = iterations, y = value, color = chains))
   graph <- graph + xy_labs + clrs + theme_classic() %+replace% (axis_color + axis_labs + fat_axis + h_lines + lgnd_top + lgnd_txt + strip_txt + transparent)
@@ -119,7 +119,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                         fill_color = NULL, line_color = NULL,
                         point_est = "None", CI,
                         x_breaks = "Some", # y_breaks = "None",
-                        xzoom = FALSE, x_lim = NULL,
+                        x_lim = NULL,
                         chain_split = FALSE,
                         title = TRUE,
                         transform_x = "identity",
@@ -199,7 +199,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                 annotate("segment", x = quant, xend = quant, y = 0, yend = max(dens_dat$y), color = lclr, lty = rep(1:length(CI),2))
     )
   }
-  if (xzoom) graph <- graph + scale_x_continuous(limits = x_lim)
+  if (!is.null(x_lim)) graph <- graph + scale_x_continuous(limits = x_lim)
   graph
 }
 
@@ -266,7 +266,6 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
     dat$chains <- "chain:1"
     dat$iterations <- 1:nrow(dat)
   }
-  # browser()
   ac_type <- if (partial) "partial" else "correlation"
   if (nParams == 1) ac_dat <- .ac_plot_data(dat, lags = lags, partial = partial)
   else ac_dat <- .ac_plot_data_multi(dat, lags = lags, partial = partial)
@@ -277,7 +276,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
     (axis_color + axis_labs + fat_axis + no_lgnd + strip_txt + transparent)
   y_scale <- scale_y_continuous(breaks = seq(0, 1, 0.25), 
                                 labels = c("0","","0.5","",""))
-  title_theme <- theme(plot.title = element_text(face = "bold", size = 18))
+  title_theme <- theme(plot.title =  element_text(face = "bold", size = 18))
   if (combine_chains) {
     graph <- ggplot(ac_dat, aes(x= lag, y = ac))
     graph <- graph +
@@ -332,8 +331,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   dim.samps <- dim(samps) #nIter, nChain, nParam
   if(length(params) == 0) {
     params <- dimnames(samps)$parameters[1:min(12, dim.samps[3])]
-    if ("lp__" %in% params) {
-      params <- params[-which(params == "lp__")]
+    if ("log-posterior" %in% params) {
+      params <- params[-which(params == "log-posterior")]
     }
   }
   params <- unique(params)
@@ -353,8 +352,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                                     values = rhat_pal,
                                     drop = FALSE)
   rhat_lgnd <- theme(legend.position = "top",
-                     legend.title = element_text(size = 13, face = "bold"),
-                     legend.text = element_text(size = 12))
+                     legend.title =  element_text(size = 13, face = "bold"),
+                     legend.text =  element_text(size = 12))
 
   nParams <- length(params)
   nIter <- prod(dim.samps[1:2])
@@ -381,17 +380,17 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   }
   p.base <- ggplot(xy.df, environment = .e)
   p.name <- scale_y_continuous(breaks = y, labels = params, limits = c(0.5, nParams + 1))
-  p.theme <- theme(axis.title=element_blank(),
-                   panel.background = element_blank(),
-                   panel.border = element_blank(),
-                   axis.ticks.y = element_blank(),
-                   axis.text=element_text(size=12),
-                   axis.text.y=element_text(face = "bold"),
-                   axis.line=element_line(size = 4, color = axis_line_color),
-                   axis.line.y=element_line(size = 0.5, color = axis_line_color),
+  p.theme <- theme(axis.title= element_blank(),
+                   panel.background =  element_blank(),
+                   panel.border =  element_blank(),
+                   axis.ticks.y =  element_blank(),
+                   axis.text= element_text(size=12),
+                   axis.text.y= element_text(face = "bold"),
+                   axis.line= element_line(size = 4, color = axis_line_color),
+                   axis.line.y= element_line(size = 0.5, color = axis_line_color),
                    legend.position = "none",
-                   panel.grid.major = element_line(size = 0.4),
-                   panel.grid.minor.y = element_blank())
+                   panel.grid.major =  element_line(size = 0.4),
+                   panel.grid.minor.y =  element_blank())
 
   p.all <- p.base + xlim(xlim.use) + p.name + theme_bw() + p.theme + transparent
 

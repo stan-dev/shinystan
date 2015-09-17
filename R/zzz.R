@@ -13,6 +13,8 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
+.sso_env <- new.env(parent=emptyenv()) 
+
 .onAttach <- function(...) {
   ver <- utils::packageVersion("shinystan")
   msg <- paste0("\nThis is shinystan version ", ver,"\n")

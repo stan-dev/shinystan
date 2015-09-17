@@ -16,11 +16,9 @@
 
 pp_hist_resids <- reactive({
   pp_tests()
-  y <- get(input$y_name)
-  y_rep <- y_rep()
   s <- sample_id_for_resids()
-  resids <- y - y_rep[s, ]
-  names(resids) <- paste0("resids(y_rep_",s,")")
+  resids <- get_y() - get_yrep()[s, ]
+  names(resids) <- paste0("resids(yrep_",s,")")
   do.call(".pp_hist_resids", args = list(
     resids = resids
   ))

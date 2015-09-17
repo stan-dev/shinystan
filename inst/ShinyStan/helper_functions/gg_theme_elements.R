@@ -1,6 +1,6 @@
 # ggplot theme elements to be used as needed  -----------------------------
 blue_color <- "#006dcc"
-theme <- function(...) ggplot2::theme(...)
+
 transparent <- theme(panel.background = element_blank(), 
                      plot.background = element_blank())
 axis_line_color <- "gray20"

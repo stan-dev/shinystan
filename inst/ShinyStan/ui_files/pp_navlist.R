@@ -17,14 +17,9 @@ navlistPanel(id = "pp_navlist", widths = c(3,9), well = TRUE,
              tabPanel("Select data",
                       div(
                         br(),
-                        h4("Select the appropriate object from your R global environment"),
-                        selectizeInput("y_name", 
-                                       label = span(style = "color: #337ab7;", withMathJax("\\(\\mathbf{y}\\), a vector of observations")), 
-                                       choices = c("", objects(envir = .GlobalEnv)), 
-                                       options = list(placeholder = "Select an object")),
+                        uiOutput("ui_pp_get_y"),
                         br(),
-                        h4("Select the appropriate parameter name from your model"),
-                        uiOutput("ui_pp_yrep_from_sso")
+                        uiOutput("ui_pp_get_yrep")
                       )
              ),
              "Plots",

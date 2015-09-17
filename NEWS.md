@@ -1,11 +1,18 @@
-## ShinyStan version 2.0.0 (major update)
+# `shinystan news`
+
+### Version 2.0.1
+* Fixes small bugs and typos
+* Adds support for stanreg objects
+* Moves ggplot2 from Depends to Imports
+
+### Version 2.0.0 (major update)
 
 Version 2.0.0 has a new look, a new(ish) name, and a lot of new functionality. 
 Many bugs have also been fixed (see GitHub issue tracker). 
 
 It's also now [available on CRAN](https://cran.rstudio.com/web/packages/shinystan/index.html).
 
-### Names
+### New names
 * The name of the R package is **shinystan** and the app/GUI is **ShinyStan**. 
 
 ### Deploy ShinyStan apps to shinyapps.io (RStudio's ShinyApps service)

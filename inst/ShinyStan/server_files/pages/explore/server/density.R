@@ -22,6 +22,8 @@ dens_transform_x <- eventReactive(
 user_xlim <- function(lim) {
   xz <- strsplit(lim, split = "c(", fixed = TRUE)[[1L]][2]
   xz <- strsplit(xz, split = ",", fixed = TRUE)[[1L]]
+  if (identical(xz, NA_character_)) 
+    return(FALSE)
   x_lim <- unlist(strsplit(xz, split = ")", fixed = TRUE))
   x_lim <- gsub(" ", "", x_lim)
   if (x_lim[1L] == "min") x_lim[1L] <- NA
@@ -30,8 +32,18 @@ user_xlim <- function(lim) {
 }
 
 density_plot <- reactive({
+  xzoom <- input$dens_xzoom
+  if (xzoom == "") return(last_plot())
   validate(need(input$param, message = FALSE),
-           need(!is.null(input$dens_chain), message = FALSE))
+           need(!is.null(input$dens_chain), message = FALSE),
+           need(xzoom, message = FALSE))
+  
+  x_lim <- if (xzoom == "c(min, max)") NULL else {
+      check <- try(user_xlim(xzoom))
+      validate(need(check, message = "Invalid input"))
+      check
+    } 
+  
   chain <- input$dens_chain
   if (is.na(chain)) chain <- 0
   prior_fam <- input$dens_prior
@@ -52,7 +64,6 @@ density_plot <- reactive({
                       list(shape = input$dens_prior_inversegamma_shape, scale = input$dens_prior_inversegamma_scale)
                     else NULL
   
-  xzoom <- input$dens_xzoom != "c(min, max)"
   do.call(".param_dens", args = list(
     param       = input$param,
     dat         = par_samps_post_warmup(),
@@ -64,8 +75,7 @@ density_plot <- reactive({
     CI          = input$dens_ci,
 #     y_breaks    = input$dens_y_breaks,
     x_breaks    = input$dens_x_breaks,
-    xzoom = xzoom,
-    x_lim = if (xzoom) user_xlim(input$dens_xzoom) else NULL,
+    x_lim = x_lim,
     prior_fam   = prior_fam,
     prior_params = prior_params,
     transform_x = dens_transform_x()
@@ -74,7 +84,7 @@ density_plot <- reactive({
 
 
 output$density_plot_out <- renderPlot({
-  density_plot()
+  suppress_and_print(density_plot())
 }, bg = "transparent")
 
 # download plot
