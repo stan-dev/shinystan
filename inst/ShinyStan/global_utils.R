@@ -1,6 +1,7 @@
 load("ggplot_fns.rda")
 lapply(ggplot_fns, function(f) {
-  assign(f, getFromNamespace(f, "ggplot2"), envir = parent.frame(2))
+  try(assign(f, getFromNamespace(f, "ggplot2"), envir = parent.frame(2)), 
+      silent = TRUE)
 })
 
 helpers <- file.path("helper_functions", list.files("helper_functions", full.names = FALSE))
