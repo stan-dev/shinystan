@@ -1,22 +1,3 @@
-
-# Copyright (C) 2015 Jonah Sol Gabry & Stan Development Team
-# This file is part of shinyStan
-#
-# shinyStan is free software; you can redistribute it and/or modify it under the
-# terms of the GNU General Public License as published by the Free Software
-# Foundation; either version 3 of the License, or (at your option) any later
-# version.
-# 
-# shinyStan is distributed in the hope that it will be useful, but WITHOUT ANY
-# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-# A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License along with
-# this program; if not, see <http://www.gnu.org/licenses/>.
-
-
-
-# make_param_list_with_groups ------------------------------------------------------
 make_param_list_with_groups_sort <- reactive({
   validate(need(!is.null(input$param_plot_sort_j), message = "Loading..."))
   sort_j <- input$param_plot_sort_j
@@ -41,14 +22,12 @@ make_param_list_with_groups_sort <- reactive({
       # bias[1] and bias[2] being included in the b_bias group
       ch <- ch[which(substr(ch, 1, nchar(group)) == group)]
 
-
       if (sort_j == TRUE & (LL[i] > 1)) {
         # change sorting so e.g. "beta[1,1] beta[1,2] beta[2,1] beta[2,2]"
         # instead of "beta[1,1] beta[2,1] beta[1,2] beta[2,2]"
         ch <- gtools::mixedsort(ch)
       }
-
-      ch_out <- c(paste0(group,"_as_shiny_stan_group"), ch)
+      ch_out <- c(paste0(group,"_as_shinystan_group"), ch)
       names(ch_out) <- c(paste("ALL", group), ch)
       choices[[i]] <- ch_out
     }
