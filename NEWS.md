@@ -1,5 +1,10 @@
 # `shinystan news`
 
+### Version 2.0.2
+* Compatibility with ggplot2 1.1.0
+* Fix error when selecting an entire parameter group in parameters plot ('Estimate'
+page)
+
 ### Version 2.0.1
 * Fixes small bugs and typos
 * Adds support for stanreg objects
