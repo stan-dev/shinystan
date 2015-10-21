@@ -1,4 +1,7 @@
-load("ggplot_fns.rda")
+ggplot_fns_file <- if (packageVersion("ggplot2") < "1.1.0")
+  "ggplot_fns_old.rda" else "ggplot_fns.rda"
+
+load(ggplot_fns_file)
 lapply(ggplot_fns, function(f) {
   try(assign(f, getFromNamespace(f, "ggplot2"), envir = parent.frame(2)), 
       silent = TRUE)
