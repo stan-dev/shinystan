@@ -15,7 +15,7 @@
 
 #' @importFrom stats model.frame model.response
 #' 
-stanreg2shinystan <- function(X, ...) {
+stanreg2shinystan <- function(X, ppd = TRUE, ...) {
   stopifnot(is.stanreg(X))
   sso <- stan2shinystan(X$stanfit, ...)
   param_names <- sso@param_names
@@ -29,10 +29,10 @@ stanreg2shinystan <- function(X, ...) {
   sso@misc$pp_y <- if ("y" %in% names(X)) 
     X$y else model.response(model.frame(X))
   
-  if (exists("posterior_predict", mode = "function")) {
-    sso@misc$pp_yrep <- do.call("posterior_predict", list(X))
-  } else {
-    stop("Please load or install the 'rstanarm' package.")
+  if (ppd) {
+    if (exists("posterior_predict", mode = "function"))
+      sso@misc$pp_yrep <- do.call("posterior_predict", list(X))
+    else stop("Please load or install the 'rstanarm' package.")
   }
   sso
 }
