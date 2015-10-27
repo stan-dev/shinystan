@@ -30,11 +30,9 @@ stanreg2shinystan <- function(X, ppd = TRUE, ...) {
     X$y else model.response(model.frame(X))
   
   if (ppd) {
-    if (exists("posterior_predict", mode = "function")) {
+    if (exists("posterior_predict", mode = "function"))
       sso@misc$pp_yrep <- do.call("posterior_predict", list(X))
-    } else {
-      stop("Please load or install the 'rstanarm' package.")
-    }
+    else stop("Please load or install the 'rstanarm' package.")
   }
   sso
 }
