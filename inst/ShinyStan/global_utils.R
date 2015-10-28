@@ -149,7 +149,7 @@ suppress_and_print <- function(x) {
 # update parameter selection for multi-parameter plots
 .update_params_with_groups <- function(params, all_param_names) {
   as_group <- grep("_as_shinystan_group", params)
-  if (length(as_group) == 0) return(params)
+  if (!length(as_group)) return(params)
   make_group <- function(group_name) {
     all_param_names[grep(paste0("^",group_name,"\\["), all_param_names)]
   }
@@ -164,11 +164,11 @@ suppress_and_print <- function(x) {
 
 # generate color vectors --------------------------------------------------
 color_vector <- function(n) {
-  hues = seq(15, 375, length=n+1)
+  hues = seq(15, 375, length = n + 1)
   hcl(h=hues, l=50, c=50)[1:n]
 }
 color_vector_chain <- function(n) {
-  hues = seq(15, 375, length=n+1)
+  hues = seq(15, 375, length = n + 1)
   hcl(h=hues, l=80, c=50)[1:n]
 }
 

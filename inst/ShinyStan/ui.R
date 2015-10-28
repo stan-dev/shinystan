@@ -108,7 +108,7 @@ tagList(
                       
                       tabsetPanel(
                         #### multiparameter plot ####
-                        tabPanel("Parameters plot", #icon = icon("bar-chart-o", "fa-2x"),
+                        tabPanel("Parameters plot",
                                  wellPanel(
                                    fluidRow(
                                      column(6, uiOutput("ui_multiparam_selectize")),
@@ -123,12 +123,13 @@ tagList(
                                  plotOutput("multiparam_plot_out", width = "90%")
                         ),
                         #### posterior summary statistics ####
-                        tabPanel("Posterior summary statistics", #icon = icon("table", "fa-2x"),
+                        tabPanel("Posterior summary statistics",
                                  source(file.path("ui_files", "table_customize.R"), local = TRUE)$value,
                                  div(DT::dataTableOutput("all_summary_out"), 
                                      style = "overflow-x: auto")
                         ),
-                        tabPanel("Generate LaTeX table", #icon = icon("table", "fa-2x"),
+                        #### LaTex tables ####
+                        tabPanel("Generate LaTeX table",
                                  br(),
                                  sidebarLayout(
                                    mainPanel = source(file.path("ui_files", "table_latex_main.R"), local = TRUE)$value,
@@ -209,24 +210,22 @@ tagList(
              #### MENU: More ####
              navbarMenu(title = "More",
                         
-                        #### PAGE: Model Code ####
+                        #### model code ####
                         tabPanel(title = "Model Code", 
                                  source(file.path("ui_files", "model_code.R"), local = TRUE)$value
-                        ), # End Model Code
-                        
-                        #### PAGE: Notepad ####
+                        ), 
+                        #### notepad ####
                         tabPanel(title = "Notepad",
                                  source(file.path("ui_files", "notepad.R"), local = TRUE)$value
-                        ), # End Notepad
-                        
-                        #### PAGE: About ####
+                        ),
+                        #### about ####
                         tabPanel(title = "About", 
                                  logo_and_name(),
                                  div(style = "margin-top: 75px;",
                                      source(file.path("ui_files", "about.R"), local = TRUE)$value
                                    )
-                        ), # End About
-                        
+                        ),
+                        #### glossary ####
                         tabPanel(title = "Glossary",
                                  div(style = "background-color: white;",
                                  h1(style = "text-align: center;", "Glossary"),
@@ -234,9 +233,8 @@ tagList(
                                  hr(),
                                  stan_manual()
                                  )
-                                 ),
-                        
-                        #### PAGE: Help ####
+                        ),
+                        #### help ####
                         tabPanel(title = "Help",
                                  h1(style = "text-align: center;", "Help"),
                                  source(file.path("ui_files", "help.R"), local = TRUE)$value
