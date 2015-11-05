@@ -724,3 +724,30 @@ http://tympanus.net/codrops/licensing/
   color: #222222;
   font-weight: bolder;
 }
+
+/* regex parameter search textInput*/
+.regex-go {
+  color: white;
+  background: #222222;
+  font-size: 12px;
+  font-weight: bold;
+  height: 30px;
+  width: 75px;
+  padding: 5px;
+  margin: 3px;
+  border-radius: 15px;
+}
+.regex-go:hover {
+  background: white;
+  color: #222222;
+  font-weight: bolder;
+}
+#params_to_plot_regex {
+  font-size: 80%;
+  height: 30px;
+  padding: 5px;
+  margin: 3px;
+}
+#invalid_regex {
+ font-size: 80%;
+}

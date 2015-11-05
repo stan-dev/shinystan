@@ -9,9 +9,7 @@ make_param_list_with_groups_sort <- reactive({
   choices[1:ll] <- ""
   names(choices) <- param_groups
   for(i in 1:ll) {
-    if (LL[i] == 0) {
-      choices[[i]] <- list(param_groups[i])
-    }
+    if (LL[i] == 0) choices[[i]] <- list(param_groups[i])
     else {
       group <- param_groups[i]
       temp <- paste0("^",group,"\\[")

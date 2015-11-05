@@ -145,8 +145,21 @@ suppress_and_print <- function(x) {
   choices
 }
 
-# update_params_with_groups -----------------------------------------------
-# update parameter selection for multi-parameter plots
+# update parameter selection for multi-parameter plots --------------------
+# update with regex
+.test_valid_regex <- function(pattern) {
+  trygrep <- try(grep(pattern, ""), silent = TRUE)
+  if (inherits(trygrep, "try-error")) FALSE else TRUE
+}
+.update_params_with_regex <- function(params, all_param_names, regex_pattern) {
+  sel <- which(all_param_names %in% params)
+  to_search <- if (length(sel)) all_param_names[-sel] else all_param_names
+  if (!length(regex_pattern)) return(params)
+  to_add <- grep(regex_pattern, to_search, value = TRUE)
+  if (!length(to_add)) params else c(params, to_add)
+}
+
+# update with groups
 .update_params_with_groups <- function(params, all_param_names) {
   as_group <- grep("_as_shinystan_group", params)
   if (!length(as_group)) return(params)
@@ -157,8 +170,7 @@ suppress_and_print <- function(x) {
   grouped_params <- params[as_group]
   groups <- gsub("_as_shinystan_group", "", grouped_params)
   groups <- sapply(groups, make_group)
-  updated_params <- c(single_params, unlist(groups))
-  updated_params
+  c(single_params, unlist(groups))
 }
 
 

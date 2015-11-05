@@ -117,6 +117,13 @@ tagList(
                                                         width = "75%", ticks = FALSE, min = 50, max = 95, 
                                                         value = 50, step = 5, post = "%")),
                                      column(2, a_options("multiparam"))
+                                   ),
+                                   fluidRow(
+                                     column(1, actionButton("param_plot_regex", label = "Search", class = "regex-go")),
+                                     column(3, textInput("params_to_plot_regex", label = NULL, value = "Add parameters by regex search")),
+                                     column(5, textOutput("invalid_regex"))
+#                                      cellWidths = c("15%", "35%", "55%"),
+#                                      cellArgs = list(style = "padding: 6px")
                                    )
                                  ),
                                  source(file.path("ui_files", "multiparam_customize.R"), local = TRUE)$value,

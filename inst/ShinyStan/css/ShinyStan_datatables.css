@@ -24,12 +24,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-  
+
 /* Layout helpers
 ----------------------------------*/
-  .ui-helper-hidden {
+.ui-helper-hidden {
     display: none;
-  }
+}
 .ui-helper-hidden-accessible {
   border: 0;
   clip: rect(0 0 0 0);
@@ -86,7 +86,7 @@ THE SOFTWARE.
 
 /* Icons
 ----------------------------------*/
-  
+
   /* states and images */
   .ui-icon {
     display: block;
@@ -98,7 +98,7 @@ THE SOFTWARE.
 
 /* Misc visuals
 ----------------------------------*/
-  
+
   /* Overlays */
   .ui-widget-overlay {
     position: fixed;
@@ -991,7 +991,7 @@ body .ui-tooltip {
 
 /* Icons
 ----------------------------------*/
-  
+
   /* states and images */
   .ui-icon {
     width: 16px;
@@ -1203,7 +1203,7 @@ body .ui-tooltip {
 
 /* Misc visuals
 ----------------------------------*/
-  
+
   /* Corner radius */
   .ui-corner-all,
 .ui-corner-top,
