@@ -20,7 +20,6 @@
 #' \url{http://www.shinyapps.io/} to sign up. 
 #' 
 #' @export
-#' 
 #' @param sso shinystan object.
 #' @param appName The name to use for the application. Application names must be
 #'   at least four characters long and may only contain letters, numbers, dashes

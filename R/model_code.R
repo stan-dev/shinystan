@@ -17,6 +17,7 @@
 #' Add model code to a shinystan object or see the code currently stored in 
 #' a shinystan
 #'
+#' @export
 #' @param sso A shinystan object.
 #' @param code Optionally, the code you want to add. See \strong{Details} below for 
 #'   formatting instructions.
@@ -31,7 +32,6 @@
 #' from the stanfit object. 
 #' 
 #' @seealso \code{cat}
-#' @export
 #'
 #' @examples
 #' \dontrun{

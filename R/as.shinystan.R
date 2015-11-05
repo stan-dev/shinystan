@@ -15,6 +15,7 @@
 
 #' Create and test shinystan objects
 #'
+#' @export
 #' @param X An object to be converted to a shinystan object. Can be
 #' one of the following:
 #' \describe{
@@ -59,7 +60,6 @@
 #' }
 #' 
 #' @seealso \code{\link{launch_shinystan}}, \code{\link{launch_shinystan_demo}}
-#' @export
 #'
 #' @examples
 #' \dontrun{

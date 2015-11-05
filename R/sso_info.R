@@ -18,8 +18,8 @@
 #' Prints basic summary info including number of parameters, chains, iterations, 
 #' warmup iterations, etc. 
 #'
-#' @param sso A \code{shinystan} object. 
 #' @export
+#' @param sso A \code{shinystan} object. 
 #'
 
 sso_info <- function(sso) {

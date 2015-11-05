@@ -16,7 +16,6 @@
 #' ShinyStan app
 #' 
 #' @export
-#' 
 #' @param object An object of class shinystan, stanfit, or stanreg. See
 #'   \code{\link{as.shinystan}} for converting other objects to a shinystan
 #'   object (sso).
