@@ -16,7 +16,6 @@
 #' ShinyStan demo
 #'
 #' @export
-#'
 #' @param rstudio Only relevant for RStudio users. The default 
 #'   (\code{rstudio=FALSE}) is to launch the app in the default web browser 
 #'   rather than RStudio's pop-up Viewer. Users can change the default to 
