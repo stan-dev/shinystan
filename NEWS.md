@@ -2,20 +2,21 @@
 
 ### Version 2.0.2
 * Compatibility with ggplot2 1.1.0
-* Fix error when selecting an entire parameter group in parameters plot ('Estimate'
-page)
+* Select parameters via regular expressions in parameters plot ('Estimate' page)
+* Fix error when selecting an entire parameter group in parameters 
+plot ('Estimate' page)
 
 ### Version 2.0.1
 * Fixes small bugs and typos
 * Adds support for stanreg objects
 * Moves ggplot2 from Depends to Imports
 
-### Version 2.0.0 (major update)
+### Version 2.0.0 (major update, initial CRAN release)
 
 Version 2.0.0 has a new look, a new(ish) name, and a lot of new functionality. 
 Many bugs have also been fixed (see GitHub issue tracker). 
 
-It's also now [available on CRAN](https://cran.rstudio.com/web/packages/shinystan/index.html).
+[Available on CRAN](https://cran.rstudio.com/web/packages/shinystan/index.html).
 
 ### New names
 * The name of the R package is **shinystan** and the app/GUI is **ShinyStan**. 
