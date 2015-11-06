@@ -60,8 +60,7 @@
 deploy_shinystan <- function(sso, appName, account = NULL, ...) {
   sso_check(sso)
   if (missing(appName)) 
-    stop("Please specify a name for your app using the 'appName' argument", 
-         call. = FALSE)
+    stop("Please specify a name for your app using the 'appName' argument")
 
   # copy contents to temporary directory and write necessary additional lines to
   # ui, server, and global
