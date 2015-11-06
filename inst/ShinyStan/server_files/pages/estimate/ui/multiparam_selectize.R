@@ -62,8 +62,8 @@ observeEvent(input$param_plot_regex, {
 output$invalid_regex <- renderText({
   pattern <- input$params_to_plot_regex
   if (length(pattern)) {
-  validate(need(.test_valid_regex(pattern), 
-                message = "Invalid regular expression.\nYou might need to add the escape character '\\' ."))
+    msg <- "Invalid regular expression.\nYou might need to add the escape character '\\' ."
+  validate(need(.test_valid_regex(pattern), message = msg))
   }
 })
 

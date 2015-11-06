@@ -34,6 +34,7 @@ tagList(
              inverse = FALSE, position = "fixed-top",
              theme = shinythemes::shinytheme("flatly"),
              
+             #### HOME PAGE ####
              tabPanel(title = strong(style = "color: #B2011D;", "ShinyStan"),
                       value = "home",
                       logo_and_name(),
@@ -51,7 +52,6 @@ tagList(
              #### PAGE: DIAGNOSE ####
              tabPanel(title = "Diagnose", icon = icon("medkit"),
                       tabsetPanel(
-                        
                         #### hmc/nuts plots ####
                         tabPanel("NUTS (plots)",
                                  source(file.path("ui_files", "diagnostics_customize.R"), local = TRUE)$value,
@@ -64,7 +64,7 @@ tagList(
                                               tabPanel("Help", source(file.path("ui_files", "diagnostics_help.R"), local = TRUE)$value),
                                               well = FALSE,
                                               widths = c(2, 10)
-                                 ) # End navlistPanel
+                                 )
                         ),
                         #### hmc/nuts stats ####
                         tabPanel("HMC/NUTS (stats)",
@@ -98,7 +98,6 @@ tagList(
                                  source(file.path("ui_files", "pp_navlist.R"), local = TRUE)$value,
                                  br()
                         )
-                        
                       ) # End tabsetPanel
              ), # End DIAGNOSE
              
@@ -122,8 +121,6 @@ tagList(
                                      column(1, actionButton("param_plot_regex", label = "Search", class = "regex-go")),
                                      column(3, textInput("params_to_plot_regex", label = NULL, value = "Add parameters by regex search")),
                                      column(5, textOutput("invalid_regex"))
-#                                      cellWidths = c("15%", "35%", "55%"),
-#                                      cellArgs = list(style = "padding: 6px")
                                    )
                                  ),
                                  source(file.path("ui_files", "multiparam_customize.R"), local = TRUE)$value,
@@ -210,7 +207,6 @@ tagList(
                                             downloadButton("download_histogram", "ggplot2",  class = "plot-download"),
                                             downloadButton('save_pdf_histogram', "pdf", class = "plot-download pdf-download")
                                    )
-                                   
                       ) # End navlist
              ), # End EXPLORE
              
@@ -230,15 +226,15 @@ tagList(
                                  logo_and_name(),
                                  div(style = "margin-top: 75px;",
                                      source(file.path("ui_files", "about.R"), local = TRUE)$value
-                                   )
+                                 )
                         ),
                         #### glossary ####
                         tabPanel(title = "Glossary",
                                  div(style = "background-color: white;",
-                                 h1(style = "text-align: center;", "Glossary"),
-                                 source(file.path("ui_files", "glossary.R"), local = TRUE)$value,
-                                 hr(),
-                                 stan_manual()
+                                     h1(style = "text-align: center;", "Glossary"),
+                                     source(file.path("ui_files", "glossary.R"), local = TRUE)$value,
+                                     hr(),
+                                     stan_manual()
                                  )
                         ),
                         #### help ####
@@ -246,8 +242,6 @@ tagList(
                                  h1(style = "text-align: center;", "Help"),
                                  source(file.path("ui_files", "help.R"), local = TRUE)$value
                         )
-                        
              ) # End navbarMenu
-
   ) # End navbarPage
 ) # End tagList

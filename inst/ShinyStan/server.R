@@ -22,8 +22,8 @@ source(file.path("server_files","utilities","extract_sso.R"), local = TRUE)
 # ___________________________________________________________________
 function(input, output, session) {
   
-  # Stop the app when "Save & Close" button is clicked
   observe({
+    # Stop the app when "Save & Close" button is clicked
     if (input$save_and_close_button > 0) 
       stopApp(object)
   })
@@ -39,10 +39,10 @@ function(input, output, session) {
   options_inputs <- c("table", "multiparam", "autocorr", "rhat_warnings", # multitrace
                       "bivariate", "trivariate", "density", "hist")
   dens_inputs <- c("point_est", "ci", "x_breaks", "fill_color", "line_color")
-  diagnostic_inputs <- paste0("diagnostic_", c("param", "param_transform", "param_transform_go"))
-  
+  diagnostic_inputs <- paste0("diagnostic_", c("param", "param_transform", 
+                                               "param_transform_go"))
   observe({
-    # Link to tabs from home page table of contents
+    # Link to pages from home page table of contents
     local({
       lapply(toc_entries, function(x) {
         id <- paste0("toc_", if (x == "Model Code") "more" else tolower(x))
@@ -50,7 +50,6 @@ function(input, output, session) {
       })
     })
   })
-  
   observe({
     # Toggle options dropdowns
     lapply(seq_along(options_inputs), function(j){
@@ -64,7 +63,6 @@ function(input, output, session) {
                            condition = input$dens_chain_split == "Together")
     })
     shinyjs::toggleState(id = "ac_flip", condition = input$ac_combine == FALSE)
-    
     # Links to glossary
     shinyjs::onclick("open_glossary_from_table",
                      updateTabsetPanel(session, "nav", selected = "Glossary"))
@@ -81,7 +79,6 @@ function(input, output, session) {
         lapply(diagnostic_inputs, function(x) shinyjs::enable(id = x))
     })
   })
-  
   # Links to quick definitions
   observeEvent(input$open_quick_rhat, 
                shinyjs::info(includeText("text/quick_rhat.txt")))
@@ -89,11 +86,9 @@ function(input, output, session) {
                shinyjs::info(includeText("text/quick_neff.txt")))
   observeEvent(input$open_quick_mcse, 
                shinyjs::info(includeText("text/quick_mcse.txt")))
-  
   # Show/hide citation
   observeEvent(input$shinystan_citation_show,
                shinyjs::toggle(id = "citation_div", anim = TRUE, animType = "fade"))
-  
 } 
 # END server ------------------------------------------------------
 # _________________________________________________________________
