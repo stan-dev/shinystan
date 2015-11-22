@@ -101,6 +101,5 @@ deploy_shinystan <- function(sso, appName, account = NULL, ...) {
       set_ppcheck_defaults(appDir = deployDir, yrep_name = pp$ppcheck_yrep, 
                            y_name = "y")
   }
-  deploy(appDir = deployDir, appName = appName, 
-                       account = account, lint = TRUE)
+  deploy(appDir = deployDir, appName = appName, account = account, lint = TRUE)
 }

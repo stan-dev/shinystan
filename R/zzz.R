@@ -16,9 +16,11 @@
 .sso_env <- new.env(parent=emptyenv()) 
 
 .onAttach <- function(...) {
-  ver <- utils::packageVersion("shinystan")
-  msg <- paste0("\nThis is shinystan version ", ver,"\n")
-  packageStartupMessage(msg)
+  try({
+    ver <- utils::packageVersion("shinystan")
+    msg <- paste0("\nThis is shinystan version ", ver,"\n")
+    packageStartupMessage(msg)
+  })
 } 
 
 .onLoad <- function(libname, pkgname) {
