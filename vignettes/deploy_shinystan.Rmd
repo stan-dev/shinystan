@@ -29,10 +29,10 @@ The only limit to the number of different ShinyStan apps you can deploy is the l
 
 **Setup**
 
-After signing up for a ShinyApps account, follow the instructions for setting up your account on your local system using the `setAccountInfo` function in the `shinyapps` package. If you don't have the `shinyapps` package installed you can install it by running 
+After signing up for a ShinyApps account, follow the instructions for setting up your account on your local system using the `setAccountInfo` function in the `rsconnect` package. If you don't have the `rsconnect` package installed you can install it by running 
 
 ```r
-devtools::install_github("rstudio/shinyapps")
+devtools::install_github("rstudio/rsconnect")
 ```
 
 

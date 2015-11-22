@@ -91,7 +91,7 @@ deploy_shinystan <- function(sso, appName, account = NULL, ...) {
   # save shinystan_object to deployDir
   object <- sso
   save(object, file = file.path(deployDir, "shinystan_temp_object.RData"))
-  deploy <- getFromNamespace("deployApp", "shinyapps")
+  deploy <- getFromNamespace("deployApp", "rsconnect")
   # save ppcheck_data and set ppcheck defaults
   pp <- list(...)
   if ("ppcheck_data" %in% names(pp)) {
@@ -102,5 +102,5 @@ deploy_shinystan <- function(sso, appName, account = NULL, ...) {
                            y_name = "y")
   }
   deploy(appDir = deployDir, appName = appName, 
-                       account = account, lint = FALSE)
+                       account = account, lint = TRUE)
 }
