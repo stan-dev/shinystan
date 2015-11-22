@@ -1,5 +1,5 @@
 # This file is part of shinystan
-# Copyright (C) Jonah Gabry
+# Copyright (C) 2015 Jonah Gabry
 #
 # shinystan is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
@@ -20,7 +20,6 @@
 #' \url{http://www.shinyapps.io/} to sign up. 
 #' 
 #' @export
-#' 
 #' @param sso shinystan object.
 #' @param appName The name to use for the application. Application names must be
 #'   at least four characters long and may only contain letters, numbers, dashes
@@ -61,8 +60,7 @@
 deploy_shinystan <- function(sso, appName, account = NULL, ...) {
   sso_check(sso)
   if (missing(appName)) 
-    stop("Please specify a name for your app using the 'appName' argument", 
-         call. = FALSE)
+    stop("Please specify a name for your app using the 'appName' argument")
 
   # copy contents to temporary directory and write necessary additional lines to
   # ui, server, and global

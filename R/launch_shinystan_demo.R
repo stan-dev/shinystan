@@ -1,5 +1,5 @@
 # This file is part of shinystan
-# Copyright (C) Jonah Gabry
+# Copyright (C) 2015 Jonah Gabry
 #
 # shinystan is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
@@ -16,7 +16,6 @@
 #' ShinyStan demo
 #'
 #' @export
-#'
 #' @param rstudio Only relevant for RStudio users. The default 
 #'   (\code{rstudio=FALSE}) is to launch the app in the default web browser 
 #'   rather than RStudio's pop-up Viewer. Users can change the default to 

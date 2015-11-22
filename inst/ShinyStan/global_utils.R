@@ -1,6 +1,11 @@
-load("ggplot_fns.rda")
+# give ShinyStan app access to ggplot functions
+ggplot_fns_file <- if (packageVersion("ggplot2") < "1.0.1.9") # FIXME (change to "1.1.0" when released)
+  "ggplot_fns_old.rda" else "ggplot_fns.rda"
+
+load(ggplot_fns_file)
 lapply(ggplot_fns, function(f) {
-  assign(f, getFromNamespace(f, "ggplot2"), envir = parent.frame(2))
+  try(assign(f, getFromNamespace(f, "ggplot2"), envir = parent.frame(2)), 
+      silent = TRUE)
 })
 
 helpers <- file.path("helper_functions", list.files("helper_functions", full.names = FALSE))
@@ -111,7 +116,8 @@ suppress_and_print <- function(x) {
 }
 
 # make_param_list_with_groups ------------------------------------------------------
-# generate list of parameter names  and include parameter groups (formatted for shiny::selectInput)
+# generate list of parameter names and include parameter groups (formatted for
+# shiny::selectInput)
 .make_param_list_with_groups <- function(object, sort_j = FALSE) {
   choices <- list()
   param_groups <- names(object@param_dims)
@@ -141,11 +147,24 @@ suppress_and_print <- function(x) {
   choices
 }
 
-# update_params_with_groups -----------------------------------------------
-# update parameter selection for multi-parameter plots
+# update parameter selection for multi-parameter plots --------------------
+# update with regex
+.test_valid_regex <- function(pattern) {
+  trygrep <- try(grep(pattern, ""), silent = TRUE)
+  if (inherits(trygrep, "try-error")) FALSE else TRUE
+}
+.update_params_with_regex <- function(params, all_param_names, regex_pattern) {
+  sel <- which(all_param_names %in% params)
+  to_search <- if (length(sel)) all_param_names[-sel] else all_param_names
+  if (!length(regex_pattern)) return(params)
+  to_add <- grep(regex_pattern, to_search, value = TRUE)
+  if (!length(to_add)) params else c(params, to_add)
+}
+
+# update with groups
 .update_params_with_groups <- function(params, all_param_names) {
   as_group <- grep("_as_shinystan_group", params)
-  if (length(as_group) == 0) return(params)
+  if (!length(as_group)) return(params)
   make_group <- function(group_name) {
     all_param_names[grep(paste0("^",group_name,"\\["), all_param_names)]
   }
@@ -153,18 +172,17 @@ suppress_and_print <- function(x) {
   grouped_params <- params[as_group]
   groups <- gsub("_as_shinystan_group", "", grouped_params)
   groups <- sapply(groups, make_group)
-  updated_params <- c(single_params, unlist(groups))
-  updated_params
+  c(single_params, unlist(groups))
 }
 
 
 # generate color vectors --------------------------------------------------
 color_vector <- function(n) {
-  hues = seq(15, 375, length=n+1)
+  hues = seq(15, 375, length = n + 1)
   hcl(h=hues, l=50, c=50)[1:n]
 }
 color_vector_chain <- function(n) {
-  hues = seq(15, 375, length=n+1)
+  hues = seq(15, 375, length = n + 1)
   hcl(h=hues, l=80, c=50)[1:n]
 }
 
@@ -250,7 +268,6 @@ help_dynamic <- hT11(
   "Use your mouse or the sliders to select areas in the",
   "traceplot to zoom into. The other plots on the screen", 
   "will update accordingly. Double-click to reset.")
-# help_violin <- helpText("The violin plot ")
 
 # stan manual 
 stan_manual <- function() {

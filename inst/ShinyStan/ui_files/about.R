@@ -14,6 +14,8 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 div(style = "text-align: center; margin-top: 100px;",
+    strong(paste("Version", utils::packageVersion("shinystan"))),
+    br(),br(),
     a(style = "font-size: 16px;", strong("Stan Development Team"), 
       href="http://mc-stan.org/team/"),
     br(),
@@ -26,7 +28,7 @@ div(style = "text-align: center; margin-top: 100px;",
                                     includeHTML("html/citation.html")
           )))
     ),
-    br(),br(),br(),
+    br(),br(),
     h6("Author"),
     helpText(style = "font-size: 12px;", "Jonah Gabry"),
     br(),
