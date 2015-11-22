@@ -14,19 +14,19 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-#' Deploy a ShinyStan app to shinyapps.io
+#' Deploy a ShinyStan app on the web using shinyapps.io by RStudio
 #' 
-#' Requires a (free or paid) ShinyApps account. Visit 
-#' \url{http://www.shinyapps.io/} to sign up. 
+#' Requires a (free or paid) shinyapps.io account. Visit 
+#' \url{http://www.shinyapps.io/} to sign up and for details on how to configure
+#' your account on your local system using RStudio's \pkg{rsconnect} package.
 #' 
 #' @export
-#' @param sso shinystan object.
+#' @param sso A shinystan object.
 #' @param appName The name to use for the application. Application names must be
 #'   at least four characters long and may only contain letters, numbers, dashes
 #'   and underscores.
-#' @param account ShinyApps account username. Only required if more than one 
-#'   ShinyApps account is configured on the system. See 
-#'   \url{http://www.shinyapps.io/} for help configuring your account.
+#' @param account shinyapps.io account username. Only required if more than one 
+#'   account is configured on the system.
 #' @param ... Optional arguments. See Details.
 #' 
 #' @details In \code{...}, the arguments \code{ppcheck_data} and 
@@ -44,16 +44,16 @@
 #' 
 #' @examples
 #' \dontrun{
-#' # For this example assume my_sso is the name of the shinystan object for 
+#' # For this example assume sso is the name of the shinystan object for 
 #' # the model you want to use. Assume also that you want to name your app 
-#' # 'my-model' and that your ShinyApps username is 'username'. 
+#' # 'my-model' and that your shinyapps.io username is 'username'. 
 #'
-#' deploy_shinystan(sso = my_sso, appName = "my-model", account = "username") 
+#' deploy_shinystan(sso, appName = "my-model", account = "username") 
 #'
 #' # If you only have one ShinyApps account configured then you can also omit 
 #' # the 'account' argument. 
 #'
-#' deploy_shinystan(sso = my_sso, appName = "my-model")
+#' deploy_shinystan(sso, appName = "my-model")
 #' }
 #' 
 
