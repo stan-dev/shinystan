@@ -116,7 +116,8 @@ suppress_and_print <- function(x) {
 }
 
 # make_param_list_with_groups ------------------------------------------------------
-# generate list of parameter names  and include parameter groups (formatted for shiny::selectInput)
+# generate list of parameter names and include parameter groups (formatted for
+# shiny::selectInput)
 .make_param_list_with_groups <- function(object, sort_j = FALSE) {
   choices <- list()
   param_groups <- names(object@param_dims)
@@ -267,7 +268,6 @@ help_dynamic <- hT11(
   "Use your mouse or the sliders to select areas in the",
   "traceplot to zoom into. The other plots on the screen", 
   "will update accordingly. Double-click to reset.")
-# help_violin <- helpText("The violin plot ")
 
 # stan manual 
 stan_manual <- function() {
