@@ -14,7 +14,7 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 div(style = "text-align: center; margin-top: 100px;",
-    strong(paste("Version", utils::packageVersion("shinystan"))),
+    try(strong(paste("Version", utils::packageVersion("shinystan")))),
     br(),br(),
     a(style = "font-size: 16px;", strong("Stan Development Team"), 
       href="http://mc-stan.org/team/"),
