@@ -30,24 +30,23 @@ Applied Bayesian data analysis is primarily implemented through
 \section{Saving and sharing}{
 
   
-  The shinystan package allows you to store the basic components of an entire
-  project (code, posterior samples, graphs, tables, notes) in a single 
+  The \pkg{shinystan} package allows you to store the basic components of an
+  entire project (code, posterior samples, graphs, tables, notes) in a single
   object. Users can save many of the plots as ggplot2 objects for further 
   customization and easy integration in reports or post-processing for 
   publication.
   
-  The new version of shinystan also provides the `deploy_shinystan` function,
-  which lets you easily deploy your own ShinyStan apps online using RStudio's
-  ShinyApps (\url{https://www.shinyapps.io}) service for any of your models. 
-  Each of your apps (each of your models) will have a unique url and is 
-  compatible with Safari, Firefox, Chrome, and most other browsers.
+  The \code{\link{deploy_shinystan}} function lets you easily deploy your own
+  ShinyStan apps online for any of your models using RStudio's shinyapps.io
+  service. Each of your apps (each of your models) will have a unique url and
+  will be compatible with Safari, Firefox, Chrome, and most other browsers.
 }
 
 \section{License}{
  
 
- The shinystan package is open source licensed under the GNU Public License,
- version 3 (GPLv3).
+ The \pkg{shinystan} package is open source licensed under the GNU Public
+ License, version 3 (GPLv3).
 }
 
 \section{Demo}{

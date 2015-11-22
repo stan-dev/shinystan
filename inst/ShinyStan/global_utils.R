@@ -23,6 +23,13 @@ save_and_close <- tags$button(
   "Save & Close"
 )
 
+shinystan_version <- function() {
+  # prevents error when deployed to shinyapps.io
+  ver <- try(utils::packageVersion("shinystan"))
+  if (inherits(ver, "try-error")) return()
+  else strong(paste("Version", ver))
+}
+
 logo_and_name <- function() {
   div(
       div(img(src = "wide_ensemble.png", 
