@@ -108,11 +108,9 @@ as.shinystan <- function(X, ...) {
   if (X_is == "chainlist") return(chains2shinystan(X, ...))
   if (X_is == "other") {
     if (!is.array(X)) 
-      stop(paste(Xname, "is not a valid input type. See ?as.shinystan"), 
-           call. = FALSE)
+      stop(paste(Xname, "is not a valid input type. See ?as.shinystan"))
     array2shinystan(X, ...)
   }
-  
 }
 
 #' @rdname as.shinystan
