@@ -51,4 +51,4 @@ Imports:
     xtable,
     xts (>= 0.9-7)
 VignetteBuilder: knitr
-RoxygenNote: 5.0.0
+RoxygenNote: 5.0.1
