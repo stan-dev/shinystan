@@ -6,9 +6,11 @@ div(id = "diagnostics_customize",
         column(4, h5("Transformation"))
       ),
       fluidRow(
-        column(3, div(style = "width: 100px;", 
+        column(3, div(style = "width: 100px;",
                       numericInput("diagnostic_chain", label = NULL, value = 0, 
-                                   min = 0, max = .nChains))),
+                                   min = 0, 
+                                   # don't allow changing chains if only 1 chain
+                                   max = ifelse(.nChains == 1, 0, .nChains)))),
         column(4, selectizeInput(
           inputId = "diagnostic_param", label = NULL, multiple = FALSE, 
           choices = .param_list, 
