@@ -1,8 +1,6 @@
 ---
 title: 'ShinyStan: Getting Stated'
 output:
-  pdf_document:
-    toc: yes
   html_document:
     fig_caption: yes
     toc: yes
@@ -18,7 +16,7 @@ date: "09/17/2015"
 ## stanfit objects
 
 If `my_stanfit` is a stanfit object (the result of fitting a model with
-[**rstan**](http://mc-stan.org)), then to launch the ShinyStan app simply use
+[**rstan**](http://mc-stan.org/)), then to launch the ShinyStan app simply use
 
 ```r
 library(shinystan)
