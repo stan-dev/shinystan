@@ -23,21 +23,19 @@ ndivergent_lab <- "N Divergent"
 sp_nuts_check <- reactive({
   validate(
     need(stan_algorithm == "NUTS", message = "Only available for algorithm = NUTS"),
-    # need(sampler_params_post_warmup, message = "Only available for Stan models"),
-    need(input$diagnostic_chain, message = "Loading..."))
+    need(input$diagnostic_chain, message = "Loading...")
+  )
 })
-
 diagnostic_chain <- reactive({
-  validate(
-    # need(nChains > 1, message = "This feature requires more than 1 chain"),
-    need(input$diagnostic_chain, message = "Waiting for chain (0 for all)")
-    )
+  validate(need(input$diagnostic_chain, message = "Waiting for chain (0 for all)"))
   input$diagnostic_chain
 })
 diagnostic_param <- reactive({
   validate(need(input$diagnostic_param, message = "Waiting for parameter"))
   input$diagnostic_param
 })
+
+
 diagnostic_param_transform <- eventReactive(
   input$diagnostic_param_transform_go > 0, 
   input$diagnostic_param_transform)
