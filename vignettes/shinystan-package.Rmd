@@ -1,15 +1,14 @@
 ---
-title: 'ShinyStan: Getting Stated'
-output:
-  html_document:
-    fig_caption: yes
-    toc: yes
+title: 'Getting Started'
 date: "09/17/2015"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Getting Started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
-<!--
-%\VignetteEngine{knitr::rmarkdown}
-%\VignetteIndexEntry{ShinyStan: Getting Started}
--->
 
 # Using the ShinyStan app with different types of objects
 

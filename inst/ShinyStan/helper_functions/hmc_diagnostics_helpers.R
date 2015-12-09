@@ -106,7 +106,8 @@ thm_no_yaxs <- thm + no_yaxs
   thm <- thm_no_yaxs
   mdf <- reshape2::melt(df, id.vars = "iterations")
   base <- ggplot(mdf, aes(x = value)) + 
-    geom_histogram(binwidth = diff(range(mdf$value))/30, fill = base_fill, 
+    geom_histogram(aes_string(y="..density.."),
+                   binwidth = diff(range(mdf$value))/30, fill = base_fill, 
                    color = vline_base_clr, size = 0.2) + 
     labs(x = if (missing(lab)) NULL else lab, y = "") + thm
   if (chain == 0) {
@@ -119,6 +120,7 @@ thm_no_yaxs <- thm + no_yaxs
   chain_clr <- color_vector_chain(ncol(df) - 1)[chain]
   chain_fill <- chain_clr
   base + thm + geom_histogram(data = chain_data,
+                              aes_string(y="..density.."),
                               binwidth = diff(range(chain_data$value))/30,
                               fill = chain_fill, alpha = 0.5) +
     geom_vline(xintercept = mean(chain_data$value), color = chain_clr, size = .8) + 
