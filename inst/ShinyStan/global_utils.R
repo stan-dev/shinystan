@@ -1,5 +1,5 @@
 # give ShinyStan app access to ggplot functions
-ggplot_fns_file <- if (packageVersion("ggplot2") < "1.0.1.9") # FIXME (change to "1.1.0" when released)
+ggplot_fns_file <- if (packageVersion("ggplot2") < "2.0.0")
   "ggplot_fns_old.rda" else "ggplot_fns.rda"
 
 load(ggplot_fns_file)
