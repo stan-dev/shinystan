@@ -61,7 +61,7 @@ navlistPanel(id = "pp_navlist", widths = c(3,9), well = TRUE,
              tabPanel("Scatterplots",
                       div(
                         br(),
-                        h5(withMathJax(plot_descriptions["plot_obs_vs_avg_y_rep"])),
+                        h4(withMathJax(plot_descriptions["plot_obs_vs_avg_y_rep"])),
                         checkboxInput("pp_zoom_to_zero", "Zoom to include (0,0)", value = FALSE),
                         plotOutput("pp_y_vs_avg_rep_out", height = "250px", width = "80%"),
                         # h5(withMathJax(plot_descriptions["plot_avg_rep_vs_avg_resid_rep"])),

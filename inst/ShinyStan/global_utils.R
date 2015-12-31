@@ -296,4 +296,4 @@ stan_manual <- function() {
 .nWarmup <- slot(object, "nWarmup")
 .model_code <- slot(object, "model_code")
 .notes <- slot(object, "user_model_info")
-
+.from_rstanarm <- if (is.null(object@misc$stanreg)) FALSE else object@misc$stanreg

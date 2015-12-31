@@ -26,13 +26,21 @@ stanreg2shinystan <- function(X, ppd = TRUE, ...) {
     param_dims[[i]] <- numeric(0)
   }
   sso@param_dims <- param_dims
-  sso@misc$pp_y <- if ("y" %in% names(X)) 
-    X$y else model.response(model.frame(X))
-  
+  sso@misc$stanreg <- TRUE
   if (ppd) {
-    if (exists("posterior_predict", mode = "function"))
-      sso@misc$pp_yrep <- do.call("posterior_predict", list(X))
-    else stop("Please load or install the 'rstanarm' package.")
+    if (!exists("pp_check", mode = "function"))
+      stop("Please load or install the 'rstanarm' package.", call. = FALSE)
+    pp_check_plots <- list()
+    SEED <- 0110
+    pp_check_plots[["pp_check_hist"]] <- do.call("pp_check", list(object = X, check = "dist", nreps = 8, overlay = FALSE, seed = SEED))
+    pp_check_plots[["pp_check_dens"]] <- do.call("pp_check", list(object = X, check = "dist", nreps = 8, overlay = TRUE, seed = SEED))
+    pp_check_plots[["pp_check_resid"]] <- do.call("pp_check", list(object = X, check = "resid", nreps = 8, seed = SEED))
+    pp_check_plots[["pp_check_scatter"]] <- do.call("pp_check", list(object = X, check = "scatter", nreps = NULL, seed = SEED))
+    pp_check_plots[["pp_check_stat_mean"]] <- do.call("pp_check", list(object = X, check = "test", test = "mean", seed = SEED))
+    pp_check_plots[["pp_check_stat_sd"]] <- do.call("pp_check", list(object = X, check = "test", test = "sd", seed = SEED))
+    pp_check_plots[["pp_check_stat_min"]] <- do.call("pp_check", list(object = X, check = "test", test = "min", seed = SEED))
+    pp_check_plots[["pp_check_stat_max"]] <- do.call("pp_check", list(object = X, check = "test", test = "max", seed = SEED))
+    sso@misc$pp_check_plots <- pp_check_plots
   }
   sso
 }
