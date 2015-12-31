@@ -64,4 +64,6 @@ if (!stan_method == "variational") {
   table_stats[,"n_eff"] <- round(table_stats[,"n_eff"])
 }
 
+from_rstanarm <- if (is.null(MISC$stanreg)) FALSE else MISC$stanreg
+if (from_rstanarm) pp_check_plots <- MISC$pp_check_plots
 
