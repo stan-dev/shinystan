@@ -40,6 +40,9 @@ stan2shinystan <- function(stanfit, model_name, notes) {
   stan_algorithm <- if (from_cmdstan_csv) 
     toupper(stan_args$engine) else stan_args$algorithm
   warmup <- if (from_cmdstan_csv) stanfit@sim$warmup2[1L] else stanfit@sim$warmup
+  if (!is.null(stan_args[["save_warmup"]])) {
+    if (!stan_args[["save_warmup"]]) warmup <- 0
+  }
   nWarmup <- if (from_cmdstan_csv) warmup else floor(warmup / stanfit@sim$thin)
   
   cntrl <- stanfit@stan_args[[1L]]$control
@@ -62,7 +65,7 @@ stan2shinystan <- function(stanfit, model_name, notes) {
   mname <- if (!missing(model_name)) model_name else stanfit@model_name
   mcode <- rstan::get_stancode(stanfit)
   
-  sampler_params <- if (vb) list(NA) else rstan::get_sampler_params(stanfit)
+  sampler_params <- if (vb) list(NA) else suppressWarnings(rstan::get_sampler_params(stanfit))
   stan_summary <- rstan::summary(stanfit)$summary
   if (vb) stan_summary <- cbind(stan_summary, Rhat = NA, n_eff = NA, se_mean = NA)
   
