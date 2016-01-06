@@ -1,5 +1,5 @@
 # This file is part of shinystan
-# Copyright (C) Jonah Gabry
+# Copyright (C) 2015 Jonah Gabry
 #
 # shinystan is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
@@ -326,6 +326,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                              color_by_rhat, rhat_palette, fill_color, 
                              outline_color, est_color) {
 
+  # params <- .update_params_with_regex(params, all_param_names)
   params <- .update_params_with_groups(params, all_param_names)
   .e <- environment()
   dim.samps <- dim(samps) #nIter, nChain, nParam

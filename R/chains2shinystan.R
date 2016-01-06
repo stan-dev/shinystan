@@ -1,5 +1,5 @@
 # This file is part of shinystan
-# Copyright (C) Jonah Gabry
+# Copyright (C) 2015 Jonah Gabry
 #
 # shinystan is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
@@ -26,19 +26,22 @@
 # 
 
 chains2shinystan <- function(chain_list, ...) {
-
   if (!is.list(chain_list)) {
     name <- deparse(substitute(chain_list))
     stop(paste(name, "is not a list."), call. = FALSE)
   }
-
   nChain <- length(chain_list)
+  for (i in 1:nChain) {
+    nms <- colnames(chain_list[[i]])
+    if (is.null(nms) || !all(nzchar(nms)))
+      stop("Some parameters are missing names. ",
+           "Check the column names for the matrices in your list of chains.")
+  }
   if (nChain > 1) {
     nIter <- sapply(chain_list, nrow)
     same_iters <- length(unique(nIter)) == 1
     if (!same_iters) 
       stop("Each chain should contain the same number of iterations.")
-
     cnames <- sapply(chain_list, colnames)
     if (is.array(cnames)) {
       same_params <- identical(cnames[,1], cnames[,2])
@@ -48,8 +51,8 @@ chains2shinystan <- function(chain_list, ...) {
       param_names <- cnames
     }
     if (!same_params) 
-      stop("The parameters for each chain should be in the same order and have the same names.")
-
+      stop("The parameters for each chain should be in the same order ",
+           "and have the same names.")
     nIter <- nIter[1]
   } else {
     if (nChain == 1) {
@@ -59,19 +62,14 @@ chains2shinystan <- function(chain_list, ...) {
       stop("You don't appear to have any chains.")
     }
   }
-
   param_names <- unique(param_names)
   nParam <- length(param_names)
-
   out <- array(NA, dim = c(nIter, nChain, nParam))
   for(i in 1:nChain) {
     out[,i,] <- chain_list[[i]]
   }
-
   dimnames(out) <- list(iterations = NULL,
-                        chains = paste0("chain:",1:nChain),
+                        chains = paste0("chain:", 1:nChain),
                         parameters = param_names)
-
-  out <- array2shinystan(out, ...)
-  out
+  array2shinystan(out, ...)
 }

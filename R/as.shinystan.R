@@ -1,5 +1,5 @@
 # This file is part of shinystan
-# Copyright (C) Jonah Gabry
+# Copyright (C) 2015 Jonah Gabry
 #
 # shinystan is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
@@ -15,10 +15,12 @@
 
 #' Create and test shinystan objects
 #'
+#' @export
 #' @param X An object to be converted to a shinystan object. Can be
 #' one of the following:
 #' \describe{
 #'   \item{stanfit}{An object of class stanfit (\pkg{rstan})}
+#'   \item{stanreg}{An object of class stanreg (\pkg{rstanarm})}
 #'   \item{mcmc.list}{An object of class \code{mcmc.list} (\pkg{coda})}
 #'   \item{3D array}{A 3D array of posterior simulations with dimensions corresponding
 #'   to iterations, chains, and parameters, in that order.}
@@ -35,7 +37,15 @@
 #'   
 #' @details If \code{X} is a stanfit object then no additional arguments should
 #'   be specified in \code{...} (they are taken automatically from the stanfit
-#'   object). If \code{X} is not a stanfit object then the following arguments
+#'   object). 
+#'   
+#'   If \code{X} is a stanreg object the argument \code{ppd} (logical)
+#'   can be specified indicating whether to draw from the posterior predictive
+#'   distribution before launching ShinyStan. The default is \code{TRUE}, 
+#'   although for large objects it can be wise to set it to \code{FALSE} as 
+#'   drawing from the posterior predictive distribution can be time consuming.
+#'   
+#'   If \code{X} is not a stanfit or stanreg object then the following arguments
 #'   can be specified but are not required:
 #'   
 #' \describe{
@@ -50,7 +60,6 @@
 #' }
 #' 
 #' @seealso \code{\link{launch_shinystan}}, \code{\link{launch_shinystan_demo}}
-#' @export
 #'
 #' @examples
 #' \dontrun{
@@ -94,16 +103,14 @@ as.shinystan <- function(X, ...) {
   }
   X_is <- get_type(X)
   if (X_is == "stanfit") return(stan2shinystan(X, ...))
-  if (X_is == "stanreg") return(stan2shinystan(X$stanfit, ...))
+  if (X_is == "stanreg") return(stanreg2shinystan(X, ...))
   if (X_is == "mcmclist") return(mcmc2shinystan(X, ...))
   if (X_is == "chainlist") return(chains2shinystan(X, ...))
   if (X_is == "other") {
     if (!is.array(X)) 
-      stop(paste(Xname, "is not a valid input type. See ?as.shinystan"), 
-           call. = FALSE)
+      stop(paste(Xname, "is not a valid input type. See ?as.shinystan"))
     array2shinystan(X, ...)
   }
-  
 }
 
 #' @rdname as.shinystan

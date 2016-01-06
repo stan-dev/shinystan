@@ -1,5 +1,5 @@
 # This file is part of shinystan
-# Copyright (C) Jonah Gabry
+# Copyright (C) 2015 Jonah Gabry
 #
 # shinystan is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
@@ -16,7 +16,6 @@
 #' ShinyStan app
 #' 
 #' @export
-#' 
 #' @param object An object of class shinystan, stanfit, or stanreg. See
 #'   \code{\link{as.shinystan}} for converting other objects to a shinystan
 #'   object (sso).

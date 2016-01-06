@@ -1,5 +1,5 @@
 # This file is part of shinystan
-# Copyright (C) Jonah Gabry
+# Copyright (C) 2015 Jonah Gabry
 #
 # shinystan is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
@@ -18,8 +18,8 @@
 #' Prints basic summary info including number of parameters, chains, iterations, 
 #' warmup iterations, etc. 
 #'
-#' @param sso A \code{shinystan} object. 
 #' @export
+#' @param sso A \code{shinystan} object. 
 #'
 
 sso_info <- function(sso) {

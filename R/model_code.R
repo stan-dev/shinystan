@@ -1,5 +1,5 @@
 # This file is part of shinystan
-# Copyright (C) Jonah Gabry
+# Copyright (C) 2015 Jonah Gabry
 #
 # shinystan is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
@@ -17,6 +17,7 @@
 #' Add model code to a shinystan object or see the code currently stored in 
 #' a shinystan
 #'
+#' @export
 #' @param sso A shinystan object.
 #' @param code Optionally, the code you want to add. See \strong{Details} below for 
 #'   formatting instructions.
@@ -31,7 +32,6 @@
 #' from the stanfit object. 
 #' 
 #' @seealso \code{cat}
-#' @export
 #'
 #' @examples
 #' \dontrun{

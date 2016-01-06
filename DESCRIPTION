@@ -1,7 +1,8 @@
 Package: shinystan
-Title: Interactive Visual and Numerical Diagnostics and Posterior Analysis for Bayesian Models
-Version: 2.0.1
-Date: 2015-09-17
+Title: Interactive Visual and Numerical Diagnostics and Posterior Analysis for
+    Bayesian Models
+Version: 2.1.0
+Date: 2016-01-06
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"),
     email = "jsg2201@columbia.edu"),
       person(family = "Stan Development Team", role = "ctb"),
@@ -15,28 +16,29 @@ Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"),
       person("Dongying", "Song", role = "ctb"),
       person("Rob", "Trangucci", role = "ctb"))
 Maintainer: Jonah Gabry <jsg2201@columbia.edu>
-Description: We provide a graphical user interface for interactive Markov chain 
-  Monte Carlo (MCMC) diagnostics and plots and tables helpful for analyzing a 
-  posterior sample. The interface is powered by RStudio's Shiny web application 
-  framework and works with the output of MCMC programs written in any 
-  programming language (and has extended functionality for Stan models fit 
-  using the rstan package and the No-U-Turn sampler).
-URL: https://github.com/stan-dev/shinystan, http://mc-stan.org/
-BugReports: https://github.com/stan-dev/shinystan/issues
-Depends: 
+Description: We provide a graphical user interface for interactive Markov chain
+    Monte Carlo (MCMC) diagnostics and plots and tables helpful for analyzing a
+    posterior sample. The interface is powered by RStudio's Shiny web application
+    framework and works with the output of MCMC programs written in any programming
+    language (and has extended functionality for Stan models fit using the rstan
+    package and the No-U-Turn sampler).
+URL: https://github.com/stan-dev/shinystan/, http://mc-stan.org/
+BugReports: https://github.com/stan-dev/shinystan/issues/
+Depends:
     R (>= 3.1.0),
     shiny (>= 0.12.1)
 License: GPL (>=3)
 LazyData: true
-Suggests: 
+Suggests:
     coda,
     knitr (>= 1.9),
     rstan (>= 2.7),
+    rmarkdown (>= 0.8.1),
     testthat
-Imports: 
+Imports:
     DT (>= 0.1),
     dygraphs (>= 0.4.5),
-    ggplot2 (>= 1.0.0),
+    ggplot2 (>= 2.0.0),
     gridExtra,
     gtools,
     markdown (>= 0.7.4),
@@ -50,3 +52,4 @@ Imports:
     xtable,
     xts (>= 0.9-7)
 VignetteBuilder: knitr
+RoxygenNote: 5.0.1

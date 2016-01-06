@@ -1,5 +1,5 @@
 # This file is part of shinystan
-# Copyright (C) Jonah Gabry
+# Copyright (C) 2015 Jonah Gabry
 #
 # shinystan is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
@@ -106,7 +106,8 @@ thm_no_yaxs <- thm + no_yaxs
   thm <- thm_no_yaxs
   mdf <- reshape2::melt(df, id.vars = "iterations")
   base <- ggplot(mdf, aes(x = value)) + 
-    geom_histogram(binwidth = diff(range(mdf$value))/30, fill = base_fill, 
+    geom_histogram(aes_string(y="..density.."),
+                   binwidth = diff(range(mdf$value))/30, fill = base_fill, 
                    color = vline_base_clr, size = 0.2) + 
     labs(x = if (missing(lab)) NULL else lab, y = "") + thm
   if (chain == 0) {
@@ -119,6 +120,7 @@ thm_no_yaxs <- thm + no_yaxs
   chain_clr <- color_vector_chain(ncol(df) - 1)[chain]
   chain_fill <- chain_clr
   base + thm + geom_histogram(data = chain_data,
+                              aes_string(y="..density.."),
                               binwidth = diff(range(chain_data$value))/30,
                               fill = chain_fill, alpha = 0.5) +
     geom_vline(xintercept = mean(chain_data$value), color = chain_clr, size = .8) + 
@@ -139,7 +141,7 @@ thm_no_yaxs <- thm + no_yaxs
   if (nrow(plot_data) == 0) return(NULL)
   
   graph <- ggplot(plot_data, aes(x = factor(value)), na.rm = TRUE) + 
-    stat_bin(aes(y=..count../sum(..count..)), width=1, fill = base_fill,
+    geom_bar(aes(y=..count../sum(..count..)), width=1, fill = base_fill,
              color = vline_base_clr, size = 0.2) + 
     plot_labs + 
     plot_theme
@@ -147,7 +149,7 @@ thm_no_yaxs <- thm + no_yaxs
   chain_clr <- color_vector_chain(ncol(df_td) - 1)[chain]
   chain_fill <- chain_clr
   chain_data <- subset(plot_data, variable == paste0("chain:",chain))
-  graph + stat_bin(data = chain_data, aes(y=..count../sum(..count..)), 
+  graph + geom_bar(data = chain_data, aes(y=..count../sum(..count..)), 
                    fill = chain_fill, alpha = 0.5, width = 1)
 }
 
