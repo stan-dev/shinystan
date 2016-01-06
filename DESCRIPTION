@@ -1,8 +1,8 @@
 Package: shinystan
 Title: Interactive Visual and Numerical Diagnostics and Posterior Analysis for
     Bayesian Models
-Version: 2.0.2
-Date: 2015-12-24
+Version: 2.1.0
+Date: 2016-01-06
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"),
     email = "jsg2201@columbia.edu"),
       person(family = "Stan Development Team", role = "ctb"),
@@ -22,8 +22,8 @@ Description: We provide a graphical user interface for interactive Markov chain
     framework and works with the output of MCMC programs written in any programming
     language (and has extended functionality for Stan models fit using the rstan
     package and the No-U-Turn sampler).
-URL: https://github.com/stan-dev/shinystan, http://mc-stan.org/
-BugReports: https://github.com/stan-dev/shinystan/issues
+URL: https://github.com/stan-dev/shinystan/, http://mc-stan.org/
+BugReports: https://github.com/stan-dev/shinystan/issues/
 Depends:
     R (>= 3.1.0),
     shiny (>= 0.12.1)
