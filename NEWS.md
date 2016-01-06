@@ -1,7 +1,7 @@
 # `shinystan news`
 
-### Version 2.0.2
-* Compatibility with forthcoming ggplot2 update
+### Version 2.1.0
+* Compatibility with recent ggplot2 update
 * Select parameters via regular expressions in parameters plot ('Estimate' page)
 * Fix error when selecting an entire parameter group in parameters 
 plot ('Estimate' page)

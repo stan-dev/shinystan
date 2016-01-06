@@ -1,25 +1,18 @@
 ---
-title: 'ShinyStan: Deploying to shinyapps.io'
-output:
-  pdf_document:
-    toc: yes
-  html_document:
-    fig_caption: yes
-    toc: yes
+title: 'Deploying to shinyapps.io'
 date: "09/17/2015"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{ShinyStan: Deploying to shinyapps.io}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
-<!--
-%\VignetteEngine{knitr::rmarkdown}
-%\VignetteIndexEntry{ShinyStan: Deploying to shinyapps.io}
--->
-
-### About
 
 Create a ShinyStan app unique to your model and host it online with RStudio's ShinyApps service (shinyapps.io). Each app you deploy will have a unique url.  
 
 *Note: R users who don't use RStudio's IDE can still deploy ShinyStan apps to shinyapps.io.* 
 
-### Step 1: ShinyApps account
+## Step 1: ShinyApps account
 
 **Signup**
 
@@ -36,7 +29,7 @@ devtools::install_github("rstudio/rsconnect")
 ```
 
 
-### Step 2: Use `deploy_shinystan` to deploy your app to shinyapps.io
+## Step 2: Use `deploy_shinystan` to deploy your app to shinyapps.io
 
 The `deploy_shinystan` function will deploy a ShinyStan app unique to your model to RStudio's ShinyApps service.
 

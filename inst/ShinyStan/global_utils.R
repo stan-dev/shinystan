@@ -1,5 +1,5 @@
 # give ShinyStan app access to ggplot functions
-ggplot_fns_file <- if (packageVersion("ggplot2") < "1.0.1.9") # FIXME (change to "1.1.0" when released)
+ggplot_fns_file <- if (packageVersion("ggplot2") < "2.0.0")
   "ggplot_fns_old.rda" else "ggplot_fns.rda"
 
 load(ggplot_fns_file)
@@ -296,4 +296,4 @@ stan_manual <- function() {
 .nWarmup <- slot(object, "nWarmup")
 .model_code <- slot(object, "model_code")
 .notes <- slot(object, "user_model_info")
-
+.from_rstanarm <- if (is.null(object@misc$stanreg)) FALSE else object@misc$stanreg
