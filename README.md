@@ -1,19 +1,18 @@
-[![Travis-CI Build Status](https://travis-ci.org/stan-dev/shinystan.svg?branch=develop)](https://travis-ci.org/stan-dev/shinystan)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/shinystan?color=blue)](http://cran.r-project.org/web/packages/shinystan)
-
--------------------
 <a href="http://mc-stan.org">
 <img src="https://raw.githubusercontent.com/stan-dev/logos/master/logo.png" width=200 alt="Stan Logo"/>
 </a>
 
-ShinyStan
------------------
-**ShinyStan** provides immediate, informative, customizable visual and 
+# ShinyStan
+
+[![Travis-CI Build Status](https://travis-ci.org/stan-dev/shinystan.svg?branch=develop)](https://travis-ci.org/stan-dev/shinystan)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/shinystan?color=blue)](http://cran.r-project.org/web/packages/shinystan)
+
+ShinyStan provides immediate, informative, customizable visual and 
 numerical summaries of model parameters and convergence diagnostics for 
 MCMC simulations. The ShinyStan graphical user interface is available 
-via the shinystan R package. [Try the online demo.](http://gelman-group-win.stat.columbia.edu:3500)
+via the **shinystan** R package. [Try the online demo.](http://gelman-group-win.stat.columbia.edu:3500)
 
-## Installing the shinystan R package
+### Installing the shinystan R package
 * Install from CRAN:
 
     `install.packages("shinystan")`
@@ -24,11 +23,11 @@ via the shinystan R package. [Try the online demo.](http://gelman-group-win.stat
 
     `devtools::install_github("stan-dev/shinystan", build_vignettes = TRUE)`
     
-To take advantage of all the features in the shinystan package, it is also 
-recommended to install the [shinyapps](https://github.com/rstudio/shinyapps) 
+To take advantage of all the features in the **shinystan** package, it is also 
+recommended to install the [rsconnect](https://github.com/rstudio/rsconnect) 
 package. You can do this by running
 
-    devtools::install_github("rstudio/shinyapps")
+    devtools::install_github("rstudio/rsconnect")
 
 ### About ShinyStan
 
@@ -50,12 +49,12 @@ and the No-U-Turn sampler).
 
 ### Saving and deploying (sharing)
 
-The shinystan package allows you to store the basic components of an entire 
+The **shinystan** package allows you to store the basic components of an entire 
 project (code, posterior samples, graphs, tables, notes) in a single object. 
 Users can save many of the plots as ggplot2 objects for further customization 
 and easy integration in reports or post-processing for publication.
 
-The new version of shinystan also provides the `deploy_shinystan` function, 
+**shinystan** also provides the `deploy_shinystan` function, 
 which lets you easily deploy your own ShinyStan apps online using RStudio's 
 [ShinyApps](https://www.shinyapps.io) service for any of 
 your models. Each of your apps (each of your models) will have a unique url
@@ -63,5 +62,5 @@ and is compatible with Safari, Firefox, Chrome, and most other browsers.
 
 ### Licensing
 
-The shinystan R package and ShinyStan interface are open source licensed under 
+The **shinystan** R package and ShinyStan interface are open source licensed under 
 the GNU Public License, version 3 (GPLv3).
