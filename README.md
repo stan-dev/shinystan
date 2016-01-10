@@ -15,19 +15,26 @@ via the **shinystan** R package. [Try the online demo.](http://gelman-group-win.
 ### Installing the shinystan R package
 * Install from CRAN:
 
-    `install.packages("shinystan")`
+```{r}
+install.packages("shinystan")
+```
     
-    If this fails, try adding the arguments `type='source'` and/or `repos='http://cran.rstudio.com'`.
+If this fails, try adding the arguments `type='source'` and/or `repos='http://cran.rstudio.com'`.
     
 * Install from GitHub (requires [devtools](https://github.com/hadley/devtools) package):
 
-    `devtools::install_github("stan-dev/shinystan", build_vignettes = TRUE)`
+```{r}
+if (!require("devtools")) install.packages("devtools")
+devtools::install_github("stan-dev/shinystan", build_vignettes = TRUE)
+```
     
 To take advantage of all the features in the **shinystan** package, it is also 
 recommended to install the [rsconnect](https://github.com/rstudio/rsconnect) 
 package. You can do this by running
 
-    devtools::install_github("rstudio/rsconnect")
+```{r}
+devtools::install_github("rstudio/rsconnect")
+```
 
 ### About ShinyStan
 
