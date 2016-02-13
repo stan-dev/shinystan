@@ -25,7 +25,6 @@
 #' sso <- rename_model(sso, "new name for model")
 #' }
 #' 
-
 rename_model <- function(sso, new_model_name) {
   sso_check(sso)
   sso@model_name <- new_model_name

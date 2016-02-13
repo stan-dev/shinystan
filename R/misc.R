@@ -165,6 +165,6 @@ set_ppcheck_defaults <- function(appDir, yrep_name, y_name = "y") {
 # release reminders (for devtools)
 release_questions <- function() {
   c(
-    "Have you updated version numbers in the citation?",
+    "Have you updated version numbers in the citation?"
   )
 }

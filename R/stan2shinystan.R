@@ -30,7 +30,7 @@ stan2shinystan <- function(stanfit, model_name, notes) {
   rstan_check()
   if (!is.stanfit(stanfit)) {
     name <- deparse(substitute(stanfit))
-    stop(paste(name, "is not a stanfit object."))
+    stop(paste(name, "is not a stanfit object."), call. = FALSE)
   }
   
   stan_args <- stanfit@stan_args[[1L]]
@@ -40,15 +40,15 @@ stan2shinystan <- function(stanfit, model_name, notes) {
   stan_algorithm <- if (from_cmdstan_csv) 
     toupper(stan_args$engine) else stan_args$algorithm
   warmup <- if (from_cmdstan_csv) stanfit@sim$warmup2[1L] else stanfit@sim$warmup
-  if (!is.null(stan_args[["save_warmup"]])) {
+  if (!is.null(stan_args[["save_warmup"]]))
     if (!stan_args[["save_warmup"]]) warmup <- 0
-  }
-  nWarmup <- if (from_cmdstan_csv) warmup else floor(warmup / stanfit@sim$thin)
+  nWarmup <- if (from_cmdstan_csv) 
+    warmup else floor(warmup / stanfit@sim$thin)
   
   cntrl <- stanfit@stan_args[[1L]]$control
-  if (is.null(cntrl)) 
+  if (is.null(cntrl)) {
     max_td <- 11
-  else {
+  } else {
     max_td <- cntrl$max_treedepth
     if (is.null(max_td)) 
       max_td <- 11
@@ -65,9 +65,11 @@ stan2shinystan <- function(stanfit, model_name, notes) {
   mname <- if (!missing(model_name)) model_name else stanfit@model_name
   mcode <- rstan::get_stancode(stanfit)
   
-  sampler_params <- if (vb) list(NA) else suppressWarnings(rstan::get_sampler_params(stanfit))
+  sampler_params <- if (vb) 
+    list(NA) else suppressWarnings(rstan::get_sampler_params(stanfit))
   stan_summary <- rstan::summary(stanfit)$summary
-  if (vb) stan_summary <- cbind(stan_summary, Rhat = NA, n_eff = NA, se_mean = NA)
+  if (vb) 
+    stan_summary <- cbind(stan_summary, Rhat = NA, n_eff = NA, se_mean = NA)
   
   slots <- list()
   slots$Class <- "shinystan"
@@ -80,8 +82,10 @@ stan2shinystan <- function(stanfit, model_name, notes) {
   slots$nChains <- ncol(stanfit)
   slots$nIter <- nrow(samps_all) 
   slots$nWarmup <- nWarmup
-  if (!missing(notes)) slots$user_model_info <- notes
-  if (length(mcode) > 0) slots$model_code <- mcode
+  if (!missing(notes)) 
+    slots$user_model_info <- notes
+  if (length(mcode) > 0) 
+    slots$model_code <- mcode
   slots$misc <- list(max_td = max_td, stan_method = stan_method, 
                      stan_algorithm = stan_algorithm)
   sso <- do.call("new", slots)

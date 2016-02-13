@@ -76,12 +76,12 @@ launch_shinystan <- function(object, rstudio = getOption("shinystan.rstudio"),
     stop("Please specify a shinystan or stanfit object.", call. = FALSE)
   message("\nLoading... \n", 
           "Note: for large models ShinyStan may take a few moments to launch.")
-  
   if (inherits(object, "stanreg"))
     object <- stanreg2shinystan(object)
   if (inherits(object, "stanfit"))
     object <- stan2shinystan(object)
   if (!is.shinystan(object))
     stop(paste(name, "is not a valid input. See ?launch_shinystan"))
+  
   invisible(launch(object, rstudio, ...))
 }

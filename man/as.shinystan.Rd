@@ -13,14 +13,16 @@ is.shinystan(object)
 \item{X}{An object to be converted to a shinystan object. Can be
 one of the following:
 \describe{
-  \item{stanfit}{An object of class stanfit (\pkg{rstan})}
-  \item{stanreg}{An object of class stanreg (\pkg{rstanarm})}
-  \item{mcmc.list}{An object of class \code{mcmc.list} (\pkg{coda})}
-  \item{3D array}{A 3D array of posterior simulations with dimensions corresponding
-  to iterations, chains, and parameters, in that order.}
-  \item{chain list}{A list of matrices/2D arrays each corresponding to a single chain,
-  and with dimensions corresponding to iterations (rows) and parameters (columns).
-  }
+  \item{\code{stanfit}}{An object of class stanfit
+   (\pkg{\link[rstan]{rstan}}).}
+  \item{\code{stanreg}}{An object of class stanreg
+   (\pkg{\link[rstanarm]{rstanarm}}).}
+  \item{\code{mcmc.list}}{An object of class \code{mcmc.list} (\pkg{coda}).}
+  \item{3D \code{array}}{A 3D array of posterior simulations with dimensions
+   corresponding to iterations, chains, and parameters, in that order.}
+  \item{chain \code{list}}{A list of matrices/2D arrays each corresponding to
+   a single chain, and with dimensions corresponding to iterations (rows) and
+   parameters (columns).}
 }}
 
 \item{...}{Additional arguments. See Details, below.}
@@ -29,8 +31,8 @@ one of the following:
 }
 \value{
 For \code{as.shinystan} an object of class shinystan that can be used
-  with \code{\link{launch_shinystan}}. For \code{is.shinystan} a logical value
-  indicating whether the tested object is a shinystan object.
+  with \code{\link{launch_shinystan}}. For \code{is.shinystan} a logical
+  value indicating whether the tested object is a shinystan object.
 }
 \description{
 Create and test shinystan objects
@@ -40,10 +42,10 @@ If \code{X} is a stanfit object then no additional arguments should
   be specified in \code{...} (they are taken automatically from the stanfit
   object). 
   
-  If \code{X} is a stanreg object the argument \code{ppd} (logical)
-  can be specified indicating whether to draw from the posterior predictive
+  If \code{X} is a stanreg object the argument \code{ppd} (logical) can be
+  specified indicating whether to draw from the posterior predictive 
   distribution before launching ShinyStan. The default is \code{TRUE}, 
-  although for large objects it can be wise to set it to \code{FALSE} as 
+  although for very large objects it can be wise to set it to \code{FALSE} as
   drawing from the posterior predictive distribution can be time consuming.
   
   If \code{X} is not a stanfit or stanreg object then the following arguments

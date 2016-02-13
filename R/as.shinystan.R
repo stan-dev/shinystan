@@ -19,30 +19,32 @@
 #' @param X An object to be converted to a shinystan object. Can be
 #' one of the following:
 #' \describe{
-#'   \item{stanfit}{An object of class stanfit (\pkg{rstan})}
-#'   \item{stanreg}{An object of class stanreg (\pkg{rstanarm})}
-#'   \item{mcmc.list}{An object of class \code{mcmc.list} (\pkg{coda})}
-#'   \item{3D array}{A 3D array of posterior simulations with dimensions corresponding
-#'   to iterations, chains, and parameters, in that order.}
-#'   \item{chain list}{A list of matrices/2D arrays each corresponding to a single chain,
-#'   and with dimensions corresponding to iterations (rows) and parameters (columns).
-#'   }
+#'   \item{\code{stanfit}}{An object of class stanfit
+#'    (\pkg{\link[rstan]{rstan}}).}
+#'   \item{\code{stanreg}}{An object of class stanreg
+#'    (\pkg{\link[rstanarm]{rstanarm}}).}
+#'   \item{\code{mcmc.list}}{An object of class \code{mcmc.list} (\pkg{coda}).}
+#'   \item{3D \code{array}}{A 3D array of posterior simulations with dimensions
+#'    corresponding to iterations, chains, and parameters, in that order.}
+#'   \item{chain \code{list}}{A list of matrices/2D arrays each corresponding to
+#'    a single chain, and with dimensions corresponding to iterations (rows) and
+#'    parameters (columns).}
 #' }
 #' @param object An object to test.
 #' @param ... Additional arguments. See Details, below.
 #'   
 #' @return For \code{as.shinystan} an object of class shinystan that can be used
-#'   with \code{\link{launch_shinystan}}. For \code{is.shinystan} a logical value
-#'   indicating whether the tested object is a shinystan object.
+#'   with \code{\link{launch_shinystan}}. For \code{is.shinystan} a logical
+#'   value indicating whether the tested object is a shinystan object.
 #'   
 #' @details If \code{X} is a stanfit object then no additional arguments should
 #'   be specified in \code{...} (they are taken automatically from the stanfit
 #'   object). 
 #'   
-#'   If \code{X} is a stanreg object the argument \code{ppd} (logical)
-#'   can be specified indicating whether to draw from the posterior predictive
+#'   If \code{X} is a stanreg object the argument \code{ppd} (logical) can be
+#'   specified indicating whether to draw from the posterior predictive 
 #'   distribution before launching ShinyStan. The default is \code{TRUE}, 
-#'   although for large objects it can be wise to set it to \code{FALSE} as 
+#'   although for very large objects it can be wise to set it to \code{FALSE} as
 #'   drawing from the posterior predictive distribution can be time consuming.
 #'   
 #'   If \code{X} is not a stanfit or stanreg object then the following arguments
@@ -99,18 +101,18 @@ as.shinystan <- function(X, ...) {
   if (is.shinystan(X)) {
     message(paste0(Xname, " is already a shinystan object.\n",
              "You can use launch_shinystan(", Xname, ") to launch ShinyStan."))
-    return(X)
+    return(invisible(X))
   }
-  X_is <- get_type(X)
-  if (X_is == "stanfit") return(stan2shinystan(X, ...))
-  if (X_is == "stanreg") return(stanreg2shinystan(X, ...))
-  if (X_is == "mcmclist") return(mcmc2shinystan(X, ...))
-  if (X_is == "chainlist") return(chains2shinystan(X, ...))
-  if (X_is == "other") {
-    if (!is.array(X)) 
-      stop(paste(Xname, "is not a valid input type. See ?as.shinystan"))
-    array2shinystan(X, ...)
-  }
+  switch(get_type(X), 
+         stanfit = stan2shinystan(X, ...),
+         stanreg = stanreg2shinystan(X, ...),
+         mcmclist = mcmc2shinystan(X, ...),
+         chainlist = chains2shinystan(X, ...),
+         other = {
+           if (!is.array(X)) 
+             stop(paste(Xname, "is not a valid input type. See ?as.shinystan"))
+           array2shinystan(X, ...)
+         })
 }
 
 #' @rdname as.shinystan
