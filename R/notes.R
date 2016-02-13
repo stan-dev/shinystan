@@ -42,12 +42,10 @@
 #' }
 #'  
 notes <- function(sso, notes, replace = FALSE) {
-  if (missing(notes)) {
+  if (missing(notes))
     return(slot(sso, "user_model_info"))
-  }
-  if (length(notes) > 1L) {
+  if (length(notes) > 1L)
     notes <- c(notes[1L], paste0("\n\n", notes[-1L]))
-  }
   slot(sso, "user_model_info") <- if (replace) 
     notes else c(slot(sso, "user_model_info"), paste0("\n\n", notes))
   

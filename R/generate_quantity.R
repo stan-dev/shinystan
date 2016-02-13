@@ -94,7 +94,8 @@ generate_quantity <- function(sso, param1, param2, fun, new_name) {
                              param_dims = param_dims_new)
   sso_new@summary <- shinystan_monitor(samps, warmup = sso@nWarmup)
   
-  slot_names <- c("stan_algorithm", "sampler_params", "model_code", "user_model_info")
+  slot_names <- c("stan_algorithm", "sampler_params", "model_code", 
+                  "user_model_info")
   for (sn in slot_names) {
     slot(sso_new, sn) <- slot(sso, sn)
   }

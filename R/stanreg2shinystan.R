@@ -16,6 +16,9 @@
 #' @importFrom stats model.frame model.response
 #' 
 stanreg2shinystan <- function(X, ppd = TRUE, ...) {
+  if (!requireNamespace("rstanarm", quietly = TRUE)) 
+    stop("Please install the 'rstanarm' package.", call. = FALSE)
+  
   stopifnot(is.stanreg(X))
   sso <- stan2shinystan(X$stanfit, ...)
   param_names <- sso@param_names
@@ -28,18 +31,34 @@ stanreg2shinystan <- function(X, ppd = TRUE, ...) {
   sso@param_dims <- param_dims
   sso@misc$stanreg <- TRUE
   if (ppd) {
-    if (!exists("pp_check", mode = "function"))
-      stop("Please load or install the 'rstanarm' package.", call. = FALSE)
+    ppc <- rstanarm::pp_check
     pp_check_plots <- list()
     SEED <- 0110
-    pp_check_plots[["pp_check_hist"]] <- do.call("pp_check", list(object = X, check = "dist", nreps = 8, overlay = FALSE, seed = SEED))
-    pp_check_plots[["pp_check_dens"]] <- do.call("pp_check", list(object = X, check = "dist", nreps = 8, overlay = TRUE, seed = SEED))
-    pp_check_plots[["pp_check_resid"]] <- do.call("pp_check", list(object = X, check = "resid", nreps = 8, seed = SEED))
-    pp_check_plots[["pp_check_scatter"]] <- do.call("pp_check", list(object = X, check = "scatter", nreps = NULL, seed = SEED))
-    pp_check_plots[["pp_check_stat_mean"]] <- do.call("pp_check", list(object = X, check = "test", test = "mean", seed = SEED))
-    pp_check_plots[["pp_check_stat_sd"]] <- do.call("pp_check", list(object = X, check = "test", test = "sd", seed = SEED))
-    pp_check_plots[["pp_check_stat_min"]] <- do.call("pp_check", list(object = X, check = "test", test = "min", seed = SEED))
-    pp_check_plots[["pp_check_stat_max"]] <- do.call("pp_check", list(object = X, check = "test", test = "max", seed = SEED))
+    pp_check_plots[["pp_check_hist"]] <- 
+      do.call("ppc", list(object = X, check = "dist", nreps = 8, 
+                          overlay = FALSE, seed = SEED))
+    pp_check_plots[["pp_check_dens"]] <- 
+      do.call("ppc", list(object = X, check = "dist", nreps = 8, 
+                          overlay = TRUE, seed = SEED))
+    pp_check_plots[["pp_check_resid"]] <- 
+      do.call("ppc", list(object = X, check = "resid", nreps = 8, 
+                          seed = SEED))
+    pp_check_plots[["pp_check_scatter"]] <- 
+      do.call("ppc", list(object = X, check = "scatter", nreps = NULL, 
+                          seed = SEED))
+    pp_check_plots[["pp_check_stat_mean"]] <- 
+      do.call("ppc", list(object = X, check = "test", test = "mean", 
+                          seed = SEED))
+    pp_check_plots[["pp_check_stat_sd"]] <- 
+      do.call("ppc", list(object = X, check = "test", test = "sd", 
+                          seed = SEED))
+    pp_check_plots[["pp_check_stat_min"]] <- 
+      do.call("ppc", list(object = X, check = "test", test = "min", 
+                          seed = SEED))
+    pp_check_plots[["pp_check_stat_max"]] <- 
+      do.call("ppc", list(object = X, check = "test", test = "max", 
+                          seed = SEED))
+    
     sso@misc$pp_check_plots <- pp_check_plots
   }
   sso
