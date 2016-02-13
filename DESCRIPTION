@@ -33,8 +33,8 @@ Suggests:
     coda,
     knitr (>= 1.9),
     rmarkdown (>= 0.8.1),
-    rstan (>= 2.9),
-    rstanarm,
+    rstan (>= 2.9.0-3),
+    rstanarm (>= 2.9.0-3),
     testthat
 Imports:
     DT (>= 0.1),
