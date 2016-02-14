@@ -2,6 +2,7 @@
 
 export(as.shinystan)
 export(deploy_shinystan)
+export(drop_parameters)
 export(generate_quantity)
 export(launch_shinystan)
 export(launch_shinystan_demo)

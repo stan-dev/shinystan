@@ -55,7 +55,6 @@
 #' model_code(sso)
 #'
 #'}
-
 model_code <- function(sso, code) {
   sso_check(sso)
   if (missing(code))
