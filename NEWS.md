@@ -1,5 +1,11 @@
 # `shinystan news`
 
+### Version 2.1.1
+* Introduce `drop_parameters` function that removes parameters from a shinystan 
+object (useful for very large objects when you only want to look at a subset of
+parameters)
+* Additional testing
+
 ### Version 2.1.0
 * Compatibility with recent ggplot2 update
 * Select parameters via regular expressions in parameters plot ('Estimate' page)
@@ -22,7 +28,7 @@ Many bugs have also been fixed (see GitHub issue tracker).
 * The name of the R package is **shinystan** and the app/GUI is **ShinyStan**. 
 
 ### Deploy ShinyStan apps to shinyapps.io (RStudio's ShinyApps service)
-* The 'deploy_shinystan' function lets you easily deploy ShinyStan apps 
+* The `deploy_shinystan` function lets you easily deploy ShinyStan apps 
 to RStudio's shinyapps.io for any of your models. Each of your apps 
 (i.e. each of your models) will have a unique url.
 
