@@ -18,9 +18,11 @@
   p <- which(sso@param_names == oldname)
   if (identical(integer(0), p)) 
     return(sso)
+
   sso@param_names[p] <- 
     dimnames(sso@samps_all)$parameters[p] <-
-      names(sso@param_dims)[which(names(sso@param_dims) == oldname)] <- newname
+      names(sso@param_dims)[which(names(sso@param_dims) == oldname)] <- 
+        rownames(sso@summary)[p] <- newname
   sso
 }
 

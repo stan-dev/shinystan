@@ -7,3 +7,4 @@ LICENSE
 .gitignore
 ^cran-comments\.md$
 ^revdep$
+man-roxygen/*

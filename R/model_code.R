@@ -18,7 +18,7 @@
 #' a shinystan
 #'
 #' @export
-#' @param sso A shinystan object.
+#' @template args-sso
 #' @param code Optionally, the code you want to add. See \strong{Details} below for 
 #'   formatting instructions.
 #' @return If \code{code} is missing then any code currently stored in
@@ -34,6 +34,11 @@
 #' @seealso \code{cat}
 #'
 #' @examples
+#' # View model code in example shinystan object 'eight_schools'
+#' cat(model_code(eight_schools))
+#' 
+#' # Below, assume sso is a shinystan object created using draws obtained 
+#' # from fitting a model using JAGS
 #' \dontrun{
 #' # Some JAGS-style code we might want to add
 #' my_code <- "
@@ -47,14 +52,10 @@
 #'    }
 #'  }
 #' "
-#' 
 #' # Add the code to a shinystan object sso
 #' sso <- model_code(sso, my_code)
-#' 
-#' # View the code currently stored in sso
-#' model_code(sso)
-#'
 #'}
+#'
 model_code <- function(sso, code) {
   sso_check(sso)
   if (missing(code))

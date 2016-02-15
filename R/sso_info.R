@@ -19,9 +19,11 @@
 #' warmup iterations, etc. 
 #'
 #' @export
-#' @param sso A \code{shinystan} object. 
+#' @template args-sso
+#' @examples 
+#' # Using example shinystan object 'eight_schools'
+#' sso_info(eight_schools)
 #'
-
 sso_info <- function(sso) {
   sso_check(sso)
   sso_name <- deparse(substitute(sso))

@@ -2,23 +2,22 @@
 % Please edit documentation in R/drop_parameters.R
 \name{drop_parameters}
 \alias{drop_parameters}
-\title{Drop parameters from a shinystan objects}
+\title{Drop parameters from a shinystan object}
 \usage{
 drop_parameters(sso, pars)
 }
 \arguments{
-\item{sso}{A shinystan object.}
+\item{sso}{The shinystan object to use.}
 
-\item{pars}{A character vector of parameter names. For a non-scalar parameter
-\code{theta}, all elements will be removed if \code{"theta"} is included in
-\code{pars}. A subset of the elements of \code{"theta"} can be removed by 
-explicitly including them in \code{pars}, e.g. \code{pars <- c("theta[1]",
-"theta[4]")}.}
+\item{pars}{A character vector of parameter names. If the names of any 
+non-scalar (e.g. vector, matrix) parameters are included in \code{pars} all
+elements will be removed. It is not possible to remove only a subset of 
+elements of non-scalar parameters.}
 }
 \value{
 \code{sso} with \code{pars} dropped.
 }
 \description{
-Drop parameters from a shinystan objects
+Drop parameters from a shinystan object
 }
 

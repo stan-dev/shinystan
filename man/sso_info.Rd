@@ -7,7 +7,7 @@
 sso_info(sso)
 }
 \arguments{
-\item{sso}{A \code{shinystan} object.}
+\item{sso}{The shinystan object to use.}
 }
 \description{
 Prints basic summary info including number of parameters, chains, iterations, 

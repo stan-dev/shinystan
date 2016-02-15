@@ -7,7 +7,7 @@
 deploy_shinystan(sso, appName, account = NULL, ...)
 }
 \arguments{
-\item{sso}{A shinystan object.}
+\item{sso}{The shinystan object to use.}
 
 \item{appName}{The name to use for the application. Application names must be
 at least four characters long and may only contain letters, numbers, dashes

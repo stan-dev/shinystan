@@ -7,7 +7,7 @@
 retrieve(sso, what, ...)
 }
 \arguments{
-\item{sso}{A shinystan object}
+\item{sso}{The shinystan object to use.}
 
 \item{what}{What do you want to get? See \strong{Details}, below.}
 
@@ -43,17 +43,14 @@ Sampler diagnostics (e.g. \code{"avg_accept_stat"}) only available for
   models originally fit using Stan.
 }
 \examples{
-\dontrun{
-# assume 'X' is a shinystan object with parameters
-# 'beta[1]', 'beta[2]', 'sigma[1]', 'sigma[2]'"
-
-retrieve(X, "rhat")
-retrieve(X, "mean", pars = c('beta[1]', 'sigma[1]'))
-retrieve(X, "quantiles")
-
-retrieve(X, "max_treedepth")  # equivalent to retrieve(X, "depth"), retrieve(X, "tree"), etc.
-retrieve(X, "prop_divergent", inc_warmup = FALSE)  # don't include warmup iterations
-}
+# Using example shinystan object 'eight_schools'
+sso <- eight_schools
+retrieve(sso, "rhat")
+retrieve(sso, "mean", pars = c('theta[1]', 'mu'))
+retrieve(sso, "quantiles")
+retrieve(sso, "max_treedepth")  # equivalent to retrieve(sso, "depth"), retrieve(sso, "tree"), etc.
+retrieve(sso, "prop_divergent")
+retrieve(sso, "prop_divergent", inc_warmup = TRUE)
 
 }
 
