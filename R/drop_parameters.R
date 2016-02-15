@@ -16,36 +16,42 @@
 #' Drop parameters from a shinystan object
 #'
 #' @export
-#' @param sso A shinystan object.
-#' @param pars A character vector of parameter names. For a non-scalar parameter
-#'   \code{theta}, all elements will be removed if \code{"theta"} is included in
-#'   \code{pars}. A subset of the elements of \code{theta} can be removed by 
-#'   naming just those elements, e.g. \code{pars <- c("theta[1]", "theta[4]")}.
+#' @template args-sso
+#' @param pars A character vector of parameter names. If the names of any 
+#'   non-scalar (e.g. vector, matrix) parameters are included in \code{pars} all
+#'   elements will be removed. It is not possible to remove only a subset of 
+#'   elements of non-scalar parameters.
 #' @return \code{sso} with \code{pars} dropped.
 #' 
 drop_parameters <- function(sso, pars) {
   stopifnot(is.character(pars))
-  any_pd <- any(names(sso@param_dims) %in% pars)
-  if (any_pd) {
+  if (any(grepl("[", pars, fixed = TRUE)))
+    stop("Individual elements of non-scalar parameters can't be removed.", 
+         call. = FALSE)
+  
+  non_scalar <- names(sso@param_dims) %in% pars
+  if (any(non_scalar)) {
     pd <- which(names(sso@param_dims) %in% pars)
     nms <- names(sso@param_dims[pd])
     for (j in seq_along(nms)) {
       if (!nms[j] %in% sso@param_names) {
         pars <- pars[pars != nms[j]]
-        pars <- c(pars, grep(paste0(nms, "["), sso@param_names, value = TRUE))
+        tmp <- grep(paste0(nms[j], "["), sso@param_names, 
+                    fixed = TRUE, value = TRUE)
+        pars <- c(pars, tmp)
       }
     }
     sso@param_dims <- sso@param_dims[-pd]
   }
   
   sel <- match(pars, sso@param_names)
-  if (!any_pd && all(is.na(sel))) {
+  if (!any(non_scalar) && all(is.na(sel))) {
     stop("No matches for 'pars' were found.", call. = FALSE)
   } else if (any(is.na(sel))) {
     warning(paste("Some 'pars' not found and ignored:",
                   paste(pars[is.na(sel)], collapse = ", ")), call. = FALSE)
   }
-  
+
   .drop_parameters(sso, na.omit(sel))
 }
 
