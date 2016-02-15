@@ -18,7 +18,7 @@
 #' existing parameters
 #' 
 #' @export
-#' @param sso shinystan object.
+#' @template args-sso
 #' @param fun Function to call, i.e. \code{function(param1)} or
 #'   \code{function(param1,param2)}. See \strong{Examples}, below.
 #' @param param1 Name of first parameter as character string.
@@ -30,32 +30,14 @@
 #' @seealso \code{\link{as.shinystan}}
 #'
 #' @examples
-#' \dontrun{
-#' #################
-#' ### Example 1 ###
-#' #################
-#'
-#' # Below, assume X is a shinystan object and two of the
-#' # parameters are alpha and beta.
-#'
-#' # Add parameter gamma = inverse-logit(beta) to X
-#' inv_logit <- function(x) 1/(exp(-x) + 1)
-#' X <- generate_quantity(sso = X,
-#'                        fun = inv_logit,
-#'                        param1 = "beta",
-#'                        new_name = "gamma")
-#'
-#'
-#' # Add parameter delta = (alpha-beta)^2 to X
-#' X <- generate_quantity(sso = X,
-#'                        fun = function(x,y) (x-y)^2,
-#'                        param1 = "alpha",
-#'                        param2 = "beta",
-#'                        new_name = "delta")
-#'
-#' launch_shinystan(X)
-#'}
-
+#' # Using example shinystan object 'eight_schools'
+#' sso <- eight_schools
+#' sso <- generate_quantity(sso, fun = function(x) x^2, 
+#'                          param1 = "tau", new_name = "tau_sq")
+#' sso <- generate_quantity(sso, fun = "-", 
+#'                          param1 = "theta[1]", param2 = "theta[2]", 
+#'                          new_name = "theta1minus2")
+#'                          
 generate_quantity <- function(sso, param1, param2, fun, new_name) {
   sso_check(sso)
   
@@ -94,8 +76,7 @@ generate_quantity <- function(sso, param1, param2, fun, new_name) {
                              param_dims = param_dims_new)
   sso_new@summary <- shinystan_monitor(samps, warmup = sso@nWarmup)
   
-  slot_names <- c("stan_algorithm", "sampler_params", "model_code", 
-                  "user_model_info")
+  slot_names <- c("sampler_params", "model_code", "user_model_info", "misc")
   for (sn in slot_names) {
     slot(sso_new, sn) <- slot(sso, sn)
   }

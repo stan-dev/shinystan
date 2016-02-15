@@ -18,7 +18,7 @@
 #' From a shinystan object get rhat, effective sample size, posterior
 #' quantiles, means, standard deviations, sampler diagnostics, etc.
 #' 
-#' @param sso A shinystan object
+#' @template args-sso
 #' @param what What do you want to get? See \strong{Details}, below.
 #' @param ... Optional arguments, in particular \code{pars} to specify parameter
 #'   names (by default all parameters will be used). For NUTS sampler parameters
@@ -47,20 +47,137 @@
 #' 
 #' @export
 #' @examples
-#' \dontrun{
-#' # assume 'X' is a shinystan object with parameters
-#' # 'beta[1]', 'beta[2]', 'sigma[1]', 'sigma[2]'"
+#' # Using example shinystan object 'eight_schools'
+#' sso <- eight_schools
+#' retrieve(sso, "rhat")
+#' retrieve(sso, "mean", pars = c('theta[1]', 'mu'))
+#' retrieve(sso, "quantiles")
+#' retrieve(sso, "max_treedepth")  # equivalent to retrieve(sso, "depth"), retrieve(sso, "tree"), etc.
+#' retrieve(sso, "prop_divergent")
+#' retrieve(sso, "prop_divergent", inc_warmup = TRUE)
 #'
-#' retrieve(X, "rhat")
-#' retrieve(X, "mean", pars = c('beta[1]', 'sigma[1]'))
-#' retrieve(X, "quantiles")
-#'
-#' retrieve(X, "max_treedepth")  # equivalent to retrieve(X, "depth"), retrieve(X, "tree"), etc.
-#' retrieve(X, "prop_divergent", inc_warmup = FALSE)  # don't include warmup iterations
-#' }
-#'
-
 retrieve <- function(sso, what, ...) {
   sso_check(sso)
   .retrieve(sso, what, ...)
+}
+
+
+
+# retrieve helpers
+.retrieve <- function(sso, what, ...) {
+  if (what %in% c("rhat", "rhats", "Rhat", "Rhats", "r_hat", "R_hat")) {
+    return(retrieve_rhat(sso, ...))
+  }
+  if (what %in% c("N_eff","n_eff", "neff", "Neff", "ess","ESS")) {
+    return(retrieve_neff(sso, ...))
+  }
+  if (grepl_ic("mean", what)) {
+    return(retrieve_mean(sso, ...))
+  }
+  if (grepl_ic("sd", what)) {
+    return(retrieve_sd(sso, ...))
+  }
+  if (what %in% c("se_mean", "mcse")) {
+    return(retrieve_mcse(sso, ...))
+  }
+  if (grepl_ic("quant", what)) {
+    return(retrieve_quant(sso, ...))
+  }
+  if (grepl_ic("median", what)) {
+    return(retrieve_median(sso, ...))
+  }
+  if (grepl_ic("tree", what) | grepl_ic("depth", what)) {
+    return(retrieve_max_treedepth(sso, ...))
+  }
+  if (grepl_ic("step", what)) {
+    return(retrieve_avg_stepsize(sso, ...))
+  }
+  if (grepl_ic("diverg", what)) {
+    return(retrieve_prop_divergent(sso, ...))
+  }
+  if (grepl_ic("accept", what)) {
+    return(retrieve_avg_accept(sso, ...))
+  }
+}
+
+
+retrieve_rhat <- function(sso, pars) {
+  if (missing(pars))
+    return(sso@summary[, "Rhat"])
+  sso@summary[pars, "Rhat"]
+}
+
+retrieve_neff <- function(sso, pars) {
+  if (missing(pars))
+    return(sso@summary[, "n_eff"])
+  sso@summary[pars, "n_eff"]
+}
+
+retrieve_mcse <- function(sso, pars) {
+  if (missing(pars))
+    return(sso@summary[, "se_mean"])
+  sso@summary[pars, "se_mean"]
+}
+
+retrieve_quant <- function(sso, pars) {
+  cols <- paste0(100 * c(0.025, 0.25, 0.5, 0.75, 0.975), "%")
+  if (missing(pars))
+    return(sso@summary[, cols])
+  sso@summary[pars, cols]
+}
+
+retrieve_median <- function(sso, pars) {
+  if (missing(pars))
+    return(retrieve_quant(sso)[, "50%"])
+  retrieve_quant(sso, pars)[, "50%"]
+}
+
+retrieve_mean <- function(sso, pars) {
+  if (missing(pars))
+    return(sso@summary[, "mean"])
+  sso@summary[pars, "mean"]
+}
+
+retrieve_sd <- function(sso, pars) {
+  if (missing(pars))
+    return(sso@summary[, "sd"])
+  sso@summary[pars, "sd"]
+}
+
+
+sp_check <- function(sso) {
+  if (identical(sso@sampler_params, list(NA)))
+    stop("No sampler parameters found", call. = FALSE)
+}
+
+retrieve_max_treedepth <- function(sso, inc_warmup = FALSE) {
+  sp_check(sso)
+  rows <- if (inc_warmup) 1:sso@nIter else (sso@nWarmup + 1):sso@nIter
+  max_td <- sapply(sso@sampler_params, function(x) max(x[rows, "treedepth__"]))
+  names(max_td) <- paste0("chain", 1:length(max_td))
+  max_td
+}
+
+retrieve_prop_divergent <- function(sso, inc_warmup = FALSE) {
+  sp_check(sso)
+  rows <- if (inc_warmup) 1:sso@nIter else (sso@nWarmup + 1):sso@nIter
+  prop_div <- sapply(sso@sampler_params, function(x) mean(x[rows, "n_divergent__"]))
+  names(prop_div) <- paste0("chain", 1:length(prop_div))
+  prop_div
+}
+
+retrieve_avg_stepsize <- function(sso, inc_warmup = FALSE) {
+  sp_check(sso)
+  rows <- if (inc_warmup) 1:sso@nIter else (sso@nWarmup + 1):sso@nIter
+  avg_ss <- sapply(sso@sampler_params, function(x) mean(x[rows, "stepsize__"]))
+  names(avg_ss) <- paste0("chain", 1:length(avg_ss))
+  avg_ss
+}
+
+retrieve_avg_accept <- function(sso, inc_warmup = FALSE) {
+  sp_check(sso)
+  rows <- if (inc_warmup) 1:sso@nIter else (sso@nWarmup + 1):sso@nIter
+  avg_accept <- sapply(sso@sampler_params, function(x) mean(x[rows, "accept_stat__"]))
+  names(avg_accept) <- paste0("chain", 1:length(avg_accept))
+  avg_accept
 }

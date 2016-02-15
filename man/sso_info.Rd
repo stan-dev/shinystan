@@ -7,10 +7,15 @@
 sso_info(sso)
 }
 \arguments{
-\item{sso}{A \code{shinystan} object.}
+\item{sso}{The shinystan object to use.}
 }
 \description{
 Prints basic summary info including number of parameters, chains, iterations, 
 warmup iterations, etc.
+}
+\examples{
+# Using example shinystan object 'eight_schools'
+sso_info(eight_schools)
+
 }
 

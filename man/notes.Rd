@@ -4,36 +4,45 @@
 \alias{notes}
 \title{Additional or replacement notes}
 \usage{
-notes(sso, notes, replace = FALSE)
+notes(sso, note, replace = FALSE)
 }
 \arguments{
-\item{sso}{shinystan object.}
+\item{sso}{The shinystan object to use.}
 
-\item{notes}{Optional. A character vector of additional or replacement notes.}
+\item{note}{Optional. A character string containing a note to add to any
+existing notes or replace existing notes, depending on the value of 
+\code{replace}.}
 
 \item{replace}{If \code{TRUE} the existing notes are overwritten by 
-\code{notes} if \code{notes} is specified. If \code{FALSE} (the default) 
-if \code{notes} is specified then its content is appended to the existing
+\code{note} if \code{note} is specified. If \code{FALSE} (the default) 
+if \code{note} is specified then its content is appended to the existing
 notes.}
 }
 \value{
-If \code{notes} is missing then any existing notes stored in 
-  \code{sso} are returned as a character string. If \code{notes} is specified
-  then an updated shinystan object is returned with either \code{notes} added
+If \code{note} is missing then any existing notes stored in 
+  \code{sso} are returned as a character string. If \code{note} is specified
+  then an updated shinystan object is returned with either \code{note} added
   to the previous notes (if \code{replace=FALSE}) or overwritten by
-  \code{notes} (if \code{replace = TRUE}).
+  \code{note} (if \code{replace = TRUE}).
 }
 \description{
 Notes are viewable on ShinyStan's Notepad page
 }
 \examples{
-\dontrun{
-sso <- notes(sso, "new note")
-sso <- notes(sso, c("a different note", "another note"), replace = TRUE)
+# Using example shinystan object 'eight_schools'
+sso <- eight_schools
 
-# See any notes currently in sso
+# View existing notes
 notes(sso)
-}
+
+# Add a note to the existing notes
+sso <- notes(sso, "New note")
+notes(sso)
+cat(notes(sso))
+
+# Replace existing notes
+sso <- notes(sso, "replacement note", replace = TRUE)
+notes(sso)
  
 }
 \seealso{

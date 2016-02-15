@@ -8,7 +8,7 @@ a shinystan}
 model_code(sso, code)
 }
 \arguments{
-\item{sso}{A shinystan object.}
+\item{sso}{The shinystan object to use.}
 
 \item{code}{Optionally, the code you want to add. See \strong{Details} below for 
 formatting instructions.}
@@ -32,6 +32,11 @@ For \pkg{rstan} users the model code will be automatically taken
 from the stanfit object.
 }
 \examples{
+# View model code in example shinystan object 'eight_schools'
+cat(model_code(eight_schools))
+
+# Below, assume sso is a shinystan object created using draws obtained 
+# from fitting a model using JAGS
 \dontrun{
 # Some JAGS-style code we might want to add
 my_code <- "
@@ -45,14 +50,10 @@ my_code <- "
    }
  }
 "
-
 # Add the code to a shinystan object sso
 sso <- model_code(sso, my_code)
-
-# View the code currently stored in sso
-model_code(sso)
-
 }
+
 }
 \seealso{
 \code{cat}

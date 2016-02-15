@@ -15,15 +15,17 @@
 
 #' Change the model name associated with a shinystan object
 #' 
-#' @param sso shinystan object.
+#' @template args-sso
 #' @param new_model_name Character string giving the new model name to use.
 #' @return sso, updated.
 #' @seealso \code{\link{as.shinystan}}
 #' @export
 #' @examples
-#' \dontrun{
-#' sso <- rename_model(sso, "new name for model")
-#' }
+#' # Using example shinystan object 'eight_schools'
+#' sso <- eight_schools
+#' sso@model_name
+#' sso <- rename_model(sso, "New name")
+#' sso@model_name
 #' 
 rename_model <- function(sso, new_model_name) {
   sso_check(sso)

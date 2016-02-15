@@ -7,7 +7,7 @@
 rename_model(sso, new_model_name)
 }
 \arguments{
-\item{sso}{shinystan object.}
+\item{sso}{The shinystan object to use.}
 
 \item{new_model_name}{Character string giving the new model name to use.}
 }
@@ -18,9 +18,11 @@ sso, updated.
 Change the model name associated with a shinystan object
 }
 \examples{
-\dontrun{
-sso <- rename_model(sso, "new name for model")
-}
+# Using example shinystan object 'eight_schools'
+sso <- eight_schools
+sso@model_name
+sso <- rename_model(sso, "New name")
+sso@model_name
 
 }
 \seealso{
