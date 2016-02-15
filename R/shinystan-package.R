@@ -65,7 +65,7 @@
 #' @import threejs
 #' @import utils
 #' @import xts
-#' @importFrom stats acf quantile time var
+#' @importFrom stats acf quantile time var na.omit
 #' @importFrom shinythemes shinytheme
 #' @importFrom shinyjs colourInput useShinyjs
 #' @importFrom DT datatable
