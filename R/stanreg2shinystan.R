@@ -18,17 +18,23 @@
 stanreg2shinystan <- function(X, ppd = TRUE, ...) {
   if (!requireNamespace("rstanarm", quietly = TRUE)) 
     stop("Please install the 'rstanarm' package.", call. = FALSE)
-  
   stopifnot(is.stanreg(X))
   sso <- stan2shinystan(X$stanfit, ...)
-  param_names <- sso@param_names
-  param_dims <- list()
-  param_dims[1:length(param_names)] <- NA
+
+  samps_all <- sso@samps_all
+  sel <- grep(":_NEW_", dimnames(samps_all)[[3L]], fixed = TRUE)
+  samps_all <- samps_all[, , -sel, drop = FALSE]
+  param_names <- sso@param_names[-sel]
+  param_dims <- vector(mode = "list", length = length(param_names))
   names(param_dims) <- param_names
   for(i in 1:length(param_names)) {
     param_dims[[i]] <- numeric(0)
   }
   sso@param_dims <- param_dims
+  sso@param_names <- param_names
+  sso@samps_all <- samps_all
+  sso@summary <- sso@summary[-sel, , drop = FALSE]
+  
   sso@misc$stanreg <- TRUE
   if (ppd) {
     ppc <- rstanarm::pp_check

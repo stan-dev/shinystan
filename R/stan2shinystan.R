@@ -57,7 +57,7 @@ stan2shinystan <- function(stanfit, model_name, notes) {
   }
   
   samps_all <- rstan::extract(stanfit, permuted = FALSE, inc_warmup = TRUE)
-  param_names <- dimnames(samps_all)[[3L]] # stanfit@sim$fnames_oi
+  param_names <- dimnames(samps_all)[[3L]]
   param_dims <- stanfit@sim$dims_oi
   
   if (!vb && !(stan_algorithm %in% c("NUTS", "HMC"))) {
