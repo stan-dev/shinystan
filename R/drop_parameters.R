@@ -17,11 +17,23 @@
 #'
 #' @export
 #' @template args-sso
-#' @param pars A character vector of parameter names. If the names of any 
-#'   non-scalar (e.g. vector, matrix) parameters are included in \code{pars} all
-#'   elements will be removed. It is not possible to remove only a subset of 
-#'   elements of non-scalar parameters.
+#' @param pars A character vector of parameter names. If the name of a 
+#'   non-scalar (e.g. vector, matrix) parameter is included in \code{pars} all 
+#'   of its elements will be removed. Currently it is not possible to remove 
+#'   only a subset of the elements of a non-scalar parameter.
 #' @return \code{sso} with \code{pars} dropped.
+#' 
+#' @examples 
+#' # Using example shinystan object 'eight_schools'
+#' print(eight_schools@param_names)
+#' 
+#' # Remove the scalar parameters mu and tau
+#' sso <- drop_parameters(eight_schools, pars = c("mu", "tau"))
+#' print(sso@param_names)
+#' 
+#' # Remove all elements of the parameter vector theta
+#' sso <- drop_parameters(sso, pars = "theta")
+#' print(sso@param_names)
 #' 
 drop_parameters <- function(sso, pars) {
   stopifnot(is.character(pars))
