@@ -6,11 +6,22 @@ pp_tests <- reactive({
 })
 
 # y_rep -------------------------------------------------------------------
+has_yrep_name <- reactive({
+  a <- input$yrep_name 
+  b <- input$yrep_name2
+  validate(need(a != "" || b != "", message = "Waiting for y_rep"))
+  if (a != "" && b != "") {
+    validate(need(FALSE, "y_rep can only be specified once"))
+  }
+  TRUE
+})
 get_yrep <- reactive({
   if (!is.null(pp_yrep)) 
     return(pp_yrep)
   else {
-    validate(need(input$yrep_name, message = "Waiting for y_rep"))
+    validate(need(has_yrep_name(), message = "Waiting for y_rep"))
+    if (length(input$yrep_name2))
+      return(get(input$yrep_name2))
     yreps <- grep(paste0("^",input$yrep_name,"\\["), param_names)
     out <- samps_post_warmup[,,yreps]
     dd <- dim(out)
