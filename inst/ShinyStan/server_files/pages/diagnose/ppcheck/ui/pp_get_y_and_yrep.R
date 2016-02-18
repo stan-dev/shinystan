@@ -37,17 +37,15 @@ output$ui_pp_get_yrep <- renderUI({
     choices <- unique(unlist(choices))
     div(
       h4(withMathJax("Select \\(\\mathbf{y^{rep}}\\) (posterior predictive replications)")),
-      splitLayout(
+      flowLayout(
         selectizeInput("yrep_name", 
                        label = "Parameter/generated quantity from model", 
                        choices = c("", choices), 
-                       options = list(placeholder = "Select a parameter name"), 
-                       width = "75%"),
+                       options = list(placeholder = "Select a parameter name")),
         selectizeInput("yrep_name2", 
                        label = "Or object from global environment", 
                        choices = c("", objects(envir = .GlobalEnv)), 
-                       options = list(placeholder = "Select an object"),
-                       width = "75%") 
+                       options = list(placeholder = "Select an object")) 
       )
     )
   }

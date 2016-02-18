@@ -5,10 +5,19 @@ pp_tests <- reactive({
            need(get_yrep(), message = "Waiting for y_rep \n"))
 })
 
+# y -------------------------------------------------------------------
+get_y <- reactive({
+  if (!is.null(pp_y)) return(pp_y)
+  else {
+    validate(need(input$y_name, message = "Waiting for y"))
+    return(get(input$y_name))
+  }
+})
+
 # y_rep -------------------------------------------------------------------
 has_yrep_name <- reactive({
-  a <- input$yrep_name 
-  b <- input$yrep_name2
+  a <- input$yrep_name  # name selected from model parameters / generated quantities
+  b <- input$yrep_name2  # name of object in global environment
   validate(need(a != "" || b != "", message = "Waiting for y_rep"))
   if (a != "" && b != "") {
     validate(need(FALSE, "y_rep can only be specified once"))
@@ -20,21 +29,17 @@ get_yrep <- reactive({
     return(pp_yrep)
   else {
     validate(need(has_yrep_name(), message = "Waiting for y_rep"))
-    if (length(input$yrep_name2))
+    if (input$yrep_name2 != "") {
       return(get(input$yrep_name2))
-    yreps <- grep(paste0("^",input$yrep_name,"\\["), param_names)
-    out <- samps_post_warmup[,,yreps]
-    dd <- dim(out)
-    out <- array(out, dim = c(prod(dd[1:2]), dd[3]))
-    return(out)
-  }
-})
-
-get_y <- reactive({
-  if (!is.null(pp_y)) return(pp_y)
-  else {
-    validate(need(input$y_name, message = "Waiting for y"))
-    return(get(input$y_name))
+    } else {
+      yreps <- grep(paste0("^", input$yrep_name, "\\["), param_names)
+      out <- samps_post_warmup[,, yreps]
+      dd <- dim(out)
+      validate(need(dd[3] == length(as.vector(get_y())), 
+                    message = "ncol(y_rep) should equal length(y)"))
+      out <- array(out, dim = c(prod(dd[1:2]), dd[3]))
+      return(out)
+    }
   }
 })
 
