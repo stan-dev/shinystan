@@ -743,6 +743,7 @@ http://tympanus.net/codrops/licensing/
   font-weight: bolder;
 }
 #params_to_plot_regex_label {
+  padding-left: 5px;
   font-size: 85%;
 }
 #params_to_plot_regex {
