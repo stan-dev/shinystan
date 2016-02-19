@@ -118,8 +118,12 @@ tagList(
                                      column(2, a_options("multiparam"))
                                    ),
                                    fluidRow(
+                                     column(3, offset = 1, span(id = "params_to_plot_regex_label", 
+                                                                    "Add parameters by regex search"))
+                                   ),
+                                   fluidRow(
                                      column(1, actionButton("param_plot_regex", label = "Search", class = "regex-go")),
-                                     column(3, textInput("params_to_plot_regex", label = NULL, value = "Add parameters by regex search")),
+                                     column(3, textInput("params_to_plot_regex", label = NULL, value = "")),
                                      column(5, textOutput("invalid_regex"))
                                    )
                                  ),
