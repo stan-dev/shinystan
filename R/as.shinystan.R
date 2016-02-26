@@ -115,5 +115,6 @@ as.shinystan <- function(X, ...) {
          })
 }
 
+#' @export
 #' @rdname as.shinystan
 is.shinystan <- function(object) inherits(object, "shinystan")
