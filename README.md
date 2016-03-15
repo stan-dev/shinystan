@@ -36,6 +36,15 @@ package. You can do this by running
 devtools::install_github("rstudio/rsconnect")
 ```
 
+### Demo
+
+After installing run 
+
+```r
+library("shinystan")
+launch_shinystan_demo()
+``` 
+
 ### About ShinyStan
 
 Applied Bayesian data analysis is primarily implemented through the MCMC 
