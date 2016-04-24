@@ -38,15 +38,17 @@ For \code{as.shinystan} an object of class shinystan that can be used
 Create and test shinystan objects
 }
 \details{
-If \code{X} is a stanfit object then no additional arguments should
-  be specified in \code{...} (they are taken automatically from the stanfit
-  object). 
+If \code{X} is a stanfit (\pkg{rstan}) object then no additional
+  arguments should be specified in \code{...} (they are taken automatically
+  from the stanfit object).
   
-  If \code{X} is a stanreg object the argument \code{ppd} (logical) can be
-  specified indicating whether to draw from the posterior predictive 
-  distribution before launching ShinyStan. The default is \code{TRUE}, 
-  although for very large objects it can be wise to set it to \code{FALSE} as
-  drawing from the posterior predictive distribution can be time consuming.
+  If \code{X} is a stanreg (\pkg{rstanarm}) object the argument \code{ppd}
+  (logical) can be specified indicating whether to draw from the posterior
+  predictive distribution before launching ShinyStan. The default is
+  \code{TRUE}, although for very large objects it can be wise to set it to
+  \code{FALSE} as drawing from the posterior predictive distribution can be
+  time consuming. If \code{ppd=TRUE} then graphical posterior predictive
+  checks are available when ShinyStan is launched.
   
   If \code{X} is not a stanfit or stanreg object then the following arguments
   can be specified but are not required:
