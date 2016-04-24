@@ -2,25 +2,22 @@
 % Please edit documentation in R/update_sso.R
 \name{update_sso}
 \alias{update_sso}
-\title{Update an object created by an earlier version of shinystan}
+\title{Update an object created by the previous version of shinystan}
 \usage{
-update_sso(old_sso)
+update_sso(sso)
 }
 \arguments{
-\item{old_sso}{An old shinystan object to update.}
+\item{sso}{An old shinystan object to update.}
 }
 \value{
-sso, updated.
+\code{sso}, updated.
 }
 \description{
-Before you can use an old shinystan object (sso) with the new version of 
-shinystan you might need to run \code{update_sso}. The updated sso
-will then have all the slots that will be accessed by the ShinyStan app.
-}
-\examples{
-\dontrun{
-sso_new <- update_sso(sso_old)
-}  
-
+If you encounter any errors when using an old shinystan object (\code{sso}) 
+created by the previous version of \pkg{shinystan} you might need to run
+\code{update_sso}. If \code{update_sso} does not resolve the problem and 
+you still have the object (e.g. stanfit,  stanreg, mcmc.list) from which 
+\code{sso} was originally created, you can create a new shinystan object 
+using \code{\link{as.shinystan}}.
 }
 
