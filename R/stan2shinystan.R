@@ -13,19 +13,6 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-
-.rename_scalar <- function(sso, oldname = "lp__", newname = "log-posterior") {
-  p <- which(sso@param_names == oldname)
-  if (identical(integer(0), p)) 
-    return(sso)
-
-  sso@param_names[p] <- 
-    dimnames(sso@samps_all)$parameters[p] <-
-      names(sso@param_dims)[which(names(sso@param_dims) == oldname)] <- 
-        rownames(sso@summary)[p] <- newname
-  sso
-}
-
 # convert stanfit object to shinystan object
 stan2shinystan <- function(stanfit, model_name, notes) {
   # notes: text to add to user_model_info slot
@@ -69,6 +56,10 @@ stan2shinystan <- function(stanfit, model_name, notes) {
   
   sampler_params <- if (vb) 
     list(NA) else suppressWarnings(rstan::get_sampler_params(stanfit))
+  sampler_params <- .rename_sampler_param(sampler_params, 
+                                          oldname = "n_divergent__", 
+                                          newname = "divergent__")
+
   stan_summary <- rstan::summary(stanfit)$summary
   if (vb) 
     stan_summary <- cbind(stan_summary, Rhat = NA, n_eff = NA, se_mean = NA)
@@ -91,6 +82,30 @@ stan2shinystan <- function(stanfit, model_name, notes) {
   slots$misc <- list(max_td = max_td, stan_method = stan_method, 
                      stan_algorithm = stan_algorithm)
   sso <- do.call("new", slots)
-  .rename_scalar(sso)
+  sso <- .rename_scalar(sso, oldname = "lp__", newname = "log-posterior")
+  sso
 }
 
+
+.rename_scalar <- function(sso, oldname = "lp__", newname = "log-posterior") {
+  p <- which(sso@param_names == oldname)
+  if (identical(integer(0), p)) 
+    return(sso)
+  
+  sso@param_names[p] <- 
+    dimnames(sso@samps_all)$parameters[p] <-
+    names(sso@param_dims)[which(names(sso@param_dims) == oldname)] <- 
+    rownames(sso@summary)[p] <- newname
+  return(sso)
+}
+
+.rename_sampler_param <- function(x, oldname, newname) {
+  if (!identical(x, list(NA))) {
+    for (j in seq_along(x)) {
+      sel <- which(colnames(x[[j]]) == oldname)
+      if (length(sel))
+        colnames(x[[j]])[sel] <- newname
+    }
+  }
+  return(x)
+}

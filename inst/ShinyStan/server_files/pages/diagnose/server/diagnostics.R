@@ -18,7 +18,7 @@ lp_lab <- "Log Posterior"
 metrop_lab <- "Mean Metrop. Acceptance"
 stepsize_lab <- "Sampled Step Size"
 treedepth_lab <- "Treedepth"
-ndivergent_lab <- "N Divergent"
+ndivergent_lab <- "Divergent"
 
 sp_nuts_check <- reactive({
   validate(
@@ -47,7 +47,7 @@ selected_range <- debounce({
                "Sample information" = "lp",
                "Treedepth information" = "treedepth",
                "Step size information" = "stepsize",
-               "N divergent information" = "ndivergent")
+               "Divergence information" = "divergent")
   input_nm <- paste0("dynamic_trace_diagnostic_", nm, "_out_date_window")
   validate(need(input[[input_nm]], "Loading"))
   sel <- input[[input_nm]]

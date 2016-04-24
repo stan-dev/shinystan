@@ -161,7 +161,7 @@ retrieve_max_treedepth <- function(sso, inc_warmup = FALSE) {
 retrieve_prop_divergent <- function(sso, inc_warmup = FALSE) {
   sp_check(sso)
   rows <- if (inc_warmup) 1:sso@nIter else (sso@nWarmup + 1):sso@nIter
-  prop_div <- sapply(sso@sampler_params, function(x) mean(x[rows, "n_divergent__"]))
+  prop_div <- sapply(sso@sampler_params, function(x) mean(x[rows, "divergent__"]))
   names(prop_div) <- paste0("chain", 1:length(prop_div))
   prop_div
 }

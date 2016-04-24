@@ -20,7 +20,7 @@ navlistPanel(well = FALSE, widths = c(2, 10),
                       includeHTML("html/accept_stat.html"),
                       hr(), stan_manual()
              ),
-             tabPanel("n_divergent",
+             tabPanel("divergent",
                       withMathJax(),
                       includeHTML("html/ndivergent.html"),
                       hr(), stan_manual()

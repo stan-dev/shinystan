@@ -48,7 +48,7 @@ sampler_params_post_warmup <-
 if (!identical(FALSE, sampler_params_post_warmup)) {
   .stepsize_pw <- .sampler_param_pw(sampler_params_post_warmup, which = "stepsize__", 
                                     warmup_val = object@nWarmup)
-  .ndivergent_pw <- .sampler_param_pw(sampler_params_post_warmup, which = "n_divergent__", 
+  .ndivergent_pw <- .sampler_param_pw(sampler_params_post_warmup, which = "divergent__", 
                                       warmup_val = object@nWarmup)
   .treedepth_pw <- .sampler_param_pw(sampler_params_post_warmup, which = "treedepth__", 
                                      warmup_val = object@nWarmup)
