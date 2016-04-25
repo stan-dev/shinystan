@@ -25,7 +25,7 @@ div(class = "help-glossary-div",
                           withMathJax(),
                           includeHTML("html/accept_stat.html")
                  ),
-                 tabPanel("n_divergent",
+                 tabPanel("divergent",
                           withMathJax(),
                           includeHTML("html/ndivergent.html")
                  ),

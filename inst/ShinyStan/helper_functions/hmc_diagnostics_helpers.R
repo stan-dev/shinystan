@@ -131,7 +131,7 @@ thm_no_yaxs <- thm + no_yaxs
 .treedepth_ndivergent_hist <- function(df_td, df_nd, chain = 0, divergent = c("All", 0, 1)) {
   plot_title <- theme(plot.title = element_text(size = 11, hjust = 0))
   plot_theme <- thm_no_yaxs + plot_title
-  x_lab <- if (divergent == "All") "Treedepth (All)" else paste0("Treedepth (N Divergent = ", divergent,")")
+  x_lab <- if (divergent == "All") "Treedepth (All)" else paste0("Treedepth (Divergent = ", divergent,")")
   plot_labs <- labs(x = x_lab, y = "") 
   
   mdf_td <- reshape2::melt(df_td, id.vars = "iterations")
@@ -179,8 +179,8 @@ thm_no_yaxs <- thm + no_yaxs
   }
   `%>%` <- dygraphs::`%>%`
   y_axis_label_remove <- if (stack) "white" else NULL
-  step_plot <- param_name %in% c("Treedepth", "N Divergent")
-  fill_graph <- param_name == "N Divergent"
+  step_plot <- param_name %in% c("Treedepth", "Divergent")
+  fill_graph <- param_name == "Divergent"
   stroke_width <- if (step_plot) 0.33 else 0.75
   clrs <- color_vector(nChains) 
   if (chain != 0) clrs <- clrs[chain]

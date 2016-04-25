@@ -59,7 +59,7 @@ tagList(
                                               tabPanel("By model parameter", source(file.path("ui_files", "diagnostics_by_parameter.R"), local = TRUE)$value),
                                               tabPanel("Sample information", source(file.path("ui_files", "diagnostics_sample.R"), local = TRUE)$value),
                                               tabPanel("Treedepth information", source(file.path("ui_files", "diagnostics_treedepth.R"), local = TRUE)$value),
-                                              tabPanel("N divergent information", source(file.path("ui_files", "diagnostics_ndivergent.R"), local = TRUE)$value),
+                                              tabPanel("Divergence information", source(file.path("ui_files", "diagnostics_ndivergent.R"), local = TRUE)$value),
                                               tabPanel("Step size information", source(file.path("ui_files", "diagnostics_stepsize.R"), local = TRUE)$value),
                                               tabPanel("Help", source(file.path("ui_files", "diagnostics_help.R"), local = TRUE)$value),
                                               well = FALSE,
@@ -95,7 +95,8 @@ tagList(
                         tabPanel(title = "PPcheck", 
                                  h2("Graphical posterior predictive checks"),
                                  h6("Experimental feature"),
-                                 source(file.path("ui_files", if (.from_rstanarm) "pp_navlist_rstanarm.R" else "pp_navlist.R"), local = TRUE)$value,
+                                 source(file.path("ui_files", if (.has_rstanarm_ppcs) 
+                                   "pp_navlist_rstanarm.R" else "pp_navlist.R"), local = TRUE)$value,
                                  br()
                         )
                       ) # End tabsetPanel

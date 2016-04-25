@@ -10,7 +10,7 @@
 ShinyStan provides immediate, informative, customizable visual and 
 numerical summaries of model parameters and convergence diagnostics for 
 MCMC simulations. The ShinyStan graphical user interface is available 
-via the **shinystan** R package. [Try the online demo.](http://gelman-group-win.stat.columbia.edu:3500)
+via the **shinystan** R package.
 
 ### Installing the shinystan R package
 * Install from CRAN:
@@ -35,6 +35,15 @@ package. You can do this by running
 ```{r}
 devtools::install_github("rstudio/rsconnect")
 ```
+
+### Demo
+
+After installing run 
+
+```r
+library("shinystan")
+launch_shinystan_demo()
+``` 
 
 ### About ShinyStan
 

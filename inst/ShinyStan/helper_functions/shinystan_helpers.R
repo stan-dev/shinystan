@@ -637,7 +637,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
     y = if (transform_y == "identity") 
       samps_use[,param2] else t_y(samps_use[,param2]))
   if (!is.null(sp)) {
-    dat$divergent <- c(sapply(sp, FUN = function(y) y[, "n_divergent__"]))
+    dat$divergent <- c(sapply(sp, FUN = function(y) y[, "divergent__"]))
     dat$hit_max_td <- if (is.null(max_td)) 0 else 
       c(sapply(sp, FUN = function(y) as.numeric(y[, "treedepth__"] == max_td))) 
   } else {

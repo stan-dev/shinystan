@@ -20,23 +20,31 @@ stanreg2shinystan <- function(X, ppd = TRUE, ...) {
     stop("Please install the 'rstanarm' package.", call. = FALSE)
   stopifnot(is.stanreg(X))
   sso <- stan2shinystan(X$stanfit, ...)
+  
+  sso@model_name <- paste0("rstanarm model (", sso@model_name, ")")
 
   samps_all <- sso@samps_all
+  param_names <- sso@param_names
   sel <- grep(":_NEW_", dimnames(samps_all)[[3L]], fixed = TRUE)
-  samps_all <- samps_all[, , -sel, drop = FALSE]
-  param_names <- sso@param_names[-sel]
+  if (length(sel)) {
+    samps_all <- samps_all[, , -sel, drop = FALSE]
+    param_names <- param_names[-sel]
+    sso@summary <- sso@summary[-sel, , drop = FALSE]
+  }
   param_dims <- vector(mode = "list", length = length(param_names))
   names(param_dims) <- param_names
-  for(i in 1:length(param_names)) {
+  for(i in seq_along(param_names)) {
     param_dims[[i]] <- numeric(0)
   }
   sso@param_dims <- param_dims
   sso@param_names <- param_names
   sso@samps_all <- samps_all
-  sso@summary <- sso@summary[-sel, , drop = FALSE]
+  
   
   sso@misc$stanreg <- TRUE
   if (ppd) {
+    message("\nHang on... preparing graphical posterior predictive checks for rstanarm model.", 
+            "\nSee help('shinystan', 'rstanarm') for how to disable this feature.")
     ppc <- rstanarm::pp_check
     pp_check_plots <- list()
     SEED <- 0110

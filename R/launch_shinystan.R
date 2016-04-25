@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-#' ShinyStan app
+#' Launch the ShinyStan app
 #' 
 #' @export
 #' @param object An object of class shinystan, stanfit, or stanreg. See
@@ -70,18 +70,21 @@
 #'
 launch_shinystan <- function(object, rstudio = getOption("shinystan.rstudio"), 
                              ...) {
-  name <- deparse(substitute(object))
-  no_name <- substr(name, 1, 12) == "as.shinystan"
-  if (missing(object)) 
-    stop("Please specify a shinystan or stanfit object.", call. = FALSE)
-  message("\nLoading... \n", 
-          "Note: for large models ShinyStan may take a few moments to launch.")
+  .loading_message()
   if (inherits(object, "stanreg"))
     object <- stanreg2shinystan(object)
   if (inherits(object, "stanfit"))
     object <- stan2shinystan(object)
   if (!is.shinystan(object))
-    stop(paste(name, "is not a valid input. See ?launch_shinystan"))
+    stop(deparse(substitute(object)), 
+         " is not a valid input. See ?launch_shinystan.", 
+         call. = FALSE)
   
   invisible(launch(object, rstudio, ...))
+}
+
+.loading_message <- function() {
+  message(
+    "\nLoading... for large models ShinyStan may take a few moments to launch."
+  )
 }

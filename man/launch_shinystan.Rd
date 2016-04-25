@@ -2,7 +2,7 @@
 % Please edit documentation in R/launch_shinystan.R
 \name{launch_shinystan}
 \alias{launch_shinystan}
-\title{ShinyStan app}
+\title{Launch the ShinyStan app}
 \usage{
 launch_shinystan(object, rstudio = getOption("shinystan.rstudio"), ...)
 }
@@ -23,7 +23,7 @@ TRUE)}.}
 An S4 shinystan object.
 }
 \description{
-ShinyStan app
+Launch the ShinyStan app
 }
 \examples{
 \dontrun{

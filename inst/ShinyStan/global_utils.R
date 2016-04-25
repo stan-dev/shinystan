@@ -297,3 +297,5 @@ stan_manual <- function() {
 .model_code <- slot(object, "model_code")
 .notes <- slot(object, "user_model_info")
 .from_rstanarm <- if (is.null(object@misc$stanreg)) FALSE else object@misc$stanreg
+.has_rstanarm_ppcs <- isTRUE(.from_rstanarm && !is.null(object@misc$pp_check_plots))
+  
