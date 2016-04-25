@@ -43,7 +43,8 @@ stanreg2shinystan <- function(X, ppd = TRUE, ...) {
   
   sso@misc$stanreg <- TRUE
   if (ppd) {
-    message("\nHang on, drawing from rstanarm model's posterior predictive distribution...")
+    message("\nHang on... preparing graphical posterior predictive checks for rstanarm model.", 
+            "\nSee help('shinystan', 'rstanarm') for how to disable this feature.")
     ppc <- rstanarm::pp_check
     pp_check_plots <- list()
     SEED <- 0110

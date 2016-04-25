@@ -95,7 +95,8 @@ tagList(
                         tabPanel(title = "PPcheck", 
                                  h2("Graphical posterior predictive checks"),
                                  h6("Experimental feature"),
-                                 source(file.path("ui_files", if (.from_rstanarm) "pp_navlist_rstanarm.R" else "pp_navlist.R"), local = TRUE)$value,
+                                 source(file.path("ui_files", if (.has_rstanarm_ppcs) 
+                                   "pp_navlist_rstanarm.R" else "pp_navlist.R"), local = TRUE)$value,
                                  br()
                         )
                       ) # End tabsetPanel

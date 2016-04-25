@@ -3,7 +3,7 @@
 ### Version 2.1.1
 * Introduce `drop_parameters` function for removing parameters from a shinystan 
 object (useful for very large objects when you only want to look at a subset of
-parameters)
+parameters).
 * Add **rstanarm** to Suggests (in the DESCRIPTION file) so `rstanarm::pp_check`
 can be called.
 

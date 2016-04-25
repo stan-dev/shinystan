@@ -65,5 +65,6 @@ if (!stan_method == "variational") {
 }
 
 from_rstanarm <- if (is.null(MISC$stanreg)) FALSE else MISC$stanreg
-if (from_rstanarm) pp_check_plots <- MISC$pp_check_plots
+if (from_rstanarm) 
+  pp_check_plots <- MISC$pp_check_plots
 
