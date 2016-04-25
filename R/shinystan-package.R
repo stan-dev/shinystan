@@ -37,7 +37,7 @@
 #' @section ShinyStan has extended functionality for Stan models: 
 #' 
 #' Stan (\url{http://mc-stan.org}) models can be run in R using the 
-#' \pkg{\link{rstan}} and \pkg{\link{rstanarm}} packages.
+#' \pkg{\link[rstan]{rstan}} and \pkg{\link[rstanarm]{rstanarm}} packages.
 #' 
 #' @section Saving and sharing:
 #'   
