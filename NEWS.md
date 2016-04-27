@@ -6,6 +6,7 @@ object (useful for very large objects when you only want to look at a subset of
 parameters).
 * Add **rstanarm** to Suggests (in the DESCRIPTION file) so `rstanarm::pp_check`
 can be called.
+* Allow selecting yrep from global environment for PPcheck
 
 ### Version 2.1.0
 * Compatibility with recent ggplot2 update
