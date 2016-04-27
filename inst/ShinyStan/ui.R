@@ -129,7 +129,8 @@ tagList(
                                    )
                                  ),
                                  source(file.path("ui_files", "multiparam_customize.R"), local = TRUE)$value,
-                                 plotOutput("multiparam_plot_out", width = "90%")
+                                 plotOutput("multiparam_plot_out", width = "90%"),
+                                 br()
                         ),
                         #### posterior summary statistics ####
                         tabPanel("Posterior summary statistics",

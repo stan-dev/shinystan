@@ -10,7 +10,10 @@ get_y <- reactive({
   if (!is.null(pp_y)) return(pp_y)
   else {
     validate(need(input$y_name, message = "Waiting for y"))
-    return(get(input$y_name))
+    y <- get(input$y_name)
+    validate(need(!isTRUE(length(dim(y)) > 1), message = "Error: y should be a vector"),
+             need(is.numeric(y), message = "Error: y should be a numeric vector"))
+    return(y)
   }
 })
 
