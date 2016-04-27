@@ -16,17 +16,21 @@
 
 # multiparameter plot -----------------------------------------------------
 calc_height_param_plot <- reactive({
-  params <- input$params_to_plot
-  params <- .update_params_with_groups(params, param_names)
-  LL <- length(params)
-  LL <- ifelse(LL < 8, 8, LL)
-  if (!is.null(input$param_plot_color_by_rhat)){
-    # delay until input is ready
-    if (input$param_plot_color_by_rhat == TRUE) {
-      LL <- LL + 1
+  if (!isTRUE(input$param_plot_show_density)) {
+    "auto"
+  } else {
+    params <- input$params_to_plot
+    params <- .update_params_with_groups(params, param_names)
+    LL <- length(params)
+    LL <- ifelse(LL < 8, 8, LL)
+    if (!is.null(input$param_plot_color_by_rhat)){
+      # delay until input is ready
+      if (input$param_plot_color_by_rhat == TRUE) {
+        LL <- LL + 1
+      }
     }
+    round(50*LL)
   }
-  round(50*LL)
 })
 
 multiparam_plot <- reactive({
