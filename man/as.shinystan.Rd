@@ -91,11 +91,11 @@ objects (\pkg{rstanarm}), and mcmc.list objects (\pkg{coda}).
 \code{\link{array}} of simulations. The array should have dimensions
 corresponding to iterations, chains, and parameters, in that order.
 
-\item \code{list}: Create a shinystan object from a list of matrices. 
-Each \code{\link{matrix}} (or 2-D array) should contain the simulations for
-an individual chain and all of the matrices should have the same number of 
-iterations (rows) and parameters (columns). Parameters should have the same
-names and be in the same order.
+\item \code{list}: Create a shinystan object from a \code{\link{list}}
+of matrices. Each \code{\link{matrix}} (or 2-D array) should contain the
+simulations for an individual chain and all of the matrices should have the
+same number of iterations (rows) and parameters (columns). Parameters
+should have the same names and be in the same order.
 
 \item \code{mcmc.list}: Create a shinystan object from an mcmc.list 
 (\pkg{coda}).
@@ -140,18 +140,19 @@ launch_shinystan(sso2)
 ######################
 ### stanfit object ###
 ######################
-library("rstan")
-fit <- stan_demo("eight_schools")
+# library("rstan")
+# fit <- stan_demo("eight_schools")
 sso <- as.shinystan(fit, model_name = "example")
 }
 
+\dontrun{
 ######################
 ### stanreg object ###
 ######################
-if (requireNamespace("rstanarm", quietly = TRUE)) {
- example("example_model", package = "rstanarm")
- sso <- as.shinystan(example_model)
- launch_shinystan(sso)
+library("rstanarm")
+example("example_model")
+sso <- as.shinystan(example_model)
+launch_shinystan(sso)
 }
 
 }

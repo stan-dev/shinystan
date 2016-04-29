@@ -334,8 +334,8 @@ setMethod("as.shinystan", "mcmc.list",
 #' ######################
 #' ### stanfit object ###
 #' ######################
-#' library("rstan")
-#' fit <- stan_demo("eight_schools")
+#' # library("rstan")
+#' # fit <- stan_demo("eight_schools")
 #' sso <- as.shinystan(fit, model_name = "example")
 #' }
 #' 

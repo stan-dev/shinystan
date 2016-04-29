@@ -4,7 +4,7 @@
 \name{shinystan-class}
 \alias{shinystan}
 \alias{shinystan-class}
-\title{S4 shinystan objects (sso, for short)}
+\title{S4 shinystan objects}
 \description{
 See \code{\link{as.shinystan}} for documentation on creating 
   shinystan objects and \code{\link{eight_schools}} for an example object.
