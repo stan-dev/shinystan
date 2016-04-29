@@ -56,15 +56,24 @@
 #' sso <- model_code(sso, my_code)
 #'}
 #'
-model_code <- function(sso, code) {
+model_code <- function(sso, code = NULL) {
   sso_check(sso)
-  if (missing(code))
+  validate_model_code(code)
+  
+  if (is.null(code))
     return(slot(sso, "model_code"))
-  if (!is.character(code)) 
-    stop("'code' should be a character string.", call. = FALSE)
   
   slot(sso, "model_code") <- code
-  message(paste0("Successfully added code.", "\nYou can view the code in the", 
+  message(paste0("Successfully added code.", 
+                 "\nYou can view the code in the", 
                  "ShinyStan GUI on the 'Model Code' page."))
   sso
+}
+
+validate_model_code <- function(code) {
+  if (is.null(code) || is.character(code)) {
+    invisible(TRUE) 
+  } else {
+    stop("Model code should be NULL or a string", call. = FALSE)
+  }
 }

@@ -12,7 +12,7 @@ eight_schools
 A shinystan object for the Stan "Eight Schools" demo model
 }
 \seealso{
-\code{\link{launch_shinystan_demo}}
+\code{\link{launch_shinystan_demo}}, \code{\link{as.shinystan}}
 }
 \keyword{datasets}
 

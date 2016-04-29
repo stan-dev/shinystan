@@ -71,14 +71,10 @@
 launch_shinystan <- function(object, rstudio = getOption("shinystan.rstudio"), 
                              ...) {
   .loading_message()
-  if (inherits(object, "stanreg"))
-    object <- stanreg2shinystan(object)
-  if (inherits(object, "stanfit"))
-    object <- stan2shinystan(object)
+  if (inherits(object, "stanreg") || inherits(object, "stanfit"))
+    object <- as.shinystan(object)
   if (!is.shinystan(object))
-    stop(deparse(substitute(object)), 
-         " is not a valid input. See ?launch_shinystan.", 
-         call. = FALSE)
+    stop("'object' is not a valid input. See ?launch_shinystan.")
   
   invisible(launch(object, rstudio, ...))
 }
