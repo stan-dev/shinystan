@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-#' S4 shinystan objects (sso, for short)
+#' S4 shinystan objects
 #' 
 #' @aliases shinystan-class
 #' @description See \code{\link{as.shinystan}} for documentation on creating 

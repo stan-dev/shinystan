@@ -461,13 +461,14 @@ setOldClass("stanreg")
 #'   \code{ppd} is \code{TRUE}.
 #'   
 #' @examples
+#' \dontrun{
 #' ######################
 #' ### stanreg object ###
 #' ######################
-#' if (requireNamespace("rstanarm", quietly = TRUE)) {
-#'  example("example_model", package = "rstanarm")
-#'  sso <- as.shinystan(example_model)
-#'  launch_shinystan(sso)
+#' library("rstanarm")
+#' example("example_model")
+#' sso <- as.shinystan(example_model)
+#' launch_shinystan(sso)
 #' }
 #'
 setMethod("as.shinystan", "stanreg",
