@@ -1,4 +1,4 @@
-# sample (accept_stat, lp) ------------------------------------------------
+# sample (accept_stat, lp)
 div(class = "diagnostics-navlist-tabpanel",
     fluidRow(
       column(7,

@@ -1,4 +1,4 @@
-# N divergent -------------------------------------------------------------
+# Divergences
 fluidRow(
     column(7,
            help_dynamic,

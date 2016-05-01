@@ -1,4 +1,4 @@
-# stepsize ----------------------------------------------------------------
+# stepsize
 fluidRow(
   column(7, help_dynamic,
          dygraphOutput_175px("dynamic_trace_diagnostic_stepsize_out"), 

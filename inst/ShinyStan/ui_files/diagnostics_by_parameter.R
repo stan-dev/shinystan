@@ -1,4 +1,4 @@
-# model parameter ---------------------------------------------------------
+# model parameter
 div(class = "diagnostics-navlist-tabpanel",
     fluidRow(
       column(7, help_dynamic,

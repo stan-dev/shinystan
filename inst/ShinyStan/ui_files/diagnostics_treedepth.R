@@ -1,4 +1,4 @@
-# treedepth ---------------------------------------------------------------
+# treedepth
 div(class = "diagnostics-navlist-tabpanel",
     fluidRow(
       column(7, help_dynamic,
