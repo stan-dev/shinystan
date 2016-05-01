@@ -21,11 +21,19 @@ test_that("simple sso functions work", {
   sso2 <- model_code(sso, "test_code")
   expect_identical(model_code(sso2), "test_code")
   expect_identical(model_code(sso2), slot(sso2, "model_code"))
+  expect_error(model_code(sso, 1234), "should be NULL or a string")
   
   sso2 <- notes(sso, "test_notes_replace", replace = TRUE)
   expect_identical(slot(sso2, "user_model_info"), "test_notes_replace")
   sso2 <- notes(sso2, "test_notes_keep", replace = FALSE)
   expect_identical(slot(sso2, "user_model_info"), notes(sso2))
+})
+
+
+# update ------------------------------------------------------------------
+test_that("update_sso doesn't throw error with shinystan object", {
+  expect_error(update_sso(1234))
+  expect_is(update_sso(sso), "shinystan")
 })
 
 
