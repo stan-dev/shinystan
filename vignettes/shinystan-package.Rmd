@@ -156,10 +156,10 @@ sso <- model_code(sso, code = my_code)
 On the home page ShinyStan will display the model name associated with the 
 shinystan object being used. This name can be set by adding the `model_name`
 argument to `as.shinystan` when creating a shinystan object. For an existing
-shinystan object you can use the `rename_model` function like this:
+shinystan object you can use the `model_name` function like this:
 
 ```r
-sso <- rename_model(sso, "new_model_name")
+sso <- model_name(sso, "new_model_name")
 ```
 
 where `"new_model_name"` is the new name you want to give your model.

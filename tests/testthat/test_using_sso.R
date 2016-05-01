@@ -1,22 +1,21 @@
 library(shinystan)
 context("Working with shinystan objects")
 
-
-source("data_for_retrieve_tests.R")
-
 sso <- eight_schools
 not_sso <- sso@model_name
 not_sso_msg <- "specify a shinystan object"
 
 
-# rename_model, model_code, notes -----------------------------------------
+# model_name, model_code, notes -----------------------------------------
 test_that("simple sso functions work", {
-  expect_error(rename_model(not_sso), not_sso_msg)
+  expect_error(model_name(not_sso), not_sso_msg)
   expect_error(model_code(not_sso), not_sso_msg)
   expect_error(notes(not_sso), not_sso_msg)
   
-  sso2 <- rename_model(sso, "test_rename")
-  expect_identical(sso2@model_name, "test_rename")
+  sso2 <- model_name(sso, "test_rename")
+  expect_identical(model_name(sso2), "test_rename")
+  expect_error(model_name(sso, 1234), "should be a single string")
+  expect_error(model_name(sso, c("a", "b")), "should be a single string")
   
   sso2 <- model_code(sso, "test_code")
   expect_identical(model_code(sso2), "test_code")
@@ -27,6 +26,8 @@ test_that("simple sso functions work", {
   expect_identical(slot(sso2, "user_model_info"), "test_notes_replace")
   sso2 <- notes(sso2, "test_notes_keep", replace = FALSE)
   expect_identical(slot(sso2, "user_model_info"), notes(sso2))
+  expect_error(notes(sso, 1234), "should be a single string")
+  expect_error(notes(sso, c("a", "b")), "should be a single string")
 })
 
 
@@ -39,6 +40,7 @@ test_that("update_sso doesn't throw error with shinystan object", {
 
 # retrieve ----------------------------------------------------------------
 test_that("retrieve works", {
+  source("data_for_retrieve_tests.R")
   expect_error(retrieve(not_sso), not_sso_msg)
   expect_error(retrieve(not_sso, what = "mean"), not_sso_msg)
   

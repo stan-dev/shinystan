@@ -7,7 +7,7 @@
 deploy_shinystan(sso, appName, account = NULL, ..., deploy = TRUE)
 }
 \arguments{
-\item{sso}{The shinystan object to use.}
+\item{sso}{A \code{\link[=as.shinystan]{shinystan object}}.}
 
 \item{appName}{The name to use for the application. Application names must be
 at least four characters long and may only contain letters, numbers, dashes

@@ -2,19 +2,18 @@
 % Please edit documentation in R/generate_quantity.R
 \name{generate_quantity}
 \alias{generate_quantity}
-\title{Add to shinystan object a new parameter as a function of one or two 
-existing parameters}
+\title{Add new quantity to shinystan object}
 \usage{
 generate_quantity(sso, param1, param2, fun, new_name)
 }
 \arguments{
-\item{sso}{The shinystan object to use.}
+\item{sso}{A \code{\link[=as.shinystan]{shinystan object}}.}
 
 \item{param1}{Name of first parameter as character string.}
 
 \item{param2}{Optional. Name of second paramter as character string.}
 
-\item{fun}{Function to call, i.e. \code{function(param1)} or
+\item{fun}{Function to call, i.e. \code{function(param1)} or 
 \code{function(param1,param2)}. See \strong{Examples}, below.}
 
 \item{new_name}{Name for the new parameter as character string.}
@@ -23,8 +22,8 @@ generate_quantity(sso, param1, param2, fun, new_name)
 sso, updated. See Examples.
 }
 \description{
-Add to shinystan object a new parameter as a function of one or two 
-existing parameters
+Add to shinystan object a new parameter as a function of one or two existing
+parameters.
 }
 \examples{
 # Using example shinystan object 'eight_schools'

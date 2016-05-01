@@ -7,7 +7,7 @@
 drop_parameters(sso, pars)
 }
 \arguments{
-\item{sso}{The shinystan object to use.}
+\item{sso}{A \code{\link[=as.shinystan]{shinystan object}}.}
 
 \item{pars}{A character vector of parameter names. If the name of a 
 non-scalar (e.g. vector, matrix) parameter is included in \code{pars} all 

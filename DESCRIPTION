@@ -55,17 +55,3 @@ Imports:
     xts (>= 0.9-7)
 VignetteBuilder: knitr
 RoxygenNote: 5.0.1
-Collate:
-    'shinystan-class.R'
-    'as.shinystan.R'
-    'deploy_shinystan.R'
-    'drop_parameters.R'
-    'eight_schools.R'
-    'generate_quantity.R'
-    'launch_shinystan.R'
-    'misc.R'
-    'retrieve.R'
-    'rhat_ess_monitor_fns.R'
-    'shinystan-package.R'
-    'sso-helpers.R'
-    'zzz.R'

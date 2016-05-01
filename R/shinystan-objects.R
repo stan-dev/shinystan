@@ -11,6 +11,46 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 
+# S4 class ----------------------------------------------------------------
+#' S4 shinystan objects
+#' 
+#' @aliases shinystan-class
+#' @description See \code{\link{as.shinystan}} for documentation on creating 
+#'   shinystan objects and \code{\link{eight_schools}} for an example object.
+#'   
+shinystan <- setClass("shinystan",
+                      slots = list(model_name      = "character",
+                                   param_names     = "character",
+                                   param_dims      = "list",
+                                   samps_all       = "array",
+                                   summary         = "matrix",
+                                   sampler_params  = "list",
+                                   nChains         = "numeric",
+                                   nIter           = "numeric",
+                                   nWarmup         = "numeric",
+                                   user_model_info = "character",
+                                   model_code      = "character",
+                                   misc            = "list"
+                      ),
+                      prototype = list(model_name = "No name",
+                                       param_names = "",
+                                       param_dims = list(),
+                                       samps_all = array(NA, c(1,1)),
+                                       summary = matrix(NA, nr=1,nc=1),
+                                       sampler_params = list(NA),
+                                       nChains = 0,
+                                       nIter = 0,
+                                       nWarmup = 0,
+                                       user_model_info = 
+                                         "Use this space to store notes about your model",
+                                       model_code = 
+                                         "Use this space to store your model code",
+                                       misc = list()
+                      ))
+
+
+
+# as.shinystan ------------------------------------------------------------
 #' Create and test shinystan objects
 #' 
 #' @description The \code{as.shinystan} function creates shinystan objects that 
@@ -23,7 +63,6 @@
 #'   
 #'   \code{is.shinystan} tests if an object is a shinystan object.
 #'
-#' @include shinystan-class.R
 #' @name as.shinystan
 #' @export
 #' @param X For \code{as.shinystan}, an object to be converted to a shinystan 
@@ -38,10 +77,10 @@
 #'   object and \code{FALSE} otherwise.
 #'
 #' @seealso \code{\link{launch_shinystan}} to launch the ShinyStan interface 
-#' 
-#' \code{\link{launch_shinystan_demo}} to the launch ShinyStan in demo mode 
-#' 
-#' \code{\link{eight_schools}} for an example of a shinystan object.
+#'   using a particular shinystan object
+#'   
+#'   \code{\link{drop_parameters}} to remove the data for specific parameters
+#'   from a shinystan object
 #'
 setGeneric("as.shinystan", function(X, ...) {
   standardGeneric("as.shinystan")
@@ -496,7 +535,7 @@ setMethod("as.shinystan", "stanreg",
             sso <- do.call("as.shinystan", args = list(X = X$stanfit, ...))
             mname <- if (!is.null(model_name)) 
               model_name else paste0("rstanarm model (", sso@model_name, ")")
-            sso <- rename_model(sso, mname)
+            sso <- model_name(sso, mname)
             if (!is.null(note))
               sso <- suppressMessages(notes(sso, note, replace = TRUE))
             

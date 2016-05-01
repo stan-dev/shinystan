@@ -1,1 +1,1 @@
-#' @param sso The shinystan object to use.
+#' @param sso A \code{\link[=as.shinystan]{shinystan object}}.

@@ -24,20 +24,21 @@
 #'   include/exclude warmup iterations (the default is \code{FALSE}). See
 #'   \strong{Details}, below.
 #'   
-#' @details The argument \code{what} can take on the values below. Args: \code{arg}
-#' means that \code{arg} can be specified in \code{...} for this value of \code{what}.
+#' @details The argument \code{what} can take on the values below. Args:
+#'   \code{arg} means that \code{arg} can be specified in \code{...} for this
+#'   value of \code{what}.
 #' \describe{
-#'   \item{\code{"rhat", "Rhat", "r_hat", or "R_hat"}}{returns: Rhat statistics. Args: \code{pars}}
-#'   \item{\code{"N_eff","n_eff", "neff", "Neff", "ess", or "ESS"}}{returns: Effective sample sizes. Args: \code{pars}}
+#'   \item{\code{"rhat"}, \code{"Rhat"}, \code{"r_hat"}, or \code{"R_hat"}}{returns: Rhat statistics. Args: \code{pars}}
+#'   \item{\code{"N_eff"}, \code{"n_eff"}, \code{"neff"}, \code{"Neff"}, \code{"ess"}, or \code{"ESS"}}{returns: Effective sample sizes. Args: \code{pars}}
 #'   \item{\code{"mean"}}{returns: Posterior means. Args: \code{pars}}
 #'   \item{\code{"sd"}}{returns: Posterior standard deviations. Args: \code{pars}}
-#'   \item{\code{"se_mean" or "mcse"}}{returns: Monte carlo standard error. Args: \code{pars}}
+#'   \item{\code{"se_mean"} or \code{"mcse"}}{returns: Monte carlo standard error. Args: \code{pars}}
 #'   \item{\code{"median"}}{returns: Posterior medians. Args: \code{pars}.}
-#'   \item{\code{"quantiles" or any string with "quant" in it (not case sensitive)}}{returns: 2.5\%, 25\%, 50\%, 75\%, 97.5\% posterior quantiles. Args: \code{pars}.}
-#'   \item{\code{"avg_accept_stat" or any string with "accept" in it (not case sensitive)}}{returns: Average value of "accept_stat" (which itself is the average acceptance probability over the NUTS subtree). Args: \code{inc_warmup}}
-#'   \item{\code{"prop_divergent" or any string with "diverg" in it (not case sensitive)}}{returns: Proportion of divergent iterations for each chain. Args: \code{inc_warmup}}
-#'   \item{\code{"max_treedepth" or any string with "tree" or "depth" in it (not case sensitive)}}{returns: Maximum treedepth for each chain. Args: \code{inc_warmup}}
-#'   \item{\code{"avg_stepsize" or any string with "step" in it (not case sensitive)}}{returns: Average stepsize for each chain. Args: \code{inc_warmup}}
+#'   \item{\code{"quantiles"} or any string with \code{"quant"} in it (not case sensitive)}{returns: 2.5\%, 25\%, 50\%, 75\%, 97.5\% posterior quantiles. Args: \code{pars}.}
+#'   \item{\code{"avg_accept_stat"} or any string with \code{"accept"} in it (not case sensitive)}{returns: Average value of "accept_stat" (which itself is the average acceptance probability over the NUTS subtree). Args: \code{inc_warmup}}
+#'   \item{\code{"prop_divergent"} or any string with \code{"diverg"} in it (not case sensitive)}{returns: Proportion of divergent iterations for each chain. Args: \code{inc_warmup}}
+#'   \item{\code{"max_treedepth"} or any string with \code{"tree"} or \code{"depth"} in it (not case sensitive)}{returns: Maximum treedepth for each chain. Args: \code{inc_warmup}}
+#'   \item{\code{"avg_stepsize"} or any string with \code{"step"} in it (not case sensitive)}{returns: Average stepsize for each chain. Args: \code{inc_warmup}}
 #' }
 #' 
 #' @note Sampler diagnostics (e.g. \code{"avg_accept_stat"}) only available for

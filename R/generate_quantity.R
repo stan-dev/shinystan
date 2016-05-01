@@ -11,12 +11,14 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-#' Add to shinystan object a new parameter as a function of one or two 
-#' existing parameters
+#' Add new quantity to shinystan object
+#' 
+#' Add to shinystan object a new parameter as a function of one or two existing
+#' parameters.
 #' 
 #' @export
 #' @template args-sso
-#' @param fun Function to call, i.e. \code{function(param1)} or
+#' @param fun Function to call, i.e. \code{function(param1)} or 
 #'   \code{function(param1,param2)}. See \strong{Examples}, below.
 #' @param param1 Name of first parameter as character string.
 #' @param param2 Optional. Name of second paramter as character string.
