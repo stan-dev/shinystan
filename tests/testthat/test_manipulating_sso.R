@@ -7,6 +7,8 @@ sso <- eight_schools
 sso_msg <- "specify a shinystan object"
 not_sso <- sso@model_name
 
+
+# rename_model, model_code, notes -----------------------------------------
 test_that("simple sso functions work", {
   expect_error(rename_model(not_sso), sso_msg)
   expect_error(model_code(not_sso), sso_msg)
@@ -25,6 +27,8 @@ test_that("simple sso functions work", {
   expect_identical(slot(sso2, "user_model_info"), notes(sso2))
 })
 
+
+# retrieve ----------------------------------------------------------------
 test_that("retrieve works", {
   expect_error(retrieve(not_sso), sso_msg)
   expect_error(retrieve(not_sso, what = "mean"), sso_msg)
@@ -35,6 +39,9 @@ test_that("retrieve works", {
   }
 })
 
+
+
+# generate_quantity -------------------------------------------------------
 test_that("generate_quantity works", {
   expect_error(generate_quantity(not_sso), sso_msg)
   
@@ -51,6 +58,8 @@ test_that("generate_quantity works", {
                       sso@samps_all[,, "theta[2]", drop=FALSE])
 })
 
+
+# drop_parameters ---------------------------------------------------------
 test_that("drop_parameters works", {
   pn <- sso@param_names
   pd <- sso@param_dims
@@ -89,4 +98,10 @@ test_that("drop_parameters works", {
   expect_error(drop_parameters(sso, pars = "omega"), regexp = "No matches")
   expect_warning(drop_parameters(sso, pars = c("mu", "omega")), 
                  regexp = "not found and ignored: omega")
+})
+
+
+# update_sso --------------------------------------------------------------
+test_that("update_sso doesn't throw error", {
+  expect_silent(sso2 <- update_sso(sso))
 })
