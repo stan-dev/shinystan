@@ -1,5 +1,4 @@
 library(shinystan)
-
 context("Deploying")
 
 sso <- eight_schools

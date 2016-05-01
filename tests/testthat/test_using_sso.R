@@ -1,18 +1,19 @@
 library(shinystan)
+context("Working with shinystan objects")
 
-context("Working with sso")
 
-source("data_for_tests.R")
+source("data_for_retrieve_tests.R")
+
 sso <- eight_schools
-sso_msg <- "specify a shinystan object"
 not_sso <- sso@model_name
+not_sso_msg <- "specify a shinystan object"
 
 
 # rename_model, model_code, notes -----------------------------------------
 test_that("simple sso functions work", {
-  expect_error(rename_model(not_sso), sso_msg)
-  expect_error(model_code(not_sso), sso_msg)
-  expect_error(notes(not_sso), sso_msg)
+  expect_error(rename_model(not_sso), not_sso_msg)
+  expect_error(model_code(not_sso), not_sso_msg)
+  expect_error(notes(not_sso), not_sso_msg)
   
   sso2 <- rename_model(sso, "test_rename")
   expect_identical(sso2@model_name, "test_rename")
@@ -30,20 +31,19 @@ test_that("simple sso functions work", {
 
 # retrieve ----------------------------------------------------------------
 test_that("retrieve works", {
-  expect_error(retrieve(not_sso), sso_msg)
-  expect_error(retrieve(not_sso, what = "mean"), sso_msg)
+  expect_error(retrieve(not_sso), not_sso_msg)
+  expect_error(retrieve(not_sso, what = "mean"), not_sso_msg)
   
   whats <- c("median", "mean", "rhat", "ess", "sd")
   for (what in whats) {
-    expect_equal(retrieve(sso, what), get(paste0("demo_",what)))
+    expect_equal(retrieve(sso, what), get(paste0("test_answer_",what)))
   }
 })
 
 
-
 # generate_quantity -------------------------------------------------------
 test_that("generate_quantity works", {
-  expect_error(generate_quantity(not_sso), sso_msg)
+  expect_error(generate_quantity(not_sso), not_sso_msg)
   
   sso2 <- generate_quantity(sso, fun = function(x) x^2,
                            param1 = "tau", new_name = "tau_sq")
@@ -66,7 +66,7 @@ test_that("drop_parameters works", {
   s <- sso@summary
   samp <- sso@samps_all
   
-  expect_error(drop_parameters(not_sso, pars = "mu"), sso_msg)
+  expect_error(drop_parameters(not_sso, pars = "mu"), not_sso_msg)
   
   sso2 <- drop_parameters(sso, pars = "mu")
   expect_identical(sso2@param_names, pn[pn != "mu"])
@@ -105,3 +105,19 @@ test_that("drop_parameters works", {
 test_that("update_sso doesn't throw error", {
   expect_silent(sso2 <- update_sso(sso))
 })
+
+
+# sso_info ----------------------------------------------------------------
+test_that("sso_info error checking", {
+  expect_error(sso_info(sso@samps_all), "specify a shinystan object")
+})
+
+test_that("sso_info prints output", {
+  expect_output(sso_info(sso), "sso")
+  expect_output(sso_info(sso), "Model name: Demo")
+  expect_output(sso_info(sso), "Parameters: 11")
+  expect_output(sso_info(sso), "Chains: 4")
+  expect_output(sso_info(sso), "Has model code: TRUE")
+  expect_output(sso_info(sso), "Has user notes: FALSE")
+})
+
