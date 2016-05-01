@@ -1,7 +1,6 @@
 library(shinystan)
 library(rstanarm)
 library(coda)
-context("Creating and testing sso")
 
 sso <- eight_schools
 stanreg1 <- suppressWarnings(stan_glm(mpg ~ wt, data = mtcars, seed = 12345, iter = 200, refresh = 0))
@@ -14,6 +13,7 @@ data(line, package = "coda")
 mcmc1 <- line
 mcmc2 <- line[[1L]]
 
+context("Creating and testing sso")
 
 test_that("sso_check throws errors", {
   expect_error(sso_check(array1))
@@ -22,8 +22,6 @@ test_that("sso_check throws errors", {
   
   expect_true(sso_check(sso))
   expect_true(sso_check(as.shinystan(array1)))
-  expect_true(sso_check(as.shinystan(mcmc1)))
-  expect_true(sso_check(as.shinystan(chains1)))
 })
 
 
@@ -40,10 +38,24 @@ test_that("is.shinystan, is.stanfit, is.stanreg work", {
 
 
 test_that("as.shinystan creates sso", {
+  # array
   expect_is(as.shinystan(array1, model_name = "test", note = "test"), "shinystan")
+  
+  # mcmc.list
   expect_is(as.shinystan(mcmc1, model_name = "test", note = "test", model_code = "test"), "shinystan")
+  expect_is(as.shinystan(mcmc1[1]), "shinystan")
+  
+  # list of matrices
   expect_is(as.shinystan(chains1, model_code = "test"), "shinystan")
+  expect_is(as.shinystan(chains1[1]), "shinystan")
+  colnames(chains1[[1]]) <- colnames(chains1[[2]]) <- c(paste0("beta[",1:2,"]"), "sigma")
+  sso2 <- as.shinystan(chains1, param_dims = list(beta = 2, sigma = 0))
+  expect_identical(sso2@param_dims, list(beta = 2, sigma = numeric(0)))
+  
+  # stanreg
   expect_is(as.shinystan(stanreg1, model_name = "test"), "shinystan")
+  
+  # stanfit
   expect_is(as.shinystan(stanreg1$stanfit, model_name = "test", note = "test"), "shinystan")
 })
 

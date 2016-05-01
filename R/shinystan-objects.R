@@ -292,9 +292,8 @@ setMethod("as.shinystan", "mcmc.list",
             validate_model_code(model_code)
             
             if (length(X) == 1) {
-              X <- list(.mcmclist2matrix(X))
               return(as.shinystan(
-                X,
+                X = list(.mcmclist2matrix(X)),
                 model_name = model_name,
                 burnin = burnin,
                 param_dims = param_dims,
