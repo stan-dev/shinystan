@@ -9,6 +9,7 @@ can be called.
 * Allow selecting `yrep` from global environment for PPcheck
 * Change `as.shinystan` to S4 generic with methods
 * Add **rsconnect** to `Imports` in `DESCRIPTION`.
+* Improve line coverage of api tests
 
 ### Version 2.1.0
 * Compatibility with recent ggplot2 update
