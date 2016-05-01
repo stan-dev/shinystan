@@ -11,8 +11,9 @@
 
 ShinyStan provides immediate, informative, customizable visual and 
 numerical summaries of model parameters and convergence diagnostics for 
-MCMC simulations. The ShinyStan graphical user interface is available 
-via the **shinystan** R package.
+MCMC simulations. The ShinyStan interface is coded primarily in R using 
+the [Shiny](http://shiny.rstudio.com) web application framework and is 
+available via the **shinystan** R package.
 
 ### Installing the shinystan R package
 * Install from CRAN:
@@ -26,17 +27,11 @@ If this fails, try adding the arguments `type='source'` and/or `repos='http://cr
 * Install from GitHub (requires [devtools](https://github.com/hadley/devtools) package):
 
 ```{r}
-if (!require("devtools")) install.packages("devtools")
+if (!require("devtools")) 
+  install.packages("devtools")
 devtools::install_github("stan-dev/shinystan", build_vignettes = TRUE)
 ```
     
-To take advantage of all the features in the **shinystan** package, it is also 
-recommended to install the [rsconnect](https://github.com/rstudio/rsconnect) 
-package. You can do this by running
-
-```{r}
-devtools::install_github("rstudio/rsconnect")
-```
 
 ### Demo
 
