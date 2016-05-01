@@ -44,9 +44,10 @@ test_that("retrieve works", {
   expect_error(retrieve(not_sso), not_sso_msg)
   expect_error(retrieve(not_sso, what = "mean"), not_sso_msg)
   
-  whats <- c("median", "mean", "rhat", "ess", "sd")
+  whats <- c("median", "mean", "rhat", "ess", "sd", "mcse", "quantiles", 
+             "divergent", "treedepth", "stepsize", "accept_stat")
   for (what in whats) {
-    expect_equal(retrieve(sso, what), get(paste0("test_answer_",what)))
+    expect_equal(retrieve(sso, what), get(paste0("test_answer_", what)))
   }
 })
 
