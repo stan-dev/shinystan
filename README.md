@@ -15,7 +15,7 @@ MCMC simulations. The ShinyStan interface is coded primarily in R using
 the [Shiny](http://shiny.rstudio.com) web application framework and is 
 available via the **shinystan** R package.
 
-### Installing the shinystan R package
+#### Installing the shinystan R package
 * Install from CRAN:
 
 ```{r}
@@ -33,7 +33,7 @@ devtools::install_github("stan-dev/shinystan", build_vignettes = TRUE)
 ```
     
 
-### Demo
+#### Demo
 
 After installing run 
 
@@ -42,7 +42,7 @@ library("shinystan")
 launch_shinystan_demo()
 ``` 
 
-### About ShinyStan
+#### About ShinyStan
 
 Applied Bayesian data analysis is primarily implemented through the MCMC 
 algorithms offered by various software packages. When analyzing a posterior sample 
@@ -60,7 +60,7 @@ the output of MCMC programs written in any programming language (and has extende
 functionality for models fit using [RStan](http://mc-stan.org/interfaces/rstan.html) 
 and the No-U-Turn sampler). 
 
-### Saving and deploying (sharing)
+#### Saving and deploying (sharing)
 
 The **shinystan** package allows you to store the basic components of an entire 
 project (code, posterior samples, graphs, tables, notes) in a single object. 
@@ -73,7 +73,13 @@ which lets you easily deploy your own ShinyStan apps online using RStudio's
 your models. Each of your apps (each of your models) will have a unique url
 and is compatible with Safari, Firefox, Chrome, and most other browsers.
 
-### Licensing
+#### Get help or submit bug report
+
+[Stan Users Google group](https://groups.google.com/forum/#!forum/stan-users) 
+
+[ShinyStan issue tracker](https://github.com/stan-dev/shinystan/issues)
+
+#### Licensing
 
 The **shinystan** R package and ShinyStan interface are open source licensed under 
 the GNU Public License, version 3 (GPLv3).
