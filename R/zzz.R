@@ -1,6 +1,3 @@
-# This file is part of shinystan
-# Copyright (C) 2015 Jonah Gabry
-#
 # shinystan is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
 # Foundation; either version 3 of the License, or (at your option) any later
@@ -21,7 +18,6 @@
   packageStartupMessage(msg)
 }
 
-# nocov start
 .onLoad <- function(libname, pkgname) {
   op <- options()
   op.shinystan <- list(
@@ -31,4 +27,3 @@
   if (any(set_ops)) options(op.shinystan[set_ops])
   invisible()
 }
-# nocov end

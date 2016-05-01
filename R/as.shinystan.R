@@ -1,6 +1,3 @@
-# This file is part of shinystan
-# Copyright (C) 2015 Jonah Gabry
-#
 # shinystan is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
 # Foundation; either version 3 of the License, or (at your option) any later
@@ -12,6 +9,7 @@
 # 
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
+
 
 #' Create and test shinystan objects
 #' 
@@ -255,7 +253,7 @@ setMethod("as.shinystan", "mcmc.list",
             validate_model_code(model_code)
             
             if (length(X) == 1) {
-              X <- list(mcmclist2matrix(X))
+              X <- list(.mcmclist2matrix(X))
               return(as.shinystan(
                 X,
                 model_name = model_name,
@@ -322,6 +320,20 @@ setMethod("as.shinystan", "mcmc.list",
             
             do.call("new", slots)
           })
+
+.mcmclist2matrix <- function(x) {
+  # adapted from Coda package
+  out <- matrix(nrow = coda::niter(x) * coda::nchain(x), ncol = coda::nvar(x))
+  cols <- 1:coda::nvar(x)
+  for (i in 1:coda::nchain(x)) {
+    rows <- (i-1)*coda::niter(x) + 1:coda::niter(x)
+    out[rows, cols] <- x[[i]]
+  }
+  rownames <- character(ncol(out))
+  rownames[cols] <- coda::varnames(x, allow.null = FALSE)
+  dimnames(out) <- list(NULL, rownames)
+  out
+}
 
 
 # stanfit -----------------------------------------------------------------
