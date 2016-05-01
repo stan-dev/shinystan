@@ -1,12 +1,15 @@
 # `shinystan news`
 
-### Version 2.1.1
+### Version 2.2.0
 * Introduce `drop_parameters` function for removing parameters from a shinystan 
 object (useful for very large objects when you only want to look at a subset of
 parameters).
 * Add **rstanarm** to Suggests (in the DESCRIPTION file) so `rstanarm::pp_check`
 can be called.
-* Allow selecting yrep from global environment for PPcheck
+* Allow selecting `yrep` from global environment for PPcheck
+* Change `as.shinystan` to S4 generic with methods
+* Add **rsconnect** to `Imports` in `DESCRIPTION`.
+* Improve line coverage of api tests
 
 ### Version 2.1.0
 * Compatibility with recent ggplot2 update

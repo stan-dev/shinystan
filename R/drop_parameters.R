@@ -36,6 +36,7 @@
 #' print(sso@param_names)
 #' 
 drop_parameters <- function(sso, pars) {
+  sso_check(sso)
   stopifnot(is.character(pars))
   if (any(grepl("[", pars, fixed = TRUE)))
     stop("Individual elements of non-scalar parameters can't be removed.", 

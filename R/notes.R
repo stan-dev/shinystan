@@ -51,6 +51,7 @@
 #' notes(sso)
 #'  
 notes <- function(sso, note, replace = FALSE) {
+  sso_check(sso)
   if (missing(note))
     return(slot(sso, "user_model_info"))
   

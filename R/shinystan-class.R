@@ -13,32 +13,12 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-#' S4 shinystan objects (sso)
+#' S4 shinystan objects
 #' 
-#' @description shinystan objects
-#' 
-#' @section Creating shinystan objects:
-#' 
-#' See \code{\link{as.shinystan}}.
-#' 
-#' @section Hosting your own ShinyStan apps online:
-#' 
-#' See \code{\link{deploy_shinystan}}.
+#' @aliases shinystan-class
+#' @description See \code{\link{as.shinystan}} for documentation on creating 
+#'   shinystan objects and \code{\link{eight_schools}} for an example object.
 #'   
-#' @section Functions for manipulating shinystan objects:
-#' 
-#' \code{\link{notes}} Add to or replace notes.
-#' 
-#' \code{\link{rename_model}} Change the model name.
-#' 
-#' \code{\link{generate_quantity}} Add new parameters/quantities as a function 
-#' of one or two existing parameters.
-#' 
-#' \code{\link{model_code}} Add or change model code.
-#' 
-#' \code{\link{update_sso}} Update a shinystan object created by an older version 
-#' of the package.
-#' 
 shinystan <- setClass("shinystan",
                       slots = list(model_name      = "character",
                                    param_names     = "character",

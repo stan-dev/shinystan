@@ -59,7 +59,8 @@ generate_quantity <- function(sso, param1, param2, fun, new_name) {
     if (two_params) y_samps <- samps[, param2]
   }
   
-  arglist <- if (two_params) list(x_samps, y_samps) else list(x_samps)
+  arglist <- if (two_params) 
+    list(x_samps, y_samps) else list(x_samps)
   temp <- do.call(fun, args = arglist)
   
   new_dim <- dim_samps
@@ -70,10 +71,10 @@ generate_quantity <- function(sso, param1, param2, fun, new_name) {
   
   param_dims_new <- sso@param_dims
   param_dims_new[[new_name]] <- numeric(0)
-  sso_new <- array2shinystan(samps,
-                             model_name = sso@model_name,
-                             burnin = sso@nWarmup,
-                             param_dims = param_dims_new)
+  sso_new <- as.shinystan(samps,
+                          model_name = sso@model_name,
+                          burnin = sso@nWarmup,
+                          param_dims = param_dims_new)
   sso_new@summary <- shinystan_monitor(samps, warmup = sso@nWarmup)
   
   slot_names <- c("sampler_params", "model_code", "user_model_info", "misc")

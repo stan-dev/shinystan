@@ -30,10 +30,11 @@ Stan (\url{http://mc-stan.org}) models can be run in R using the
 \section{Saving and sharing}{
 
   
-  The \pkg{shinystan} package allows you to store the basic components of an
+  The \pkg{shinystan} package allows you to store the basic components of an 
   entire project (code, posterior samples, graphs, tables, notes) in a single
-  object. Users can save many of the plots as ggplot2 objects for further 
-  customization and easy integration in reports or post-processing for 
+  object, a \code{\link[=as.shinystan]{shinystan object}} (sso, for short).
+  Users can save many of the plots as ggplot2 objects for further
+  customization and easy integration in reports or post-processing for
   publication.
   
   The \code{\link{deploy_shinystan}} function lets you easily deploy your own

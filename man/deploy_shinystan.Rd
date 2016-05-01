@@ -4,7 +4,7 @@
 \alias{deploy_shinystan}
 \title{Deploy a ShinyStan app on the web using shinyapps.io by RStudio}
 \usage{
-deploy_shinystan(sso, appName, account = NULL, ...)
+deploy_shinystan(sso, appName, account = NULL, ..., deploy = TRUE)
 }
 \arguments{
 \item{sso}{The shinystan object to use.}
@@ -17,11 +17,20 @@ and underscores.}
 account is configured on the system.}
 
 \item{...}{Optional arguments. See Details.}
+
+\item{deploy}{Should the app be deployed? The only reason for this to be 
+\code{FALSE} is if you just want to check that the preprocessing before
+deployment is successful.}
+}
+\value{
+\link[=invisible]{Invisibly}, \code{TRUE} if deployment succeeded 
+  (did not encounter an error) or, if \code{deploy} argument is set to 
+  \code{FALSE}, the path to the temporary directory containing the app ready 
+  for deployment (also invisibly).
 }
 \description{
-Requires a (free or paid) shinyapps.io account. Visit 
-\url{http://www.shinyapps.io/} to sign up and for details on how to configure
-your account on your local system using RStudio's \pkg{rsconnect} package.
+Requires a (free or paid) ShinyApps account. Visit 
+\url{http://www.shinyapps.io/} to sign up.
 }
 \details{
 In \code{...}, the arguments \code{ppcheck_data} and 
@@ -33,10 +42,6 @@ In \code{...}, the arguments \code{ppcheck_data} and
   parameter/generated quantity to use for the posterior predictive checking. 
   \code{ppcheck_yrep} (but not \code{ppcheck_data}) can also be set
   interactively on shinyapps.io when using the app.
-}
-\note{
-See the 'Deploying to shinyapps.io' vignette for a more detailed 
-  example.
 }
 \examples{
 \dontrun{
@@ -52,5 +57,13 @@ deploy_shinystan(sso, appName = "my-model", account = "username")
 deploy_shinystan(sso, appName = "my-model")
 }
 
+}
+\seealso{
+The example in the \emph{Deploying to shinyapps.io} vignette that 
+  comes with this package.
+
+  \url{http://www.shinyapps.io/} to sign up for a free or paid ShinyApps
+  account and for details on how to configure your account on your local
+  system using RStudio's \pkg{\link[rsconnect]{rsconnect}} package.
 }
 

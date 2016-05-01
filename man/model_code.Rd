@@ -5,7 +5,7 @@
 \title{Add model code to a shinystan object or see the code currently stored in 
 a shinystan}
 \usage{
-model_code(sso, code)
+model_code(sso, code = NULL)
 }
 \arguments{
 \item{sso}{The shinystan object to use.}

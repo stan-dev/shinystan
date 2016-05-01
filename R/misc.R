@@ -22,26 +22,17 @@ sso_check <- function(sso) {
 is.stanfit <- function(X) inherits(X, "stanfit")
 is.stanreg <- function(X) inherits(X, "stanreg")
 
-rstan_check <- function() {
-  if (!requireNamespace("rstan", quietly = TRUE)) 
-    stop("You need to have the RStan package installed to use this option.", 
-         call. = FALSE)
-}
-coda_check <- function() {
-  if (!requireNamespace("coda", quietly = TRUE)) 
-    stop("You need to have the coda package installed to use this option.", 
+check_suggests <- function(pkg) {
+  if (!requireNamespace(pkg, quietly = TRUE)) 
+    stop("You need to have the ", pkg," package installed to use this option.", 
          call. = FALSE)
 }
 
-launch <- function(object, rstudio = FALSE, ...) {
-  stopifnot(is.shinystan(object))
-  launch.browser <- if (!rstudio) 
-    TRUE else getOption("shiny.launch.browser", interactive())
-  .sso_env$.shinystan_temp_object <- object
-  on.exit(.sso_env$.shinystan_temp_object <- NULL, add = TRUE)
-  shiny::runApp(system.file("ShinyStan", package = "shinystan"), 
-                launch.browser = launch.browser, ...)
+# grepl with ignore.case defaulting to TRUE
+grepl_ic <- function(pattern, x, ignore.case = TRUE) {
+  grepl(pattern = pattern, x = x, ignore.case = ignore.case)
 }
+
 
 # mcmclist to matrix (adapted from Coda package) --------------------------
 mcmclist2matrix <- function(x) {
@@ -55,19 +46,6 @@ mcmclist2matrix <- function(x) {
   rownames[cols] <- coda::varnames(x, allow.null = FALSE)
   dimnames(out) <- list(NULL, rownames)
   out
-}
-
-grepl_ic <- function(pattern, x, ignore.case = TRUE) {
-  grepl(pattern = pattern, x = x, ignore.case = ignore.case)
-}
-
-get_type <- function(x) {
-  if (is.shinystan(x)) return("shinystan")
-  else if (is.stanfit(x)) return("stanfit")
-  else if (is.stanreg(x)) return("stanreg")
-  else if (inherits(x, "mcmc.list")) return("mcmclist")
-  else if (is.list(x)) return("chainlist")
-  else return("other")
 }
 
 # functions to set defaults for ppcheck selectInputs for y and y_rep 
