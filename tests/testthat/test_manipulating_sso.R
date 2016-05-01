@@ -4,8 +4,14 @@ context("Working with sso")
 
 source("data_for_tests.R")
 sso <- eight_schools
+sso_msg <- "specify a shinystan object"
+not_sso <- sso@model_name
 
 test_that("simple sso functions work", {
+  expect_error(rename_model(not_sso), sso_msg)
+  expect_error(model_code(not_sso), sso_msg)
+  expect_error(notes(not_sso), sso_msg)
+  
   sso2 <- rename_model(sso, "test_rename")
   expect_identical(sso2@model_name, "test_rename")
   
@@ -20,6 +26,9 @@ test_that("simple sso functions work", {
 })
 
 test_that("retrieve works", {
+  expect_error(retrieve(not_sso), sso_msg)
+  expect_error(retrieve(not_sso, what = "mean"), sso_msg)
+  
   whats <- c("median", "mean", "rhat", "ess", "sd")
   for (what in whats) {
     expect_equal(retrieve(sso, what), get(paste0("demo_",what)))
@@ -27,6 +36,8 @@ test_that("retrieve works", {
 })
 
 test_that("generate_quantity works", {
+  expect_error(generate_quantity(not_sso), sso_msg)
+  
   sso2 <- generate_quantity(sso, fun = function(x) x^2,
                            param1 = "tau", new_name = "tau_sq")
   expect_equivalent(sso2@samps_all[,, "tau_sq", drop=FALSE], 
@@ -45,6 +56,8 @@ test_that("drop_parameters works", {
   pd <- sso@param_dims
   s <- sso@summary
   samp <- sso@samps_all
+  
+  expect_error(drop_parameters(not_sso, pars = "mu"), sso_msg)
   
   sso2 <- drop_parameters(sso, pars = "mu")
   expect_identical(sso2@param_names, pn[pn != "mu"])

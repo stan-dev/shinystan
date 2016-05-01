@@ -19,8 +19,9 @@
   ver <- utils::packageVersion("shinystan")
   msg <- paste0("\nThis is shinystan version ", ver,"\n")
   packageStartupMessage(msg)
-} 
+}
 
+# nocov start
 .onLoad <- function(libname, pkgname) {
   op <- options()
   op.shinystan <- list(
@@ -30,3 +31,4 @@
   if (any(set_ops)) options(op.shinystan[set_ops])
   invisible()
 }
+# nocov end

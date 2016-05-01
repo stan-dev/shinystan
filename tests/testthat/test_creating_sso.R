@@ -3,7 +3,7 @@ library(rstanarm)
 
 context("Creating sso")
 
-example("example_model", package = "rstanarm")
+stanreg <- stan_glm(mpg ~ wt, data = mtcars, seed = 12345, iter = 200)
 
 array_test1 <- array(rnorm(300), dim = c(25, 4, 3))
 array_test2 <- array(rnorm(300), dim = c(100, 3))
@@ -21,7 +21,7 @@ test_that("as.shinystan creates sso", {
   expect_is(as.shinystan(array_test1), "shinystan")
   expect_is(as.shinystan(mcmc_test1), "shinystan")
   expect_is(as.shinystan(chains_test), "shinystan")
-  expect_is(as.shinystan(example_model), "shinystan")
+  expect_is(as.shinystan(stanreg), "shinystan")
 })
 
 test_that("sso_check throws errors", {
@@ -46,8 +46,8 @@ test_that("as.shinystan throws errors", {
 })
 
 test_that("as.shinystan arguments works with rstanarm example", {
-  sso1 <- as.shinystan(example_model)
-  sso2 <- as.shinystan(example_model, ppd = FALSE)
+  sso1 <- as.shinystan(stanreg)
+  sso2 <- as.shinystan(stanreg, ppd = FALSE)
   expect_is(sso1, "shinystan")
   expect_is(sso2, "shinystan")
   expect_false(is.null(sso1@misc$pp_check_plots))

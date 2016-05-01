@@ -59,10 +59,11 @@ deploy_shinystan(sso, appName = "my-model")
 
 }
 \seealso{
-The example in the package vignette 'Deploying to shinyapps.io'. 
+The example in the \emph{Deploying to shinyapps.io} vignette that 
+  comes with this package.
 
-  \url{http://www.shinyapps.io/} to sign up for a ShinyApps account and for 
-  details on how to configure your account on your local system using 
-  RStudio's \pkg{\link[rsconnect]{rsconnect}} package.
+  \url{http://www.shinyapps.io/} to sign up for a free or paid ShinyApps
+  account and for details on how to configure your account on your local
+  system using RStudio's \pkg{\link[rsconnect]{rsconnect}} package.
 }
 

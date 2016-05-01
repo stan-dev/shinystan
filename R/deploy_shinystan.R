@@ -13,7 +13,6 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-
 #' Deploy a ShinyStan app on the web using shinyapps.io by RStudio
 #' 
 #' Requires a (free or paid) ShinyApps account. Visit 
@@ -46,7 +45,8 @@
 #'   \code{ppcheck_yrep} (but not \code{ppcheck_data}) can also be set
 #'   interactively on shinyapps.io when using the app.
 #'   
-#' @seealso The example in the 'Deploying to shinyapps.io' vignette. 
+#' @seealso The example in the \emph{Deploying to shinyapps.io} vignette that 
+#'   comes with this package.
 #' 
 #'   \url{http://www.shinyapps.io/} to sign up for a free or paid ShinyApps
 #'   account and for details on how to configure your account on your local
