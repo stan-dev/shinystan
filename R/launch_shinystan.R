@@ -15,19 +15,27 @@
 
 #' Launch the ShinyStan app
 #' 
+#' Launch the ShinyStan app in the default web browser. RStudio users also have
+#' the option of launching the app in RStudio's pop-up Viewer.
+#' 
 #' @export
-#' @param object An object of class shinystan, stanfit, or stanreg. See
-#'   \code{\link{as.shinystan}} for converting other objects to a shinystan
-#'   object (sso).
+#' @param object An object of class shinystan, stanfit, or stanreg. To use other
+#'   types of objects first create a shinystan object using
+#'   \code{\link{as.shinystan}}.
 #' @param rstudio Only relevant for RStudio users. The default 
 #'   (\code{rstudio=FALSE}) is to launch the app in the default web browser 
 #'   rather than RStudio's pop-up Viewer. Users can change the default to 
 #'   \code{TRUE} by setting the global option \code{options(shinystan.rstudio = 
 #'   TRUE)}.
-#' @param ... Optional arguments to pass to \code{\link[shiny]{runApp}}.
-#' @return An S4 shinystan object.
+#' @param ... Optionally, arguments to pass to \code{\link[shiny]{runApp}}.
+#' 
+#' @return The \code{launch_shinystan} function is used for the side effect of 
+#'   starting the ShinyStan app, but it also returns a shinystan object, an
+#'   instance of S4 class \code{"shinystan"}.
 #'
-#' @seealso \code{\link{as.shinystan}}, \code{\link{launch_shinystan_demo}}
+#' @seealso \code{\link{as.shinystan}} for creating shinystan objects and 
+#'   \code{\link{launch_shinystan_demo}} to launch a demo.
+#'   
 #' @examples
 #' \dontrun{
 #' #######################################
@@ -70,17 +78,55 @@
 #'
 launch_shinystan <- function(object, rstudio = getOption("shinystan.rstudio"), 
                              ...) {
-  .loading_message()
-  if (inherits(object, "stanreg") || inherits(object, "stanfit"))
+  message("\nLoading... ",
+          "for large models ShinyStan may take a few moments to launch.")
+  if (is.stanreg(object) || is.stanfit(object))
     object <- as.shinystan(object)
   if (!is.shinystan(object))
-    stop("'object' is not a valid input. See ?launch_shinystan.")
+    stop("'object' is not a valid input. See help('launch_shinystan').")
   
   invisible(launch(object, rstudio, ...))
 }
 
-.loading_message <- function() {
-  message(
-    "\nLoading... for large models ShinyStan may take a few moments to launch."
-  )
+
+#' ShinyStan demo
+#'
+#' @export
+#' @param rstudio Only relevant for RStudio users. The default 
+#'   (\code{rstudio=FALSE}) is to launch the app in the default web browser 
+#'   rather than RStudio's pop-up Viewer. Users can change the default to 
+#'   \code{TRUE} by setting the global option \code{options(shinystan.rstudio = 
+#'   TRUE)}.
+#' @param ... Optional arguments to pass to \code{\link[shiny]{runApp}}.
+#' @return An S4 shinystan object.
+#'   
+#' @seealso \code{\link{launch_shinystan}}, \code{\link{as.shinystan}}
+#' 
+#' @examples
+#' \dontrun{
+#' # launch demo but don't save a shinystan object
+#' launch_shinystan_demo() 
+#' 
+#' # launch demo and save the shinystan object for the demo 
+#' sso_demo <- launch_shinystan_demo()
+#' }
+#'
+launch_shinystan_demo <- function(rstudio = getOption("shinystan.rstudio"), 
+                                  ...) {
+  demo_name <- "eight_schools"
+  invisible(launch(get(demo_name), rstudio, ...))
+}
+
+# Internal launch function 
+# @param sso shinystan object
+# @param rstudio launch in rstudio viewer instead of web browser? 
+# @param ... passed to shiny::runApp
+launch <- function(sso, rstudio = FALSE, ...) {
+  stopifnot(is.shinystan(sso))
+  launch.browser <- if (!rstudio) 
+    TRUE else getOption("shiny.launch.browser", interactive())
+  .sso_env$.shinystan_temp_object <- sso  # see zzz.R for .sso_env
+  on.exit(.sso_env$.shinystan_temp_object <- NULL, add = TRUE)
+  shiny::runApp(system.file("ShinyStan", package = "shinystan"), 
+                launch.browser = launch.browser, ...)
 }

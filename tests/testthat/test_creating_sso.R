@@ -1,6 +1,9 @@
 library(shinystan)
+library(rstanarm)
 
 context("Creating sso")
+
+example("example_model", package = "rstanarm")
 
 array_test1 <- array(rnorm(300), dim = c(25, 4, 3))
 array_test2 <- array(rnorm(300), dim = c(100, 3))
@@ -15,22 +18,38 @@ chains_test <- list(chain1, chain2)
 
 
 test_that("as.shinystan creates sso", {
-  expect_that(is.shinystan(as.shinystan(array_test1)), is_true())
-  expect_that(is.shinystan(as.shinystan(mcmc_test1)), is_true())
-  expect_that(is.shinystan(as.shinystan(chains_test)), is_true())
+  expect_is(as.shinystan(array_test1), "shinystan")
+  expect_is(as.shinystan(mcmc_test1), "shinystan")
+  expect_is(as.shinystan(chains_test), "shinystan")
+  expect_is(as.shinystan(example_model), "shinystan")
 })
 
 test_that("sso_check throws errors", {
-  expect_that(sso_check(array_test1), throws_error())
-  expect_that(sso_check(chain2), throws_error())
-  expect_that(sso_check(chains_test), throws_error())
-  expect_that(sso_check(eight_schools), is_true())
-  expect_that(sso_check(as.shinystan(array_test1)), is_true())
-  expect_that(sso_check(as.shinystan(mcmc_test1)), is_true())
-  expect_that(sso_check(as.shinystan(chains_test)), is_true())
+  expect_error(sso_check(array_test1))
+  expect_error(sso_check(chain2))
+  expect_error(sso_check(chains_test))
+  
+  expect_true(sso_check(eight_schools))
+  expect_true(sso_check(as.shinystan(array_test1)))
+  expect_true(sso_check(as.shinystan(mcmc_test1)))
+  expect_true(sso_check(as.shinystan(chains_test)))
+})
+
+test_that("is.shinystan works", {
+  expect_true(is.shinystan(eight_schools))
+  expect_false(is.shinystan(eight_schools@samps_all))
 })
 
 test_that("as.shinystan throws errors", {
-  expect_that(as.shinystan(array_test2), throws_error())
-  expect_that(as.shinystan(mcmc_test2), throws_error())
+  expect_error(as.shinystan(array_test2))
+  expect_error(as.shinystan(mcmc_test2))
+})
+
+test_that("as.shinystan arguments works with rstanarm example", {
+  sso1 <- as.shinystan(example_model)
+  sso2 <- as.shinystan(example_model, ppd = FALSE)
+  expect_is(sso1, "shinystan")
+  expect_is(sso2, "shinystan")
+  expect_false(is.null(sso1@misc$pp_check_plots))
+  expect_null(sso2@misc$pp_check_plots)
 })

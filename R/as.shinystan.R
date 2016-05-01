@@ -15,29 +15,30 @@
 
 #' Create and test shinystan objects
 #' 
-#' \code{as.shinystan} creates shinystan objects that can be used with 
-#' \code{\link{launch_shinystan}} and various other functions in the 
-#' \pkg{shinystan} package. Methods are provided for creating shinystan objects 
-#' from arrays, lists of matrices, stanfit objects (\pkg{rstan}), stanreg 
-#' objects (\pkg{rstanarm}), and mcmc.list objects (\pkg{coda}). 
-#' \code{is.shinystan} tests if an object is a shinystan object.
+#' @description The \code{as.shinystan} function creates shinystan objects that 
+#'   can be used with \code{\link{launch_shinystan}} and various other functions
+#'   in the \pkg{shinystan} package. \code{as.shinystan} is a generic for which 
+#'   the \pkg{shinystan} package provides several methods. Currently methods are
+#'   provided for creating shinystan objects from arrays, lists of matrices,
+#'   stanfit objects (\pkg{rstan}), stanreg objects (\pkg{rstanarm}), and
+#'   mcmc.list objects (\pkg{coda}).
+#'   
+#'   \code{is.shinystan} tests if an object is a shinystan object.
 #'
 #' @include shinystan-class.R
 #' @name as.shinystan
 #' @export
-#' @param X For \code{as.shinystan}, an object to be converted to a 
-#'  shinystan object. For \code{is.shinystan}, an object to check. 
-#'  The \code{as.shinystan} function is a generic for which the \pkg{shinystan} 
-#'  package provides several methods. See the Methods section below. 
+#' @param X For \code{as.shinystan}, an object to be converted to a shinystan 
+#'   object. See the Methods section below. For \code{is.shinystan}, an object
+#'   to check.
 #' @param ... Arguments passed to the individual methods.
 #'   
-#' @return \code{as.shinystan} returns an object of class 
-#'   \code{\linkS4class{shinystan}}.
+#' @return \code{as.shinystan} returns a shinystan object, which is an instance 
+#'   of S4 class \code{"shinystan"}.
 #'   
 #'   \code{is.shinystan} returns \code{TRUE} if the tested object is a shinystan
 #'   object and \code{FALSE} otherwise.
-#'   
-#' 
+#'
 #' @seealso \code{\link{launch_shinystan}} to launch the ShinyStan interface 
 #' 
 #' \code{\link{launch_shinystan_demo}} to the launch ShinyStan in demo mode 
@@ -250,7 +251,7 @@ setMethod("as.shinystan", "mcmc.list",
                    model_code = NULL,
                    note = NULL,
                    ...) {
-            coda_check()
+            check_suggests("coda")
             validate_model_code(model_code)
             
             if (length(X) == 1) {
@@ -334,8 +335,8 @@ setMethod("as.shinystan", "mcmc.list",
 #' ######################
 #' ### stanfit object ###
 #' ######################
-#' # library("rstan")
-#' # fit <- stan_demo("eight_schools")
+#' library("rstan")
+#' fit <- stan_demo("eight_schools")
 #' sso <- as.shinystan(fit, model_name = "example")
 #' }
 #' 
@@ -344,7 +345,7 @@ setMethod("as.shinystan", "stanfit",
                    model_name = X@model_name, 
                    note = NULL, 
                    ...) {
-            rstan_check()
+            check_suggests("rstan")
             stan_args <- X@stan_args[[1L]]
             stan_method <- stan_args$method
             vb <- isTRUE(stan_method == "variational")
@@ -478,16 +479,14 @@ setMethod("as.shinystan", "stanreg",
                    model_name = NULL,
                    note = NULL,
                    ...) {
-            if (!requireNamespace("rstanarm", quietly = TRUE))
-              stop("Please install the 'rstanarm' package.")
+            check_suggests("rstanarm")
             
-            args <- list(X = X$stanfit, note = note, ...)
-            if (!is.null(model_name))
-              args$model_name <- model_name
-            sso <- do.call("as.shinystan", args)
-            
-            if (is.null(model_name))
-              sso@model_name <- paste0("rstanarm model (", sso@model_name, ")")
+            sso <- do.call("as.shinystan", args = list(X = X$stanfit, ...))
+            mname <- if (!is.null(model_name)) 
+              model_name else paste0("rstanarm model (", sso@model_name, ")")
+            sso <- rename_model(sso, mname)
+            if (!is.null(note))
+              sso <- suppressMessages(notes(sso, note, replace = TRUE))
             
             samps_all <- sso@samps_all
             param_names <- sso@param_names

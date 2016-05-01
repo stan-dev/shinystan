@@ -45,6 +45,7 @@ Imports:
     markdown (>= 0.7.4),
     methods,
     reshape2,
+    rsconnect (>= 0.4.2),
     stats,
     shinyjs (>= 0.1.0),
     shinythemes (>= 1.0.1),
@@ -62,7 +63,6 @@ Collate:
     'eight_schools.R'
     'generate_quantity.R'
     'launch_shinystan.R'
-    'launch_shinystan_demo.R'
     'misc.R'
     'model_code.R'
     'notes.R'

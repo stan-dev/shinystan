@@ -31,10 +31,9 @@ is.shinystan(X)
   model_name = NULL, note = NULL, ...)
 }
 \arguments{
-\item{X}{For \code{as.shinystan}, an object to be converted to a 
-shinystan object. For \code{is.shinystan}, an object to check. 
-The \code{as.shinystan} function is a generic for which the \pkg{shinystan} 
-package provides several methods. See the Methods section below.}
+\item{X}{For \code{as.shinystan}, an object to be converted to a shinystan 
+object. See the Methods section below. For \code{is.shinystan}, an object
+to check.}
 
 \item{...}{Arguments passed to the individual methods.}
 
@@ -71,19 +70,22 @@ predictive checks are available when ShinyStan is launched.}
 \code{ppd} is \code{TRUE}.}
 }
 \value{
-\code{as.shinystan} returns an object of class 
-  \code{\linkS4class{shinystan}}.
+\code{as.shinystan} returns a shinystan object, which is an instance 
+  of S4 class \code{"shinystan"}.
   
   \code{is.shinystan} returns \code{TRUE} if the tested object is a shinystan
   object and \code{FALSE} otherwise.
 }
 \description{
-\code{as.shinystan} creates shinystan objects that can be used with 
-\code{\link{launch_shinystan}} and various other functions in the 
-\pkg{shinystan} package. Methods are provided for creating shinystan objects 
-from arrays, lists of matrices, stanfit objects (\pkg{rstan}), stanreg 
-objects (\pkg{rstanarm}), and mcmc.list objects (\pkg{coda}). 
-\code{is.shinystan} tests if an object is a shinystan object.
+The \code{as.shinystan} function creates shinystan objects that 
+  can be used with \code{\link{launch_shinystan}} and various other functions
+  in the \pkg{shinystan} package. \code{as.shinystan} is a generic for which 
+  the \pkg{shinystan} package provides several methods. Currently methods are
+  provided for creating shinystan objects from arrays, lists of matrices,
+  stanfit objects (\pkg{rstan}), stanreg objects (\pkg{rstanarm}), and
+  mcmc.list objects (\pkg{coda}).
+  
+  \code{is.shinystan} tests if an object is a shinystan object.
 }
 \section{Methods (by class)}{
 \itemize{
@@ -140,8 +142,8 @@ launch_shinystan(sso2)
 ######################
 ### stanfit object ###
 ######################
-# library("rstan")
-# fit <- stan_demo("eight_schools")
+library("rstan")
+fit <- stan_demo("eight_schools")
 sso <- as.shinystan(fit, model_name = "example")
 }
 

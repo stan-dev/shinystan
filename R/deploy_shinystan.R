@@ -16,9 +16,8 @@
 
 #' Deploy a ShinyStan app on the web using shinyapps.io by RStudio
 #' 
-#' Requires a (free or paid) shinyapps.io account. Visit 
-#' \url{http://www.shinyapps.io/} to sign up and for details on how to configure
-#' your account on your local system using RStudio's \pkg{rsconnect} package.
+#' Requires a (free or paid) ShinyApps account. Visit 
+#' \url{http://www.shinyapps.io/} to sign up.
 #' 
 #' @export
 #' @template args-sso
@@ -28,6 +27,14 @@
 #' @param account shinyapps.io account username. Only required if more than one 
 #'   account is configured on the system.
 #' @param ... Optional arguments. See Details.
+#' @param deploy Should the app be deployed? The only reason for this to be 
+#'   \code{FALSE} is if you just want to check that the preprocessing before
+#'   deployment is successful.
+#' 
+#' @return \link[=invisible]{Invisibly}, \code{TRUE} if deployment succeeded 
+#'   (did not encounter an error) or, if \code{deploy} argument is set to 
+#'   \code{FALSE}, the path to the temporary directory containing the app ready 
+#'   for deployment (also invisibly).
 #' 
 #' @details In \code{...}, the arguments \code{ppcheck_data} and 
 #'   \code{ppcheck_yrep} can be specified. \code{ppcheck_data} should be a
@@ -38,9 +45,12 @@
 #'   parameter/generated quantity to use for the posterior predictive checking. 
 #'   \code{ppcheck_yrep} (but not \code{ppcheck_data}) can also be set
 #'   interactively on shinyapps.io when using the app.
+#'   
+#' @seealso The example in the 'Deploying to shinyapps.io' vignette. 
 #' 
-#' @note See the 'Deploying to shinyapps.io' vignette for a more detailed 
-#'   example.
+#'   \url{http://www.shinyapps.io/} to sign up for a free or paid ShinyApps
+#'   account and for details on how to configure your account on your local
+#'   system using RStudio's \pkg{\link[rsconnect]{rsconnect}} package.
 #' 
 #' @examples
 #' \dontrun{
@@ -56,8 +66,9 @@
 #' deploy_shinystan(sso, appName = "my-model")
 #' }
 #' 
-
-deploy_shinystan <- function(sso, appName, account = NULL, ...) {
+#' @importFrom rsconnect deployApp
+#' 
+deploy_shinystan <- function(sso, appName, account = NULL, ..., deploy = TRUE) {
   sso_check(sso)
   if (missing(appName)) 
     stop("Please specify a name for your app using the 'appName' argument", 
@@ -92,7 +103,6 @@ deploy_shinystan <- function(sso, appName, account = NULL, ...) {
   # save shinystan_object to deployDir
   object <- sso
   save(object, file = file.path(deployDir, "shinystan_temp_object.RData"))
-  deploy <- getFromNamespace("deployApp", "rsconnect")
   # save ppcheck_data and set ppcheck defaults
   pp <- list(...)
   if ("ppcheck_data" %in% names(pp)) {
@@ -102,5 +112,12 @@ deploy_shinystan <- function(sso, appName, account = NULL, ...) {
       set_ppcheck_defaults(appDir = deployDir, yrep_name = pp$ppcheck_yrep, 
                            y_name = "y")
   }
-  deploy(appDir = deployDir, appName = appName, account = account, lint = TRUE)
+  
+  if (!deploy)
+    return(invisible(deployDir))
+  
+  rsconnect::deployApp(appDir = deployDir, 
+                       appName = appName, 
+                       account = account, 
+                       lint = TRUE)
 }
