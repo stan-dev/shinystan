@@ -12,6 +12,12 @@
 
 
 #' Drop parameters from a shinystan object
+#' 
+#' Remove selected parameters from a shinystan object. This is useful if you 
+#' have a very large shinystan object when you only want to look at a subset of 
+#' parameters. With a smaller shinystan object, \code{\link{launch_shinystan}} 
+#' will be faster and you should experience better performance (responsiveness) 
+#' after launching when using the ShinyStan app.
 #'
 #' @export
 #' @template args-sso
@@ -19,7 +25,7 @@
 #'   non-scalar (e.g. vector, matrix) parameter is included in \code{pars} all 
 #'   of its elements will be removed. Currently it is not possible to remove 
 #'   only a subset of the elements of a non-scalar parameter.
-#' @return \code{sso} with \code{pars} dropped.
+#' @return \code{sso}, with \code{pars} dropped.
 #' 
 #' @examples 
 #' # Using example shinystan object 'eight_schools'
@@ -51,10 +57,10 @@ drop_parameters <- function(sso, pars) {
         pars <- c(pars, tmp)
       }
     }
-    sso@param_dims <- sso@param_dims[-pd]
+    slot(sso, "param_dims") <- slot(sso, "param_dims")[-pd]
   }
   
-  sel <- match(pars, sso@param_names)
+  sel <- match(pars, slot(sso, "param_names"))
   if (!any(non_scalar) && all(is.na(sel))) {
     stop("No matches for 'pars' were found.", call. = FALSE)
   } else if (any(is.na(sel))) {
@@ -71,8 +77,8 @@ drop_parameters <- function(sso, pars) {
 # @param rmv A vector of indices indicating the positions of parameters to be
 #   removed
 .drop_parameters <- function(sso, rmv) {
-  sso@param_names <- sso@param_names[-rmv]
-  sso@samps_all <- sso@samps_all[, , -rmv, drop = FALSE]
-  sso@summary <- sso@summary[-rmv, , drop = FALSE]
+  slot(sso, "param_names") <- slot(sso, "param_names")[-rmv]
+  slot(sso, "samps_all") <- slot(sso, "samps_all")[, , -rmv, drop = FALSE]
+  slot(sso, "summary") <- slot(sso, "summary")[-rmv, , drop = FALSE]
   sso
 }

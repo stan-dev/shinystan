@@ -19,14 +19,15 @@
 #' @export
 #' @template args-sso
 #' @param fun Function to call, i.e. \code{function(param1)} or 
-#'   \code{function(param1,param2)}. See \strong{Examples}, below.
+#'   \code{function(param1,param2)}. See Examples, below.
 #' @param param1 Name of first parameter as character string.
 #' @param param2 Optional. Name of second paramter as character string.
 #' @param new_name Name for the new parameter as character string.
-#' 
+#'   
 #' @return sso, updated. See Examples.
-#' 
-#' @seealso \code{\link{as.shinystan}}
+#'   
+#' @seealso \code{\link{drop_parameters}} to remove parameters from a shinystan 
+#'   object
 #'
 #' @examples
 #' # Using example shinystan object 'eight_schools'
@@ -39,52 +40,51 @@
 #'                          
 generate_quantity <- function(sso, param1, param2, fun, new_name) {
   sso_check(sso)
-  
-  name_exists <- new_name %in% sso@param_names
-  if (name_exists)
+  if (isTRUE(new_name %in% slot(sso, "param_names")))
     stop(paste("There is already a parameter named", new_name))
   
   message("\nThis might take a moment for large shinystan objects...\n")
   
   two_params <- !missing(param2)
-  samps <- sso@samps_all
-  dim_samps <- dim(samps)
-  nDim <- length(dim_samps)
-  if (nDim == 3) {
+  posterior <- slot(sso, "samps_all")
+  dims <- dim(posterior)
+  ndim <- length(dims)
+  if (ndim == 3) {
     # i.e. multiple chains
-    x_samps <- samps[, , param1]
+    x_samp <- posterior[, , param1]
     if (two_params)
-      y_samps <- samps[, , param2]
+      y_samp <- posterior[, , param2]
   }
-  if (nDim == 2) {
+  if (ndim == 2) {
     # i.e. only 1 chain
-    x_samps <- samps[, param1]
+    x_samp <- posterior[, param1]
     if (two_params)
-      y_samps <- samps[, param2]
+      y_samp <- posterior[, param2]
   }
   
   arglist <- if (two_params)
-    list(x_samps, y_samps) else list(x_samps)
+    list(x_samp, y_samp) else list(x_samp)
   temp <- do.call(fun, args = arglist)
   
-  new_dim <- dim_samps
-  new_dim[[nDim]] <- new_dim[[nDim]] + 1
-  new_dim_names <- dimnames(samps)
-  new_dim_names[[nDim]] <- c(new_dim_names[[nDim]], new_name)
-  samps <-
-    array(data = c(samps, temp),
+  new_dim <- dims
+  new_dim[[ndim]] <- new_dim[[ndim]] + 1
+  new_dim_names <- dimnames(posterior)
+  new_dim_names[[ndim]] <- c(new_dim_names[[ndim]], new_name)
+  posterior <-
+    array(data = c(posterior, temp),
           dim = new_dim,
           dimnames = new_dim_names)
   
-  param_dims_new <- sso@param_dims
+  param_dims_new <- slot(sso, "param_dims")
   param_dims_new[[new_name]] <- numeric(0)
   sso_new <- as.shinystan(
-    samps,
-    model_name = sso@model_name,
-    burnin = sso@nWarmup,
+    posterior,
+    model_name = slot(sso, "model_name"),
+    burnin = slot(sso, "nWarmup"),
     param_dims = param_dims_new
   )
-  sso_new@summary <- shinystan_monitor(samps, warmup = sso@nWarmup)
+  slot(sso_new, "summary") <-
+    shinystan_monitor(posterior, warmup = slot(sso, "nWarmup"))
   
   slot_names <- c("sampler_params", "model_code", "user_model_info", "misc")
   for (sn in slot_names)

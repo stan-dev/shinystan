@@ -123,7 +123,6 @@ launch_shinystan_demo <- function(rstudio = getOption("shinystan.rstudio"),
 # @param rstudio launch in rstudio viewer instead of web browser? 
 # @param ... passed to shiny::runApp
 launch <- function(sso, rstudio = FALSE, ...) {
-  stopifnot(is.shinystan(sso))
   launch.browser <- if (!rstudio) 
     TRUE else getOption("shiny.launch.browser", interactive())
   .sso_env$.shinystan_temp_object <- sso  # see zzz.R for .sso_env

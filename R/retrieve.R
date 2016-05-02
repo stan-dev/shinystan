@@ -16,13 +16,14 @@
 #' From a shinystan object get rhat, effective sample size, posterior
 #' quantiles, means, standard deviations, sampler diagnostics, etc.
 #' 
+#' @export
 #' @template args-sso
-#' @param what What do you want to get? See \strong{Details}, below.
+#' @param what What do you want to get? See Details, below.
 #' @param ... Optional arguments, in particular \code{pars} to specify parameter
 #'   names (by default all parameters will be used). For NUTS sampler parameters
 #'   only (e.g. stepsize, treedepth) \code{inc_warmup} can also be specified to 
 #'   include/exclude warmup iterations (the default is \code{FALSE}). See
-#'   \strong{Details}, below.
+#'   Details, below.
 #'   
 #' @details The argument \code{what} can take on the values below. Args:
 #'   \code{arg} means that \code{arg} can be specified in \code{...} for this
@@ -43,8 +44,7 @@
 #' 
 #' @note Sampler diagnostics (e.g. \code{"avg_accept_stat"}) only available for
 #'   models originally fit using Stan.
-#' 
-#' @export
+#'   
 #' @examples
 #' # Using example shinystan object 'eight_schools'
 #' sso <- eight_schools
@@ -90,27 +90,27 @@ retrieve <- function(sso, what, ...) {
 
 retrieve_rhat <- function(sso, pars) {
   if (missing(pars))
-    return(sso@summary[, "Rhat"])
-  sso@summary[pars, "Rhat"]
+    return(slot(sso, "summary")[, "Rhat"])
+  slot(sso, "summary")[pars, "Rhat"]
 }
 
 retrieve_neff <- function(sso, pars) {
   if (missing(pars))
-    return(sso@summary[, "n_eff"])
-  sso@summary[pars, "n_eff"]
+    return(slot(sso, "summary")[, "n_eff"])
+  slot(sso, "summary")[pars, "n_eff"]
 }
 
 retrieve_mcse <- function(sso, pars) {
   if (missing(pars))
-    return(sso@summary[, "se_mean"])
-  sso@summary[pars, "se_mean"]
+    return(slot(sso, "summary")[, "se_mean"])
+  slot(sso, "summary")[pars, "se_mean"]
 }
 
 retrieve_quant <- function(sso, pars) {
   cols <- paste0(100 * c(0.025, 0.25, 0.5, 0.75, 0.975), "%")
   if (missing(pars))
-    return(sso@summary[, cols])
-  sso@summary[pars, cols]
+    return(slot(sso, "summary")[, cols])
+  slot(sso, "summary")[pars, cols]
 }
 
 retrieve_median <- function(sso, pars) {
@@ -121,50 +121,63 @@ retrieve_median <- function(sso, pars) {
 
 retrieve_mean <- function(sso, pars) {
   if (missing(pars))
-    return(sso@summary[, "mean"])
-  sso@summary[pars, "mean"]
+    return(slot(sso, "summary")[, "mean"])
+  slot(sso, "summary")[pars, "mean"]
 }
 
 retrieve_sd <- function(sso, pars) {
   if (missing(pars))
-    return(sso@summary[, "sd"])
-  sso@summary[pars, "sd"]
+    return(slot(sso, "summary")[, "sd"])
+  slot(sso, "summary")[pars, "sd"]
 }
 
 
-sp_check <- function(sso) {
-  if (identical(sso@sampler_params, list(NA)))
+.sp_check <- function(sso) {
+  if (identical(slot(sso, "sampler_params"), list(NA)))
     stop("No sampler parameters found", call. = FALSE)
 }
 
+.which_rows <- function(sso, inc_warmup) {
+  if (inc_warmup) {
+    seq_len(slot(sso, "nIter"))
+  } else {
+    seq(from = 1 + slot(sso, "nWarmup"), 
+        to = slot(sso, "nIter"))
+  }
+}
+
 retrieve_max_treedepth <- function(sso, inc_warmup = FALSE) {
-  sp_check(sso)
-  rows <- if (inc_warmup) 1:sso@nIter else (sso@nWarmup + 1):sso@nIter
-  max_td <- sapply(sso@sampler_params, function(x) max(x[rows, "treedepth__"]))
+  .sp_check(sso)
+  rows <- .which_rows(sso, inc_warmup)
+  max_td <- sapply(slot(sso, "sampler_params"), function(x) 
+    max(x[rows, "treedepth__"]))
   names(max_td) <- paste0("chain", 1:length(max_td))
   max_td
 }
 
 retrieve_prop_divergent <- function(sso, inc_warmup = FALSE) {
-  sp_check(sso)
-  rows <- if (inc_warmup) 1:sso@nIter else (sso@nWarmup + 1):sso@nIter
-  prop_div <- sapply(sso@sampler_params, function(x) mean(x[rows, "divergent__"]))
+  .sp_check(sso)
+  rows <- .which_rows(sso, inc_warmup)
+  prop_div <- sapply(slot(sso, "sampler_params"), function(x) 
+    mean(x[rows, "divergent__"]))
   names(prop_div) <- paste0("chain", 1:length(prop_div))
   prop_div
 }
 
 retrieve_avg_stepsize <- function(sso, inc_warmup = FALSE) {
-  sp_check(sso)
-  rows <- if (inc_warmup) 1:sso@nIter else (sso@nWarmup + 1):sso@nIter
-  avg_ss <- sapply(sso@sampler_params, function(x) mean(x[rows, "stepsize__"]))
+  .sp_check(sso)
+  rows <- .which_rows(sso, inc_warmup)
+  avg_ss <- sapply(slot(sso, "sampler_params"), function(x) 
+    mean(x[rows, "stepsize__"]))
   names(avg_ss) <- paste0("chain", 1:length(avg_ss))
   avg_ss
 }
 
 retrieve_avg_accept <- function(sso, inc_warmup = FALSE) {
-  sp_check(sso)
-  rows <- if (inc_warmup) 1:sso@nIter else (sso@nWarmup + 1):sso@nIter
-  avg_accept <- sapply(sso@sampler_params, function(x) mean(x[rows, "accept_stat__"]))
+  .sp_check(sso)
+  rows <- .which_rows(sso, inc_warmup)
+  avg_accept <- sapply(slot(sso, "sampler_params"), function(x) 
+    mean(x[rows, "accept_stat__"]))
   names(avg_accept) <- paste0("chain", 1:length(avg_accept))
   avg_accept
 }

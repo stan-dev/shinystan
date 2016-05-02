@@ -9,13 +9,13 @@ retrieve(sso, what, ...)
 \arguments{
 \item{sso}{A \code{\link[=as.shinystan]{shinystan object}}.}
 
-\item{what}{What do you want to get? See \strong{Details}, below.}
+\item{what}{What do you want to get? See Details, below.}
 
 \item{...}{Optional arguments, in particular \code{pars} to specify parameter
 names (by default all parameters will be used). For NUTS sampler parameters
 only (e.g. stepsize, treedepth) \code{inc_warmup} can also be specified to 
 include/exclude warmup iterations (the default is \code{FALSE}). See
-\strong{Details}, below.}
+Details, below.}
 }
 \description{
 From a shinystan object get rhat, effective sample size, posterior

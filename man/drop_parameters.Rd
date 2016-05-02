@@ -15,10 +15,14 @@ of its elements will be removed. Currently it is not possible to remove
 only a subset of the elements of a non-scalar parameter.}
 }
 \value{
-\code{sso} with \code{pars} dropped.
+\code{sso}, with \code{pars} dropped.
 }
 \description{
-Drop parameters from a shinystan object
+Remove selected parameters from a shinystan object. This is useful if you 
+have a very large shinystan object when you only want to look at a subset of 
+parameters. With a smaller shinystan object, \code{\link{launch_shinystan}} 
+will be faster and you should experience better performance (responsiveness) 
+after launching when using the ShinyStan app.
 }
 \examples{
 # Using example shinystan object 'eight_schools'
