@@ -7,7 +7,8 @@ thm_no_yaxs <- thm + no_yaxs
   })
   sp_mat <- do.call("cbind", sp_pw)
   colnames(sp_mat) <- paste0("chain:", 1:ncol(sp_mat))
-  sp_mat <- cbind(iterations = (warmup_val+1):(warmup_val + nrow(sp_mat)), sp_mat)
+  sp_mat <- cbind(iterations = seq(from = warmup_val + 1, to = warmup_val + nrow(sp_mat)), 
+                  sp_mat)
   as.data.frame(sp_mat)
 }
 
@@ -15,8 +16,10 @@ thm_no_yaxs <- thm + no_yaxs
 .sampler_param_vs_param <- function(p, sp, divergent = NULL, hit_max_td = NULL, 
                                     p_lab, sp_lab, chain = 0, violin = FALSE, 
                                     smoother = FALSE) {
-  xy_labs <- labs(y = if (missing(p_lab)) NULL else p_lab, 
-                  x = if (missing(sp_lab)) NULL else sp_lab)
+  xy_labs <- labs(
+    y = if (missing(p_lab)) NULL else p_lab, 
+    x = if (missing(sp_lab)) NULL else sp_lab
+    )
   df <- data.frame(sp = do.call("c", sp), p = c(p))
   if (violin)
     df$sp <- as.factor(round(df$sp, 4))
@@ -25,12 +28,16 @@ thm_no_yaxs <- thm + no_yaxs
   if (!is.null(hit_max_td))
     df$hit_max_td <- do.call("c", hit_max_td)
   
-  base <- ggplot(df, aes(sp,p)) + xy_labs + thm 
+  base <- ggplot(df, aes(sp,p)) + 
+    xy_labs + 
+    thm 
+  
   if (chain == 0) {
     if (violin) graph <- base + geom_violin(color = vline_base_clr, fill = base_fill) 
     else {
       graph <- base + geom_point(alpha = 1/3, color = pt_outline_clr, fill = base_fill, shape = 19) 
-      if (smoother) graph <- graph + stat_smooth(color = overlay_fill, se = FALSE)
+      if (smoother) 
+        graph <- graph + stat_smooth(color = overlay_fill, se = FALSE)
       if (!is.null(divergent))
         graph <- graph + geom_point(data = subset(df, divergent == 1), aes(sp,p), 
                                     color = divergent_clr, fill = divergent_fill,
@@ -58,12 +65,11 @@ thm_no_yaxs <- thm + no_yaxs
     return(graph)
   }
   graph <- base + geom_point(alpha = 1/3, color = pt_outline_clr, fill = base_fill, shape = 19)
-  if (smoother) graph <- graph + 
-    stat_smooth(color = overlay_fill, se = FALSE)
-  graph <- graph + 
-    geom_point(data = chain_data, aes(sp,p), color = chain_fill, alpha = 0.5)
-  if (smoother) graph <- graph + 
-    stat_smooth(data = chain_data, aes(sp,p), color = chain_fill, se = FALSE)
+  if (smoother) 
+    graph <- graph + stat_smooth(color = overlay_fill, se = FALSE)
+  graph <- graph + geom_point(data = chain_data, aes(sp,p), color = chain_fill, alpha = 0.5)
+  if (smoother) 
+    graph <- graph + stat_smooth(data = chain_data, aes(sp,p), color = chain_fill, se = FALSE)
   if (!is.null(divergent))
     graph <- graph + geom_point(data = subset(chain_data, div == 1), aes(sp,p), 
                                 color = divergent_clr, fill = divergent_fill,
@@ -77,14 +83,18 @@ thm_no_yaxs <- thm + no_yaxs
 
 .sampler_param_vs_sampler_param_violin <- function(df_x, df_y, lab_x, lab_y, 
                                                    chain = 0) {
-  
   xy_labs <- labs(y = lab_y, x = lab_x)
   df <- data.frame(x = do.call("c", df_x), y = do.call("c", df_y))
   df$x <- as.factor(df$x)
   
-  base <- ggplot(df, aes(x,y)) + xy_labs + thm 
+  base <- ggplot(df, aes(x,y)) + 
+    xy_labs + 
+    thm
+  
   graph <- base + geom_violin(color = vline_base_clr, fill = base_fill) 
-  if (chain == 0) return(graph)
+  if (chain == 0) 
+    return(graph)
+  
   chain_clr <- color_vector_chain(ncol(df_x))[chain]
   chain_fill <- chain_clr
   chain_data <- data.frame(x = as.factor(df_x[, chain]), y = df_y[, chain])
@@ -99,7 +109,9 @@ thm_no_yaxs <- thm + no_yaxs
     geom_histogram(aes_string(y="..density.."),
                    binwidth = diff(range(mdf$value))/30, fill = base_fill, 
                    color = vline_base_clr, size = 0.2) + 
-    labs(x = if (missing(lab)) NULL else lab, y = "") + thm
+    labs(x = if (missing(lab)) NULL else lab, y = "") + 
+    thm
+  
   if (chain == 0) {
     graph <- base + 
       geom_vline(xintercept = mean(mdf$value), color = vline_base_clr, size = .8) + 
@@ -127,15 +139,19 @@ thm_no_yaxs <- thm + no_yaxs
   mdf_td <- reshape2::melt(df_td, id.vars = "iterations")
   mdf_nd <- reshape2::melt(df_nd, id.vars = "iterations")
   mdf <- cbind(mdf_td, div = mdf_nd$value)
-  plot_data <- if (divergent == "All") mdf else subset(mdf, div == divergent)
-  if (nrow(plot_data) == 0) return(NULL)
+  plot_data <- if (divergent == "All") 
+    mdf else subset(mdf, div == divergent)
+  if (nrow(plot_data) == 0) 
+    return(NULL)
   
   graph <- ggplot(plot_data, aes(x = factor(value)), na.rm = TRUE) + 
     geom_bar(aes(y=..count../sum(..count..)), width=1, fill = base_fill,
              color = vline_base_clr, size = 0.2) + 
     plot_labs + 
     plot_theme
-  if (chain == 0) return(graph)
+  if (chain == 0) 
+    return(graph)
+  
   chain_clr <- color_vector_chain(ncol(df_td) - 1)[chain]
   chain_fill <- chain_clr
   chain_data <- subset(plot_data, variable == paste0("chain:",chain))
