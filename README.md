@@ -75,9 +75,8 @@ and is compatible with Safari, Firefox, Chrome, and most other browsers.
 
 #### Get help or submit bug report
 
-[Stan Users Google group](https://groups.google.com/forum/#!forum/stan-users) 
-
-[ShinyStan issue tracker](https://github.com/stan-dev/shinystan/issues)
+* [Stan Users Google group](https://groups.google.com/forum/#!forum/stan-users) 
+* [ShinyStan issue tracker](https://github.com/stan-dev/shinystan/issues)
 
 #### Licensing
 
