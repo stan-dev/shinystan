@@ -146,7 +146,7 @@ deploy_shinystan <- function(sso,
 # functions to set defaults for ppcheck shiny::selectInput for y and y_rep 
 set_ppcheck_defaults <- function(appDir, yrep_name, y_name = "y") {
   stopifnot(is.character(yrep_name), is.character(y_name), 
-            length(yrep_name) == 1, length(yname) == 1)
+            length(yrep_name) == 1, length(y_name) == 1)
   fileDir <- file.path(appDir, "server_files", "pages", "diagnose",
                        "ppcheck", "ui")
   y_file <- file.path(fileDir, "pp_y_from_r.R")
