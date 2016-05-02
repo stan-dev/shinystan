@@ -40,8 +40,9 @@
 generate_quantity <- function(sso, param1, param2, fun, new_name) {
   sso_check(sso)
   
-  name_exists <- new_name %in% sso@param_names  
-  if (name_exists) stop(paste("There is already a parameter named", new_name))
+  name_exists <- new_name %in% sso@param_names
+  if (name_exists)
+    stop(paste("There is already a parameter named", new_name))
   
   message("\nThis might take a moment for large shinystan objects...\n")
   
@@ -49,16 +50,20 @@ generate_quantity <- function(sso, param1, param2, fun, new_name) {
   samps <- sso@samps_all
   dim_samps <- dim(samps)
   nDim <- length(dim_samps)
-  if (nDim == 3) { # i.e. multiple chains
+  if (nDim == 3) {
+    # i.e. multiple chains
     x_samps <- samps[, , param1]
-    if (two_params) y_samps <- samps[, , param2]
+    if (two_params)
+      y_samps <- samps[, , param2]
   }
-  if (nDim == 2) { # i.e. only 1 chain
+  if (nDim == 2) {
+    # i.e. only 1 chain
     x_samps <- samps[, param1]
-    if (two_params) y_samps <- samps[, param2]
+    if (two_params)
+      y_samps <- samps[, param2]
   }
   
-  arglist <- if (two_params) 
+  arglist <- if (two_params)
     list(x_samps, y_samps) else list(x_samps)
   temp <- do.call(fun, args = arglist)
   
@@ -66,20 +71,24 @@ generate_quantity <- function(sso, param1, param2, fun, new_name) {
   new_dim[[nDim]] <- new_dim[[nDim]] + 1
   new_dim_names <- dimnames(samps)
   new_dim_names[[nDim]] <- c(new_dim_names[[nDim]], new_name)
-  samps <- array(data = c(samps, temp), dim = new_dim, dimnames = new_dim_names)
+  samps <-
+    array(data = c(samps, temp),
+          dim = new_dim,
+          dimnames = new_dim_names)
   
   param_dims_new <- sso@param_dims
   param_dims_new[[new_name]] <- numeric(0)
-  sso_new <- as.shinystan(samps,
-                          model_name = sso@model_name,
-                          burnin = sso@nWarmup,
-                          param_dims = param_dims_new)
+  sso_new <- as.shinystan(
+    samps,
+    model_name = sso@model_name,
+    burnin = sso@nWarmup,
+    param_dims = param_dims_new
+  )
   sso_new@summary <- shinystan_monitor(samps, warmup = sso@nWarmup)
   
   slot_names <- c("sampler_params", "model_code", "user_model_info", "misc")
-  for (sn in slot_names) {
+  for (sn in slot_names)
     slot(sso_new, sn) <- slot(sso, sn)
-  }
   
-  return(sso_new)
+  sso_new
 }

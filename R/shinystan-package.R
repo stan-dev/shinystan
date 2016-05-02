@@ -11,8 +11,7 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-#' The ShinyStan interface and shinystan R package
-#'
+#' ShinyStan interface and shinystan R package
 #'
 #' @docType package
 #' @name shinystan-package

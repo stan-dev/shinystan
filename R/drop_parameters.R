@@ -37,8 +37,7 @@ drop_parameters <- function(sso, pars) {
   sso_check(sso)
   stopifnot(is.character(pars))
   if (any(grepl("[", pars, fixed = TRUE)))
-    stop("Individual elements of non-scalar parameters can't be removed.", 
-         call. = FALSE)
+    stop("Individual elements of non-scalar parameters can't be removed.")
   
   non_scalar <- names(sso@param_dims) %in% pars
   if (any(non_scalar)) {
@@ -59,10 +58,12 @@ drop_parameters <- function(sso, pars) {
   if (!any(non_scalar) && all(is.na(sel))) {
     stop("No matches for 'pars' were found.", call. = FALSE)
   } else if (any(is.na(sel))) {
-    warning(paste("Some 'pars' not found and ignored:",
-                  paste(pars[is.na(sel)], collapse = ", ")), call. = FALSE)
+    warning(paste(
+      "Some 'pars' not found and ignored:",
+      paste(pars[is.na(sel)], collapse = ", ")
+    ))
   }
-
+  
   .drop_parameters(sso, na.omit(sel))
 }
 
@@ -71,7 +72,7 @@ drop_parameters <- function(sso, pars) {
 #   removed
 .drop_parameters <- function(sso, rmv) {
   sso@param_names <- sso@param_names[-rmv]
-  sso@samps_all <- sso@samps_all[, ,-rmv, drop = FALSE]
+  sso@samps_all <- sso@samps_all[, , -rmv, drop = FALSE]
   sso@summary <- sso@summary[-rmv, , drop = FALSE]
   sso
 }

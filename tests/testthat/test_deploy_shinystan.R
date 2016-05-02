@@ -7,7 +7,7 @@ test_that("deploy_shinystan error checking works", {
   expect_error(deploy_shinystan(sso@samps_all), 
                regexp = "specify a shinystan object")
   expect_error(deploy_shinystan(sso), 
-               regexp = "specify a name")
+               regexp = "'appName' is required")
 })
 
 test_that("deploy_shinystan preprocessing doesn't error", {

@@ -1,5 +1,5 @@
 library(shinystan)
-library(rstanarm)
+suppressPackageStartupMessages(library(rstanarm))
 library(coda)
 
 sso <- eight_schools

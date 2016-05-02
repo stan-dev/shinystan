@@ -2,55 +2,62 @@
 # terms of the GNU General Public License as published by the Free Software
 # Foundation; either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # shinystan is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-# S4 class ----------------------------------------------------------------
+# shinystan class definition ------------------------------------------
 #' S4 shinystan objects
-#' 
+#'
 #' @aliases shinystan-class
-#' @description See \code{\link{as.shinystan}} for documentation on creating 
+#' @description See \code{\link{as.shinystan}} for documentation on creating
 #'   shinystan objects and \code{\link{eight_schools}} for an example object.
-#'   
-shinystan <- setClass("shinystan",
-                      slots = list(model_name      = "character",
-                                   param_names     = "character",
-                                   param_dims      = "list",
-                                   samps_all       = "array",
-                                   summary         = "matrix",
-                                   sampler_params  = "list",
-                                   nChains         = "numeric",
-                                   nIter           = "numeric",
-                                   nWarmup         = "numeric",
-                                   user_model_info = "character",
-                                   model_code      = "character",
-                                   misc            = "list"
-                      ),
-                      prototype = list(model_name = "No name",
-                                       param_names = "",
-                                       param_dims = list(),
-                                       samps_all = array(NA, c(1,1)),
-                                       summary = matrix(NA, nr=1,nc=1),
-                                       sampler_params = list(NA),
-                                       nChains = 0,
-                                       nIter = 0,
-                                       nWarmup = 0,
-                                       user_model_info = 
-                                         "Use this space to store notes about your model",
-                                       model_code = 
-                                         "Use this space to store your model code",
-                                       misc = list()
-                      ))
+#'
+shinystan <- setClass(
+  Class = "shinystan",
+  slots = list(
+    model_name      = "character",
+    param_names     = "character",
+    param_dims      = "list",
+    samps_all       = "array",
+    summary         = "matrix",
+    sampler_params  = "list",
+    nChains         = "numeric",
+    nIter           = "numeric",
+    nWarmup         = "numeric",
+    user_model_info = "character",
+    model_code      = "character",
+    misc            = "list"
+  ),
+  prototype = list(
+    model_name = "No name",
+    param_names = "",
+    param_dims = list(),
+    samps_all = array(NA, c(1, 1)),
+    summary = matrix(NA, nr = 1, nc =
+                       1),
+    sampler_params = list(NA),
+    nChains = 0,
+    nIter = 0,
+    nWarmup = 0,
+    user_model_info =
+      "Use this space to store notes about your model",
+    model_code =
+      "Use this space to store your model code",
+    misc = list()
+  )
+)
 
 
 
-# as.shinystan ------------------------------------------------------------
+# create shinystan objects ------------------------------------------------
+  
+# as.shinystan (generic) --------------------------------------------------
 #' Create and test shinystan objects
 #' 
 #' @description The \code{as.shinystan} function creates shinystan objects that 
@@ -90,7 +97,7 @@ setGeneric("as.shinystan", function(X, ...) {
 #' @rdname as.shinystan
 is.shinystan <- function(X) inherits(X, "shinystan")
 
-# array -------------------------------------------------------------------
+# as.shinystan (array) ---------------------------------------------------
 #' @describeIn as.shinystan Create a shinystan object from a 3-D
 #'   \code{\link{array}} of simulations. The array should have dimensions
 #'   corresponding to iterations, chains, and parameters, in that order.
@@ -118,65 +125,71 @@ is.shinystan <- function(X) inherits(X, "shinystan")
 #' launch_shinystan(sso)
 #' }
 #'
-setMethod("as.shinystan", "array",
-          function(X,
-                   model_name = "unnamed model",
-                   burnin = 0,
-                   param_dims = list(),
-                   model_code = NULL, 
-                   note = NULL,
-                   ...) {
-            validate_model_code(model_code)
-            if (!isTRUE(length(dim(X)) == 3))
-              stop ("X must be an array with 3 dimensions.")
-            
-            if (is.null(dimnames(X)[[3]]))
-              dimnames(X)[[3]] <- paste0("V", 1:dim(X)[3])
-            
-            dimnames(X) <- list(
-              iterations = 1:nrow(X),
-              chains = paste0("chain:", 1:ncol(X)),
-              parameters = dimnames(X)[[3]]
-            )
-            param_names <- dimnames(X)[[3]]
-            
-            if (!length(param_dims)) {
-              param_dims <- list()
-              param_dims[1:length(param_names)] <- NA
-              names(param_dims) <- param_names
-              for (i in 1:length(param_names)) {
-                param_dims[[i]] <- numeric(0)
-              }
-            } else {
-              zeros <- sapply(1:length(param_dims), function(i) {
-                0 %in% param_dims[[i]]
-              })
-              for (i in which(zeros)) {
-                param_dims[[i]] <- numeric(0)
-              }
-            }
-            
-            slots <- list()
-            slots$Class <- "shinystan"
-            slots$model_name <- model_name
-            slots$param_names <- param_names
-            slots$param_dims <- param_dims
-            slots$samps_all <- X
-            slots$summary <- shinystan_monitor(X, warmup = burnin)
-            slots$sampler_params <- list(NA)
-            slots$nChains <- ncol(X)
-            slots$nIter <- nrow(X)
-            slots$nWarmup <- burnin
-            if (!is.null(note))
-              slots$user_model_info <- note
-            if (!is.null(model_code))
-              slots$model_code <- model_code
-            
-            do.call("new", slots)
-          })
+setMethod(
+  "as.shinystan",
+  signature = "array",
+  definition = function(X,
+                        model_name = "unnamed model",
+                        burnin = 0,
+                        param_dims = list(),
+                        model_code = NULL,
+                        note = NULL,
+                        ...) {
+    validate_model_code(model_code)
+    if (!isTRUE(length(dim(X)) == 3))
+      stop ("'X' must have 3 dimensions.")
+    
+    if (is.null(dimnames(X)[[3]]))
+      dimnames(X)[[3]] <- paste0("V", seq_len(dim(X)[3]))
+    param_names <- dimnames(X)[[3]]
+    dimnames(X) <- list(
+      iterations = seq_len(nrow(X)),
+      chains = paste0("chain:", seq_len(ncol(X))),
+      parameters = param_names
+    )
+    
+    slots <- list()
+    slots$Class <- "shinystan"
+    slots$model_name <- model_name
+    slots$param_names <- param_names
+    slots$param_dims <- .set_param_dims(param_dims, param_names)
+    slots$samps_all <- X
+    slots$summary <- shinystan_monitor(X, warmup = burnin)
+    slots$sampler_params <- list(NA)
+    slots$nChains <- ncol(X)
+    slots$nIter <- nrow(X)
+    slots$nWarmup <- burnin
+    if (!is.null(note))
+      slots$user_model_info <- note
+    if (!is.null(model_code))
+      slots$model_code <- model_code
+    
+    do.call("new", slots)
+  }
+)
+
+.set_param_dims <- function(param_dims = list(), 
+                            param_names = character(length(param_dims))) {
+  if (!length(param_dims)) {
+    param_dims <- list()
+    param_dims[seq_along(param_names)] <- NA
+    names(param_dims) <- param_names
+    for (i in seq_along(param_names))
+      param_dims[[i]] <- numeric(0)
+    
+  } else {
+    
+    zeros <- sapply(seq_along(param_dims), function(i) {
+      0 %in% param_dims[[i]]
+    })
+    for (i in which(zeros))
+      param_dims[[i]] <- numeric(0)
+  }
+  param_dims 
+}
 
 
-# list of chains ----------------------------------------------------------
+# as.shinystan (list) ---------------------------------------------------
 #' @describeIn as.shinystan Create a shinystan object from a \code{\link{list}}
 #'   of matrices. Each \code{\link{matrix}} (or 2-D array) should contain the
 #'   simulations for an individual chain and all of the matrices should have the
@@ -205,166 +218,157 @@ setMethod("as.shinystan", "array",
 #' launch_shinystan(sso2)
 #' }
 #'
-setMethod("as.shinystan", "list",
-          function(X, 
-                   model_name = "unnamed model",
-                   burnin = 0,
-                   param_dims = list(),
-                   model_code = NULL,
-                   note = NULL,
-                   ...) {
-            validate_model_code(model_code)
-            if (!length(X))
-              stop('List is empty.')
-            
-            dims <- sapply(X, function(x) length(dim(x)))
-            if (!isTRUE(all(dims == 2)))
-              stop("All elements of X should be matrices / 2-D arrays.")
-            
-            nChain <- length(X)
-            for (i in 1:nChain) {
-              nms <- colnames(as.matrix(X[[i]]))
-              if (is.null(nms) || !all(nzchar(nms)))
-                stop(
-                  "Some parameters are missing names. ",
-                  "Check the column names for the matrices in your list of chains."
-                )
-            }
-            
-            if (nChain == 1) {
-              nIter <- nrow(X[[1]])
-              param_names <- colnames(X[[1]])
-            } else {
-              nIter <- sapply(X, nrow)
-              same_iters <- length(unique(nIter)) == 1
-              if (!same_iters)
-                stop("Each chain should contain the same number of iterations.")
-              cnames <- sapply(X, colnames)
-              if (is.array(cnames)) {
-                same_params <- identical(cnames[, 1], cnames[, 2])
-                param_names <- cnames[, 1]
-              } else {
-                same_params <- length(unique(cnames)) == 1
-                param_names <- cnames
-              }
-              if (!same_params)
-                stop("The parameters for each chain should be in the same order ",
-                     "and have the same names.")
-              nIter <- nIter[1]
-            }
-            param_names <- unique(param_names)
-            nParam <- length(param_names)
-            out <- array(NA, dim = c(nIter, nChain, nParam))
-            for (i in 1:nChain) {
-              out[, i, ] <- X[[i]]
-            }
-            dimnames(out) <- list(
-              iterations = NULL,
-              chains = paste0("chain:", 1:nChain),
-              parameters = param_names
-            )
-            as.shinystan(
-              out,
-              model_name = model_name,
-              burnin = burnin,
-              param_dims = param_dims,
-              model_code = model_code,
-              note = note,
-              ...
-            )
-          })
+setMethod(
+  "as.shinystan",
+  signature = "list",
+  definition = function(X,
+                        model_name = "unnamed model",
+                        burnin = 0,
+                        param_dims = list(),
+                        model_code = NULL,
+                        note = NULL,
+                        ...) {
+    validate_model_code(model_code)
+    if (!length(X))
+      stop('List is empty.')
+    
+    dims <- sapply(X, function(x) length(dim(x)))
+    if (!isTRUE(all(dims == 2)))
+      stop("All elements of X should be matrices / 2-D arrays.")
+    
+    nChain <- length(X)
+    for (i in seq_len(nChain)) {
+      nms <- colnames(as.matrix(X[[i]]))
+      if (is.null(nms) || !all(nzchar(nms)))
+        stop(
+          "Some parameters are missing names. ",
+          "Check the column names for the matrices in your list of chains."
+        )
+    }
+    
+    if (nChain == 1) {
+      nIter <- nrow(X[[1]])
+      param_names <- colnames(X[[1]])
+    } else {
+      nIter <- sapply(X, nrow)
+      same_iters <- length(unique(nIter)) == 1
+      if (!same_iters)
+        stop("Each chain should contain the same number of iterations.")
+      cnames <- sapply(X, colnames)
+      if (is.array(cnames)) {
+        same_params <- identical(cnames[, 1], cnames[, 2])
+        param_names <- cnames[, 1]
+      } else {
+        same_params <- length(unique(cnames)) == 1
+        param_names <- cnames
+      }
+      if (!same_params)
+        stop("The parameters for each chain should be in the same order ",
+             "and have the same names.")
+      nIter <- nIter[1]
+    }
+    param_names <- unique(param_names)
+    nParam <- length(param_names)
+    out <- array(NA, dim = c(nIter, nChain, nParam))
+    for (i in seq_len(nChain))
+      out[, i,] <- X[[i]]
+
+    dimnames(out) <- list(
+      iterations = NULL,
+      chains = paste0("chain:", seq_len(nChain)),
+      parameters = param_names
+    )
+    as.shinystan(
+      out,
+      model_name = model_name,
+      burnin = burnin,
+      param_dims = param_dims,
+      model_code = model_code,
+      note = note,
+      ...
+    )
+  }
+)
 
 
-# mcmc.list ---------------------------------------------------------------
+# as.shinystan (mcmc.list) -----------------------------------------------
 setOldClass("mcmc.list")
 #' @describeIn as.shinystan Create a shinystan object from an mcmc.list 
 #'   (\pkg{coda}).
 #' 
-setMethod("as.shinystan", "mcmc.list",
-          function(X,
-                   model_name = "unnamed model",
-                   burnin = 0,
-                   param_dims = list(),
-                   model_code = NULL,
-                   note = NULL,
-                   ...) {
-            check_suggests("coda")
-            validate_model_code(model_code)
-            
-            if (length(X) == 1) {
-              return(as.shinystan(
-                X = list(.mcmclist2matrix(X)),
-                model_name = model_name,
-                burnin = burnin,
-                param_dims = param_dims,
-                model_code = model_code,
-                note = note,
-                ...
-              ))
-            }
-            
-            samps_array <- array(
-              NA,
-              dim = c(coda::niter(X), coda::nvar(X), coda::nchain(X)),
-              dimnames = list(
-                iter = time(X),
-                var = coda::varnames(X),
-                chain = coda::chanames(X)
-              )
-            )
-            for (c in 1:coda::nchain(X))
-              samps_array[, , c] <- X[[c]]
-            
-            samps_array <- aperm(drop(samps_array), c(1, 3, 2))
-            dimnames(samps_array) <- list(
-                iterations = 1:nrow(samps_array),
-                chains = paste0("chain:", 1:ncol(samps_array)),
-                parameters = dimnames(samps_array)[[3]]
-              )
-            param_names <- dimnames(X[[1]])[[2]]
-            
-            if (length(param_dims)) {
-              zeros <- sapply(1:length(param_dims), function(i) {
-                0 %in% param_dims[[i]]
-              })
-              for (i in which(zeros)) {
-                param_dims[[i]] <- numeric(0)
-              }
-              param_groups <- names(param_dims)
-            } else {
-              param_dims <- list()
-              param_dims[1:length(param_names)] <- NA
-              names(param_dims) <- param_groups <- param_names
-              for (i in 1:length(param_names)) {
-                param_dims[[i]] <- numeric(0)
-              }
-            }
-            slots <- list()
-            slots$Class <- "shinystan"
-            slots$model_name <- model_name
-            slots$param_names <- param_names
-            slots$param_dims <- param_dims
-            slots$samps_all <- samps_array
-            slots$summary <-
-              shinystan_monitor(samps_array, warmup = burnin)
-            slots$sampler_params <- list(NA)
-            slots$nChains <- ncol(samps_array)
-            slots$nIter <- nrow(samps_array)
-            slots$nWarmup <- burnin
-            if (!is.null(note))
-              slots$user_model_info <- note
-            if (!is.null(model_code))
-              slots$model_code <- model_code
-            
-            do.call("new", slots)
-          })
+setMethod(
+  "as.shinystan",
+  signature = "mcmc.list",
+  definition = function(X,
+                        model_name = "unnamed model",
+                        burnin = 0,
+                        param_dims = list(),
+                        model_code = NULL,
+                        note = NULL,
+                        ...) {
+    check_suggests("coda")
+    validate_model_code(model_code)
+    
+    if (length(X) == 1) {
+      return(
+        as.shinystan(
+          X = list(.mcmclist2matrix(X)),
+          model_name = model_name,
+          burnin = burnin,
+          param_dims = param_dims,
+          model_code = model_code,
+          note = note,
+          ...
+        )
+      )
+    }
+    
+    samps_array <- array(
+      NA,
+      dim = c(coda::niter(X), coda::nvar(X), coda::nchain(X)),
+      dimnames = list(
+        iter = time(X),
+        var = coda::varnames(X),
+        chain = coda::chanames(X)
+      )
+    )
+    for (c in seq_len(coda::nchain(X)))
+      samps_array[, , c] <- X[[c]]
+    
+    samps_array <- aperm(drop(samps_array), c(1, 3, 2))
+    dimnames(samps_array) <- list(
+      iterations = seq_len(nrow(samps_array)),
+      chains = paste0("chain:", seq_len(ncol(samps_array))),
+      parameters = dimnames(samps_array)[[3]]
+    )
+    param_names <- dimnames(X[[1]])[[2]]
+    
+    slots <- list()
+    slots$Class <- "shinystan"
+    slots$model_name <- model_name
+    slots$param_names <- param_names
+    slots$param_dims <- .set_param_dims(param_dims, param_names)
+    slots$samps_all <- samps_array
+    slots$summary <- shinystan_monitor(samps_array, warmup = burnin)
+    slots$sampler_params <- list(NA)
+    slots$nChains <- ncol(samps_array)
+    slots$nIter <- nrow(samps_array)
+    slots$nWarmup <- burnin
+    if (!is.null(note))
+      slots$user_model_info <- note
+    if (!is.null(model_code))
+      slots$model_code <- model_code
+    
+    do.call("new", slots)
+  }
+)
 
 .mcmclist2matrix <- function(x) {
   # adapted from Coda package
   out <- matrix(nrow = coda::niter(x) * coda::nchain(x), ncol = coda::nvar(x))
-  cols <- 1:coda::nvar(x)
-  for (i in 1:coda::nchain(x)) {
-    rows <- (i-1)*coda::niter(x) + 1:coda::niter(x)
+  cols <- seq_len(coda::nvar(x))
+  for (i in seq_len(coda::nchain(x))) {
+    rows <- (i-1)*coda::niter(x) + seq_len(coda::niter(x))
     out[rows, cols] <- x[[i]]
   }
   rownames <- character(ncol(out))
@@ -374,7 +378,7 @@ setMethod("as.shinystan", "mcmc.list",
 }
 
 
-# stanfit -----------------------------------------------------------------
+# as.shinystan (stanfit) -------------------------------------------------
 #' @describeIn as.shinystan Create a shinystan object from a stanfit object 
 #'   (\pkg{\link[rstan]{rstan}}). Fewer optional arguments are available for 
 #'   this method because all important information can be taken automatically 
@@ -390,87 +394,87 @@ setMethod("as.shinystan", "mcmc.list",
 #' sso <- as.shinystan(fit, model_name = "example")
 #' }
 #' 
-setMethod("as.shinystan", "stanfit",
-          function(X, 
-                   model_name = X@model_name, 
-                   note = NULL, 
-                   ...) {
-            check_suggests("rstan")
-            stan_args <- X@stan_args[[1L]]
-            stan_method <- stan_args$method
-            vb <- isTRUE(stan_method == "variational")
-            from_cmdstan_csv <- isTRUE("engine" %in% names(stan_args))
-            
-            stan_algorithm <- if (from_cmdstan_csv)
-              toupper(stan_args$engine) else stan_args$algorithm
-            
-            warmup <- if (from_cmdstan_csv) 
-              X@sim$warmup2[1L] else X@sim$warmup
-            
-            if (!is.null(stan_args[["save_warmup"]]))
-              if (!stan_args[["save_warmup"]])
-                warmup <- 0
-            
-            nWarmup <- if (from_cmdstan_csv) 
-              warmup else floor(warmup / X@sim$thin)
-            
-            cntrl <- X@stan_args[[1L]]$control
-            if (is.null(cntrl)) {
-              max_td <- 11
-            } else {
-              max_td <- cntrl$max_treedepth
-              if (is.null(max_td))
-                max_td <- 11
-            }
-            
-            samps_all <- rstan::extract(X, permuted = FALSE, inc_warmup = TRUE)
-            param_names <- dimnames(samps_all)[[3L]]
-            param_dims <- X@sim$dims_oi
-            
-            if (!vb && !(stan_algorithm %in% c("NUTS", "HMC"))) {
-              warning("Most features are only available for models using
-                      algorithm NUTS or algorithm HMC.")
-            }
-
-            sampler_params <- if (vb) 
-              list(NA) else suppressWarnings(rstan::get_sampler_params(X))
-            sampler_params <- .rename_sampler_param(sampler_params,
-                                                    oldname = "n_divergent__",
-                                                    newname = "divergent__")
-            
-            stan_summary <- rstan::summary(X)$summary
-            if (vb) stan_summary <- cbind(stan_summary,
-                                          Rhat = NA,
-                                          n_eff = NA,
-                                          se_mean = NA)
-            
-            slots <- list()
-            slots$Class <- "shinystan"
-            slots$model_name <- model_name
-            slots$param_names <- param_names
-            slots$param_dims <- param_dims
-            slots$samps_all <- samps_all
-            slots$summary <- stan_summary
-            slots$sampler_params <- sampler_params
-            slots$nChains <- ncol(X)
-            slots$nIter <- nrow(samps_all)
-            slots$nWarmup <- nWarmup
-            
-            if (!is.null(note))
-              slots$user_model_info <- note
-            
-            mcode <- rstan::get_stancode(X)
-            if (length(mcode))
-              slots$model_code <- mcode
-            
-            slots$misc <- list(max_td = max_td, 
-                               stan_method = stan_method,
-                               stan_algorithm = stan_algorithm)
-            
-            sso <- do.call("new", slots)
-            sso <- .rename_scalar(sso, oldname = "lp__", newname = "log-posterior")
-            sso
-            })
+setMethod(
+  "as.shinystan",
+  signature = "stanfit",
+  definition = function(X,
+                        model_name = X@model_name,
+                        note = NULL,
+                        ...) {
+    check_suggests("rstan")
+    stan_args <- X@stan_args[[1L]]
+    stan_method <- stan_args$method
+    vb <- isTRUE(stan_method == "variational")
+    from_cmdstan_csv <- isTRUE("engine" %in% names(stan_args))
+    stan_algorithm <- if (from_cmdstan_csv)
+      toupper(stan_args$engine) else stan_args$algorithm
+    
+    if (vb || !(stan_algorithm %in% c("NUTS", "HMC")))
+      warning("Many features are only available for models fit using
+              algorithm NUTS or algorithm HMC.")
+    
+    warmup <- if (from_cmdstan_csv)
+      X@sim$warmup2[1L] else X@sim$warmup
+    
+    if (!is.null(stan_args[["save_warmup"]])) 
+      if (!stan_args[["save_warmup"]])
+        warmup <- 0
+    
+    nWarmup <- if (from_cmdstan_csv)
+      warmup else floor(warmup / X@sim$thin)
+    
+    cntrl <- X@stan_args[[1L]]$control
+    if (is.null(cntrl)) {
+      max_td <- 11
+    } else {
+      max_td <- cntrl$max_treedepth
+      if (is.null(max_td))
+        max_td <- 11
+    }
+    
+    if (vb) {
+      sampler_params <- list(NA)
+    } else {
+      sampler_params <- suppressWarnings(rstan::get_sampler_params(X))
+      sampler_params <- .rename_sampler_param(sampler_params,
+                                              oldname = "n_divergent__",
+                                              newname = "divergent__")
+    }
+    stan_summary <- rstan::summary(X)$summary
+    if (vb)
+      stan_summary <- cbind(stan_summary,
+                            Rhat = NA,
+                            n_eff = NA,
+                            se_mean = NA)
+    
+    slots <- list()
+    slots$Class <- "shinystan"
+    slots$model_name <- model_name
+    slots$samps_all <- rstan::extract(X, permuted = FALSE, inc_warmup = TRUE)
+    slots$param_names <- dimnames(slots$samps_all)[[3L]]
+    slots$param_dims <- X@sim$dims_oi
+    slots$summary <- stan_summary
+    slots$sampler_params <- sampler_params
+    slots$nChains <- ncol(X)
+    slots$nIter <- nrow(slots$samps_all)
+    slots$nWarmup <- nWarmup
+    
+    if (!is.null(note))
+      slots$user_model_info <- note
+    
+    mcode <- rstan::get_stancode(X)
+    if (length(mcode))
+      slots$model_code <- mcode
+    
+    slots$misc <- list(max_td = max_td,
+                       stan_method = stan_method,
+                       stan_algorithm = stan_algorithm)
+    
+    sso <- do.call("new", slots)
+    sso <- .rename_scalar(sso, oldname = "lp__", newname = "log-posterior")
+    sso
+  }
+)
 
 .rename_scalar <- function(sso, oldname = "lp__", newname = "log-posterior") {
   p <- which(sso@param_names == oldname)
@@ -496,7 +500,7 @@ setMethod("as.shinystan", "stanfit",
 }
 
 
-# stanreg -----------------------------------------------------------------
+# as.shinystan (stanreg) -------------------------------------------------
 setOldClass("stanreg")
 #' @describeIn as.shinystan Create a shinystan object from a stanreg object 
 #'   (\pkg{\link[rstanarm]{rstanarm}}).
@@ -522,45 +526,48 @@ setOldClass("stanreg")
 #' launch_shinystan(sso)
 #' }
 #'
-setMethod("as.shinystan", "stanreg",
-          function(X, 
-                   ppd = TRUE,
-                   seed = 1234,
-                   model_name = NULL,
-                   note = NULL,
-                   ...) {
-            check_suggests("rstanarm")
-            
-            sso <- do.call("as.shinystan", args = list(X = X$stanfit, ...))
-            mname <- if (!is.null(model_name)) 
-              model_name else paste0("rstanarm model (", sso@model_name, ")")
-            sso <- model_name(sso, mname)
-            if (!is.null(note))
-              sso <- suppressMessages(notes(sso, note, replace = TRUE))
-            
-            samps_all <- sso@samps_all
-            param_names <- sso@param_names
-            sel <- grep(":_NEW_", dimnames(samps_all)[[3L]], fixed = TRUE)
-            if (length(sel)) {
-              samps_all <- samps_all[, , -sel, drop = FALSE]
-              param_names <- param_names[-sel]
-              sso@summary <- sso@summary[-sel, , drop = FALSE]
-            }
-            param_dims <- vector(mode = "list", length = length(param_names))
-            names(param_dims) <- param_names
-            for (i in seq_along(param_names))
-              param_dims[[i]] <- numeric(0)
-            
-            sso@param_dims <- param_dims
-            sso@param_names <- param_names
-            sso@samps_all <- samps_all
-            
-            sso@misc$stanreg <- TRUE
-            if (isTRUE(ppd))
-              sso@misc$pp_check_plots <- .rstanarm_pp_checks(X, seed)
-            
-            sso
-          })
+setMethod(
+  "as.shinystan",
+  signature = "stanreg",
+  definition = function(X,
+                        ppd = TRUE,
+                        seed = 1234,
+                        model_name = NULL,
+                        note = NULL,
+                        ...) {
+    check_suggests("rstanarm")
+    sso <- as.shinystan(X$stanfit, ...)
+    
+    mname <- if (!is.null(model_name))
+      model_name else paste0("rstanarm model (", sso@model_name, ")")
+    sso <- model_name(sso, mname)
+    
+    if (!is.null(note))
+      sso <- suppressMessages(notes(sso, note, replace = TRUE))
+    
+    samps_all <- sso@samps_all
+    param_names <- sso@param_names
+    sel <- grep(":_NEW_", dimnames(samps_all)[[3L]], fixed = TRUE)
+    if (length(sel)) {
+      samps_all <- samps_all[, ,-sel, drop = FALSE]
+      param_names <- param_names[-sel]
+      sso@summary <- sso@summary[-sel, , drop = FALSE]
+    }
+    param_dims <- vector(mode = "list", length = length(param_names))
+    names(param_dims) <- param_names
+    for (i in seq_along(param_names))
+      param_dims[[i]] <- numeric(0)
+    
+    sso@param_dims <- param_dims
+    sso@param_names <- param_names
+    sso@samps_all <- samps_all
+    sso@misc$stanreg <- TRUE
+    if (isTRUE(ppd))
+      sso@misc$pp_check_plots <- .rstanarm_pp_checks(X, seed)
+    
+    sso
+  }
+)
 
 .rstanarm_pp_checks <- function(X, seed, ...) {
   message(

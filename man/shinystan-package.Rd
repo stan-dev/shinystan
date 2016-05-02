@@ -3,7 +3,7 @@
 \docType{package}
 \name{shinystan-package}
 \alias{shinystan-package}
-\title{The ShinyStan interface and shinystan R package}
+\title{ShinyStan interface and shinystan R package}
 \description{
 Applied Bayesian data analysis is primarily implemented through 
   the Markov chain Monte Carlo (MCMC) algorithms offered by various software

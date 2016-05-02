@@ -46,13 +46,14 @@ NULL
 sso_info <- function(sso) {
   sso_check(sso)
   sso_name <- deparse(substitute(sso))
-  has_notes <- 
+  has_notes <-
     sso@user_model_info != "Use this space to store notes about your model"
-  has_code <- 
-    sso@model_code != "Use this space to store your model code" 
+  has_code <-
+    sso@model_code != "Use this space to store your model code"
   
   cat(
-    sso_name, "---------------------",
+    sso_name,
+    "---------------------",
     paste("Model name:", sso@model_name),
     paste("Parameters:", length(sso@param_names)),
     paste("Parameter groups:", length(names(sso@param_dims))),
@@ -114,15 +115,19 @@ model_code <- function(sso, code = NULL) {
     return(slot(sso, "model_code"))
   
   slot(sso, "model_code") <- code
-  message(paste0("Successfully added code.", 
-                 "\nYou can view the code in the", 
-                 "ShinyStan GUI on the 'Model Code' page."))
+  message(
+    paste0(
+      "Successfully added code.",
+      "\nYou can view the code in the",
+      "ShinyStan GUI on the 'Model Code' page."
+    )
+  )
   sso
 }
 
 validate_model_code <- function(code) {
   if (is.null(code) || is.character(code)) {
-    invisible(TRUE) 
+    invisible(TRUE)
   } else {
     stop("Model code should be NULL or a string", call. = FALSE)
   }
@@ -173,11 +178,16 @@ notes <- function(sso, note = NULL, replace = FALSE) {
   if (!is.character(note) || !isTRUE(length(note) == 1))
     stop("'note' should be a single string")
   
-  slot(sso, "user_model_info") <- if (replace) 
+  slot(sso, "user_model_info") <- if (replace)
     note else c(slot(sso, "user_model_info"), paste0("\n\n", note))
   
-  message(paste("Successfully added note.", "\nYou can view the notes in the", 
-                "ShinyStan GUI on the 'Notepad' page."))
+  message(
+    paste(
+      "Successfully added note.",
+      "\nYou can view the notes in the",
+      "ShinyStan GUI on the 'Notepad' page."
+    )
+  )
   sso
 }
 

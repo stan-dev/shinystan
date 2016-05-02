@@ -26,8 +26,8 @@
 #' 
 update_sso <- function(sso) {
   stopifnot(is.shinystan(sso))
-  sso@sampler_params <- .rename_sampler_param(sso@sampler_params, 
-                                              oldname = "n_divergent__", 
+  sso@sampler_params <- .rename_sampler_param(sso@sampler_params,
+                                              oldname = "n_divergent__",
                                               newname = "divergent__")
   sso
 }
