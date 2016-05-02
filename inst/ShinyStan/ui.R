@@ -10,21 +10,19 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-
-object <- get(".shinystan_temp_object", envir = shinystan:::.sso_env)
+source_value <- function(file) source(file, local = TRUE)$value
 source("global_utils.R", local = TRUE)
-rm(object)
+if (exists("object")) 
+  rm(object)
 gc()
 
-# corner_link <- HTML(paste0('<a href=',
-#                            shQuote(paste0("http://mc-stan.org",sep='')), 
-#                            '>', 'Stan', '</a>'))
+
 
 # Begin shinyUI -----------------------------------------------------------
 # _________________________________________________________________________
 tagList(
-  tags$noscript(style = "color: orange; font-size: 30px; text-align: center;", 
-                "Please enable JavaScript to use ShinyStan."),
+  tags$noscript(style = "color: orange; font-size: 30px; text-align: center;",
+                "Please enable JavaScript to use ShinyStan."), 
   shinyjs::useShinyjs(),
   includeCSS("css/ShinyStan.css"),
   navbarPage(save_and_close, id = "nav", #title = NULL,
@@ -40,10 +38,8 @@ tagList(
                           div(id = "model-name",
                               br(),
                               h2(paste("Model:")),
-                              h4(.model_name)
-                          )
-                      ),
-                      br(),br(),br(),br(),
+                              h4(.model_name))),
+                      br(), br(), br(), br(),
                       includeHTML("html/home_page_links.html")
              ),
              
@@ -52,14 +48,14 @@ tagList(
                       tabsetPanel(
                         #### hmc/nuts plots ####
                         tabPanel("NUTS (plots)",
-                                 source(file.path("ui_files", "diagnostics_customize.R"), local = TRUE)$value,
+                                 source_value(file.path("ui_files", "diagnostics_customize.R")),
                                  navlistPanel(id = "diagnostics_navlist",
-                                              tabPanel("By model parameter", source(file.path("ui_files", "diagnostics_by_parameter.R"), local = TRUE)$value),
-                                              tabPanel("Sample information", source(file.path("ui_files", "diagnostics_sample.R"), local = TRUE)$value),
-                                              tabPanel("Treedepth information", source(file.path("ui_files", "diagnostics_treedepth.R"), local = TRUE)$value),
-                                              tabPanel("Divergence information", source(file.path("ui_files", "diagnostics_ndivergent.R"), local = TRUE)$value),
-                                              tabPanel("Step size information", source(file.path("ui_files", "diagnostics_stepsize.R"), local = TRUE)$value),
-                                              tabPanel("Help", source(file.path("ui_files", "diagnostics_help.R"), local = TRUE)$value),
+                                              tabPanel("By model parameter", source_value(file.path("ui_files", "diagnostics_by_parameter.R"))),
+                                              tabPanel("Sample information", source_value(file.path("ui_files", "diagnostics_sample.R"))),
+                                              tabPanel("Treedepth information", source_value(file.path("ui_files", "diagnostics_treedepth.R"))),
+                                              tabPanel("Divergence information", source_value(file.path("ui_files", "diagnostics_ndivergent.R"))),
+                                              tabPanel("Step size information", source_value(file.path("ui_files", "diagnostics_stepsize.R"))),
+                                              tabPanel("Help", source_value(file.path("ui_files", "diagnostics_help.R"))),
                                               well = FALSE,
                                               widths = c(2, 10)
                                  )
@@ -69,17 +65,17 @@ tagList(
                                  h2("Summary of sampler parameters"),
                                  a_glossary("open_glossary_from_nuts_table"),
                                  br(),
-                                 source(file.path("ui_files", "sampler_stats_customize.R"), local = TRUE)$value,
+                                 source_value(file.path("ui_files", "sampler_stats_customize.R")),
                                  DT::dataTableOutput("sampler_summary"),
                                  br()
                         ),
                         #### rhat, n_eff, mcse ####
                         tabPanel("\\(\\hat{R}, n_{eff}, \\text{se}_{mean}\\)", 
-                                 source(file.path("ui_files", "rhat_neff_mcse_layout.R"), local = TRUE)$value
+                                 source_value(file.path("ui_files", "rhat_neff_mcse_layout.R"))
                         ),
                         #### autocorrelation ####
                         tabPanel("Autocorrelation", 
-                                 source(file.path("ui_files", "autocorr_customize.R"), local = TRUE)$value,
+                                 source_value(file.path("ui_files", "autocorr_customize.R")),
                                  wellPanel(
                                    fluidRow(
                                      column(8, selectizeInput("ac_params", width = "100%", label = h5("Select or enter parameter names"), 
@@ -93,8 +89,8 @@ tagList(
                         tabPanel(title = "PPcheck", 
                                  h2("Graphical posterior predictive checks"),
                                  h6("Experimental feature"),
-                                 source(file.path("ui_files", if (.has_rstanarm_ppcs) 
-                                   "pp_navlist_rstanarm.R" else "pp_navlist.R"), local = TRUE)$value,
+                                 source_value(file.path("ui_files", if (.has_rstanarm_ppcs) 
+                                   "pp_navlist_rstanarm.R" else "pp_navlist.R")),
                                  br()
                         )
                       ) # End tabsetPanel
@@ -126,13 +122,13 @@ tagList(
                                      column(5, textOutput("invalid_regex"))
                                    )
                                  ),
-                                 source(file.path("ui_files", "multiparam_customize.R"), local = TRUE)$value,
+                                 source_value(file.path("ui_files", "multiparam_customize.R")),
                                  plotOutput("multiparam_plot_out", width = "90%"),
                                  br()
                         ),
                         #### posterior summary statistics ####
                         tabPanel("Posterior summary statistics",
-                                 source(file.path("ui_files", "table_customize.R"), local = TRUE)$value,
+                                 source_value(file.path("ui_files", "table_customize.R")),
                                  div(DT::dataTableOutput("all_summary_out"), 
                                      style = "overflow-x: auto")
                         ),
@@ -140,8 +136,8 @@ tagList(
                         tabPanel("Generate LaTeX table",
                                  br(),
                                  sidebarLayout(
-                                   mainPanel = source(file.path("ui_files", "table_latex_main.R"), local = TRUE)$value,
-                                   sidebarPanel = source(file.path("ui_files", "table_latex_sidebar.R"), local = TRUE)$value
+                                   mainPanel = source_value(file.path("ui_files", "table_latex_main.R")),
+                                   sidebarPanel = source_value(file.path("ui_files", "table_latex_sidebar.R"))
                                  )
                         )
                       ) # End tabsetPanel
@@ -167,7 +163,7 @@ tagList(
                                             ),
                                             h5("Trace"),
                                             dygraphs::dygraphOutput("multiview_trace_out", height = "200px"),
-                                            source(file.path("ui_files", "dynamic_trace_helptext.R"), local = TRUE)$value
+                                            source_value(file.path("ui_files", "dynamic_trace_helptext.R"))
                                    ),
                                    #### bivariate #####
                                    tabPanel("Bivariate",
@@ -175,7 +171,7 @@ tagList(
                                                            choices = rev(.param_list), 
                                                            selected = rev(.param_list)[1], multiple = FALSE),
                                             a_options("bivariate"),
-                                            source(file.path("ui_files", "bivariate_customize.R"), local = TRUE)$value,
+                                            source_value(file.path("ui_files", "bivariate_customize.R")),
                                             plotOutput("bivariate_plot_out", height = "350px"),
                                             helpText(style = "font-size: 11px", "For Stan models using the NUTS algorithm, red points indicate iterations that encountered a divergent transition.",  
                                                      "Yellow points indicate a transition that hit the maximum treedepth",
@@ -186,9 +182,9 @@ tagList(
                                    ),
                                    #### trivariate #####
                                    tabPanel("Trivariate", 
-                                            source(file.path("ui_files", "trivariate_select.R"), local = TRUE)$value,
+                                            source_value(file.path("ui_files", "trivariate_select.R")),
                                             a_options("trivariate"),
-                                            source(file.path("ui_files", "trivariate_customize.R"), local = TRUE)$value,
+                                            source_value(file.path("ui_files", "trivariate_customize.R")),
                                             br(),
                                             threejs::scatterplotThreeOutput("trivariate_plot_out", height = "400px"),
                                             helpText(style = "font-size: 12px;", "Use your mouse and trackpad to rotate the plot and zoom in or out.")
@@ -196,7 +192,7 @@ tagList(
                                    #### density #####
                                    tabPanel("Density",
                                             a_options("density"),
-                                            source(file.path("ui_files", "density_customize.R"), local = TRUE)$value,
+                                            source_value(file.path("ui_files", "density_customize.R")),
                                             plotOutput("density_plot_out", height = "250px"),
                                             hr(),
                                             downloadButton("download_density", "ggplot2",  class = "plot-download"),
@@ -205,7 +201,7 @@ tagList(
                                    #### histogram #####
                                    tabPanel("Histogram", 
                                             a_options("hist"),
-                                            source(file.path("ui_files", "hist_customize.R"), local = TRUE)$value,
+                                            source_value(file.path("ui_files", "hist_customize.R")),
                                             plotOutput("hist_plot_out", height = "250px"),
                                             hr(),
                                             downloadButton("download_histogram", "ggplot2",  class = "plot-download"),
@@ -219,24 +215,23 @@ tagList(
                         
                         #### model code ####
                         tabPanel(title = "Model Code", 
-                                 source(file.path("ui_files", "model_code.R"), local = TRUE)$value
+                                 source_value(file.path("ui_files", "model_code.R"))
                         ), 
                         #### notepad ####
                         tabPanel(title = "Notepad",
-                                 source(file.path("ui_files", "notepad.R"), local = TRUE)$value
+                                 source_value(file.path("ui_files", "notepad.R"))
                         ),
                         #### about ####
                         tabPanel(title = "About", 
                                  logo_and_name(),
                                  div(style = "margin-top: 75px;",
-                                     source(file.path("ui_files", "about.R"), local = TRUE)$value
-                                 )
+                                     source_value(file.path("ui_files", "about.R")))
                         ),
                         #### glossary ####
                         tabPanel(title = "Glossary",
                                  div(style = "background-color: white;",
                                      h1(style = "text-align: center;", "Glossary"),
-                                     source(file.path("ui_files", "glossary.R"), local = TRUE)$value,
+                                     source_value(file.path("ui_files", "glossary.R")),
                                      hr(),
                                      stan_manual()
                                  )
@@ -244,7 +239,7 @@ tagList(
                         #### help ####
                         tabPanel(title = "Help",
                                  h1(style = "text-align: center;", "Help"),
-                                 source(file.path("ui_files", "help.R"), local = TRUE)$value
+                                 source_value(file.path("ui_files", "help.R"))
                         )
              ) # End navbarMenu
   ) # End navbarPage
