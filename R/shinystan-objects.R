@@ -39,8 +39,7 @@ shinystan <- setClass(
     param_names = "",
     param_dims = list(),
     samps_all = array(NA, c(1, 1)),
-    summary = matrix(NA, nr = 1, nc =
-                       1),
+    summary = matrix(NA, nr = 1, nc =1),
     sampler_params = list(NA),
     nChains = 0,
     nIter = 0,
@@ -148,23 +147,22 @@ setMethod(
       parameters = param_names
     )
     
-    slots <- list()
-    slots$Class <- "shinystan"
-    slots$model_name <- model_name
-    slots$param_names <- param_names
-    slots$param_dims <- .set_param_dims(param_dims, param_names)
-    slots$samps_all <- X
-    slots$summary <- shinystan_monitor(X, warmup = burnin)
-    slots$sampler_params <- list(NA)
-    slots$nChains <- ncol(X)
-    slots$nIter <- nrow(X)
-    slots$nWarmup <- burnin
+    sso <- shinystan(
+      model_name = model_name,
+      param_names = param_names,
+      param_dims = .set_param_dims(param_dims, param_names),
+      samps_all = X,
+      summary = shinystan_monitor(X, warmup = burnin),
+      nChains = ncol(X),
+      nIter = nrow(X),
+      nWarmup = burnin
+    )
     if (!is.null(note))
-      slots$user_model_info <- note
+      sso <- suppressMessages(notes(sso, note = note, replace = TRUE))
     if (!is.null(model_code))
-      slots$model_code <- model_code
+      sso <- suppressMessages(model_code(sso, code = model_code))
     
-    do.call("new", slots)
+    return(sso)
   }
 )
 
@@ -343,23 +341,22 @@ setMethod(
     )
     param_names <- dimnames(X[[1]])[[2]]
     
-    slots <- list()
-    slots$Class <- "shinystan"
-    slots$model_name <- model_name
-    slots$param_names <- param_names
-    slots$param_dims <- .set_param_dims(param_dims, param_names)
-    slots$samps_all <- samps_array
-    slots$summary <- shinystan_monitor(samps_array, warmup = burnin)
-    slots$sampler_params <- list(NA)
-    slots$nChains <- ncol(samps_array)
-    slots$nIter <- nrow(samps_array)
-    slots$nWarmup <- burnin
+    sso <- shinystan(
+      model_name = model_name,
+      param_names = param_names,
+      param_dims = .set_param_dims(param_dims, param_names),
+      samps_all = samps_array,
+      summary = shinystan_monitor(samps_array, warmup = burnin),
+      nChains = ncol(samps_array),
+      nIter = nrow(samps_array),
+      nWarmup = burnin
+    )
     if (!is.null(note))
-      slots$user_model_info <- note
+      sso <- suppressMessages(notes(sso, note = note, replace = TRUE))
     if (!is.null(model_code))
-      slots$model_code <- model_code
+      sso <- suppressMessages(model_code(sso, code = model_code))
     
-    do.call("new", slots)
+    return(sso)
   }
 )
 
@@ -393,6 +390,8 @@ setMethod(
 #' fit <- stan_demo("eight_schools")
 #' sso <- as.shinystan(fit, model_name = "example")
 #' }
+#' 
+#' @importClassesFrom rstan stanfit
 #' 
 setMethod(
   "as.shinystan",
@@ -447,32 +446,29 @@ setMethod(
                             n_eff = NA,
                             se_mean = NA)
     
-    slots <- list()
-    slots$Class <- "shinystan"
-    slots$model_name <- model_name
-    slots$samps_all <- rstan::extract(X, permuted = FALSE, inc_warmup = TRUE)
-    slots$param_names <- dimnames(slots$samps_all)[[3L]]
-    slots$param_dims <- X@sim$dims_oi
-    slots$summary <- stan_summary
-    slots$sampler_params <- sampler_params
-    slots$nChains <- ncol(X)
-    slots$nIter <- nrow(slots$samps_all)
-    slots$nWarmup <- nWarmup
-    
-    if (!is.null(note))
-      slots$user_model_info <- note
-    
-    mcode <- rstan::get_stancode(X)
-    if (length(mcode))
-      slots$model_code <- mcode
-    
-    slots$misc <- list(max_td = max_td,
-                       stan_method = stan_method,
-                       stan_algorithm = stan_algorithm)
-    
-    sso <- do.call("new", slots)
+    posterior <- rstan::extract(X, permuted = FALSE, inc_warmup = TRUE)
+    sso <- shinystan(
+      model_name = model_name,
+      param_names = dimnames(posterior)[[3L]],
+      param_dims = X@sim$dims_oi,
+      samps_all = posterior,
+      summary = stan_summary,
+      sampler_params = sampler_params,
+      nChains = ncol(X),
+      nIter = nrow(posterior),
+      nWarmup = nWarmup,
+      model_code = rstan::get_stancode(X),
+      misc = list(
+        max_td = max_td,
+        stan_method = stan_method,
+        stan_algorithm = stan_algorithm
+      )
+    )
     sso <- .rename_scalar(sso, oldname = "lp__", newname = "log-posterior")
-    sso
+    if (!is.null(note))
+      sso <- suppressMessages(notes(sso, note, replace = TRUE))
+
+    return(sso)
   }
 )
 
@@ -540,32 +536,28 @@ setMethod(
     
     mname <- if (!is.null(model_name))
       model_name else paste0("rstanarm model (", sso@model_name, ")")
-    sso <- model_name(sso, mname)
+    sso <- suppressMessages(model_name(sso, mname))
     
     if (!is.null(note))
       sso <- suppressMessages(notes(sso, note, replace = TRUE))
     
-    samps_all <- sso@samps_all
-    param_names <- sso@param_names
-    sel <- grep(":_NEW_", dimnames(samps_all)[[3L]], fixed = TRUE)
+    param_names <- slot(sso, "param_names")
+    sel <- grep(":_NEW_", dimnames(slot(sso, "samps_all"))[[3L]], fixed = TRUE)
     if (length(sel)) {
-      samps_all <- samps_all[, ,-sel, drop = FALSE]
       param_names <- param_names[-sel]
-      sso@summary <- sso@summary[-sel, , drop = FALSE]
+      slot(sso, "samps_all") <- slot(sso, "samps_all")[, , -sel, drop = FALSE]
+      slot(sso, "summary")  <- slot(sso, "summary")[-sel, , drop = FALSE]
     }
-    param_dims <- vector(mode = "list", length = length(param_names))
+    param_dims <- rep(list(numeric(0)), length(param_names))
     names(param_dims) <- param_names
-    for (i in seq_along(param_names))
-      param_dims[[i]] <- numeric(0)
     
-    sso@param_dims <- param_dims
-    sso@param_names <- param_names
-    sso@samps_all <- samps_all
-    sso@misc$stanreg <- TRUE
+    slot(sso, "param_names") <- param_names
+    slot(sso, "param_dims") <- param_dims
+    slot(sso, "misc")[["stanreg"]] <- TRUE
     if (isTRUE(ppd))
-      sso@misc$pp_check_plots <- .rstanarm_pp_checks(X, seed)
+      slot(sso, "misc")[["pp_check_plots"]] <- .rstanarm_pp_checks(X, seed)
     
-    sso
+    return(sso)
   }
 )
 
