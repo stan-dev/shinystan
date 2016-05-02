@@ -401,67 +401,23 @@ setMethod(
                         note = NULL,
                         ...) {
     check_suggests("rstan")
-    stan_args <- X@stan_args[[1L]]
-    stan_method <- stan_args$method
-    vb <- isTRUE(stan_method == "variational")
-    from_cmdstan_csv <- isTRUE("engine" %in% names(stan_args))
-    stan_algorithm <- if (from_cmdstan_csv)
-      toupper(stan_args$engine) else stan_args$algorithm
-    
-    if (vb || !(stan_algorithm %in% c("NUTS", "HMC")))
-      warning("Many features are only available for models fit using
-              algorithm NUTS or algorithm HMC.")
-    
-    warmup <- if (from_cmdstan_csv)
-      X@sim$warmup2[1L] else X@sim$warmup
-    
-    if (!is.null(stan_args[["save_warmup"]])) 
-      if (!stan_args[["save_warmup"]])
-        warmup <- 0
-    
-    nWarmup <- if (from_cmdstan_csv)
-      warmup else floor(warmup / X@sim$thin)
-    
-    cntrl <- X@stan_args[[1L]]$control
-    if (is.null(cntrl)) {
-      max_td <- 11
-    } else {
-      max_td <- cntrl$max_treedepth
-      if (is.null(max_td))
-        max_td <- 11
-    }
-    
-    if (vb) {
-      sampler_params <- list(NA)
-    } else {
-      sampler_params <- suppressWarnings(rstan::get_sampler_params(X))
-      sampler_params <- .rename_sampler_param(sampler_params,
-                                              oldname = "n_divergent__",
-                                              newname = "divergent__")
-    }
-    stan_summary <- rstan::summary(X)$summary
-    if (vb)
-      stan_summary <- cbind(stan_summary,
-                            Rhat = NA,
-                            n_eff = NA,
-                            se_mean = NA)
-    
     posterior <- rstan::extract(X, permuted = FALSE, inc_warmup = TRUE)
+    
     sso <- shinystan(
       model_name = model_name,
       param_names = dimnames(posterior)[[3L]],
       param_dims = X@sim$dims_oi,
       samps_all = posterior,
-      summary = stan_summary,
-      sampler_params = sampler_params,
+      summary = .rstan_summary(X),
+      sampler_params = .rstan_sampler_params(X),
       nChains = ncol(X),
       nIter = nrow(posterior),
-      nWarmup = nWarmup,
+      nWarmup = .rstan_warmup(X),
       model_code = rstan::get_stancode(X),
       misc = list(
-        max_td = max_td,
-        stan_method = stan_method,
-        stan_algorithm = stan_algorithm
+        max_td = .rstan_max_treedepth(X),
+        stan_method = .stan_args(X, "method"),
+        stan_algorithm = .stan_algorithm(X)
       )
     )
     sso <- .rename_scalar(sso, oldname = "lp__", newname = "log-posterior")
@@ -472,7 +428,10 @@ setMethod(
   }
 )
 
-.rename_scalar <- function(sso, oldname = "lp__", newname = "log-posterior") {
+# rename a scalar parameter in a shinystan object
+.rename_scalar <- function(sso, 
+                           oldname = "lp__", 
+                           newname = "log-posterior") {
   p <- which(sso@param_names == oldname)
   if (identical(integer(0), p)) 
     return(sso)
@@ -484,6 +443,64 @@ setMethod(
   return(sso)
 }
 
+# Get stan_args from stanfit object
+# @param x stanfit object
+# @param which which of the entries in x@stan_args[[1]] is of interest? If NULL 
+#   the full list x@stan_args is returned
+.stan_args <- function(x, which = NULL) {
+  stan_args <- x@stan_args[[1L]]
+  if (!is.null(which)) 
+    return(stan_args[[which]])
+  stan_args
+}
+
+# Check if model was fit using cmdstan rather than rstan
+# @param x stanfit object
+.from_cmdstan <- function(x) {
+  isTRUE("engine" %in% names(.stan_args(x)))
+}
+
+# Check if model fit using variational algorithm
+# @param x stanfit object
+.used_vb <- function(x) {
+  isTRUE(.stan_args(x, "method") == "variational")
+}
+
+# Check which algorithm was used to fit model
+# @param x stanfit object
+.stan_algorithm <- function(x) {
+  algo <- if (.from_cmdstan(x))
+    toupper(.stan_args(x, "engine")) else .stan_args(x, "algorithm")
+  
+  if (.used_vb(x) || !(algo %in% c("NUTS", "HMC")))
+    warning("Many features are only available for models fit using
+            algorithm NUTS or algorithm HMC.", call. = FALSE)
+  
+  algo
+}
+
+# Get summary stats from a stanfit object
+# @param x stanfit object
+.rstan_summary <- function(x) {
+  stan_summary <- rstan::summary(x)$summary
+  if (!.used_vb(x))
+    return(stan_summary)
+  cbind(stan_summary, Rhat = NA, n_eff = NA, se_mean = NA)
+}
+
+# Get sampler params from a stanfit object
+# @param x stanfit object
+.rstan_sampler_params <- function(x) {
+  if (.used_vb(x))
+    return(list(NA))
+  sp <- suppressWarnings(rstan::get_sampler_params(x))
+  sp <- .rename_sampler_param(sp, 
+                              oldname = "n_divergent__", 
+                              newname = "divergent__")
+  sp
+}
+
+# @param x list of sampler param arrays
 .rename_sampler_param <- function(x, oldname, newname) {
   if (!identical(x, list(NA))) {
     for (j in seq_along(x)) {
@@ -494,6 +511,37 @@ setMethod(
   }
   return(x)
 }
+
+# Calculate correct value for number of warmup iterations
+# @param x stanfit object
+.rstan_warmup <- function(x) {
+  warmup <- if (.from_cmdstan(x))
+    x@sim$warmup2[1L] else x@sim$warmup
+  
+  saved <- .stan_args(x, "save_warmup")
+  if (!is.null(saved) && !saved) 
+    warmup <- 0
+  
+  if (.from_cmdstan(x)) 
+    return(warmup)
+  
+  floor(warmup / x@sim$thin)
+}
+
+# Get value of max_treedepth parameter from stanfit object
+# @param x stanfit object
+.rstan_max_treedepth <- function(x) {
+  cntrl <- .stan_args(x, "control")
+  if (is.null(cntrl)) {
+    max_td <- 11
+  } else {
+    max_td <- cntrl$max_treedepth
+    if (is.null(max_td))
+      max_td <- 11
+  }
+  max_td
+}
+
 
 
 # as.shinystan (stanreg) -------------------------------------------------
