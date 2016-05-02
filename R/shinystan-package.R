@@ -61,6 +61,11 @@
 #'  Check out the demo using \code{\link{launch_shinystan_demo}} or try it with
 #'  one of your own models using \code{\link{launch_shinystan}}.
 #'  
+#' @section Help and bug reports:
+#' \itemize{
+#'  \item Stan Users Google group (\url{https://groups.google.com/forum/#!forum/stan-users})
+#'  \item ShinyStan issue tracker (\url{https://github.com/stan-dev/shinystan/issues})
+#' }
 #'  
 #' @seealso \code{\link{as.shinystan}} to create shinystan objects 
 #' 
