@@ -35,8 +35,8 @@ get_yrep <- reactive({
     if (input$yrep_name2 != "") {
       return(get(input$yrep_name2))
     } else {
-      yreps <- grep(paste0("^", input$yrep_name, "\\["), param_names)
-      out <- samps_post_warmup[,, yreps]
+      yreps <- grep(paste0("^", input$yrep_name, "\\["), PARAM_NAMES)
+      out <- SAMPS_post_warmup[,, yreps]
       dd <- dim(out)
       validate(need(dd[3] == length(as.vector(get_y())), 
                     message = "ncol(y_rep) should equal length(y)"))

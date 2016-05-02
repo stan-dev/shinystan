@@ -1,14 +1,14 @@
 # summary statistics for sampler parameters -------------------------------
 summary_stats_sampler <- reactive({
-  validate(need(stan_algorithm %in% c("NUTS", "HMC"), 
+  validate(need(STAN_ALGORITHM %in% c("NUTS", "HMC"), 
                 message = "Only available for algorithm = NUTS"),
            need(input$sampler_warmup, message = "Loading..."))
   sp <- if (input$sampler_warmup == "include") 
-    sampler_params else sampler_params_post_warmup
+    SAMPLER_PARAMS else SAMPLER_PARAMS_post_warmup
   
   do.call(".sampler_summary", args = list(
     sampler_params  = sp,
-    warmup_val      = warmup_val,
+    warmup_val      = N_WARMUP,
     report          = input$sampler_report,
     digits          = input$sampler_digits
   ))

@@ -18,7 +18,9 @@ user_xlim <- function(lim) {
 
 density_plot <- reactive({
   xzoom <- input$dens_xzoom
-  if (xzoom == "") return(last_plot())
+  if (xzoom == "")
+    return(last_plot())
+  
   validate(need(input$param, message = FALSE),
            need(!is.null(input$dens_chain), message = FALSE),
            need(xzoom, message = FALSE))
@@ -30,7 +32,8 @@ density_plot <- reactive({
     } 
   
   chain <- input$dens_chain
-  if (is.na(chain)) chain <- 0
+  if (is.na(chain)) 
+    chain <- 0
   prior_fam <- input$dens_prior
   prior_params <- if (prior_fam == "None") NULL 
                     else if (prior_fam == "Normal") 

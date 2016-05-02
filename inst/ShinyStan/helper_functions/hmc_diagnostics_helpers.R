@@ -18,9 +18,12 @@ thm_no_yaxs <- thm + no_yaxs
   xy_labs <- labs(y = if (missing(p_lab)) NULL else p_lab, 
                   x = if (missing(sp_lab)) NULL else sp_lab)
   df <- data.frame(sp = do.call("c", sp), p = c(p))
-  if (violin) df$sp <- as.factor(round(df$sp, 4))
-  if (!is.null(divergent)) df$divergent <- do.call("c", divergent)
-  if (!is.null(hit_max_td)) df$hit_max_td <- do.call("c", hit_max_td)
+  if (violin)
+    df$sp <- as.factor(round(df$sp, 4))
+  if (!is.null(divergent))
+    df$divergent <- do.call("c", divergent)
+  if (!is.null(hit_max_td))
+    df$hit_max_td <- do.call("c", hit_max_td)
   
   base <- ggplot(df, aes(sp,p)) + xy_labs + thm 
   if (chain == 0) {
@@ -40,8 +43,10 @@ thm_no_yaxs <- thm + no_yaxs
     return(graph)
   }
   chain_data <- data.frame(sp = sp[, chain], p = p[, chain])
-  if (!is.null(divergent)) chain_data$div <- divergent[, chain]
-  if (!is.null(hit_max_td)) chain_data$hit <- hit_max_td[, chain]
+  if (!is.null(divergent))
+    chain_data$div <- divergent[, chain]
+  if (!is.null(hit_max_td))
+    chain_data$hit <- hit_max_td[, chain]
   chain_clr <- color_vector_chain(ncol(sp))[chain]
   chain_fill <- chain_clr
   if (violin) {

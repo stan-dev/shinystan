@@ -7,7 +7,7 @@ ndivergent_lab <- "Divergent"
 
 sp_nuts_check <- reactive({
   validate(
-    need(stan_algorithm == "NUTS", message = "Only available for algorithm = NUTS"),
+    need(STAN_ALGORITHM == "NUTS", message = "Only available for algorithm = NUTS"),
     need(input$diagnostic_chain, message = "Loading...")
   )
 })
@@ -63,7 +63,7 @@ stepsize_vs_lp <- reactive({
   chain <- diagnostic_chain()
   sel <- selected_range()
   stepsize <- .stepsize_pw[if (!is.null(sel)) sel, -1L, drop=FALSE] # drop iterations column
-  lp <- samps_post_warmup[if (!is.null(sel)) sel,,lp_name]
+  lp <- SAMPS_post_warmup[if (!is.null(sel)) sel, , lp_name]
   .sampler_param_vs_param(p = lp, sp = stepsize, 
                           p_lab = lp_lab,
                           sp_lab = stepsize_lab, 
@@ -86,7 +86,7 @@ stepsize_vs_accept_stat <- reactive({
 dynamic_trace_diagnostic_lp <- reactive({
   sp_nuts_check()
   chain <- diagnostic_chain()
-  samps <- samps_post_warmup[,, lp_name]
+  samps <- SAMPS_post_warmup[,, lp_name]
   lab <- "Log Posterior"
   stack <- FALSE  
   do.call(".dynamic_trace_diagnostics", args = list(
@@ -114,7 +114,7 @@ lp_hist <- reactive({
   sp_nuts_check()
   chain <- diagnostic_chain()
   sel <- selected_range()
-  lp <- samps_post_warmup[if (!is.null(sel)) sel,, lp_name]
+  lp <- SAMPS_post_warmup[if (!is.null(sel)) sel,, lp_name]
   df <- as.data.frame(cbind(iterations = 1:NROW(lp), lp))
   .p_hist(df, lab = lp_lab, chain)
 })
@@ -129,7 +129,7 @@ accept_stat_vs_lp <- reactive({
   sp_nuts_check()
   sel <- selected_range()
   metrop <- .accept_stat_pw[if (!is.null(sel)) sel,-1L, drop=FALSE] # drop iterations column
-  lp <- samps_post_warmup[if (!is.null(sel)) sel,,lp_name]
+  lp <- SAMPS_post_warmup[if (!is.null(sel)) sel,,lp_name]
   chain <- input$diagnostic_chain
   divergent <- .ndivergent_pw[if (!is.null(sel)) sel,-1L, drop=FALSE]
   td <- .treedepth_pw[if (!is.null(sel)) sel,-1L, drop=FALSE]
@@ -192,7 +192,7 @@ treedepth_vs_lp <- reactive({
   chain <- diagnostic_chain()
   sel <- selected_range()
   treedepth <- .treedepth_pw[if (!is.null(sel)) sel, -1L, drop=FALSE] # drop iterations column
-  lp <- samps_post_warmup[if (!is.null(sel)) sel,,lp_name]
+  lp <- SAMPS_post_warmup[if (!is.null(sel)) sel,,lp_name]
   .sampler_param_vs_param(p = lp, sp = treedepth, 
                           p_lab = lp_lab,
                           sp_lab = treedepth_lab, 
@@ -233,7 +233,7 @@ ndivergent_vs_lp <- reactive({
   chain <- diagnostic_chain()
   sel <- selected_range()
   ndivergent <- .ndivergent_pw[if (!is.null(sel)) sel, -1L, drop=FALSE] # drop iterations column
-  lp <- samps_post_warmup[if (!is.null(sel)) sel,,lp_name]
+  lp <- SAMPS_post_warmup[if (!is.null(sel)) sel,,lp_name]
   .sampler_param_vs_param(p = lp, sp = ndivergent, 
                           p_lab = lp_lab,
                           sp_lab = ndivergent_lab,
@@ -258,7 +258,7 @@ dynamic_trace_diagnostic_parameter <- reactive({
   chain <- diagnostic_chain()
   param <- diagnostic_param()
   transform_x <- diagnostic_param_transform()
-  samps <- samps_post_warmup[,, param]
+  samps <- SAMPS_post_warmup[,, param]
   lab <- param
   if (transform_x != "identity") {
     t_x <- get(transform_x)
@@ -279,9 +279,9 @@ param_vs_lp <- reactive({
   param <- diagnostic_param()
   chain <- diagnostic_chain()
   sel <- selected_range()
-  lp <- samps_post_warmup[if (!is.null(sel)) sel,, lp_name]
+  lp <- SAMPS_post_warmup[if (!is.null(sel)) sel,, lp_name]
   transform_x <- diagnostic_param_transform()
-  samps <- samps_post_warmup[if (!is.null(sel)) sel,, param, drop=FALSE]
+  samps <- SAMPS_post_warmup[if (!is.null(sel)) sel,, param, drop=FALSE]
   divergent <- .ndivergent_pw[if (!is.null(sel)) sel, -1L, drop=FALSE]
   td <- .treedepth_pw[if (!is.null(sel)) sel, -1L, drop=FALSE]
   hit_max_td <- apply(td, 2L, function(y) as.numeric(y == MISC$max_td))
@@ -304,7 +304,7 @@ param_vs_accept_stat <- reactive({
   sel <- selected_range()
   metrop <- .accept_stat_pw[if (!is.null(sel)) sel, -1L, drop=FALSE] # drop iterations column
   transform_x <- diagnostic_param_transform()
-  samps <- samps_post_warmup[if (!is.null(sel)) sel,, param]
+  samps <- SAMPS_post_warmup[if (!is.null(sel)) sel,, param]
   divergent <- .ndivergent_pw[if (!is.null(sel)) sel, -1L, drop=FALSE]
   td <- .treedepth_pw[if (!is.null(sel)) sel, -1L, drop=FALSE]
   hit_max_td <- apply(td, 2L, function(y) as.numeric(y == MISC$max_td))
@@ -328,7 +328,7 @@ param_vs_stepsize <- reactive({
   sel <- selected_range()
   stepsize <- .stepsize_pw[if (!is.null(sel)) sel, -1L, drop=FALSE] # drop iterations column
   transform_x <- diagnostic_param_transform()
-  samps <- samps_post_warmup[if (!is.null(sel)) sel,, param]
+  samps <- SAMPS_post_warmup[if (!is.null(sel)) sel,, param]
   lab <- param
   if (transform_x != "identity") {
     t_x <- get(transform_x)
@@ -346,7 +346,7 @@ param_vs_treedepth <- reactive({
   sel <- selected_range()
   treedepth <- .treedepth_pw[if (!is.null(sel)) sel, -1L, drop=FALSE] # drop iterations column
   transform_x <- diagnostic_param_transform()
-  samps <- samps_post_warmup[if (!is.null(sel)) sel,, param]
+  samps <- SAMPS_post_warmup[if (!is.null(sel)) sel,, param]
   lab <- param
   if (transform_x != "identity") {
     t_x <- get(transform_x)
@@ -362,7 +362,7 @@ p_hist <- reactive({
   param <- diagnostic_param()
   sel <- selected_range()
   transform_x <- diagnostic_param_transform()
-  samps <- samps_post_warmup[if (!is.null(sel)) sel,, param]
+  samps <- SAMPS_post_warmup[if (!is.null(sel)) sel,, param]
   lab <- param
   if (transform_x != "identity") {
     t_x <- get(transform_x)

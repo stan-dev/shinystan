@@ -1,22 +1,22 @@
 vb_check <- function() {
-  validate(need(stan_method != "variational", 
+  validate(need(STAN_METHOD != "variational", 
                 message = "Not available for variational inference"))
 }
 
 n_eff_plot <- reactive({
   vb_check()
-  dat <- fit_summary[,"n_eff"]
-  N <- prod(dim(samps_post_warmup)[1:2])
+  dat <- SUMMARY[,"n_eff"]
+  N <- prod(dim(SAMPS_post_warmup)[1:2])
   dat <- data.frame(parameter = names(dat), x = dat / N)
   do.call(".rhat_neff_mcse_hist", args = list(
     dat = dat,
-    N = nrow(samps_post_warmup),
+    N = nrow(SAMPS_post_warmup),
     which = "n_eff"
   ))
 })
 rhat_plot <- reactive({
   vb_check()
-  dat <- fit_summary[,"Rhat"]
+  dat <- SUMMARY[,"Rhat"]
   dat <- data.frame(parameter = names(dat), x = dat)
   do.call(".rhat_neff_mcse_hist", args = list(
     dat = dat,
@@ -25,7 +25,7 @@ rhat_plot <- reactive({
 })
 mcse_over_sd_plot <- reactive({
   vb_check()
-  dat <- fit_summary[, c("se_mean", "sd")]
+  dat <- SUMMARY[, c("se_mean", "sd")]
   dat <- dat[,1] / dat[,2]
   dat <- data.frame(parameter = names(dat), x = dat)
   do.call(".rhat_neff_mcse_hist", args = list(
@@ -35,17 +35,23 @@ mcse_over_sd_plot <- reactive({
 })
 n_eff_warnings <- reactive({
   vb_check()
-  paste(.n_eff_warnings(fit_summary, threshold = input$n_eff_threshold), 
-        collapse = "\n")
+  paste(
+    .n_eff_warnings(
+      SUMMARY,
+      threshold = input$n_eff_threshold,
+      N_total = length(SAMPS_post_warmup[, , 1L])
+    ),
+    collapse = "\n"
+  )
 })
 rhat_warnings <- reactive({
   vb_check()
-  paste(.rhat_warnings(fit_summary, threshold = input$rhat_threshold), 
+  paste(.rhat_warnings(SUMMARY, threshold = input$rhat_threshold),
         collapse = "\n")
 })
 mcse_over_sd_warnings <- reactive({
   vb_check()
-  paste(.mcse_over_sd_warnings(fit_summary, threshold = input$mcse_threshold), 
+  paste(.mcse_over_sd_warnings(SUMMARY, threshold = input$mcse_threshold),
         collapse = "\n")
 })
 

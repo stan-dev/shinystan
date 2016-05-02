@@ -17,7 +17,7 @@ output$ui_pp_get_y <- renderUI({
 
 output$ui_pp_get_yrep <- renderUI({
   if (is.null(pp_yrep)) {
-    choices <- param_names
+    choices <- PARAM_NAMES
     choices <- strsplit(choices, split = "[", fixed = TRUE)
     choices <- lapply(choices, function(i) return(i[1]))
     choices <- unique(unlist(choices))

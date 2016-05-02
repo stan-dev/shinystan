@@ -1,16 +1,22 @@
+# Load shinystan object
+object <- get(".shinystan_temp_object", envir = shinystan:::.sso_env)
+
 # give ShinyStan app access to ggplot functions
 ggplot_fns_file <- if (packageVersion("ggplot2") < "2.0.0")
   "ggplot_fns_old.rda" else "ggplot_fns.rda"
 
 load(ggplot_fns_file)
 lapply(ggplot_fns, function(f) {
-  try(assign(f, getFromNamespace(f, "ggplot2"), envir = parent.frame(2)), 
+  try(assign(f, getFromNamespace(f, "ggplot2"), envir = parent.frame(2)),
       silent = TRUE)
 })
 
-helpers <- file.path("helper_functions", list.files("helper_functions", full.names = FALSE))
-for (h in helpers) source(h, local = TRUE)
-source(file.path("server_files","utilities","ppcheck_names_descriptions.R"), local = TRUE)
+helpers <- file.path("helper_functions", list.files("helper_functions", 
+                                                    full.names = FALSE))
+for (h in helpers) 
+  source(h, local = TRUE)
+source(file.path("server_files","utilities","ppcheck_names_descriptions.R"), 
+       local = TRUE)
 
 # avoid conflict with inline::code if rstan is loaded
 code <- shiny::code
@@ -26,68 +32,73 @@ save_and_close <- tags$button(
 shinystan_version <- function() {
   # prevents error when deployed to shinyapps.io
   ver <- try(utils::packageVersion("shinystan"))
-  if (inherits(ver, "try-error")) return()
-  else strong(paste("Version", ver))
+  if (inherits(ver, "try-error"))
+    return()
+  else
+    strong(paste("Version", ver))
 }
 
 logo_and_name <- function() {
+  div(div(
+    img(
+      src = "wide_ensemble.png",
+      class = "wide-ensemble",
+      width = "100%"
+    )
+  ),
   div(
-      div(img(src = "wide_ensemble.png", 
-              class = "wide-ensemble", width = "100%")),
-      div(style = "margin-top: 25px",
-          img(src = "stan_logo.png", class = "stan-logo"),
-          div(id = "shinystan-title", "ShinyStan"))
-  )
+    style = "margin-top: 25px",
+    img(src = "stan_logo.png", class = "stan-logo"),
+    div(id = "shinystan-title", "ShinyStan")
+  ))
 }
 save_and_close_reminder <- function(id) {
-  helpText(id = id,
-           p("To make sure the changes aren't lost, use the",
-             span(class = "save-close-reminder", "Save & Close"),
-             "button in the top left corner to exit the app before", 
-             "closing the browser window.")
+  helpText(
+    id = id,
+    p(
+      "To make sure the changes aren't lost, use the",
+      span(class = "save-close-reminder", "Save & Close"),
+      "button in the top left corner to exit the app before",
+      "closing the browser window."
+    )
   )
 }
 toc_entry <- function(name, icon_name, ...) {
-  actionLink(inputId = paste0("toc_", tolower(name)), label = name, 
-             if (!missing(icon_name)) icon = icon(name = icon_name, ...))
+  actionLink(
+    inputId = paste0("toc_", tolower(name)),
+    label = name,
+    if (!missing(icon_name))
+      icon = icon(name = icon_name, ...)
+  )
 }
 a_options <- function(name) {
-  lab <- if (name == "table") "Table Options" else "Show/Hide Options"
+  lab <- if (name == "table")
+    "Table Options" else "Show/Hide Options"
   div(class = "aoptions",
-      checkboxInput(inputId = paste0(name, "_options_show"), 
-                    label = strong(style = "margin-top: 20px; color: #222222;", lab),
-                    value = FALSE))
+      checkboxInput(
+        inputId = paste0(name, "_options_show"),
+        label = strong(style = "margin-top: 20px; color: #222222;", lab),
+        value = FALSE
+      ))
 }
 a_glossary <- function(id) {
   div(class = "aoptions",
-      actionLink(inputId = id, 
-                 label = strong(style = "margin-top: 20px; color: #222222;", 
-                                "Glossary"), 
-                 icon = icon("book", lib = "glyphicon")))
+      actionLink(
+        inputId = id,
+        label = strong(style = "margin-top: 20px; color: #222222;", "Glossary"),
+        icon = icon("book", lib = "glyphicon")
+      ))
 }
-strongMed <- function(...) {
-  strong(style = "font-size: 14px; margin-bottom: 5px;", ...)
-}
-strongBig <- function(...) {
-  strong(style = "font-size: 18px; margin-bottom: 5px;", ...)
-}
-
-strong_bl <- function(...) {
-  strong(style = "color: #006DCC;", ...)
-}
+strongMed <- function(...) strong(style = "font-size: 14px; margin-bottom: 5px;", ...)
+strongBig <- function(...) strong(style = "font-size: 18px; margin-bottom: 5px;", ...)
+strong_bl <- function(...) strong(style = "color: #006DCC;", ...)
 
 algorithm_nuts <- h5(style = "color: #337ab7;", "algorithm = NUTS")
 algorithm_hmc <- h5(style = "color: #337ab7;", "algorithm = HMC")
 
-dygraphOutput_175px <- function(id) {
-  dygraphs::dygraphOutput(id, height = "175px")
-}
-plotOutput_200px <- function(id, ...) {
-  plotOutput(id, height = "200px")
-}
-plotOutput_400px <- function(id, ...) {
-  plotOutput(id, height = "400px")
-}
+dygraphOutput_175px <- function(id) dygraphs::dygraphOutput(id, height = "175px")
+plotOutput_200px <- function(id, ...) plotOutput(id, height = "200px")
+plotOutput_400px <- function(id, ...) plotOutput(id, height = "400px")
 
 condPanel_dens_together <- function(...) {
   conditionalPanel(condition = "input.dens_chain_split == 'Together'", ...)
@@ -105,18 +116,20 @@ suppress_and_print <- function(x) {
 # make_param_list ------------------------------------------------------
 # generate list of parameter names (formatted for shiny::selectInput)
 .make_param_list <- function(object) {
-  param_groups <- names(object@param_dims)
+  param_names <- slot(object, "param_names")
+  param_dims <- slot(object, "param_dims")
+  param_groups <- names(param_dims)
   choices <- list()
-  ll <- length(object@param_dims)
-  choices[1:ll] <- ""
+  ll <- length(param_dims)
+  choices[seq_len(ll)] <- ""
   names(choices) <- param_groups
-  for(i in 1:ll) {
-    if (length(object@param_dims[[i]]) == 0) {
+  for(i in seq_len(ll)) {
+    if (length(param_dims[[i]]) == 0) {
       choices[[i]] <- list(param_groups[i])
     }
     else {
       temp <- paste0(param_groups[i],"\\[")
-      choices[[i]] <- object@param_names[grep(temp, object@param_names)]
+      choices[[i]] <- param_names[grep(temp, param_names)]
     }
   }
   choices
@@ -126,24 +139,27 @@ suppress_and_print <- function(x) {
 # generate list of parameter names and include parameter groups (formatted for
 # shiny::selectInput)
 .make_param_list_with_groups <- function(object, sort_j = FALSE) {
+  param_names <- slot(object, "param_names")
+  param_dims <- slot(object, "param_dims")
+  param_groups <- names(param_dims)
+  ll <- length(param_dims)
+  LL <- sapply(seq_len(ll), function(i) length(param_dims[[i]]))
   choices <- list()
-  param_groups <- names(object@param_dims)
-  ll <- length(object@param_dims)
-  LL <- sapply(1:ll, function(i) length(object@param_dims[[i]]))
-  choices[1:ll] <- ""
+  choices[seq_len(ll)] <- ""
   names(choices) <- param_groups
-  for(i in 1:ll) {
+  for(i in seq_len(ll)) {
     if (LL[i] == 0) {
       choices[[i]] <- list(param_groups[i])
     } else {
       group <- param_groups[i]
       temp <- paste0("^",group,"\\[")
-      ch <- object@param_names[grep(temp, object@param_names)]
+      ch <- param_names[grep(temp, param_names)]
       
       #       toggle row/column major sorting so e.g. "beta[1,1], beta[1,2],
       #       beta[2,1], beta[2,2]" instead of "beta[1,1], beta[2,1], beta[1,2],
       #       beta[2,2]"
-      if (sort_j == TRUE & LL[i] > 1) ch <- gtools::mixedsort(ch) 
+      if (sort_j == TRUE & LL[i] > 1) 
+        ch <- gtools::mixedsort(ch) 
       
       ch_out <- c(paste0(group,"_as_shinystan_group"), ch)
       names(ch_out) <- c(paste("ALL", group), ch)
@@ -158,20 +174,30 @@ suppress_and_print <- function(x) {
 # update with regex
 .test_valid_regex <- function(pattern) {
   trygrep <- try(grep(pattern, ""), silent = TRUE)
-  if (inherits(trygrep, "try-error")) FALSE else TRUE
+  if (inherits(trygrep, "try-error"))
+    FALSE
+  else
+    TRUE
 }
 .update_params_with_regex <- function(params, all_param_names, regex_pattern) {
   sel <- which(all_param_names %in% params)
-  to_search <- if (length(sel)) all_param_names[-sel] else all_param_names
-  if (!length(regex_pattern)) return(params)
+  to_search <- if (length(sel)) 
+    all_param_names[-sel] else all_param_names
+  if (!length(regex_pattern)) 
+    return(params)
+  
   to_add <- grep(regex_pattern, to_search, value = TRUE)
-  if (!length(to_add)) params else c(params, to_add)
+  if (!length(to_add)) 
+    params 
+  else 
+    c(params, to_add)
 }
 
 # update with groups
 .update_params_with_groups <- function(params, all_param_names) {
   as_group <- grep("_as_shinystan_group", params)
-  if (!length(as_group)) return(params)
+  if (!length(as_group)) 
+    return(params)
   make_group <- function(group_name) {
     all_param_names[grep(paste0("^",group_name,"\\["), all_param_names)]
   }
@@ -209,21 +235,38 @@ alpha_calc_lines <- function(N) {
 }
 
 # transformations ---------------------------------------------------------
-transformation_choices <- 
-  c("abs", "atanh", cauchit = "pcauchy", "cloglog",
-    "exp", "expm1", "identity", "inverse", inv_logit = "plogis", 
-    "log", "log", "log10", "log2", "log1p", logit = "qlogis", 
-    probit = "pnorm", "square", "sqrt")
+transformation_choices <-
+  c(
+    "abs",
+    "atanh",
+    cauchit = "pcauchy",
+    "cloglog",
+    "exp",
+    "expm1",
+    "identity",
+    "inverse",
+    inv_logit = "plogis",
+    "log",
+    "log",
+    "log10",
+    "log2",
+    "log1p",
+    logit = "qlogis",
+    probit = "pnorm",
+    "square",
+    "sqrt"
+  )
 
 inverse <- function(x) 1/x
 cloglog <- function(x) log(-log1p(-x))
 square <- function(x) x^2
 
 transformation_selectInput <- function(id) {
-  selectInput(id, label = NULL, 
+  selectInput(id,
+              label = NULL,
               choices = transformation_choices,
               selected = "identity")
-  }
+}
   
 transform_helpText <- function(var = "x") {
   div(
@@ -260,21 +303,21 @@ transform_helpText <- function(var = "x") {
 
 
 # diagnostics help text ---------------------------------------------------
-hT11 <- function(...) helpText(style = "font-size: 11px;", ...)
-help_interval <- hT11(
-  "Highlighted interval shows \\(\\bar{x} \\pm sd(x)\\)")
-help_lines <- hT11(
-  "Lines are mean (solid) and median (dashed)")
-help_max_td <- hT11(
-  "Horizontal line indicates the max_treedepth setting")
+hT11 <- function(...)
+  helpText(style = "font-size: 11px;", ...)
+help_interval <- hT11("Highlighted interval shows \\(\\bar{x} \\pm sd(x)\\)")
+help_lines <- hT11("Lines are mean (solid) and median (dashed)")
+help_max_td <- hT11("Horizontal line indicates the max_treedepth setting")
 help_points <- hT11(
   "Large red points indicate which (if any) iterations",
   "encountered a divergent transition. Yellow indicates",
-  "a transition hitting the maximum treedepth.")  
+  "a transition hitting the maximum treedepth."
+)
 help_dynamic <- hT11(
   "Use your mouse or the sliders to select areas in the",
-  "traceplot to zoom into. The other plots on the screen", 
-  "will update accordingly. Double-click to reset.")
+  "traceplot to zoom into. The other plots on the screen",
+  "will update accordingly. Double-click to reset."
+)
 
 # stan manual 
 stan_manual <- function() {
@@ -282,11 +325,11 @@ stan_manual <- function() {
            "Glossary entries are compiled (with minor edits) from various excepts of the",
            a("Stan Modeling Language User's Guide and Reference Manual", 
              href = "http://mc-stan.org/documentation/"),
-           "(",a(href = "http://creativecommons.org/licenses/by/3.0/", "CC BY (v3)"),")"
+           "(", a(href = "http://creativecommons.org/licenses/by/3.0/", "CC BY (v3)"), ")"
   )
 }
 
-# to use in ui.R
+# to use in ui.R and ui_files
 .model_name <- slot(object, "model_name")
 .param_names <- slot(object, "param_names")
 .param_list <- .make_param_list(object)

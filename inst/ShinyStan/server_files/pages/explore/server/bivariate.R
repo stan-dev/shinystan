@@ -33,9 +33,9 @@ bivariate_plot <- reactive({
   }
   
   do.call(".bivariate_plot", args = list(
-    samps       = samps_post_warmup,
-    sp          = if (!identical(sampler_params_post_warmup, FALSE)) 
-      sampler_params_post_warmup else NULL,
+    samps       = SAMPS_post_warmup,
+    sp          = if (!identical(SAMPLER_PARAMS_post_warmup, FALSE)) 
+      SAMPLER_PARAMS_post_warmup else NULL,
     max_td      = if ("max_td" %in% names(MISC)) MISC$max_td else NULL,
     param       = input$param,
     param2      = input$bivariate_param_y,

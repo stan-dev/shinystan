@@ -3,7 +3,7 @@ calc_height_param_plot <- reactive({
     "auto"
   } else {
     params <- input$params_to_plot
-    params <- .update_params_with_groups(params, param_names)
+    params <- .update_params_with_groups(params, PARAM_NAMES)
     LL <- length(params)
     LL <- ifelse(LL < 8, 8, LL)
     if (!is.null(input$param_plot_color_by_rhat)){
@@ -25,11 +25,11 @@ multiparam_plot <- reactive({
   
   customize <- !is.null(input$param_plot_show_density)
   do.call(".multiparam_plot", args = list(
-    samps           = samps_post_warmup,
+    samps           = SAMPS_post_warmup,
     params          = input$params_to_plot,
-    all_param_names = param_names,
+    all_param_names = PARAM_NAMES,
     CI.level        = input$param_plot_ci_level/100,
-    rhat_values     = fit_summary[, "Rhat"],
+    rhat_values     = SUMMARY[, "Rhat"],
     show_density    = ifelse(customize, input$param_plot_show_density, FALSE), # == "yes", FALSE),
     show_ci_line    = ifelse(customize, input$param_plot_show_ci_line, TRUE), # == "yes", TRUE),
     color_by_rhat   = ifelse(customize, input$param_plot_color_by_rhat, FALSE), # == "yes", FALSE),

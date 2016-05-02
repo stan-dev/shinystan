@@ -8,9 +8,11 @@ histogram_plot <- reactive({
   validate(need(input$param, message = FALSE),
            need(!is.null(input$hist_chain), message = FALSE))
   chain <- input$hist_chain
-  if (is.na(chain)) chain <- 0
+  if (is.na(chain))
+    chain <- 0
   binwd <- input$hist_binwd
-  if (is.na(binwd)) binwd <- 0
+  if (is.na(binwd))
+    binwd <- 0
 
   do.call(".param_hist", args = list(
     param       = input$param,

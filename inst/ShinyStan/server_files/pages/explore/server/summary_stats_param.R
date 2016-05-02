@@ -4,7 +4,7 @@ parameter_summary <- reactive({
 
   do.call(".param_summary", args = list(
     param       = input$param,
-    summary     = fit_summary
+    summary     = SUMMARY
   ))
 })
 

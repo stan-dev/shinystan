@@ -1,6 +1,6 @@
 calc_height_autocorr_plot <- reactive({
   params <- input$ac_params
-  params <- .update_params_with_groups(params, param_names)
+  params <- .update_params_with_groups(params, PARAM_NAMES)
   LL <- length(params)
   LL <- ifelse(LL < 8, 8, LL)
   round(60*LL)
@@ -10,8 +10,8 @@ autocorr_plot <- reactive({
   validate(need(input$ac_lags, message = "Loading..."),
            need(!is.null(input$ac_warmup), message = "Loading..."))
   samps <- if (!input$ac_warmup) 
-    samps_post_warmup else samps_all
-  params <- .update_params_with_groups(input$ac_params, param_names)
+    SAMPS_post_warmup else SAMPS_all
+  params <- .update_params_with_groups(input$ac_params, PARAM_NAMES)
   if (length(params) == 0)
     params <- dimnames(samps)$parameters[1] # default to first parameter
   params <- unique(params)

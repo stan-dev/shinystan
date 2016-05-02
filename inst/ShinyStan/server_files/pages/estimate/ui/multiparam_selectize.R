@@ -23,7 +23,7 @@ observe({
   x <- input$param_plot_sort_j
   choices <- make_param_list_with_groups_sort()
   selected <- copy_params_to_plot()
-  selected <- .update_params_with_groups(selected, .param_names)
+  selected <- .update_params_with_groups(selected, PARAM_NAMES)
   updateSelectizeInput(session, inputId = "params_to_plot", 
                        choices = choices,
                        selected = selected)
@@ -34,9 +34,9 @@ observeEvent(input$param_plot_regex, {
   if (pattern != "") {
     choices <- make_param_list_with_groups_sort()
     selected <- copy_params_to_plot()
-    selected <- .update_params_with_groups(selected, .param_names)
+    selected <- .update_params_with_groups(selected, PARAM_NAMES)
     if (.test_valid_regex(pattern)) {
-      selected <- .update_params_with_regex(selected, .param_names, pattern)
+      selected <- .update_params_with_regex(selected, PARAM_NAMES, pattern)
       updateSelectizeInput(session, inputId = "params_to_plot", 
                            choices = choices,
                            selected = selected) 

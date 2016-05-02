@@ -1,16 +1,16 @@
 summary_stats_latex <- reactive({
   
-  params <- unique(.update_params_with_groups(input$tex_params, param_names))
+  params <- unique(.update_params_with_groups(input$tex_params, PARAM_NAMES))
   nParams <- length(params)
-  if (nParams == 0) params <- param_names
+  if (nParams == 0) params <- PARAM_NAMES
   if (nParams == 1) {
     x <- do.call(".param_summary", args = list(
       param       = params,
-      summary     = fit_summary
+      summary     = SUMMARY
     ))
   } else {
     x <- do.call(".tex_summary", args = list(
-      summary     = fit_summary[params, ],
+      summary     = SUMMARY[params, ],
       cols        = input$tex_columns
     ))
   }
