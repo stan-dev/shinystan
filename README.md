@@ -5,8 +5,9 @@
 # ShinyStan
 
 [![Travis-CI Build Status](https://travis-ci.org/stan-dev/shinystan.svg?branch=develop)](https://travis-ci.org/stan-dev/shinystan)
+[![Codecov](http://codecov.io/gh/stan-dev/shinystan/branch/develop/graph/badge.svg)](https://codecov.io/gh/stan-dev/shinystan)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/shinystan?color=blue)](http://cran.r-project.org/web/packages/shinystan)
-[![Downloads](http://cranlogs.r-pkg.org/badges/grand-total/shinystan?color=blue)](http://cran.rstudio.com/package=shinystan)
+[![RStudio CRAN Mirror Downloads](http://cranlogs.r-pkg.org/badges/grand-total/shinystan?color=blue)](http://cran.rstudio.com/package=shinystan)
 
 ShinyStan provides immediate, informative, customizable visual and 
 numerical summaries of model parameters and convergence diagnostics for 
