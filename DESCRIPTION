@@ -33,6 +33,7 @@ Suggests:
     coda,
     knitr (>= 1.9),
     rmarkdown (>= 0.8.1),
+    rstan (>= 2.9.0-3),
     rstanarm (>= 2.9.0-3),
     testthat
 Imports:
@@ -45,7 +46,6 @@ Imports:
     methods,
     reshape2,
     rsconnect (>= 0.4.2),
-    rstan (>= 2.9.0-3),
     stats,
     shinyjs (>= 0.1.0),
     shinythemes (>= 1.0.1),

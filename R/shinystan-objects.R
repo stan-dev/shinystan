@@ -376,6 +376,8 @@ setMethod(
 
 
 # as.shinystan (stanfit) -------------------------------------------------
+setClass("stanfit", getClass("stanfit", where = getNamespace("rstan")))
+
 #' @describeIn as.shinystan Create a shinystan object from a stanfit object 
 #'   (\pkg{\link[rstan]{rstan}}). Fewer optional arguments are available for 
 #'   this method because all important information can be taken automatically 
@@ -390,8 +392,6 @@ setMethod(
 #' fit <- stan_demo("eight_schools")
 #' sso <- as.shinystan(fit, model_name = "example")
 #' }
-#' 
-#' @importClassesFrom rstan stanfit
 #' 
 setMethod(
   "as.shinystan",
