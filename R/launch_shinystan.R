@@ -89,7 +89,15 @@ launch_shinystan <- function(object, rstudio = getOption("shinystan.rstudio"),
 
 #' ShinyStan demo
 #'
+#' @aliases eight_schools
 #' @export
+#' @param demo_name The name of the demo. Currently \code{"eight_schools"} is 
+#'   the only option, but additional demos will be available in future releases.
+#'   \describe{
+#'   \item{\code{eight_schools}}{Hierarchical meta-analysis model. See 
+#'    \emph{Meta Analysis} chapter of the Stan manual (chapter 11.2 in version
+#'    2.9), \url{http://mc-stan.org/documentation/}.}
+#'   }
 #' @param rstudio Only relevant for RStudio users. The default 
 #'   (\code{rstudio=FALSE}) is to launch the app in the default web browser 
 #'   rather than RStudio's pop-up Viewer. Users can change the default to 
@@ -112,10 +120,12 @@ launch_shinystan <- function(object, rstudio = getOption("shinystan.rstudio"),
 #' sso_demo <- launch_shinystan_demo()
 #' }
 #'
-launch_shinystan_demo <- function(rstudio = getOption("shinystan.rstudio"), 
+launch_shinystan_demo <- function(demo_name = "eight_schools",
+                                  rstudio = getOption("shinystan.rstudio"),
                                   ...) {
-  demo_name <- "eight_schools"
-  invisible(launch(get(demo_name), rstudio, ...))
+  demo_name <- match.arg(demo_name)
+  demo_object <- get(demo_name)
+  invisible(launch(demo_object, rstudio = rstudio, ...))
 }
 
 # Internal launch function 
@@ -125,8 +135,8 @@ launch_shinystan_demo <- function(rstudio = getOption("shinystan.rstudio"),
 launch <- function(sso, rstudio = FALSE, ...) {
   launch.browser <- if (!rstudio) 
     TRUE else getOption("shiny.launch.browser", interactive())
-  .sso_env$.shinystan_temp_object <- sso  # see zzz.R for .sso_env
-  on.exit(.sso_env$.shinystan_temp_object <- NULL, add = TRUE)
+  .sso_env$.SHINYSTAN_OBJECT <- sso  # see zzz.R for .sso_env
+  on.exit(.sso_env$.SHINYSTAN_OBJECT <- NULL, add = TRUE)
   shiny::runApp(system.file("ShinyStan", package = "shinystan"), 
                 launch.browser = launch.browser, ...)
 }
