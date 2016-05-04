@@ -7,32 +7,34 @@ not_sso_msg <- "specify a shinystan object"
 
 # load 'old_sso', a shinystan object created by previous shinystan version
 load("old_sso_for_tests.rda")
-
+old_sso_msg <- "use the 'update_sso' function to update your object"
 
 
 # launch_shinystan --------------------------------------------------------
 test_that("launch_shinystan throws appropriate errors", {
   expect_error(launch_shinystan(sso@summary), "not a valid input")
-  expect_error(launch_shinystan(old_sso), "use the 'update_sso' function to update your object")
+  expect_error(launch_shinystan(old_sso), old_sso_msg)
 })
 
 
 # model_name, model_code, notes -----------------------------------------
 test_that("simple sso functions work", {
+  expect_error(model_name(old_sso), old_sso_msg)
   expect_error(model_name(not_sso), not_sso_msg)
-  expect_error(model_code(not_sso), not_sso_msg)
-  expect_error(notes(not_sso), not_sso_msg)
-  
   sso2 <- model_name(sso, "test_rename")
   expect_identical(model_name(sso2), "test_rename")
   expect_error(model_name(sso, 1234), "should be a single string")
   expect_error(model_name(sso, c("a", "b")), "should be a single string")
   
+  expect_error(model_code(old_sso), old_sso_msg)
+  expect_error(model_code(not_sso), not_sso_msg)
   sso2 <- model_code(sso, "test_code")
   expect_identical(model_code(sso2), "test_code")
   expect_identical(model_code(sso2), slot(sso2, "model_code"))
   expect_error(model_code(sso, 1234), "should be NULL or a string")
   
+  expect_error(notes(old_sso), old_sso_msg)
+  expect_error(notes(not_sso), not_sso_msg)
   sso2 <- notes(sso, "test_notes_replace", replace = TRUE)
   expect_identical(slot(sso2, "user_model_info"), "test_notes_replace")
   sso2 <- notes(sso2, "test_notes_keep", replace = FALSE)
@@ -45,6 +47,7 @@ test_that("simple sso functions work", {
 # retrieve ----------------------------------------------------------------
 test_that("retrieve works", {
   source("data_for_retrieve_tests.R")
+  expect_error(retrieve(old_sso), old_sso_msg)
   expect_error(retrieve(not_sso), not_sso_msg)
   expect_error(retrieve(not_sso, what = "mean"), not_sso_msg)
   
@@ -63,6 +66,7 @@ test_that("retrieve works", {
 
 # generate_quantity -------------------------------------------------------
 test_that("generate_quantity works", {
+  expect_error(generate_quantity(old_sso), old_sso_msg)
   expect_error(generate_quantity(not_sso), not_sso_msg)
   
   sso2 <- generate_quantity(sso, fun = function(x) x^2,
@@ -86,6 +90,7 @@ test_that("drop_parameters works", {
   s <- sso@summary
   samp <- sso@posterior_sample
   
+  expect_error(drop_parameters(old_sso, pars = "mu"), old_sso_msg)
   expect_error(drop_parameters(not_sso, pars = "mu"), not_sso_msg)
   
   sso2 <- drop_parameters(sso, pars = "mu")
@@ -123,6 +128,7 @@ test_that("drop_parameters works", {
 
 # sso_info ----------------------------------------------------------------
 test_that("sso_info error checking", {
+  expect_error(sso_info(old_sso), old_sso_msg)
   expect_error(sso_info(sso@posterior_sample), "specify a shinystan object")
 })
 

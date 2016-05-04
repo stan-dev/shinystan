@@ -10,6 +10,16 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
+# check which shinystan created a shinystan object
+sso_version <- function(sso) {
+  ver <- sso@misc[["sso_version"]]
+  if (!is.null(ver)) {
+    package_version(ver)
+  } else {
+    package_version("2.0")
+  }
+}
+
 # check object types
 sso_check <- function(sso) {
   if (!is.shinystan(sso)) {
@@ -21,17 +31,10 @@ sso_check <- function(sso) {
   }
   invisible(TRUE)
 }
-is.stanfit <- function(X) inherits(X, "stanfit")
-is.stanreg <- function(X) inherits(X, "stanreg")
 
-sso_version <- function(sso) {
-  ver <- sso@misc[["sso_version"]]
-  if (!is.null(ver)) {
-    package_version(ver)
-  } else {
-    package_version("2.0")
-  }
-}
+is.stanfit <- function(x) inherits(x, "stanfit")
+is.stanreg <- function(x) inherits(x, "stanreg")
+
 
 # check for suggested (not required) packages
 check_suggests <- function(pkg) {
@@ -50,7 +53,8 @@ grepl_ic <- function(pattern, x, ignore.case = TRUE) {
 # release reminders (for devtools)
 release_questions <- function() {
   c(
-    "Have you updated version numbers in the citation?"
+    "Have you updated version numbers in the citation?",
+    "Have you updated NEWS.md?"
   )
 }
 # nocov end
