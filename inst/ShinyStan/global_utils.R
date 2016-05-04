@@ -89,16 +89,22 @@ a_glossary <- function(id) {
         icon = icon("book", lib = "glyphicon")
       ))
 }
-strongMed <- function(...) strong(style = "font-size: 14px; margin-bottom: 5px;", ...)
-strongBig <- function(...) strong(style = "font-size: 18px; margin-bottom: 5px;", ...)
-strong_bl <- function(...) strong(style = "color: #006DCC;", ...)
+strongMed <- function(...) 
+  strong(style = "font-size: 14px; margin-bottom: 5px;", ...)
+strongBig <- function(...) 
+  strong(style = "font-size: 18px; margin-bottom: 5px;", ...)
+strong_bl <- function(...) 
+  strong(style = "color: #006DCC;", ...)
 
 algorithm_nuts <- h5(style = "color: #337ab7;", "algorithm = NUTS")
 algorithm_hmc <- h5(style = "color: #337ab7;", "algorithm = HMC")
 
-dygraphOutput_175px <- function(id) dygraphs::dygraphOutput(id, height = "175px")
-plotOutput_200px <- function(id, ...) plotOutput(id, height = "200px")
-plotOutput_400px <- function(id, ...) plotOutput(id, height = "400px")
+dygraphOutput_175px <- function(id) 
+  dygraphs::dygraphOutput(id, height = "175px")
+plotOutput_200px <- function(id, ...) 
+  plotOutput(id, height = "200px")
+plotOutput_400px <- function(id, ...) 
+  plotOutput(id, height = "400px")
 
 condPanel_dens_together <- function(...) {
   conditionalPanel(condition = "input.dens_chain_split == 'Together'", ...)
