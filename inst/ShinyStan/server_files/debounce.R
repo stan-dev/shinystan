@@ -8,7 +8,10 @@
 # instead. This means that this function should be used when \code{expr} is
 # cheap but the things it will trigger (outputs and reactives that use
 # \code{expr}) are expensive.
-debounce <- function(expr, millis, env = parent.frame(), quoted = FALSE,
+debounce <- function(expr, 
+                     millis, 
+                     env = parent.frame(), 
+                     quoted = FALSE,
                      domain = getDefaultReactiveDomain()) {
   
   force(millis)
@@ -19,12 +22,12 @@ debounce <- function(expr, millis, env = parent.frame(), quoted = FALSE,
   v <- reactiveValues(
     trigger = NULL,
     when = NULL # the deadline for the timer to fire; NULL if not scheduled
-  )  
+  )
   
   # Responsible for tracking when f() changes.
   observeEvent(f(), {
     # The value changed. Start or reset the timer.
-    v$when <- Sys.time() + millis/1000
+    v$when <- Sys.time() + millis / 1000
   }, ignoreNULL = FALSE)
   
   # This observer is the timer. It rests until v$when elapses, then touches

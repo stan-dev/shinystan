@@ -1,22 +1,18 @@
-# Load shinystan object
+# load shinystan object
 object <- get(".SHINYSTAN_OBJECT", envir = shinystan:::.sso_env)
 
 # give ShinyStan app access to ggplot functions
-ggplot_fns_file <- if (packageVersion("ggplot2") < "2.0.0")
-  "ggplot_fns_old.rda" else "ggplot_fns.rda"
-
-load(ggplot_fns_file)
+load("ggplot_fns.rda")
 lapply(ggplot_fns, function(f) {
   try(assign(f, getFromNamespace(f, "ggplot2"), envir = parent.frame(2)),
       silent = TRUE)
 })
 
-helpers <- file.path("helper_functions", list.files("helper_functions", 
-                                                    full.names = FALSE))
+helpers <- file.path("helper_functions", list.files("helper_functions", full.names = FALSE))
 for (h in helpers) 
   source(h, local = TRUE)
-source(file.path("server_files","utilities","ppcheck_names_descriptions.R"), 
-       local = TRUE)
+
+source(file.path("server_files","utilities","ppcheck_names_descriptions.R"), local = TRUE)
 
 # avoid conflict with inline::code if rstan is loaded
 code <- shiny::code
@@ -243,24 +239,13 @@ alpha_calc_lines <- function(N) {
 # transformations ---------------------------------------------------------
 transformation_choices <-
   c(
-    "abs",
-    "atanh",
-    cauchit = "pcauchy",
-    "cloglog",
-    "exp",
-    "expm1",
-    "identity",
-    "inverse",
-    inv_logit = "plogis",
-    "log",
-    "log",
-    "log10",
-    "log2",
-    "log1p",
-    logit = "qlogis",
+    "abs", "atanh",
+    cauchit = "pcauchy", "cloglog",
+    "exp", "expm1",
+    "identity", "inverse", inv_logit = "plogis",
+    "log", "log10", "log2", "log1p", logit = "qlogis",
     probit = "pnorm",
-    "square",
-    "sqrt"
+    "square", "sqrt"
   )
 
 inverse <- function(x) 1/x
@@ -273,7 +258,7 @@ transformation_selectInput <- function(id) {
               choices = transformation_choices,
               selected = "identity")
 }
-  
+
 transform_helpText <- function(var = "x") {
   div(
     if (var == "x") 
