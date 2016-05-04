@@ -12,9 +12,9 @@ launch_shinystan_demo(demo_name = "eight_schools",
 \item{demo_name}{The name of the demo. Currently \code{"eight_schools"} is 
 the only option, but additional demos will be available in future releases.
 \describe{
-\item{\code{eight_schools}}{Hierarchical meta-analysis model. See
-\emph{Meta Analysis} chapter of the Stan manual (chapter 11.2 in version 2.9),
-\url{http://mc-stan.org/documentation/}.}
+\item{\code{eight_schools}}{Hierarchical meta-analysis model. See 
+ \emph{Meta Analysis} chapter of the Stan manual (chapter 11.2 in version
+ 2.9), \url{http://mc-stan.org/documentation/}.}
 }}
 
 \item{rstudio}{Only relevant for RStudio users. The default 

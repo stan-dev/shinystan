@@ -12,13 +12,26 @@
 
 # check object types
 sso_check <- function(sso) {
-  if (!is.shinystan(sso)) 
+  if (!is.shinystan(sso)) {
     stop("Please specify a shinystan object", call. = FALSE)
-  else 
-    invisible(TRUE)
+  } else if (sso_version(sso) < utils::packageVersion("shinystan")) {
+    stop("Your shinystan object was created with a previous version of shinystan. ", 
+         "Please use the 'update_sso' function to update your object.", 
+         call. = FALSE)
+  }
+  invisible(TRUE)
 }
 is.stanfit <- function(X) inherits(X, "stanfit")
 is.stanreg <- function(X) inherits(X, "stanreg")
+
+sso_version <- function(sso) {
+  ver <- sso@misc[["sso_version"]]
+  if (!is.null(ver)) {
+    package_version(ver)
+  } else {
+    package_version("2.0")
+  }
+}
 
 # check for suggested (not required) packages
 check_suggests <- function(pkg) {

@@ -16,6 +16,8 @@ mcmc2 <- line[[1L]]
 
 context("Creating and testing sso")
 
+
+# sso_check ---------------------------------------------------------------
 test_that("sso_check throws errors", {
   expect_error(sso_check(array1))
   expect_error(sso_check(chain2))
@@ -23,12 +25,16 @@ test_that("sso_check throws errors", {
   
   expect_true(sso_check(sso))
   expect_true(sso_check(as.shinystan(array1)))
+  
+  sso@misc[["sso_version"]] <- "2.1.0"
+  expect_error(sso_check(sso), "use the 'update_sso' function to update your object")
 })
 
 
+# is.shinystan ------------------------------------------------------------
 test_that("is.shinystan, is.stanfit, is.stanreg work", {
   expect_true(is.shinystan(sso))
-  expect_false(is.shinystan(sso@samps_all))
+  expect_false(is.shinystan(sso@posterior_sample))
   
   expect_true(is.stanfit(stanfit1))
   expect_false(is.stanfit(stanreg1))
@@ -38,6 +44,7 @@ test_that("is.shinystan, is.stanfit, is.stanreg work", {
 })
 
 
+# as.shinystan helpers ----------------------------------------------------
 test_that("as.shinystan stanfit helpers work", {
   expect_is(.rstan_max_treedepth(stanfit1), "integer")
   expect_equal(.rstan_warmup(stanfit1), 0)
@@ -58,13 +65,17 @@ test_that("as.shinystan stanfit helpers work", {
 })
 
 
+
+# as.shinystan ------------------------------------------------------------
 test_that("as.shinystan creates sso", {
   # array
-  expect_is(as.shinystan(array1, model_name = "test", note = "test"), "shinystan")
+  expect_is(x <- as.shinystan(array1, model_name = "test", note = "test"), "shinystan")
+  expect_identical(sso_version(x), utils::packageVersion("shinystan"))
   
   # mcmc.list
   expect_is(as.shinystan(mcmc1, model_name = "test", note = "test", model_code = "test"), "shinystan")
   expect_is(as.shinystan(mcmc1[1]), "shinystan")
+  expect_identical(sso_version(x), utils::packageVersion("shinystan"))
   
   # list of matrices
   expect_is(as.shinystan(chains1, model_code = "test"), "shinystan")
@@ -72,12 +83,15 @@ test_that("as.shinystan creates sso", {
   colnames(chains1[[1]]) <- colnames(chains1[[2]]) <- c(paste0("beta[",1:2,"]"), "sigma")
   sso2 <- as.shinystan(chains1, param_dims = list(beta = 2, sigma = 0))
   expect_identical(sso2@param_dims, list(beta = 2, sigma = numeric(0)))
+  expect_identical(sso_version(x), utils::packageVersion("shinystan"))
   
   # stanreg
   expect_is(as.shinystan(stanreg1, model_name = "test"), "shinystan")
+  expect_identical(sso_version(x), utils::packageVersion("shinystan"))
   
   # stanfit
   expect_is(as.shinystan(stanfit1, model_name = "test", note = "test"), "shinystan")
+  expect_identical(sso_version(x), utils::packageVersion("shinystan"))
 })
 
 test_that("as.shinystan throws errors", {
@@ -92,4 +106,21 @@ test_that("as.shinystan arguments works with rstanarm example", {
   expect_is(sso2, "shinystan")
   expect_false(is.null(sso1@misc$pp_check_plots))
   expect_null(sso2@misc$pp_check_plots)
+})
+
+
+# update_sso ---------------------------------------------------------------
+test_that("update_sso errors and messages are correct", {
+  expect_error(update_sso(1234))
+  expect_message(sso2 <- update_sso(sso), "already up-to-date")
+  expect_is(sso2, "shinystan")
+  
+  sso2@misc[["sso_version"]] <- "1.0"
+  expect_message(sso3 <- update_sso(sso2), "object updated")
+  expect_is(sso3, "shinystan")
+  expect_identical(sso_version(sso3), utils::packageVersion("shinystan"))
+  
+  sso3@misc[["sso_version"]] <- "2.9.5"
+  expect_error(update_sso(sso3), 
+               regexp = "was created using a more recent version of shinystan")
 })

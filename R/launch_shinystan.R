@@ -74,15 +74,20 @@
 #' # Now fit_sso is a shinystan object and so Example 1 (above) applies.
 #' }
 #'
-launch_shinystan <- function(object, rstudio = getOption("shinystan.rstudio"), 
+launch_shinystan <- function(object, 
+                             rstudio = getOption("shinystan.rstudio"), 
                              ...) {
-  message("\nLoading... ",
-          "for large models ShinyStan may take a few moments to launch.")
-  if (is.stanreg(object) || is.stanfit(object))
+  if (is.shinystan(object)) {
+    sso_check(object)
+  } else if (is.stanreg(object) || is.stanfit(object)) {
+    message("\nCreating shinystan object...")
     object <- as.shinystan(object)
+  }
   if (!is.shinystan(object))
     stop("'object' is not a valid input. See help('launch_shinystan').")
   
+  message("\nLaunching ShinyStan interface... ",
+          "for large models this  may take some time.")
   invisible(launch(object, rstudio, ...))
 }
 
@@ -135,6 +140,7 @@ launch_shinystan_demo <- function(demo_name = "eight_schools",
 launch <- function(sso, rstudio = FALSE, ...) {
   launch.browser <- if (!rstudio) 
     TRUE else getOption("shiny.launch.browser", interactive())
+  
   .sso_env$.SHINYSTAN_OBJECT <- sso  # see zzz.R for .sso_env
   on.exit(.sso_env$.SHINYSTAN_OBJECT <- NULL, add = TRUE)
   shiny::runApp(system.file("ShinyStan", package = "shinystan"), 

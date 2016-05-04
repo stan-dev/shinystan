@@ -25,9 +25,34 @@
 #' @return \code{sso}, updated.
 #' 
 update_sso <- function(sso) {
-  stopifnot(is.shinystan(sso))
-  sso@sampler_params <- .rename_sampler_param(sso@sampler_params,
-                                              oldname = "n_divergent__",
-                                              newname = "divergent__")
-  sso
+  sso_check(sso)
+  sso_ver <- sso_version(sso)
+  shinystan_ver <- utils::packageVersion("shinystan")
+  if (sso_ver == shinystan_ver) {
+    message(deparse(substitute(sso)), " already up-to-date.")
+    return(sso)
+  } else if (sso_ver > shinystan_ver) {
+    stop(deparse(substitute(sso)), " was created using a more recent version ",
+         "of shinystan than the one you're currently using. ", 
+         "Please update your version of the shinystan package.")
+  }
+    
+  slot(sso, "sampler_params") <-
+    .rename_sampler_param(slot(sso, "sampler_params"),
+                          oldname = "n_divergent__",
+                          newname = "divergent__")
+  sso_new <- shinystan()
+  for (sn in slotNames(sso_new)) {
+    if (.hasSlot(sso, sn)) {
+      slot(sso_new, sn) <- slot(sso, sn)
+    } else {
+      if (sn == "posterior_sample" && .hasSlot(sso, "samps_all"))
+        slot(sso_new, sn) <- slot(sso, "samps_all")
+      else 
+        stop("slot ", sn, "not found in ", deparse(substitute(sso)))
+    }
+  }
+  sso_new@misc[["sso_version"]] <- utils::packageVersion("shinystan")
+  message("shinystan object updated.")
+  sso_new
 }

@@ -24,7 +24,7 @@ shinystan <- setClass(
     model_name      = "character",
     param_names     = "character",
     param_dims      = "list",
-    samps_all       = "array",
+    posterior_sample       = "array",
     summary         = "matrix",
     sampler_params  = "list",
     nChains         = "numeric",
@@ -38,7 +38,7 @@ shinystan <- setClass(
     model_name = "No name",
     param_names = "",
     param_dims = list(),
-    samps_all = array(NA, c(1, 1)),
+    posterior_sample = array(NA, c(1, 1)),
     summary = matrix(NA, nr = 1, nc =1),
     sampler_params = list(NA),
     nChains = 0,
@@ -48,7 +48,7 @@ shinystan <- setClass(
       "Use this space to store notes about your model",
     model_code =
       "Use this space to store your model code",
-    misc = list()
+    misc = list(sso_version = utils::packageVersion("shinystan"))
   )
 )
 
@@ -151,7 +151,7 @@ setMethod(
       model_name = model_name,
       param_names = param_names,
       param_dims = .set_param_dims(param_dims, param_names),
-      samps_all = X,
+      posterior_sample = X,
       summary = shinystan_monitor(X, warmup = burnin),
       nChains = ncol(X),
       nIter = nrow(X),
@@ -321,7 +321,7 @@ setMethod(
       )
     }
     
-    samps_array <- array(
+    posterior <- array(
       NA,
       dim = c(coda::niter(X), coda::nvar(X), coda::nchain(X)),
       dimnames = list(
@@ -331,13 +331,13 @@ setMethod(
       )
     )
     for (c in seq_len(coda::nchain(X)))
-      samps_array[, , c] <- X[[c]]
+      posterior[, , c] <- X[[c]]
     
-    samps_array <- aperm(drop(samps_array), c(1, 3, 2))
-    dimnames(samps_array) <- list(
-      iterations = seq_len(nrow(samps_array)),
-      chains = paste0("chain:", seq_len(ncol(samps_array))),
-      parameters = dimnames(samps_array)[[3]]
+    posterior <- aperm(drop(posterior), c(1, 3, 2))
+    dimnames(posterior) <- list(
+      iterations = seq_len(nrow(posterior)),
+      chains = paste0("chain:", seq_len(ncol(posterior))),
+      parameters = dimnames(posterior)[[3]]
     )
     param_names <- dimnames(X[[1]])[[2]]
     
@@ -345,10 +345,10 @@ setMethod(
       model_name = model_name,
       param_names = param_names,
       param_dims = .set_param_dims(param_dims, param_names),
-      samps_all = samps_array,
-      summary = shinystan_monitor(samps_array, warmup = burnin),
-      nChains = ncol(samps_array),
-      nIter = nrow(samps_array),
+      posterior_sample = posterior,
+      summary = shinystan_monitor(posterior, warmup = burnin),
+      nChains = ncol(posterior),
+      nIter = nrow(posterior),
       nWarmup = burnin
     )
     if (!is.null(note))
@@ -407,7 +407,7 @@ setMethod(
       model_name = model_name,
       param_names = dimnames(posterior)[[3L]],
       param_dims = X@sim$dims_oi,
-      samps_all = posterior,
+      posterior_sample = posterior,
       summary = .rstan_summary(X),
       sampler_params = .rstan_sampler_params(X),
       nChains = ncol(X),
@@ -417,7 +417,8 @@ setMethod(
       misc = list(
         max_td = .rstan_max_treedepth(X),
         stan_method = .stan_args(X, "method"),
-        stan_algorithm = .stan_algorithm(X)
+        stan_algorithm = .stan_algorithm(X),
+        sso_version = utils::packageVersion("shinystan")
       )
     )
     sso <- .rename_scalar(sso, oldname = "lp__", newname = "log-posterior")
@@ -437,7 +438,7 @@ setMethod(
     return(sso)
   
   sso@param_names[p] <- 
-    dimnames(sso@samps_all)$parameters[p] <-
+    dimnames(sso@posterior_sample)$parameters[p] <-
     names(sso@param_dims)[which(names(sso@param_dims) == oldname)] <- 
     rownames(sso@summary)[p] <- newname
   return(sso)
@@ -590,11 +591,14 @@ setMethod(
       sso <- suppressMessages(notes(sso, note, replace = TRUE))
     
     param_names <- slot(sso, "param_names")
-    sel <- grep(":_NEW_", dimnames(slot(sso, "samps_all"))[[3L]], fixed = TRUE)
+    sel <- grep(":_NEW_", dimnames(slot(sso, "posterior_sample"))[[3L]], 
+                fixed = TRUE)
     if (length(sel)) {
       param_names <- param_names[-sel]
-      slot(sso, "samps_all") <- slot(sso, "samps_all")[, , -sel, drop = FALSE]
-      slot(sso, "summary")  <- slot(sso, "summary")[-sel, , drop = FALSE]
+      slot(sso, "posterior_sample") <- 
+        slot(sso, "posterior_sample")[, , -sel, drop = FALSE]
+      slot(sso, "summary")  <- 
+        slot(sso, "summary")[-sel, , drop = FALSE]
     }
     param_dims <- rep(list(numeric(0)), length(param_names))
     names(param_dims) <- param_names

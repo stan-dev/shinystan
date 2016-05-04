@@ -4,7 +4,7 @@ context("Deploying")
 sso <- eight_schools
 
 test_that("deploy_shinystan error checking works", {
-  expect_error(deploy_shinystan(sso@samps_all), 
+  expect_error(deploy_shinystan(sso@posterior_sample), 
                regexp = "specify a shinystan object")
   expect_error(deploy_shinystan(sso), 
                regexp = "'appName' is required")

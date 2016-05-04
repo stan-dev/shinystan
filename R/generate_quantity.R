@@ -46,7 +46,7 @@ generate_quantity <- function(sso, param1, param2, fun, new_name) {
   message("\nThis might take a moment for large shinystan objects...\n")
   
   two_params <- !missing(param2)
-  posterior <- slot(sso, "samps_all")
+  posterior <- slot(sso, "posterior_sample")
   dims <- dim(posterior)
   ndim <- length(dims)
   if (ndim == 3) {

@@ -78,7 +78,7 @@ drop_parameters <- function(sso, pars) {
 #   removed
 .drop_parameters <- function(sso, rmv) {
   slot(sso, "param_names") <- slot(sso, "param_names")[-rmv]
-  slot(sso, "samps_all") <- slot(sso, "samps_all")[, , -rmv, drop = FALSE]
+  slot(sso, "posterior_sample") <- slot(sso, "posterior_sample")[, , -rmv, drop = FALSE]
   slot(sso, "summary") <- slot(sso, "summary")[-rmv, , drop = FALSE]
   sso
 }
