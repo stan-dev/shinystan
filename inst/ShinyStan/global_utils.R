@@ -1,5 +1,5 @@
 # Load shinystan object
-object <- get(".shinystan_temp_object", envir = shinystan:::.sso_env)
+object <- get(".SHINYSTAN_OBJECT", envir = shinystan:::.sso_env)
 
 # give ShinyStan app access to ggplot functions
 ggplot_fns_file <- if (packageVersion("ggplot2") < "2.0.0")

@@ -98,7 +98,7 @@ deploy_shinystan <- function(sso,
     server_lines <- paste0("library(", server_pkgs, ");")
     ui_lines <- paste0("library(", ui_pkgs, ");")
     global_lines <- paste(
-      "load('shinystan_temp_object.RData');",
+      "load('sso.RData');",
       "if (file.exists('y.RData')) load('y.RData')"
     )
     for (ff in c("ui", "server", "global")) {
@@ -106,7 +106,7 @@ deploy_shinystan <- function(sso,
       fconn <- file(file_name, 'r+')
       original_content <- readLines(fconn)
       if (ff %in% c("ui", "server")) {
-        sel <- grep(".shinystan_temp_object", original_content)
+        sel <- grep(".SHINYSTAN_OBJECT", original_content)
         original_content <- original_content[-sel]
       }
       new_lines <- get(paste0(ff, "_lines"))
@@ -116,7 +116,7 @@ deploy_shinystan <- function(sso,
     
     # save shinystan_object to deployDir
     object <- sso
-    save(object, file = file.path(deployDir, "shinystan_temp_object.RData"))
+    save(object, file = file.path(deployDir, "sso.RData"))
     # save ppcheck_data and set ppcheck defaults
     pp <- list(...)
     if ("ppcheck_data" %in% names(pp)) {
