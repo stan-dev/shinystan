@@ -14,9 +14,10 @@ data(line, package = "coda")
 mcmc1 <- line
 mcmc2 <- line[[1L]]
 
-context("Creating and testing sso")
+# load 'old_sso', a shinystan object created by previous shinystan version
+load("old_sso_for_tests.rda")
 
-
+context("Checking shinystan objects")
 # sso_check ---------------------------------------------------------------
 test_that("sso_check throws errors", {
   expect_error(sso_check(array1))
@@ -26,8 +27,8 @@ test_that("sso_check throws errors", {
   expect_true(sso_check(sso))
   expect_true(sso_check(as.shinystan(array1)))
   
-  sso@misc[["sso_version"]] <- "2.1.0"
-  expect_error(sso_check(sso), "use the 'update_sso' function to update your object")
+  expect_error(sso_check(old_sso), 
+               regexp = "use the 'update_sso' function to update your object")
 })
 
 
@@ -44,6 +45,7 @@ test_that("is.shinystan, is.stanfit, is.stanreg work", {
 })
 
 
+context("Creating shinystan objects")
 # as.shinystan helpers ----------------------------------------------------
 test_that("as.shinystan stanfit helpers work", {
   expect_is(.rstan_max_treedepth(stanfit1), "integer")
@@ -110,13 +112,13 @@ test_that("as.shinystan arguments works with rstanarm example", {
 
 
 # update_sso ---------------------------------------------------------------
+context("Updating shinystan objects")
 test_that("update_sso errors and messages are correct", {
   expect_error(update_sso(1234))
   expect_message(sso2 <- update_sso(sso), "already up-to-date")
   expect_is(sso2, "shinystan")
   
-  sso2@misc[["sso_version"]] <- "1.0"
-  expect_message(sso3 <- update_sso(sso2), "object updated")
+  expect_message(sso3 <- update_sso(old_sso), "object updated")
   expect_is(sso3, "shinystan")
   expect_identical(sso_version(sso3), utils::packageVersion("shinystan"))
   

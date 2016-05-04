@@ -25,7 +25,7 @@
 #' @return \code{sso}, updated.
 #' 
 update_sso <- function(sso) {
-  sso_check(sso)
+  stopifnot(is.shinystan(sso))
   sso_ver <- sso_version(sso)
   shinystan_ver <- utils::packageVersion("shinystan")
   if (sso_ver == shinystan_ver) {

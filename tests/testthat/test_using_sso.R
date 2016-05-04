@@ -5,13 +5,15 @@ sso <- eight_schools
 not_sso <- sso@model_name
 not_sso_msg <- "specify a shinystan object"
 
+# load 'old_sso', a shinystan object created by previous shinystan version
+load("old_sso_for_tests.rda")
+
 
 
 # launch_shinystan --------------------------------------------------------
 test_that("launch_shinystan throws appropriate errors", {
   expect_error(launch_shinystan(sso@summary), "not a valid input")
-  sso@misc[["sso_version"]] <- "2.1.1"
-  expect_error(launch_shinystan(sso), "use the 'update_sso' function to update your object")
+  expect_error(launch_shinystan(old_sso), "use the 'update_sso' function to update your object")
 })
 
 
