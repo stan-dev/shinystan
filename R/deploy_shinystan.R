@@ -82,7 +82,12 @@ deploy_shinystan <- function(sso,
     contents <- system.file("ShinyStan", package = "shinystan")
     file.copy(from = contents, to = appDir, recursive = TRUE)
     
-    server_pkgs <- c("shiny", "shinyjs", "markdown", "shinythemes")
+    server_pkgs <- c(
+      "shiny", 
+      "shinyjs", 
+      "markdown", 
+      "shinythemes"
+    )
     ui_pkgs <- c(
       server_pkgs,
       "ggplot2",
@@ -114,7 +119,7 @@ deploy_shinystan <- function(sso,
       close(fconn)
     }
     
-    # save shinystan_object to deployDir
+    # save sso to deployDir
     object <- sso
     save(object, file = file.path(deployDir, "sso.RData"))
     # save ppcheck_data and set ppcheck defaults

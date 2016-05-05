@@ -119,7 +119,7 @@ test_that("drop_parameters works", {
   
   
   expect_error(drop_parameters(sso, pars = c("theta[1]", "mu")), 
-               regexp = "Individual elements")
+               regexp = "individual elements")
   expect_error(drop_parameters(sso, pars = "omega"), regexp = "No matches")
   expect_warning(drop_parameters(sso, pars = c("mu", "omega")), 
                  regexp = "not found and ignored: omega")

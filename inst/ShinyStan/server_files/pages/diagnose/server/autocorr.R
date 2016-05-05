@@ -3,26 +3,31 @@ calc_height_autocorr_plot <- reactive({
   params <- .update_params_with_groups(params, PARAM_NAMES)
   LL <- length(params)
   LL <- ifelse(LL < 8, 8, LL)
-  round(60*LL)
+  round(60 * LL)
 })
 
 autocorr_plot <- reactive({
-  validate(need(input$ac_lags, message = "Loading..."),
-           need(!is.null(input$ac_warmup), message = "Loading..."))
-  samps <- if (!input$ac_warmup) 
+  validate(
+    need(input$ac_lags, message = "Loading..."),
+    need(!is.null(input$ac_warmup), message = "Loading...")
+  )
+  samps <- if (!input$ac_warmup)
     SAMPS_post_warmup else SAMPS_all
   params <- .update_params_with_groups(input$ac_params, PARAM_NAMES)
-  if (length(params) == 0)
+  if (!length(params))
     params <- dimnames(samps)$parameters[1] # default to first parameter
   params <- unique(params)
-  samps <- samps[,, params, drop = FALSE]
-  do.call(".autocorr_plot", args = list(
-    samps           = samps,
-    lags            = input$ac_lags,
-    flip            = input$ac_flip,
-    combine_chains  = input$ac_combine,
-    partial         = input$ac_partial
-  ))
+  samps <- samps[, , params, drop = FALSE]
+  do.call(
+    ".autocorr_plot",
+    args = list(
+      samps           = samps,
+      lags            = input$ac_lags,
+      flip            = input$ac_flip,
+      combine_chains  = input$ac_combine,
+      partial         = input$ac_partial
+    )
+  )
 })
 
 output$autocorr_plot_out <- renderPlot({

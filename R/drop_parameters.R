@@ -42,18 +42,20 @@
 drop_parameters <- function(sso, pars) {
   sso_check(sso)
   stopifnot(is.character(pars))
-  if (any(grepl("[", pars, fixed = TRUE)))
-    stop("Individual elements of non-scalar parameters can't be removed.")
+  any_indiv_els <- any(grepl("[", pars, fixed = TRUE))
+  if (any_indiv_els)
+    stop("Currently, individual elements of non-scalar parameters can't be removed.")
   
-  non_scalar <- names(sso@param_dims) %in% pars
-  if (any(non_scalar)) {
-    pd <- which(names(sso@param_dims) %in% pars)
-    nms <- names(sso@param_dims[pd])
+  any_non_scalar <- any(names(sso@param_dims) %in% pars)
+  if (any_non_scalar) {
+    param_dims <- slot(sso, "param_dims")
+    param_names <- slot(sso, "param_names")
+    pd <- which(names(param_dims) %in% pars)
+    nms <- names(param_dims[pd])
     for (j in seq_along(nms)) {
-      if (!nms[j] %in% sso@param_names) {
+      if (!nms[j] %in% param_names) {
         pars <- pars[pars != nms[j]]
-        tmp <- grep(paste0(nms[j], "["), sso@param_names, 
-                    fixed = TRUE, value = TRUE)
+        tmp <- grep(paste0(nms[j], "["), param_names, fixed = TRUE, value = TRUE)
         pars <- c(pars, tmp)
       }
     }
@@ -61,7 +63,7 @@ drop_parameters <- function(sso, pars) {
   }
   
   sel <- match(pars, slot(sso, "param_names"))
-  if (!any(non_scalar) && all(is.na(sel))) {
+  if (!any_non_scalar && all(is.na(sel))) {
     stop("No matches for 'pars' were found.", call. = FALSE)
   } else if (any(is.na(sel))) {
     warning(paste(
