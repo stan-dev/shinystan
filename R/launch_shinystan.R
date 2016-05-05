@@ -30,9 +30,11 @@
 #' @return The \code{launch_shinystan} function is used for the side effect of 
 #'   starting the ShinyStan app, but it also returns a shinystan object, an
 #'   instance of S4 class \code{"shinystan"}.
-#'
-#' @seealso \code{\link{as.shinystan}} for creating shinystan objects and 
-#'   \code{\link{launch_shinystan_demo}} to launch a demo.
+#'   
+#' @template seealso-as.shinystan 
+#' @template seealso-update_sso 
+#' @template seealso-demo
+#'   
 #'   
 #' @examples
 #' \dontrun{

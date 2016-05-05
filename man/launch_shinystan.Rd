@@ -70,7 +70,11 @@ fit_sso <- as.shinystan(fit, model_name = "Example")
 
 }
 \seealso{
-\code{\link{as.shinystan}} for creating shinystan objects and 
-  \code{\link{launch_shinystan_demo}} to launch a demo.
+\code{\link{as.shinystan}} for creating shinystan objects.
+
+\code{\link{update_sso}} to update a shinystan object created by a
+  previous version of the package.
+
+\code{\link{launch_shinystan_demo}} to try a demo.
 }
 

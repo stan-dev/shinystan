@@ -16,12 +16,9 @@
 #' @name metadata
 #' @template args-sso
 #' 
-#' @seealso \code{\link{as.shinystan}} for creating shinystan objects 
-#' 
-#'   \code{\link{drop_parameters}} to remove parameters from a shinystan object
-#'   
-#'   \code{\link{generate_quantity}} to add a new quantity to a shinystan
-#'   object
+#' @template seealso-as.shinystan
+#' @template seealso-drop_parameters
+#' @template seealso-generate_quantity
 #' 
 #' @examples 
 #' # use eight_schools example object

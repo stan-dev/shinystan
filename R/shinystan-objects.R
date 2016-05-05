@@ -84,9 +84,7 @@ shinystan <- setClass(
 #'
 #' @seealso \code{\link{launch_shinystan}} to launch the ShinyStan interface 
 #'   using a particular shinystan object
-#'   
-#'   \code{\link{drop_parameters}} to remove the data for specific parameters
-#'   from a shinystan object
+#' @template seealso-drop_parameters   
 #'
 setGeneric("as.shinystan", function(X, ...) {
   standardGeneric("as.shinystan")

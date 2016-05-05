@@ -123,11 +123,12 @@ identical(model_name(sso), "some other name")
 
 }
 \seealso{
-\code{\link{as.shinystan}} for creating shinystan objects 
+\code{\link{as.shinystan}} for creating shinystan objects.
 
-  \code{\link{drop_parameters}} to remove parameters from a shinystan object
-  
-  \code{\link{generate_quantity}} to add a new quantity to a shinystan
-  object
+\code{\link{drop_parameters}} to remove parameters from a shinystan
+  object.
+
+\code{\link{generate_quantity}} to add a new quantity to a shinystan
+  object.
 }
 

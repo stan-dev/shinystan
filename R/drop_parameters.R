@@ -27,6 +27,8 @@
 #'   only a subset of the elements of a non-scalar parameter.
 #' @return \code{sso}, with \code{pars} dropped.
 #' 
+#' @template seealso-generate_quantity
+#' 
 #' @examples 
 #' # Using example shinystan object 'eight_schools'
 #' print(eight_schools@param_names)

@@ -65,8 +65,9 @@ Stan (\url{http://mc-stan.org}) models can be run in R using the
 }
 }
 \seealso{
-\code{\link{as.shinystan}} to create shinystan objects 
+\code{\link{as.shinystan}} for creating shinystan objects.
 
-  \code{\link{launch_shinystan}} for launching the ShinyStan interface
+\code{\link{launch_shinystan}} for launching the ShinyStan
+  interface.
 }
 

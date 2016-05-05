@@ -25,9 +25,8 @@
 #' @param new_name Name for the new parameter as character string.
 #'   
 #' @return sso, updated. See Examples.
-#'   
-#' @seealso \code{\link{drop_parameters}} to remove parameters from a shinystan 
-#'   object
+#' 
+#' @template seealso-drop_parameters
 #'
 #' @examples
 #' # Using example shinystan object 'eight_schools'

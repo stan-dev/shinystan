@@ -27,6 +27,8 @@
 #'   indicating that \code{sso} is already up-to-date. Otherwise an updated
 #'   version of \code{sso} is returned unless an error is encountered.
 #'   
+#' @template seealso-as.shinystan
+#'   
 #' @examples 
 #' \dontrun{
 #' sso_new <- update_sso(sso)
@@ -40,11 +42,14 @@ update_sso <- function(sso) {
     message(deparse(substitute(sso)), " already up-to-date.")
     return(sso)
   } else if (sso_ver > shinystan_ver) {
-    stop(deparse(substitute(sso)), " was created using a more recent version ",
-         "of shinystan than the one you're currently using. ", 
-         "Please update your version of the shinystan package.")
+    stop(
+      deparse(substitute(sso)),
+      " was created using a more recent version ",
+      "of shinystan than the one you're currently using. ",
+      "Please update your version of the shinystan package."
+    )
   }
-    
+  
   slot(sso, "sampler_params") <-
     .rename_sampler_param(slot(sso, "sampler_params"),
                           oldname = "n_divergent__",
@@ -56,7 +61,7 @@ update_sso <- function(sso) {
     } else {
       if (sn == "posterior_sample" && .hasSlot(sso, "samps_all"))
         slot(sso_new, sn) <- slot(sso, "samps_all")
-      else 
+      else
         stop("slot ", sn, "not found in ", deparse(substitute(sso)))
     }
   }
