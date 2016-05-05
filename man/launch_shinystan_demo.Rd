@@ -42,9 +42,9 @@ sso_demo <- launch_shinystan_demo()
 
 }
 \seealso{
-\code{\link{launch_shinystan}} for launching ShinyStan using your 
-  own shinystan objects
-  
-  \code{\link{as.shinystan}} to create shinystan objects
+\code{\link{launch_shinystan}} to launch the ShinyStan interface
+  using a particular shinystan object.
+
+\code{\link{as.shinystan}} for creating shinystan objects.
 }
 

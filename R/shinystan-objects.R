@@ -82,9 +82,9 @@ shinystan <- setClass(
 #'   \code{is.shinystan} returns \code{TRUE} if the tested object is a shinystan
 #'   object and \code{FALSE} otherwise.
 #'
-#' @seealso \code{\link{launch_shinystan}} to launch the ShinyStan interface 
-#'   using a particular shinystan object
+#' @template seealso-launch
 #' @template seealso-drop_parameters   
+#' @template seealso-generate_quantity
 #'
 setGeneric("as.shinystan", function(X, ...) {
   standardGeneric("as.shinystan")

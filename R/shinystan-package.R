@@ -67,8 +67,8 @@
 #' }
 #'  
 #' @template seealso-as.shinystan
-#' @seealso \code{\link{launch_shinystan}} for launching the ShinyStan
-#'   interface.
+#' @template seealso-demo
+#' @template seealso-launch
 #'    
 #' @import ggplot2
 #' @import methods

@@ -113,10 +113,8 @@ launch_shinystan <- function(object,
 #' @param ... Optional arguments to pass to \code{\link[shiny]{runApp}}.
 #' @return An S4 shinystan object.
 #'   
-#' @seealso \code{\link{launch_shinystan}} for launching ShinyStan using your 
-#'   own shinystan objects
-#'   
-#'   \code{\link{as.shinystan}} to create shinystan objects
+#' @template seealso-launch
+#' @template seealso-as.shinystan
 #' 
 #' @examples
 #' \dontrun{
