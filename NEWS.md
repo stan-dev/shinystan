@@ -9,6 +9,9 @@ can be called.
 * Allow selecting `yrep` from global environment for PPcheck
 * Change `as.shinystan` to S4 generic with methods
 * Add **rsconnect** to `Imports` in `DESCRIPTION`.
+* Rename some of the slots in shinystan objects. The `update_sso` function can
+be used to ensure that old shinystan objects have an internal structure
+compatible with this release.
 * Improve line coverage of api tests
 
 ### Version 2.1.0

@@ -23,11 +23,13 @@ sso_version <- function(sso) {
 # check object types
 sso_check <- function(sso) {
   if (!is.shinystan(sso)) {
-    stop("Please specify a shinystan object", call. = FALSE)
+    stop("Please specify a shinystan object.", call. = FALSE)
   } else if (sso_version(sso) < utils::packageVersion("shinystan")) {
-    stop("Your shinystan object was created with a previous version of shinystan. ", 
-         "Please use the 'update_sso' function to update your object.", 
-         call. = FALSE)
+    stop(
+      "Your shinystan object was created with a previous version of shinystan. ",
+      "Please use the 'update_sso' function to update your object.",
+      call. = FALSE
+    )
   }
   invisible(TRUE)
 }
@@ -38,9 +40,12 @@ is.stanreg <- function(x) inherits(x, "stanreg")
 
 # check for suggested (not required) packages
 check_suggests <- function(pkg) {
-  if (!requireNamespace(pkg, quietly = TRUE)) 
-    stop("You need to have the ", pkg," package installed to use this option.", 
-         call. = FALSE)
+  if (!requireNamespace(pkg, quietly = TRUE))
+    stop(
+      "You need to have the ", pkg,
+      " package installed to use this option.",
+      call. = FALSE
+    )
 }
 
 # grepl with ignore.case defaulting to TRUE

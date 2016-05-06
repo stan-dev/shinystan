@@ -10,7 +10,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-source_value <- function(file) source(file, local = TRUE)$value
+source_ui <- function(...) source(file.path("ui_files", ...), local = TRUE)$value
 source("global_utils.R", local = TRUE)
 if (exists("object")) 
   rm(object)
@@ -35,7 +35,7 @@ tagList(
     theme = shinythemes::shinytheme("flatly"),
     
     
-    #### HOME PAGE ####
+    #### HOME ####
     tabPanel(
       title = strong(style = "color: #B2011D;", "ShinyStan"),
       value = "home",
@@ -43,7 +43,7 @@ tagList(
       div(class = "home-links",
           div(id = "model-name",
               br(),
-              h2(paste("Model:")),
+              h2("Model:"),
               h4(.model_name))),
       br(), br(),br(),br(),
       includeHTML("html/home_page_links.html")
@@ -58,27 +58,33 @@ tagList(
         #### hmc/nuts plots ####
         tabPanel(
           title = "NUTS (plots)",
-          source_value(file.path("ui_files", "diagnostics_customize.R")),
+          source_ui("diagnostics_customize.R"),
           navlistPanel(
             id = "diagnostics_navlist",
-            tabPanel("By model parameter", source_value(
-              file.path("ui_files", "diagnostics_by_parameter.R")
-            )),
-            tabPanel("Sample information", source_value(
-              file.path("ui_files", "diagnostics_sample.R")
-            )),
-            tabPanel("Treedepth information", source_value(
-              file.path("ui_files", "diagnostics_treedepth.R")
-            )),
-            tabPanel("Divergence information", source_value(
-              file.path("ui_files", "diagnostics_ndivergent.R")
-            )),
-            tabPanel("Step size information", source_value(
-              file.path("ui_files", "diagnostics_stepsize.R")
-            )),
-            tabPanel("Help", source_value(
-              file.path("ui_files", "diagnostics_help.R")
-            )),
+            tabPanel(
+              "By model parameter", 
+              source_ui("diagnostics_by_parameter.R")
+            ),
+            tabPanel(
+              "Sample information", 
+              source_ui("diagnostics_sample.R")
+            ),
+            tabPanel(
+              "Treedepth information", 
+              source_ui("diagnostics_treedepth.R")
+            ),
+            tabPanel(
+              "Divergence information", 
+              source_ui("diagnostics_ndivergent.R")
+            ),
+            tabPanel(
+              "Step size information", 
+              source_ui("diagnostics_stepsize.R")
+            ),
+            tabPanel(
+              "Help", 
+              source_ui("diagnostics_help.R")
+            ),
             well = FALSE,
             widths = c(2, 10)
           )
@@ -89,22 +95,22 @@ tagList(
           h2("Summary of sampler parameters"),
           a_glossary("open_glossary_from_nuts_table"),
           br(),
-          source_value(file.path("ui_files", "sampler_stats_customize.R")),
+          source_ui("sampler_stats_customize.R"),
           DT::dataTableOutput("sampler_summary"),
           br()
         ),
         #### rhat, n_eff, mcse ####
         tabPanel(
           title = "\\(\\hat{R}, n_{eff}, \\text{se}_{mean}\\)",
-          source_value(file.path("ui_files", "rhat_neff_mcse_layout.R"))
+          source_ui("rhat_neff_mcse_layout.R")
         ),
         #### autocorrelation ####
         tabPanel(
           title = "Autocorrelation",
-          source_value(file.path("ui_files", "autocorr_customize.R")),
+          source_ui("autocorr_customize.R"),
           wellPanel(fluidRow(
             column(
-              8,
+              width = 8,
               selectizeInput(
                 "ac_params",
                 width = "100%",
@@ -113,7 +119,11 @@ tagList(
                 multiple = TRUE
               )
             ),
-            column(3, offset = 1, a_options("autocorr"))
+            column(
+              width = 3, 
+              offset = 1, 
+              a_options("autocorr")
+            )
           )),
           plotOutput("autocorr_plot_out")
         ),
@@ -122,8 +132,8 @@ tagList(
           title = "PPcheck",
           h2("Graphical posterior predictive checks"),
           h6("Experimental feature"),
-          source_value(file.path("ui_files", if (.has_rstanarm_ppcs)
-            "pp_navlist_rstanarm.R" else "pp_navlist.R")),
+          source_ui(if (.has_rstanarm_ppcs)
+            "pp_navlist_rstanarm.R" else "pp_navlist.R"),
           br()
         )
       ) # End tabsetPanel
@@ -142,9 +152,12 @@ tagList(
           title = "Parameters plot",
           wellPanel(
             fluidRow(
-              column(6, uiOutput("ui_multiparam_selectize")),
               column(
-                3,
+                width = 6, 
+                uiOutput("ui_multiparam_selectize")
+              ),
+              column(
+                width = 3,
                 offset = 1,
                 sliderInput(
                   "param_plot_ci_level",
@@ -158,40 +171,54 @@ tagList(
                   post = "%"
                 )
               ),
-              column(2, a_options("multiparam"))
+              column(
+                width = 2, 
+                a_options("multiparam")
+              )
             ),
-            fluidRow(column(
-              3,
-              offset = 1,
-              span(id = "params_to_plot_regex_label",
-                   "Add parameters by regex search")
-            )),
             fluidRow(
-              column(1, actionButton("param_plot_regex", label = "Search", class = "regex-go")
+              column(
+                width = 3,
+                offset = 1,
+                span(id = "params_to_plot_regex_label", 
+                     "Add parameters by regex search")
+              )
+            ),
+            fluidRow(
+              column(
+                width = 1,
+                actionButton("param_plot_regex", label = "Search", class = "regex-go")
               ),
-              column(3, textInput("params_to_plot_regex", label = NULL, value = "")
+              column(
+                width = 3,
+                textInput("params_to_plot_regex", label = NULL, value = "")
               ),
-              column(5, textOutput("invalid_regex"))
+              column(
+                width = 5, 
+                textOutput("invalid_regex")
+              )
             )
           ),
-          source_value(file.path("ui_files", "multiparam_customize.R")),
+          source_ui("multiparam_customize.R"),
           plotOutput("multiparam_plot_out", width = "90%"),
           br()
         ),
         #### posterior summary statistics ####
         tabPanel(
           "Posterior summary statistics",
-          source_value(file.path("ui_files", "table_customize.R")),
-          div(DT::dataTableOutput("all_summary_out"), 
-              style = "overflow-x: auto")
-        ),
+          source_ui("table_customize.R"),
+          div(
+            DT::dataTableOutput("all_summary_out"), 
+            style = "overflow-x: auto"
+          )
+        ), 
         #### LaTex tables ####
         tabPanel(
           "Generate LaTeX table",
           br(),
           sidebarLayout(
-            mainPanel = source_value(file.path("ui_files", "table_latex_main.R")),
-            sidebarPanel = source_value(file.path("ui_files", "table_latex_sidebar.R"))
+            mainPanel = source_ui("table_latex_main.R"),
+            sidebarPanel = source_ui("table_latex_sidebar.R")
           )
         )
       ) # End tabsetPanel
@@ -203,7 +230,7 @@ tagList(
       icon = icon("eye-open", lib = "glyphicon"),
       fluidRow(
         column(
-          3,
+          width = 3,
           selectizeInput(
             inputId = "param",
             label = h4("Select parameter"),
@@ -212,7 +239,11 @@ tagList(
             multiple = FALSE
           )
         ),
-        column(7, offset = 1, DT::dataTableOutput("parameter_summary_out"))
+        column(
+          width = 7, 
+          offset = 1, 
+          DT::dataTableOutput("parameter_summary_out")
+        )
       ),
       navlistPanel(
         well = FALSE,
@@ -234,7 +265,7 @@ tagList(
           ),
           h5("Trace"),
           dygraphs::dygraphOutput("multiview_trace_out", height = "200px"),
-          source_value(file.path("ui_files", "dynamic_trace_helptext.R"))
+          source_ui("dynamic_trace_helptext.R")
         ),
         #### bivariate #####
         tabPanel(
@@ -247,7 +278,7 @@ tagList(
             multiple = FALSE
           ),
           a_options("bivariate"),
-          source_value(file.path("ui_files", "bivariate_customize.R")),
+          source_ui("bivariate_customize.R"),
           plotOutput("bivariate_plot_out", height = "350px"),
           helpText(
             style = "font-size: 11px",
@@ -262,9 +293,9 @@ tagList(
         #### trivariate #####
         tabPanel(
           title = "Trivariate",
-          source_value(file.path("ui_files", "trivariate_select.R")),
+          source_ui("trivariate_select.R"),
           a_options("trivariate"),
-          source_value(file.path("ui_files", "trivariate_customize.R")),
+          source_ui("trivariate_customize.R"),
           br(),
           threejs::scatterplotThreeOutput("trivariate_plot_out", height = "400px"),
           helpText(
@@ -276,7 +307,7 @@ tagList(
         tabPanel(
           title = "Density",
           a_options("density"),
-          source_value(file.path("ui_files", "density_customize.R")),
+          source_ui("density_customize.R"),
           plotOutput("density_plot_out", height = "250px"),
           hr(),
           downloadButton("download_density", "ggplot2",  class = "plot-download"),
@@ -286,7 +317,7 @@ tagList(
         tabPanel(
           title = "Histogram",
           a_options("hist"),
-          source_value(file.path("ui_files", "hist_customize.R")),
+          source_ui("hist_customize.R"),
           plotOutput("hist_plot_out", height = "250px"),
           hr(),
           downloadButton("download_histogram", "ggplot2",  class = "plot-download"),
@@ -301,19 +332,19 @@ tagList(
       #### model code ####
       tabPanel(
         title = "Model Code",
-        source_value(file.path("ui_files", "model_code.R"))
+        source_ui("model_code.R")
       ),
       #### notepad ####
       tabPanel(
         title = "Notepad",
-        source_value(file.path("ui_files", "notepad.R"))
+        source_ui("notepad.R")
       ),
       #### about ####
       tabPanel(
         title = "About",
         logo_and_name(),
         div(style = "margin-top: 75px;",
-            source_value(file.path("ui_files", "about.R")))
+            source_ui("about.R"))
       ),
       #### glossary ####
       tabPanel(
@@ -321,7 +352,7 @@ tagList(
         div(
           style = "background-color: white;",
           h1(style = "text-align: center;", "Glossary"),
-          source_value(file.path("ui_files", "glossary.R")),
+          source_ui("glossary.R"),
           hr(),
           stan_manual()
         )
@@ -330,7 +361,7 @@ tagList(
       tabPanel(
         title = "Help",
         h1(style = "text-align: center;", "Help"),
-        source_value(file.path("ui_files", "help.R"))
+        source_ui("help.R")
       )
     ) # End navbarMenu
   ) # End navbarPage
