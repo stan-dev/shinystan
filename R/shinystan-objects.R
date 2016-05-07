@@ -17,22 +17,44 @@
 #' @aliases shinystan-class
 #' @description See \code{\link{as.shinystan}} for documentation on creating
 #'   shinystan objects and \code{\link{eight_schools}} for an example object.
-#'
+#'  
+#' @slot model_name (\code{"character"}) Model name.
+#' @slot param_names (\code{"character"}) Parameter names.
+#' @slot param_dims (\code{"list"}) Parameter dimensions.
+#' @slot posterior_sample (\code{"array"}) MCMC sample.
+#' @slot summary (\code{"matrix"}) Summary stats for \code{posterior_sample}.
+#' @slot sampler_params (\code{"list"}) Sampler parameters (for certain Stan
+#'   models only).
+#' @slot nChains (\code{"integer"}) Number of chains.
+#' @slot nIter (\code{"integer"}) Number of iterations per chain.
+#' @slot nWarmup (\code{"integer"}) Number of warmup iterations per chain.
+#' @slot user_model_info (\code{"character"}) Notes to display on ShinyStan's
+#'   \strong{Notepad} page.
+#' @slot model_code (\code{"character"}) Model code to display on ShinyStan's
+#'   \strong{Model Code} page.
+#' @slot misc (\code{"list"}) Miscellaneous, for internal use.
+#' 
+#' @template seealso-as.shinystan
+#' @template seealso-drop_parameters
+#' @template seealso-generate_quantity
+#' @seealso \code{\link{shinystan-metadata}} to view or change metadata
+#'   associated with a shinystan object.
+#' 
 shinystan <- setClass(
   Class = "shinystan",
   slots = list(
-    model_name      = "character",
-    param_names     = "character",
-    param_dims      = "list",
-    posterior_sample       = "array",
-    summary         = "matrix",
-    sampler_params  = "list",
-    nChains         = "numeric",
-    nIter           = "numeric",
-    nWarmup         = "numeric",
-    user_model_info = "character",
-    model_code      = "character",
-    misc            = "list"
+    model_name       = "character",
+    param_names      = "character",
+    param_dims       = "list",
+    posterior_sample = "array",
+    summary          = "matrix",
+    sampler_params   = "list",
+    nChains          = "numeric",
+    nIter            = "numeric",
+    nWarmup          = "numeric",
+    user_model_info  = "character",
+    model_code       = "character",
+    misc             = "list"
   ),
   prototype = list(
     model_name = "No name",
@@ -44,10 +66,8 @@ shinystan <- setClass(
     nChains = 0,
     nIter = 0,
     nWarmup = 0,
-    user_model_info =
-      "Use this space to store notes about your model",
-    model_code =
-      "Use this space to store your model code",
+    user_model_info = "Use this space to store notes about your model",
+    model_code = "Use this space to store your model code",
     misc = list(sso_version = utils::packageVersion("shinystan"))
   )
 )
@@ -87,6 +107,8 @@ shinystan <- setClass(
 #' @template seealso-generate_quantity
 #'
 setGeneric("as.shinystan", function(X, ...) {
+  if (inherits(X, "shinystan"))
+    stop("Already a shinystan object.")
   standardGeneric("as.shinystan")
 })
 
@@ -133,7 +155,8 @@ setMethod(
                         note = NULL,
                         ...) {
     validate_model_code(model_code)
-    if (!isTRUE(length(dim(X)) == 3))
+    is3D <- isTRUE(length(dim(X)) == 3)
+    if (!is3D)
       stop ("'X' must have 3 dimensions.")
     
     if (is.null(dimnames(X)[[3]]))
@@ -172,12 +195,9 @@ setMethod(
     names(param_dims) <- param_names
     for (i in seq_along(param_names))
       param_dims[[i]] <- numeric(0)
-    
   } else {
-    
-    zeros <- sapply(seq_along(param_dims), function(i) {
-      0 %in% param_dims[[i]]
-    })
+    zeros <- sapply(seq_along(param_dims), function(i)
+      0 %in% param_dims[[i]])
     for (i in which(zeros))
       param_dims[[i]] <- numeric(0)
   }
