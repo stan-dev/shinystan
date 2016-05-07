@@ -10,18 +10,8 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-source_ui <- function(...) {
-  source(
-    file.path("ui_files", ...), 
-    local = TRUE
-  )$value
-}
-
 source("global_utils.R", local = TRUE)
-if (exists("object")) 
-  rm(object)
-gc()
-
+source("ui_utils.R", local = TRUE)
 
 # Begin shinyUI -----------------------------------------------------------
 # _________________________________________________________________________
@@ -34,13 +24,12 @@ tagList(
   includeCSS("css/ShinyStan.css"),
   
   navbarPage(
-    save_and_close,
+    save_and_close_button(), # title = NULL
     id = "nav",
-    windowTitle = "ShinyStan", # title = NULL,
-    collapsible = TRUE,
-    inverse = FALSE,
     position = "fixed-top",
+    collapsible = TRUE,
     theme = shinythemes::shinytheme("flatly"),
+    windowTitle = "ShinyStan",
     
     
     #### HOME ####

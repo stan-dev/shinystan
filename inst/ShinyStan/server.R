@@ -12,11 +12,12 @@
 
 
 # options(shiny.trace=TRUE)
-# object <- get(".SHINYSTAN_OBJECT", envir = shinystan:::.sso_env)
+object <- get(".SHINYSTAN_OBJECT", envir = shinystan:::.sso_env)
 path_to_extract_sso <- file.path("server_files","utilities","extract_sso.R")
-SERVER_FILES <- list.files("server_files", full.names = TRUE, recursive = TRUE)
-SERVER_FILES <- SERVER_FILES[!SERVER_FILES %in% path_to_extract_sso]
+server_files <- list.files("server_files", full.names = TRUE, recursive = TRUE)
+SERVER_FILES <- server_files[!server_files %in% path_to_extract_sso]
 source("global_utils.R", local = TRUE)
+source("server_utils.R", local = TRUE)
 source(path_to_extract_sso, local = TRUE)
 
 # BEGIN server ------------------------------------------------------
@@ -43,7 +44,6 @@ function(input, output, session) {
       })
     })
   })
-  
   
   # Toggle options dropdowns
   options_trigger_ids <- c("table", "multiparam", "autocorr", "rhat_warnings", 

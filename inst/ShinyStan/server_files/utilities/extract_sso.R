@@ -66,4 +66,3 @@ if (!STAN_METHOD == "variational") {
 # ppcheck plots from rstanarm
 if (isTRUE(MISC$stanreg)) 
   PPC_plots <- MISC$pp_check_plots
-
