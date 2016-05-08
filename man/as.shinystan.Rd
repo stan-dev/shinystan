@@ -24,8 +24,8 @@ is.shinystan(X)
 \S4method{as.shinystan}{mcmc.list}(X, model_name = "unnamed model",
   burnin = 0, param_dims = list(), model_code = NULL, note = NULL, ...)
 
-\S4method{as.shinystan}{stanfit}(X, model_name = X@model_name, note = NULL,
-  ...)
+\S4method{as.shinystan}{stanfit}(X, pars, model_name = X@model_name,
+  note = NULL, ...)
 
 \S4method{as.shinystan}{stanreg}(X, ppd = TRUE, seed = 1234,
   model_name = NULL, note = NULL, ...)
@@ -58,7 +58,10 @@ object.}
 \item{note}{Optionally, text to display on ShinyStan's notes page (stored in 
 \code{user_model_info} slot).}
 
-\item{ppd}{If \code{X} is a stanreg object (\pkg{rstanarm}), \code{ppd} 
+\item{pars}{For stanfit objects (\pkg{rstan}), an optional character vector
+specifying which parameters should be included in the shinystan object.}
+
+\item{ppd}{For stanreg objects (\pkg{rstanarm}), \code{ppd} 
 (logical) indicates whether to draw from the posterior predictive 
 distribution before launching ShinyStan. The default is \code{TRUE}, 
 although for very large objects it can be convenient to set it to 
@@ -159,10 +162,13 @@ launch_shinystan(sso)
 
 }
 \seealso{
-\code{\link{launch_shinystan}} to launch the ShinyStan interface 
-  using a particular shinystan object
-  
-  \code{\link{drop_parameters}} to remove the data for specific parameters
-  from a shinystan object
+\code{\link{launch_shinystan}} to launch the ShinyStan interface
+  using a particular shinystan object.
+
+\code{\link{drop_parameters}} to remove parameters from a shinystan
+  object.
+
+\code{\link{generate_quantity}} to add a new quantity to a shinystan
+  object.
 }
 

@@ -27,6 +27,8 @@
 #'   only a subset of the elements of a non-scalar parameter.
 #' @return \code{sso}, with \code{pars} dropped.
 #' 
+#' @template seealso-generate_quantity
+#' 
 #' @examples 
 #' # Using example shinystan object 'eight_schools'
 #' print(eight_schools@param_names)
@@ -42,18 +44,23 @@
 drop_parameters <- function(sso, pars) {
   sso_check(sso)
   stopifnot(is.character(pars))
-  if (any(grepl("[", pars, fixed = TRUE)))
-    stop("Individual elements of non-scalar parameters can't be removed.")
+  if (any(c("log-posterior", "lp__") %in% pars))
+    stop("log-posterior can't be dropped.")
   
-  non_scalar <- names(sso@param_dims) %in% pars
-  if (any(non_scalar)) {
-    pd <- which(names(sso@param_dims) %in% pars)
-    nms <- names(sso@param_dims[pd])
+  any_indiv_els <- any(grepl("[", pars, fixed = TRUE))
+  if (any_indiv_els)
+    stop("Currently, individual elements of non-scalar parameters can't be removed.")
+  
+  any_dimnames_in_pars <- any(names(sso@param_dims) %in% pars)
+  if (any_dimnames_in_pars) {
+    param_dims <- slot(sso, "param_dims")
+    param_names <- slot(sso, "param_names")
+    pd <- which(names(param_dims) %in% pars)
+    nms <- names(param_dims[pd])
     for (j in seq_along(nms)) {
-      if (!nms[j] %in% sso@param_names) {
+      if (!nms[j] %in% param_names) {
         pars <- pars[pars != nms[j]]
-        tmp <- grep(paste0(nms[j], "["), sso@param_names, 
-                    fixed = TRUE, value = TRUE)
+        tmp <- grep(paste0(nms[j], "["), param_names, fixed = TRUE, value = TRUE)
         pars <- c(pars, tmp)
       }
     }
@@ -61,7 +68,7 @@ drop_parameters <- function(sso, pars) {
   }
   
   sel <- match(pars, slot(sso, "param_names"))
-  if (!any(non_scalar) && all(is.na(sel))) {
+  if (!any_dimnames_in_pars && all(is.na(sel))) {
     stop("No matches for 'pars' were found.", call. = FALSE)
   } else if (any(is.na(sel))) {
     warning(paste(
@@ -78,7 +85,7 @@ drop_parameters <- function(sso, pars) {
 #   removed
 .drop_parameters <- function(sso, rmv) {
   slot(sso, "param_names") <- slot(sso, "param_names")[-rmv]
-  slot(sso, "samps_all") <- slot(sso, "samps_all")[, , -rmv, drop = FALSE]
+  slot(sso, "posterior_sample") <- slot(sso, "posterior_sample")[, , -rmv, drop = FALSE]
   slot(sso, "summary") <- slot(sso, "summary")[-rmv, , drop = FALSE]
   sso
 }

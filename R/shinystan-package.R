@@ -66,10 +66,9 @@
 #'  \item ShinyStan issue tracker (\url{https://github.com/stan-dev/shinystan/issues})
 #' }
 #'  
-#' @seealso \code{\link{as.shinystan}} to create shinystan objects 
-#' 
-#'   \code{\link{launch_shinystan}} for launching the ShinyStan interface
-#'   
+#' @template seealso-as.shinystan
+#' @template seealso-demo
+#' @template seealso-launch
 #'    
 #' @import ggplot2
 #' @import methods

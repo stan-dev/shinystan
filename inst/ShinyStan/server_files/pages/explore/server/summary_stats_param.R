@@ -1,11 +1,13 @@
 # posterior summary statistics for a single parameter
 parameter_summary <- reactive({
   validate(need(input$param != "", message = FALSE))
-
-  do.call(".param_summary", args = list(
-    param       = input$param,
-    summary     = fit_summary
-  ))
+  do.call(
+    ".param_summary", 
+    args = list(
+      param = input$param,
+      summary = SUMMARY
+    )
+  )
 })
 
 output$param_name <- renderText({
@@ -17,7 +19,10 @@ output$parameter_summary_out <- DT::renderDataTable({
   }, 
   rownames = FALSE,
   options = list(
-    paging = FALSE, searching = FALSE, info = FALSE, ordering = FALSE,
+    paging = FALSE, 
+    searching = FALSE, 
+    info = FALSE, 
+    ordering = FALSE,
     autoWidth = TRUE,
     columnDefs = list(list(sClass="alignRight", targets ="_all")),
     initComplete = htmlwidgets::JS( # change background color of table header

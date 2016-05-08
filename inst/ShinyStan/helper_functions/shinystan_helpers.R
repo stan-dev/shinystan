@@ -470,9 +470,9 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
 
 # n_eff_warnings -----------------------------------------------------------
 .n_eff_warnings <- function(summary, threshold = 10, 
-                            N_total = length(samps_post_warmup[,, 1L])) {
+                            N_total = NULL) {
   n_eff <- summary[,"n_eff"]
-  warn_params <- names(which(n_eff/N_total < threshold/100))
+  warn_params <- names(which(n_eff / N_total < threshold / 100))
   ll <- length(warn_params)
   if (ll == 0) "None"
   else paste0(warn_params, collapse = ", ")

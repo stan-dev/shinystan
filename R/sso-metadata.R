@@ -13,15 +13,12 @@
 
 #' View or change metadata associated with a shinystan object
 #' 
-#' @name metadata
+#' @name shinystan-metadata
 #' @template args-sso
 #' 
-#' @seealso \code{\link{as.shinystan}} for creating shinystan objects 
-#' 
-#'   \code{\link{drop_parameters}} to remove parameters from a shinystan object
-#'   
-#'   \code{\link{generate_quantity}} to add a new quantity to a shinystan
-#'   object
+#' @template seealso-as.shinystan
+#' @template seealso-drop_parameters
+#' @template seealso-generate_quantity
 #' 
 #' @examples 
 #' # use eight_schools example object
@@ -30,7 +27,7 @@
 NULL
 
 # sso_info ----------------------------------------------------------------
-#' @rdname metadata
+#' @rdname shinystan-metadata
 #' @export
 #' 
 #' @return \code{sso_info} prints basic metadata including number of parameters, 
@@ -69,7 +66,7 @@ sso_info <- function(sso) {
 
 
 # model_code --------------------------------------------------------------
-#' @rdname metadata
+#' @rdname shinystan-metadata
 #' @export
 #' @param code A string, containing model code to be added, that can be
 #'   used as an argument to \code{\link{cat}}. See \strong{Examples}.
@@ -136,7 +133,7 @@ validate_model_code <- function(code) {
 
 
 # notes -------------------------------------------------------------------
-#' @rdname metadata
+#' @rdname shinystan-metadata
 #' @export
 #' @param note A string containing a note to add to any existing notes
 #'   or replace existing notes, depending on the value of \code{replace}.
@@ -194,7 +191,7 @@ notes <- function(sso, note = NULL, replace = FALSE) {
 
 
 # model_name (renaming) -----------------------------------------------------#' 
-#' @rdname metadata
+#' @rdname shinystan-metadata
 #' @export
 #' @param name A string giving the new model name to use.
 #'   

@@ -66,80 +66,81 @@
 #' 
 #' @importFrom rsconnect deployApp
 #' 
-deploy_shinystan <- function(sso,
-                             appName,
-                             account = NULL,
-                             ...,
-                             deploy = TRUE) {
-    sso_check(sso)
-    if (missing(appName))
-      stop("'appName' is required.")
-    
-    # copy contents to temporary directory and write necessary additional lines to
-    # ui, server, and global
-    appDir <- tempdir()
-    deployDir <- file.path(appDir, "ShinyStan")
-    contents <- system.file("ShinyStan", package = "shinystan")
-    file.copy(from = contents, to = appDir, recursive = TRUE)
-    
-    server_pkgs <- c("shiny", "shinyjs", "markdown", "shinythemes")
-    ui_pkgs <- c(
-      server_pkgs,
-      "ggplot2",
-      "gtools",
-      "reshape2",
-      "dygraphs",
-      "xts",
-      "xtable",
-      "gridExtra",
-      "DT",
-      "threejs"
-    )
-    server_lines <- paste0("library(", server_pkgs, ");")
-    ui_lines <- paste0("library(", ui_pkgs, ");")
-    global_lines <- paste(
-      "load('shinystan_temp_object.RData');",
-      "if (file.exists('y.RData')) load('y.RData')"
-    )
-    for (ff in c("ui", "server", "global")) {
-      file_name <- file.path(deployDir, paste0(ff, ".R"))
-      fconn <- file(file_name, 'r+')
-      original_content <- readLines(fconn)
-      if (ff %in% c("ui", "server")) {
-        sel <- grep(".shinystan_temp_object", original_content)
-        original_content <- original_content[-sel]
-      }
-      new_lines <- get(paste0(ff, "_lines"))
-      writeLines(c(new_lines, original_content), con = fconn)
-      close(fconn)
+deploy_shinystan <- function(sso, appName, account = NULL, ..., deploy = TRUE) {
+  sso_check(sso)
+  if (missing(appName))
+    stop("'appName' is required.")
+  
+  # copy contents to temporary directory and write necessary additional lines to
+  # ui, server, and global
+  appDir <- tempdir()
+  deployDir <- file.path(appDir, "ShinyStan")
+  contents <- system.file("ShinyStan", package = "shinystan")
+  file.copy(from = contents, to = appDir, recursive = TRUE)
+  
+  server_pkgs <- c(
+    "shiny",
+    "shinyjs",
+    "markdown",
+    "shinythemes"
+  )
+  ui_pkgs <- c(
+    server_pkgs,
+    "ggplot2",
+    "gtools",
+    "reshape2",
+    "dygraphs",
+    "xts",
+    "xtable",
+    "gridExtra",
+    "DT",
+    "threejs"
+  )
+  server_lines <- paste0("library(", server_pkgs, ");")
+  ui_lines <- paste0("library(", ui_pkgs, ");")
+  global_lines <- paste(
+    "load('sso.RData');", 
+    "if (file.exists('y.RData')) load('y.RData')"
+  )
+  for (ff in c("ui", "server", "global")) {
+    file_name <- file.path(deployDir, paste0(ff, ".R"))
+    fconn <- file(file_name, 'r+')
+    original_content <- readLines(fconn)
+    if (ff %in% c("ui", "server")) {
+      sel <- grep(".SHINYSTAN_OBJECT", original_content)
+      original_content <- original_content[-sel]
     }
-    
-    # save shinystan_object to deployDir
-    object <- sso
-    save(object, file = file.path(deployDir, "shinystan_temp_object.RData"))
-    # save ppcheck_data and set ppcheck defaults
-    pp <- list(...)
-    if ("ppcheck_data" %in% names(pp)) {
-      y <- pp$ppcheck_data
-      save(y, file = file.path(deployDir, "y.RData"))
-      if ("ppcheck_yrep" %in% names(pp))
-        set_ppcheck_defaults(
-          appDir = deployDir,
-          yrep_name = pp$ppcheck_yrep,
-          y_name = "y"
-        )
-    }
-    
-    if (!deploy)
-      return(invisible(deployDir))
-    
-    rsconnect::deployApp(
-      appDir = deployDir,
-      appName = appName,
-      account = account,
-      lint = TRUE
-    )
+    new_lines <- get(paste0(ff, "_lines"))
+    writeLines(c(new_lines, original_content), con = fconn)
+    close(fconn)
   }
+    
+  # save sso to deployDir
+  object <- sso
+  save(object, file = file.path(deployDir, "sso.RData"))
+  # save ppcheck_data and set ppcheck defaults
+  pp <- list(...)
+  if ("ppcheck_data" %in% names(pp)) {
+    y <- pp$ppcheck_data
+    save(y, file = file.path(deployDir, "y.RData"))
+    if ("ppcheck_yrep" %in% names(pp))
+      set_ppcheck_defaults(
+        appDir = deployDir,
+        yrep_name = pp$ppcheck_yrep,
+        y_name = "y"
+      )
+  }
+    
+  if (!deploy)
+    return(invisible(deployDir))
+  
+  rsconnect::deployApp(
+    appDir = deployDir,
+    appName = appName,
+    account = account,
+    lint = TRUE
+  )
+}
 
 
 
@@ -147,8 +148,7 @@ deploy_shinystan <- function(sso,
 set_ppcheck_defaults <- function(appDir, yrep_name, y_name = "y") {
   stopifnot(is.character(yrep_name), is.character(y_name), 
             length(yrep_name) == 1, length(y_name) == 1)
-  fileDir <- file.path(appDir, "server_files", "pages", "diagnose",
-                       "ppcheck", "ui")
+  fileDir <- file.path(appDir, "server_files", "pages", "diagnose", "ppcheck", "ui")
   y_file <- file.path(fileDir, "pp_y_from_r.R")
   yrep_file <- file.path(fileDir, "pp_yrep_from_sso.R")
   for (file in c("y_file", "yrep_file")) {
@@ -158,8 +158,10 @@ set_ppcheck_defaults <- function(appDir, yrep_name, y_name = "y") {
       file.create(f)
     }
   }
-  .write_files(files = c(y_file, yrep_file),
-               lines = c(.y_lines(y_name), .yrep_lines(yrep_name)))
+  .write_files(
+    files = c(y_file, yrep_file),
+    lines = c(.y_lines(y_name), .yrep_lines(yrep_name))
+  )
 }
 
 .write_files <- function(files, lines) {

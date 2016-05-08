@@ -25,9 +25,8 @@
 #' @param new_name Name for the new parameter as character string.
 #'   
 #' @return sso, updated. See Examples.
-#'   
-#' @seealso \code{\link{drop_parameters}} to remove parameters from a shinystan 
-#'   object
+#' 
+#' @template seealso-drop_parameters
 #'
 #' @examples
 #' # Using example shinystan object 'eight_schools'
@@ -46,7 +45,7 @@ generate_quantity <- function(sso, param1, param2, fun, new_name) {
   message("\nThis might take a moment for large shinystan objects...\n")
   
   two_params <- !missing(param2)
-  posterior <- slot(sso, "samps_all")
+  posterior <- slot(sso, "posterior_sample")
   dims <- dim(posterior)
   ndim <- length(dims)
   if (ndim == 3) {

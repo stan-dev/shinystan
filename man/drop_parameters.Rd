@@ -37,4 +37,8 @@ sso <- drop_parameters(sso, pars = "theta")
 print(sso@param_names)
 
 }
+\seealso{
+\code{\link{generate_quantity}} to add a new quantity to a shinystan
+  object.
+}
 

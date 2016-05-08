@@ -3,8 +3,13 @@ context("Deploying")
 
 sso <- eight_schools
 
+# load 'old_sso', a shinystan object created by previous shinystan version
+load("old_sso_for_tests.rda")
+old_sso_msg <- "use the 'update_sso' function to update your object"
+
 test_that("deploy_shinystan error checking works", {
-  expect_error(deploy_shinystan(sso@samps_all), 
+  expect_error(deploy_shinystan(old_sso), old_sso_msg)
+  expect_error(deploy_shinystan(sso@posterior_sample), 
                regexp = "specify a shinystan object")
   expect_error(deploy_shinystan(sso), 
                regexp = "'appName' is required")

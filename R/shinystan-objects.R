@@ -17,38 +17,58 @@
 #' @aliases shinystan-class
 #' @description See \code{\link{as.shinystan}} for documentation on creating
 #'   shinystan objects and \code{\link{eight_schools}} for an example object.
-#'
+#'  
+#' @slot model_name (\code{"character"}) Model name.
+#' @slot param_names (\code{"character"}) Parameter names.
+#' @slot param_dims (\code{"list"}) Parameter dimensions.
+#' @slot posterior_sample (\code{"array"}) MCMC sample.
+#' @slot summary (\code{"matrix"}) Summary stats for \code{posterior_sample}.
+#' @slot sampler_params (\code{"list"}) Sampler parameters (for certain Stan
+#'   models only).
+#' @slot nChains (\code{"integer"}) Number of chains.
+#' @slot nIter (\code{"integer"}) Number of iterations per chain.
+#' @slot nWarmup (\code{"integer"}) Number of warmup iterations per chain.
+#' @slot user_model_info (\code{"character"}) Notes to display on ShinyStan's
+#'   \strong{Notepad} page.
+#' @slot model_code (\code{"character"}) Model code to display on ShinyStan's
+#'   \strong{Model Code} page.
+#' @slot misc (\code{"list"}) Miscellaneous, for internal use.
+#' 
+#' @template seealso-as.shinystan
+#' @template seealso-drop_parameters
+#' @template seealso-generate_quantity
+#' @seealso \code{\link{shinystan-metadata}} to view or change metadata
+#'   associated with a shinystan object.
+#' 
 shinystan <- setClass(
   Class = "shinystan",
   slots = list(
-    model_name      = "character",
-    param_names     = "character",
-    param_dims      = "list",
-    samps_all       = "array",
-    summary         = "matrix",
-    sampler_params  = "list",
-    nChains         = "numeric",
-    nIter           = "numeric",
-    nWarmup         = "numeric",
-    user_model_info = "character",
-    model_code      = "character",
-    misc            = "list"
+    model_name       = "character",
+    param_names      = "character",
+    param_dims       = "list",
+    posterior_sample = "array",
+    summary          = "matrix",
+    sampler_params   = "list",
+    nChains          = "numeric",
+    nIter            = "numeric",
+    nWarmup          = "numeric",
+    user_model_info  = "character",
+    model_code       = "character",
+    misc             = "list"
   ),
   prototype = list(
     model_name = "No name",
     param_names = "",
     param_dims = list(),
-    samps_all = array(NA, c(1, 1)),
+    posterior_sample = array(NA, c(1, 1)),
     summary = matrix(NA, nr = 1, nc =1),
     sampler_params = list(NA),
     nChains = 0,
     nIter = 0,
     nWarmup = 0,
-    user_model_info =
-      "Use this space to store notes about your model",
-    model_code =
-      "Use this space to store your model code",
-    misc = list()
+    user_model_info = "Use this space to store notes about your model",
+    model_code = "Use this space to store your model code",
+    misc = list(sso_version = utils::packageVersion("shinystan"))
   )
 )
 
@@ -82,13 +102,13 @@ shinystan <- setClass(
 #'   \code{is.shinystan} returns \code{TRUE} if the tested object is a shinystan
 #'   object and \code{FALSE} otherwise.
 #'
-#' @seealso \code{\link{launch_shinystan}} to launch the ShinyStan interface 
-#'   using a particular shinystan object
-#'   
-#'   \code{\link{drop_parameters}} to remove the data for specific parameters
-#'   from a shinystan object
+#' @template seealso-launch
+#' @template seealso-drop_parameters   
+#' @template seealso-generate_quantity
 #'
 setGeneric("as.shinystan", function(X, ...) {
+  if (inherits(X, "shinystan"))
+    stop("Already a shinystan object.")
   standardGeneric("as.shinystan")
 })
 
@@ -135,7 +155,8 @@ setMethod(
                         note = NULL,
                         ...) {
     validate_model_code(model_code)
-    if (!isTRUE(length(dim(X)) == 3))
+    is3D <- isTRUE(length(dim(X)) == 3)
+    if (!is3D)
       stop ("'X' must have 3 dimensions.")
     
     if (is.null(dimnames(X)[[3]]))
@@ -151,7 +172,7 @@ setMethod(
       model_name = model_name,
       param_names = param_names,
       param_dims = .set_param_dims(param_dims, param_names),
-      samps_all = X,
+      posterior_sample = X,
       summary = shinystan_monitor(X, warmup = burnin),
       nChains = ncol(X),
       nIter = nrow(X),
@@ -174,12 +195,9 @@ setMethod(
     names(param_dims) <- param_names
     for (i in seq_along(param_names))
       param_dims[[i]] <- numeric(0)
-    
   } else {
-    
-    zeros <- sapply(seq_along(param_dims), function(i) {
-      0 %in% param_dims[[i]]
-    })
+    zeros <- sapply(seq_along(param_dims), function(i)
+      0 %in% param_dims[[i]])
     for (i in which(zeros))
       param_dims[[i]] <- numeric(0)
   }
@@ -321,7 +339,7 @@ setMethod(
       )
     }
     
-    samps_array <- array(
+    posterior <- array(
       NA,
       dim = c(coda::niter(X), coda::nvar(X), coda::nchain(X)),
       dimnames = list(
@@ -331,13 +349,13 @@ setMethod(
       )
     )
     for (c in seq_len(coda::nchain(X)))
-      samps_array[, , c] <- X[[c]]
+      posterior[, , c] <- X[[c]]
     
-    samps_array <- aperm(drop(samps_array), c(1, 3, 2))
-    dimnames(samps_array) <- list(
-      iterations = seq_len(nrow(samps_array)),
-      chains = paste0("chain:", seq_len(ncol(samps_array))),
-      parameters = dimnames(samps_array)[[3]]
+    posterior <- aperm(drop(posterior), c(1, 3, 2))
+    dimnames(posterior) <- list(
+      iterations = seq_len(nrow(posterior)),
+      chains = paste0("chain:", seq_len(ncol(posterior))),
+      parameters = dimnames(posterior)[[3]]
     )
     param_names <- dimnames(X[[1]])[[2]]
     
@@ -345,10 +363,10 @@ setMethod(
       model_name = model_name,
       param_names = param_names,
       param_dims = .set_param_dims(param_dims, param_names),
-      samps_all = samps_array,
-      summary = shinystan_monitor(samps_array, warmup = burnin),
-      nChains = ncol(samps_array),
-      nIter = nrow(samps_array),
+      posterior_sample = posterior,
+      summary = shinystan_monitor(posterior, warmup = burnin),
+      nChains = ncol(posterior),
+      nIter = nrow(posterior),
       nWarmup = burnin
     )
     if (!is.null(note))
@@ -376,11 +394,16 @@ setMethod(
 
 
 # as.shinystan (stanfit) -------------------------------------------------
+setClass("stanfit", getClass("stanfit", where = getNamespace("rstan")))
+
 #' @describeIn as.shinystan Create a shinystan object from a stanfit object 
 #'   (\pkg{\link[rstan]{rstan}}). Fewer optional arguments are available for 
 #'   this method because all important information can be taken automatically 
 #'   from the stanfit object.
 #'   
+#' @param pars For stanfit objects (\pkg{rstan}), an optional character vector
+#'   specifying which parameters should be included in the shinystan object.
+#'
 #' @examples
 #' \dontrun{
 #' ######################
@@ -391,24 +414,42 @@ setMethod(
 #' sso <- as.shinystan(fit, model_name = "example")
 #' }
 #' 
-#' @importClassesFrom rstan stanfit
-#' 
 setMethod(
   "as.shinystan",
   signature = "stanfit",
   definition = function(X,
+                        pars,
                         model_name = X@model_name,
                         note = NULL,
                         ...) {
     check_suggests("rstan")
-    posterior <- rstan::extract(X, permuted = FALSE, inc_warmup = TRUE)
+    if (!missing(pars)) {
+      any_indiv_els <- any(grepl("[", pars, fixed = TRUE))
+      if (any_indiv_els)
+        stop("Individual elements of non-scalar parameters not allowed in 'pars'.")
+      if (!"lp__" %in% pars)
+        pars <- c(pars, "lp__")
+    }
+      
+    posterior <-
+      rstan::extract(X,
+                     pars = pars,
+                     permuted = FALSE,
+                     inc_warmup = TRUE)
+    
+    param_dims <- X@sim$dims_oi
+    if (!missing(pars)) {
+      pd <- which(names(param_dims) %in% pars)
+      if (length(pd))
+        param_dims <- param_dims[pd]
+    }
     
     sso <- shinystan(
       model_name = model_name,
       param_names = dimnames(posterior)[[3L]],
-      param_dims = X@sim$dims_oi,
-      samps_all = posterior,
-      summary = .rstan_summary(X),
+      param_dims = param_dims,
+      posterior_sample = posterior,
+      summary = .rstan_summary(X, pars = pars),
       sampler_params = .rstan_sampler_params(X),
       nChains = ncol(X),
       nIter = nrow(posterior),
@@ -417,7 +458,8 @@ setMethod(
       misc = list(
         max_td = .rstan_max_treedepth(X),
         stan_method = .stan_args(X, "method"),
-        stan_algorithm = .stan_algorithm(X)
+        stan_algorithm = .stan_algorithm(X),
+        sso_version = utils::packageVersion("shinystan")
       )
     )
     sso <- .rename_scalar(sso, oldname = "lp__", newname = "log-posterior")
@@ -437,7 +479,7 @@ setMethod(
     return(sso)
   
   sso@param_names[p] <- 
-    dimnames(sso@samps_all)$parameters[p] <-
+    dimnames(sso@posterior_sample)$parameters[p] <-
     names(sso@param_dims)[which(names(sso@param_dims) == oldname)] <- 
     rownames(sso@summary)[p] <- newname
   return(sso)
@@ -481,8 +523,9 @@ setMethod(
 
 # Get summary stats from a stanfit object
 # @param x stanfit object
-.rstan_summary <- function(x) {
-  stan_summary <- rstan::summary(x)$summary
+# @param pars optional vector of parameter names
+.rstan_summary <- function(x, pars) {
+  stan_summary <- rstan::summary(x, pars = pars)$summary
   if (!.used_vb(x))
     return(stan_summary)
   cbind(stan_summary, Rhat = NA, n_eff = NA, se_mean = NA)
@@ -549,7 +592,7 @@ setOldClass("stanreg")
 #' @describeIn as.shinystan Create a shinystan object from a stanreg object 
 #'   (\pkg{\link[rstanarm]{rstanarm}}).
 #'   
-#' @param ppd If \code{X} is a stanreg object (\pkg{rstanarm}), \code{ppd} 
+#' @param ppd For stanreg objects (\pkg{rstanarm}), \code{ppd} 
 #'   (logical) indicates whether to draw from the posterior predictive 
 #'   distribution before launching ShinyStan. The default is \code{TRUE}, 
 #'   although for very large objects it can be convenient to set it to 
@@ -590,11 +633,14 @@ setMethod(
       sso <- suppressMessages(notes(sso, note, replace = TRUE))
     
     param_names <- slot(sso, "param_names")
-    sel <- grep(":_NEW_", dimnames(slot(sso, "samps_all"))[[3L]], fixed = TRUE)
+    sel <- grep(":_NEW_", dimnames(slot(sso, "posterior_sample"))[[3L]], 
+                fixed = TRUE)
     if (length(sel)) {
       param_names <- param_names[-sel]
-      slot(sso, "samps_all") <- slot(sso, "samps_all")[, , -sel, drop = FALSE]
-      slot(sso, "summary")  <- slot(sso, "summary")[-sel, , drop = FALSE]
+      slot(sso, "posterior_sample") <- 
+        slot(sso, "posterior_sample")[, , -sel, drop = FALSE]
+      slot(sso, "summary")  <- 
+        slot(sso, "summary")[-sel, , drop = FALSE]
     }
     param_dims <- rep(list(numeric(0)), length(param_names))
     names(param_dims) <- param_names

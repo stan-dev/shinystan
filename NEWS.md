@@ -1,6 +1,9 @@
 # `shinystan news`
 
 ### Version 2.2.0
+* Add optional argument `pars` to the `as.shinystan` method for stanfit objects,
+allowing a subset of parameters to be selected for inclusion in the resulting
+shinystan object.
 * Introduce `drop_parameters` function for removing parameters from a shinystan 
 object (useful for very large objects when you only want to look at a subset of
 parameters).
@@ -9,6 +12,9 @@ can be called.
 * Allow selecting `yrep` from global environment for PPcheck
 * Change `as.shinystan` to S4 generic with methods
 * Add **rsconnect** to `Imports` in `DESCRIPTION`.
+* Rename some of the slots in shinystan objects. The `update_sso` function can
+be used to ensure that old shinystan objects have an internal structure
+compatible with this release.
 * Improve line coverage of api tests
 
 ### Version 2.1.0

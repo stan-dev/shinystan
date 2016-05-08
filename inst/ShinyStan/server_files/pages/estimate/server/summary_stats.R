@@ -1,7 +1,7 @@
 summary_stats <- reactive({
   `%>%` <- DT::`%>%`
   validate(need(input$table_digits, "loading"))
-  DT::datatable(data = round(table_stats, digits = input$table_digits), 
+  DT::datatable(data = round(TABLE_STATS, digits = input$table_digits), 
                 colnames = c('mcse' = 'se_mean'),
                 options = list(
                   colReorder = list(realtime = TRUE),

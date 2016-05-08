@@ -10,21 +10,42 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
+# check which shinystan created a shinystan object
+sso_version <- function(sso) {
+  ver <- sso@misc[["sso_version"]]
+  if (!is.null(ver)) {
+    package_version(ver)
+  } else {
+    package_version("2.0")
+  }
+}
+
 # check object types
 sso_check <- function(sso) {
-  if (!is.shinystan(sso)) 
-    stop("Please specify a shinystan object", call. = FALSE)
-  else 
-    invisible(TRUE)
+  if (!is.shinystan(sso)) {
+    stop("Please specify a shinystan object.", call. = FALSE)
+  } else if (sso_version(sso) < utils::packageVersion("shinystan")) {
+    stop(
+      "Your shinystan object was created with a previous version of shinystan. ",
+      "Please use the 'update_sso' function to update your object.",
+      call. = FALSE
+    )
+  }
+  invisible(TRUE)
 }
-is.stanfit <- function(X) inherits(X, "stanfit")
-is.stanreg <- function(X) inherits(X, "stanreg")
+
+is.stanfit <- function(x) inherits(x, "stanfit")
+is.stanreg <- function(x) inherits(x, "stanreg")
+
 
 # check for suggested (not required) packages
 check_suggests <- function(pkg) {
-  if (!requireNamespace(pkg, quietly = TRUE)) 
-    stop("You need to have the ", pkg," package installed to use this option.", 
-         call. = FALSE)
+  if (!requireNamespace(pkg, quietly = TRUE))
+    stop(
+      "You need to have the ", pkg,
+      " package installed to use this option.",
+      call. = FALSE
+    )
 }
 
 # grepl with ignore.case defaulting to TRUE
@@ -37,7 +58,8 @@ grepl_ic <- function(pattern, x, ignore.case = TRUE) {
 # release reminders (for devtools)
 release_questions <- function() {
   c(
-    "Have you updated version numbers in the citation?"
+    "Have you updated version numbers in the citation?",
+    "Have you updated NEWS.md?"
   )
 }
 # nocov end

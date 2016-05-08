@@ -9,4 +9,46 @@
 See \code{\link{as.shinystan}} for documentation on creating
   shinystan objects and \code{\link{eight_schools}} for an example object.
 }
+\section{Slots}{
+
+\describe{
+\item{\code{model_name}}{(\code{"character"}) Model name.}
+
+\item{\code{param_names}}{(\code{"character"}) Parameter names.}
+
+\item{\code{param_dims}}{(\code{"list"}) Parameter dimensions.}
+
+\item{\code{posterior_sample}}{(\code{"array"}) MCMC sample.}
+
+\item{\code{summary}}{(\code{"matrix"}) Summary stats for \code{posterior_sample}.}
+
+\item{\code{sampler_params}}{(\code{"list"}) Sampler parameters (for certain Stan
+models only).}
+
+\item{\code{nChains}}{(\code{"integer"}) Number of chains.}
+
+\item{\code{nIter}}{(\code{"integer"}) Number of iterations per chain.}
+
+\item{\code{nWarmup}}{(\code{"integer"}) Number of warmup iterations per chain.}
+
+\item{\code{user_model_info}}{(\code{"character"}) Notes to display on ShinyStan's
+\strong{Notepad} page.}
+
+\item{\code{model_code}}{(\code{"character"}) Model code to display on ShinyStan's
+\strong{Model Code} page.}
+
+\item{\code{misc}}{(\code{"list"}) Miscellaneous, for internal use.}
+}}
+\seealso{
+\code{\link{as.shinystan}} for creating shinystan objects.
+
+\code{\link{drop_parameters}} to remove parameters from a shinystan
+  object.
+
+\code{\link{generate_quantity}} to add a new quantity to a shinystan
+  object.
+
+\code{\link{shinystan-metadata}} to view or change metadata
+  associated with a shinystan object.
+}
 

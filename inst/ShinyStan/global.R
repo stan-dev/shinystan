@@ -1,2 +1,2 @@
-# Load shiny
+# Load shiny package
 library(shiny)

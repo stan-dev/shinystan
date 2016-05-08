@@ -1,33 +1,47 @@
-navlistPanel(well = FALSE, widths = c(2, 10),
-             id = "diagnostics_help_navlist",
-             tabPanel("accept_stat",
-                      withMathJax(),
-                      includeHTML("html/accept_stat.html"),
-                      hr(), stan_manual()
-             ),
-             tabPanel("divergent",
-                      withMathJax(),
-                      includeHTML("html/ndivergent.html"),
-                      hr(), stan_manual()
-             ),
-             tabPanel("stepsize",
-                      withMathJax(),
-                      includeHTML("html/stepsize.html"),
-                      hr(), stan_manual()
-             ),
-             tabPanel("n_leapfrog",
-                      withMathJax(),
-                      includeHTML("html/nleapfrog.html"),
-                      hr(), stan_manual()
-             ),
-             tabPanel("treedepth",
-                      withMathJax(),
-                      includeHTML("html/treedepth.html"),
-                      hr(), stan_manual()
-             ),
-             tabPanel("NUTS",
-                      withMathJax(),
-                      includeHTML("html/nuts.html"),
-                      hr(), stan_manual()
-             )
+navlistPanel(
+  well = FALSE,
+  widths = c(2, 10),
+  id = "diagnostics_help_navlist",
+  tabPanel(
+    "accept_stat",
+    withMathJax(),
+    includeHTML("html/accept_stat.html"),
+    hr(),
+    stan_manual()
+  ),
+  tabPanel(
+    "divergent",
+    withMathJax(),
+    includeHTML("html/ndivergent.html"),
+    hr(),
+    stan_manual()
+  ),
+  tabPanel(
+    "stepsize",
+    withMathJax(),
+    includeHTML("html/stepsize.html"),
+    hr(),
+    stan_manual()
+  ),
+  tabPanel(
+    "n_leapfrog",
+    withMathJax(),
+    includeHTML("html/nleapfrog.html"),
+    hr(),
+    stan_manual()
+  ),
+  tabPanel(
+    "treedepth",
+    withMathJax(),
+    includeHTML("html/treedepth.html"),
+    hr(),
+    stan_manual()
+  ),
+  tabPanel(
+    "NUTS",
+    withMathJax(),
+    includeHTML("html/nuts.html"),
+    hr(),
+    stan_manual()
+  )
 )
