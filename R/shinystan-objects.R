@@ -401,6 +401,9 @@ setClass("stanfit", getClass("stanfit", where = getNamespace("rstan")))
 #'   this method because all important information can be taken automatically 
 #'   from the stanfit object.
 #'   
+#' @param pars For stanfit objects (\pkg{rstan}), an optional character vector
+#'   specifying which parameters should be included in the shinystan object.
+#'
 #' @examples
 #' \dontrun{
 #' ######################
@@ -415,18 +418,38 @@ setMethod(
   "as.shinystan",
   signature = "stanfit",
   definition = function(X,
+                        pars,
                         model_name = X@model_name,
                         note = NULL,
                         ...) {
     check_suggests("rstan")
-    posterior <- rstan::extract(X, permuted = FALSE, inc_warmup = TRUE)
+    if (!missing(pars)) {
+      any_indiv_els <- any(grepl("[", pars, fixed = TRUE))
+      if (any_indiv_els)
+        stop("Individual elements of non-scalar parameters not allowed in 'pars'.")
+      if (!"lp__" %in% pars)
+        pars <- c(pars, "lp__")
+    }
+      
+    posterior <-
+      rstan::extract(X,
+                     pars = pars,
+                     permuted = FALSE,
+                     inc_warmup = TRUE)
+    
+    param_dims <- X@sim$dims_oi
+    if (!missing(pars)) {
+      pd <- which(names(param_dims) %in% pars)
+      if (length(pd))
+        param_dims <- param_dims[pd]
+    }
     
     sso <- shinystan(
       model_name = model_name,
       param_names = dimnames(posterior)[[3L]],
-      param_dims = X@sim$dims_oi,
+      param_dims = param_dims,
       posterior_sample = posterior,
-      summary = .rstan_summary(X),
+      summary = .rstan_summary(X, pars = pars),
       sampler_params = .rstan_sampler_params(X),
       nChains = ncol(X),
       nIter = nrow(posterior),
@@ -500,8 +523,9 @@ setMethod(
 
 # Get summary stats from a stanfit object
 # @param x stanfit object
-.rstan_summary <- function(x) {
-  stan_summary <- rstan::summary(x)$summary
+# @param pars optional vector of parameter names
+.rstan_summary <- function(x, pars) {
+  stan_summary <- rstan::summary(x, pars = pars)$summary
   if (!.used_vb(x))
     return(stan_summary)
   cbind(stan_summary, Rhat = NA, n_eff = NA, se_mean = NA)
@@ -568,7 +592,7 @@ setOldClass("stanreg")
 #' @describeIn as.shinystan Create a shinystan object from a stanreg object 
 #'   (\pkg{\link[rstanarm]{rstanarm}}).
 #'   
-#' @param ppd If \code{X} is a stanreg object (\pkg{rstanarm}), \code{ppd} 
+#' @param ppd For stanreg objects (\pkg{rstanarm}), \code{ppd} 
 #'   (logical) indicates whether to draw from the posterior predictive 
 #'   distribution before launching ShinyStan. The default is \code{TRUE}, 
 #'   although for very large objects it can be convenient to set it to 

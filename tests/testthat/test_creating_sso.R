@@ -3,8 +3,6 @@ suppressPackageStartupMessages(library(rstanarm))
 library(coda)
 
 sso <- eight_schools
-stanreg1 <- suppressWarnings(stan_glm(mpg ~ wt, data = mtcars, seed = 12345, iter = 200, refresh = 0))
-stanfit1 <- stanreg1$stanfit
 array1 <- array(rnorm(300), dim = c(25, 4, 3))
 array2 <- array(rnorm(300), dim = c(100, 3))
 chains1 <- list(chain1 = cbind(beta1 = rnorm(100), beta2 = rnorm(100), sigma = rexp(100)), 
@@ -13,6 +11,9 @@ chains1 <- list(chain1 = cbind(beta1 = rnorm(100), beta2 = rnorm(100), sigma = r
 data(line, package = "coda")
 mcmc1 <- line
 mcmc2 <- line[[1L]]
+
+stanreg1 <- suppressWarnings(stan_glm(mpg ~ wt, data = mtcars, seed = 12345, iter = 200, refresh = 0))
+stanfit1 <- stanreg1$stanfit
 
 # load 'old_sso', a shinystan object created by previous shinystan version
 load("old_sso_for_tests.rda")
@@ -108,6 +109,31 @@ test_that("as.shinystan arguments works with rstanarm example", {
   expect_is(sso2, "shinystan")
   expect_false(is.null(sso1@misc$pp_check_plots))
   expect_null(sso2@misc$pp_check_plots)
+})
+
+test_that("as.shinystan 'pars' argument works with rstan example", {
+  # load 'stanfit2' saved stanfit object
+  load("stanfit2_for_tests.rda")
+  
+  expect_error(as.shinystan(stanfit2, pars = c("alpha[1,1]", "lp__")), 
+               "elements of non-scalar parameters not allowed")
+  
+  sso0 <- as.shinystan(stanfit2)
+  sso1 <- as.shinystan(stanfit2, pars = "alpha")
+  sso2 <- as.shinystan(stanfit2, pars = "beta")
+  sso3 <- as.shinystan(stanfit2, pars = c("alpha", "beta"))
+  
+  expect_identical(sso0, sso3)
+
+  sso1names <- c("alpha[1,1]", "alpha[2,1]", "alpha[1,2]", "alpha[2,2]",
+                 "alpha[1,3]", "alpha[2,3]", "log-posterior")
+  expect_identical(sso1@param_names, sso1names)
+  expect_identical(rownames(sso1@summary), sort(sso1names))
+  expect_identical(sso2@param_names, c("beta", "log-posterior"))
+  expect_identical(rownames(sso2@summary), c("beta", "log-posterior"))
+  
+  expect_equal(dim(sso1@posterior_sample), c(200, 2, 7))
+  expect_equal(dim(sso2@posterior_sample), c(200, 2, 2))
 })
 
 
