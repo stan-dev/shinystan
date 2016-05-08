@@ -146,3 +146,12 @@ square <- function(x) x^2
   exp(logout)
 }
 
+
+# bold/strong text generators ---------------------------------------------
+# used both in ui files and server files that call renderUI
+strongMed <- function(...) 
+  strong(style = "font-size: 14px; margin-bottom: 5px;", ...)
+strongBig <- function(...) 
+  strong(style = "font-size: 18px; margin-bottom: 5px;", ...)
+strong_bl <- function(...) 
+  strong(style = "color: #006DCC;", ...)

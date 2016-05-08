@@ -84,14 +84,22 @@ test_that("generate_quantity works", {
 
 
 # drop_parameters ---------------------------------------------------------
+test_that("drop_parameters throws correct warnings/errors", {
+  expect_error(drop_parameters(old_sso, pars = "mu"), old_sso_msg)
+  expect_error(drop_parameters(not_sso, pars = "mu"), not_sso_msg)
+  expect_error(drop_parameters(sso, pars = "log-posterior"), 
+               "log-posterior can't be dropped")
+  expect_error(drop_parameters(sso, pars = c("theta[1]", "mu")), 
+               regexp = "individual elements")
+  expect_error(drop_parameters(sso, pars = "omega"), regexp = "No matches")
+  expect_warning(drop_parameters(sso, pars = c("mu", "omega")), 
+                 regexp = "not found and ignored: omega")
+})
 test_that("drop_parameters works", {
   pn <- sso@param_names
   pd <- sso@param_dims
   s <- sso@summary
   samp <- sso@posterior_sample
-  
-  expect_error(drop_parameters(old_sso, pars = "mu"), old_sso_msg)
-  expect_error(drop_parameters(not_sso, pars = "mu"), not_sso_msg)
   
   sso2 <- drop_parameters(sso, pars = "mu")
   expect_identical(sso2@param_names, pn[pn != "mu"])
@@ -107,22 +115,15 @@ test_that("drop_parameters works", {
   tmp <- samp[,, grep("theta", dimnames(samp)[[3]], value = TRUE, invert = TRUE)]
   expect_identical(sso2@posterior_sample, tmp)
   
-  sso2 <- drop_parameters(sso, pars = c("theta", "log-posterior"))
-  tmp <- grep("theta|log-posterior", pn, value = TRUE, invert = TRUE)
+  sso2 <- drop_parameters(sso, pars = c("theta", "tau"))
+  tmp <- grep("theta|tau", pn, value = TRUE, invert = TRUE)
   expect_identical(sso2@param_names, tmp)
-  tmp <- pd[grep("theta|log-posterior", names(pd), value = TRUE, invert = TRUE)]
+  tmp <- pd[grep("theta|tau", names(pd), value = TRUE, invert = TRUE)]
   expect_identical(sso2@param_dims, tmp)
-  tmp <- s[grep("theta|log-posterior", rownames(s), value = TRUE, invert = TRUE), ]
+  tmp <- s[grep("theta|tau", rownames(s), value = TRUE, invert = TRUE), ]
   expect_identical(sso2@summary, tmp)
-  tmp <- samp[,, grep("theta|log-posterior", dimnames(samp)[[3]], value = TRUE, invert = TRUE)]
+  tmp <- samp[,, grep("theta|tau", dimnames(samp)[[3]], value = TRUE, invert = TRUE)]
   expect_identical(sso2@posterior_sample, tmp)
-  
-  
-  expect_error(drop_parameters(sso, pars = c("theta[1]", "mu")), 
-               regexp = "individual elements")
-  expect_error(drop_parameters(sso, pars = "omega"), regexp = "No matches")
-  expect_warning(drop_parameters(sso, pars = c("mu", "omega")), 
-                 regexp = "not found and ignored: omega")
 })
 
 

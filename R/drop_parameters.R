@@ -44,12 +44,15 @@
 drop_parameters <- function(sso, pars) {
   sso_check(sso)
   stopifnot(is.character(pars))
+  if (any(c("log-posterior", "lp__") %in% pars))
+    stop("log-posterior can't be dropped.")
+  
   any_indiv_els <- any(grepl("[", pars, fixed = TRUE))
   if (any_indiv_els)
     stop("Currently, individual elements of non-scalar parameters can't be removed.")
   
-  any_non_scalar <- any(names(sso@param_dims) %in% pars)
-  if (any_non_scalar) {
+  any_dimnames_in_pars <- any(names(sso@param_dims) %in% pars)
+  if (any_dimnames_in_pars) {
     param_dims <- slot(sso, "param_dims")
     param_names <- slot(sso, "param_names")
     pd <- which(names(param_dims) %in% pars)
@@ -65,7 +68,7 @@ drop_parameters <- function(sso, pars) {
   }
   
   sel <- match(pars, slot(sso, "param_names"))
-  if (!any_non_scalar && all(is.na(sel))) {
+  if (!any_dimnames_in_pars && all(is.na(sel))) {
     stop("No matches for 'pars' were found.", call. = FALSE)
   } else if (any(is.na(sel))) {
     warning(paste(
