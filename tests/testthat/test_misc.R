@@ -1,5 +1,5 @@
 library(shinystan)
-context("misc")
+context("Misc")
 
 test_that("options set when package loads", {
   expect_false(getOption("shinystan.rstudio"))

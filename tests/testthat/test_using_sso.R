@@ -80,6 +80,14 @@ test_that("generate_quantity works", {
   expect_equivalent(sso2@posterior_sample[,, "theta1minus2", drop=FALSE], 
                     sso@posterior_sample[,, "theta[1]", drop=FALSE] - 
                       sso@posterior_sample[,, "theta[2]", drop=FALSE])
+  
+  # test when sso only has one chain
+  sso3 <- as.shinystan(list(chain1 = cbind(beta1 = rnorm(100), beta2 = rnorm(100), sigma = rexp(100))))
+  sso3 <- generate_quantity(sso3, param1 = "beta1", param2 = "beta2", 
+                            fun = "+", new_name = "beta1plusbeta2")
+  expect_equivalent(sso3@posterior_sample[,, "beta1plusbeta2", drop=FALSE], 
+                    sso3@posterior_sample[,, "beta1", drop=FALSE] + 
+                      sso3@posterior_sample[,, "beta2", drop=FALSE])
 })
 
 
