@@ -195,11 +195,11 @@ stan_manual <- function() {
 .param_list_with_groups <-
   .make_param_list_with_groups(shinystan:::.sso_env[[".SHINYSTAN_OBJECT"]])
 .nChains <-
-  slot(shinystan:::.sso_env[[".SHINYSTAN_OBJECT"]], "nChains")
+  slot(shinystan:::.sso_env[[".SHINYSTAN_OBJECT"]], "n_chain")
 .nIter <- 
-  slot(shinystan:::.sso_env[[".SHINYSTAN_OBJECT"]], "nIter")
+  slot(shinystan:::.sso_env[[".SHINYSTAN_OBJECT"]], "n_iter")
 .nWarmup <-
-  slot(shinystan:::.sso_env[[".SHINYSTAN_OBJECT"]], "nWarmup")
+  slot(shinystan:::.sso_env[[".SHINYSTAN_OBJECT"]], "n_warmup")
 .model_code <-
   slot(shinystan:::.sso_env[[".SHINYSTAN_OBJECT"]], "model_code")
 .notes <-

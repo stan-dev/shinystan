@@ -25,9 +25,9 @@
 #' @slot summary (\code{"matrix"}) Summary stats for \code{posterior_sample}.
 #' @slot sampler_params (\code{"list"}) Sampler parameters (for certain Stan
 #'   models only).
-#' @slot nChains (\code{"integer"}) Number of chains.
-#' @slot nIter (\code{"integer"}) Number of iterations per chain.
-#' @slot nWarmup (\code{"integer"}) Number of warmup iterations per chain.
+#' @slot n_chain (\code{"integer"}) Number of chains.
+#' @slot n_iter (\code{"integer"}) Number of iterations per chain.
+#' @slot n_warmup (\code{"integer"}) Number of warmup iterations per chain.
 #' @slot user_model_info (\code{"character"}) Notes to display on ShinyStan's
 #'   \strong{Notepad} page.
 #' @slot model_code (\code{"character"}) Model code to display on ShinyStan's
@@ -49,9 +49,9 @@ shinystan <- setClass(
     posterior_sample = "array",
     summary          = "matrix",
     sampler_params   = "list",
-    nChains          = "numeric",
-    nIter            = "numeric",
-    nWarmup          = "numeric",
+    n_chain          = "numeric",
+    n_iter            = "numeric",
+    n_warmup          = "numeric",
     user_model_info  = "character",
     model_code       = "character",
     misc             = "list"
@@ -63,9 +63,9 @@ shinystan <- setClass(
     posterior_sample = array(NA, c(1, 1)),
     summary = matrix(NA, nr = 1, nc =1),
     sampler_params = list(NA),
-    nChains = 0,
-    nIter = 0,
-    nWarmup = 0,
+    n_chain = 0,
+    n_iter = 0,
+    n_warmup = 0,
     user_model_info = "Use this space to store notes about your model",
     model_code = "Use this space to store your model code",
     misc = list(sso_version = utils::packageVersion("shinystan"))
@@ -174,9 +174,9 @@ setMethod(
       param_dims = .set_param_dims(param_dims, param_names),
       posterior_sample = X,
       summary = shinystan_monitor(X, warmup = burnin),
-      nChains = ncol(X),
-      nIter = nrow(X),
-      nWarmup = burnin
+      n_chain = ncol(X),
+      n_iter = nrow(X),
+      n_warmup = burnin
     )
     if (!is.null(note))
       sso <- suppressMessages(notes(sso, note = note, replace = TRUE))
@@ -263,11 +263,11 @@ setMethod(
     }
     
     if (nChain == 1) {
-      nIter <- nrow(X[[1]])
+      n_iter <- nrow(X[[1]])
       param_names <- colnames(X[[1]])
     } else {
-      nIter <- sapply(X, nrow)
-      same_iters <- length(unique(nIter)) == 1
+      n_iter <- sapply(X, nrow)
+      same_iters <- length(unique(n_iter)) == 1
       if (!same_iters)
         stop("Each chain should contain the same number of iterations.")
       cnames <- sapply(X, colnames)
@@ -281,11 +281,11 @@ setMethod(
       if (!same_params)
         stop("The parameters for each chain should be in the same order ",
              "and have the same names.")
-      nIter <- nIter[1]
+      n_iter <- n_iter[1]
     }
     param_names <- unique(param_names)
     nParam <- length(param_names)
-    out <- array(NA, dim = c(nIter, nChain, nParam))
+    out <- array(NA, dim = c(n_iter, nChain, nParam))
     for (i in seq_len(nChain))
       out[, i,] <- X[[i]]
 
@@ -365,9 +365,9 @@ setMethod(
       param_dims = .set_param_dims(param_dims, param_names),
       posterior_sample = posterior,
       summary = shinystan_monitor(posterior, warmup = burnin),
-      nChains = ncol(posterior),
-      nIter = nrow(posterior),
-      nWarmup = burnin
+      n_chain = ncol(posterior),
+      n_iter = nrow(posterior),
+      n_warmup = burnin
     )
     if (!is.null(note))
       sso <- suppressMessages(notes(sso, note = note, replace = TRUE))
@@ -451,9 +451,9 @@ setMethod(
       posterior_sample = posterior,
       summary = .rstan_summary(X, pars = pars),
       sampler_params = .rstan_sampler_params(X),
-      nChains = ncol(X),
-      nIter = nrow(posterior),
-      nWarmup = .rstan_warmup(X),
+      n_chain = ncol(X),
+      n_iter = nrow(posterior),
+      n_warmup = .rstan_warmup(X),
       model_code = rstan::get_stancode(X),
       misc = list(
         max_td = .rstan_max_treedepth(X),

@@ -25,11 +25,11 @@ See \code{\link{as.shinystan}} for documentation on creating
 \item{\code{sampler_params}}{(\code{"list"}) Sampler parameters (for certain Stan
 models only).}
 
-\item{\code{nChains}}{(\code{"integer"}) Number of chains.}
+\item{\code{n_chain}}{(\code{"integer"}) Number of chains.}
 
-\item{\code{nIter}}{(\code{"integer"}) Number of iterations per chain.}
+\item{\code{n_iter}}{(\code{"integer"}) Number of iterations per chain.}
 
-\item{\code{nWarmup}}{(\code{"integer"}) Number of warmup iterations per chain.}
+\item{\code{n_warmup}}{(\code{"integer"}) Number of warmup iterations per chain.}
 
 \item{\code{user_model_info}}{(\code{"character"}) Notes to display on ShinyStan's
 \strong{Notepad} page.}

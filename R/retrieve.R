@@ -139,10 +139,9 @@ retrieve_sd <- function(sso, pars) {
 
 .which_rows <- function(sso, inc_warmup) {
   if (inc_warmup) {
-    seq_len(slot(sso, "nIter"))
+    seq_len(slot(sso, "n_iter"))
   } else {
-    seq(from = 1 + slot(sso, "nWarmup"), 
-        to = slot(sso, "nIter"))
+    seq(from = 1 + slot(sso, "n_warmup"),  to = slot(sso, "n_iter"))
   }
 }
 

@@ -45,7 +45,7 @@ update_sso <- function(sso) {
     stop(
       deparse(substitute(sso)),
       " was created using a more recent version ",
-      "of shinystan than the one you're currently using. ",
+      "of shinystan than the one you are currently using. ",
       "Please update your version of the shinystan package."
     )
   }
@@ -59,10 +59,16 @@ update_sso <- function(sso) {
     if (.hasSlot(sso, sn)) {
       slot(sso_new, sn) <- slot(sso, sn)
     } else {
-      if (sn == "posterior_sample" && .hasSlot(sso, "samps_all"))
-        slot(sso_new, sn) <- slot(sso, "samps_all")
-      else
-        stop("slot ", sn, "not found in ", deparse(substitute(sso)))
+      new_slots <- c("posterior_sample", "n_chain", "n_iter", "n_warmup")
+      old_slots <- c("samps_all", "nChains", "nIter", "nWarmup")
+      j <- which(new_slots == sn)
+      if (!length(j))
+        stop("Bug found. Slot ", sn, " can't be updated.")
+      if (.hasSlot(sso, old_slots[j])) {
+        slot(sso_new, sn) <- slot(sso, old_slots[j])
+      } else {
+        stop("slot ", sn, " not found in ", deparse(substitute(sso))) 
+      }
     }
   }
   sso_new@misc[["sso_version"]] <- utils::packageVersion("shinystan")

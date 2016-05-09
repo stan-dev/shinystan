@@ -54,9 +54,9 @@ sso_info <- function(sso) {
     paste("Model name:", sso@model_name),
     paste("Parameters:", length(sso@param_names)),
     paste("Parameter groups:", length(names(sso@param_dims))),
-    paste("Chains:", sso@nChains),
-    paste("Iterations:", sso@nIter),
-    paste("Warmup:", sso@nWarmup),
+    paste("Chains:", sso@n_chain),
+    paste("Iterations:", sso@n_iter),
+    paste("Warmup:", sso@n_warmup),
     paste("Has model code:", has_code),
     paste("Has user notes:", has_notes),
     sep = "\n"

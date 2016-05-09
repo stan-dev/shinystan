@@ -6,9 +6,9 @@ PARAM_NAMES <- slot(object, "param_names")
 PARAM_DIMS <- slot(object, "param_dims")
 SAMPS_all <- slot(object, "posterior_sample")
 SAMPLER_PARAMS <- slot(object, "sampler_params")
-N_ITER <- slot(object, "nIter")
-N_CHAIN <- slot(object, "nChains")
-N_WARMUP <- slot(object, "nWarmup")
+N_ITER <- slot(object, "n_iter")
+N_CHAIN <- slot(object, "n_chain")
+N_WARMUP <- slot(object, "n_warmup")
 SAMPS_post_warmup <-
   SAMPS_all[seq(from = N_WARMUP + 1, to = N_ITER), , , drop = FALSE]
 

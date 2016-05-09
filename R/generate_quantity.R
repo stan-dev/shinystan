@@ -42,7 +42,7 @@ generate_quantity <- function(sso, param1, param2, fun, new_name) {
   if (isTRUE(new_name %in% slot(sso, "param_names")))
     stop(paste("There is already a parameter named", new_name))
   
-  message("\nThis might take a moment for large shinystan objects...\n")
+  message("\nThis might take a moment for large shinystan objects...")
   
   two_params <- !missing(param2)
   posterior <- slot(sso, "posterior_sample")
@@ -79,11 +79,11 @@ generate_quantity <- function(sso, param1, param2, fun, new_name) {
   sso_new <- as.shinystan(
     posterior,
     model_name = slot(sso, "model_name"),
-    burnin = slot(sso, "nWarmup"),
+    burnin = slot(sso, "n_warmup"),
     param_dims = param_dims_new
   )
   slot(sso_new, "summary") <-
-    shinystan_monitor(posterior, warmup = slot(sso, "nWarmup"))
+    shinystan_monitor(posterior, warmup = slot(sso, "n_warmup"))
   
   slot_names <- c("sampler_params", "model_code", "user_model_info", "misc")
   for (sn in slot_names)

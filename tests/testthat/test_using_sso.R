@@ -1,5 +1,5 @@
 library(shinystan)
-context("Working with shinystan objects")
+context("Using shinystan objects")
 
 sso <- eight_schools
 not_sso <- sso@model_name
@@ -17,22 +17,28 @@ test_that("launch_shinystan throws appropriate errors", {
 })
 
 
-# model_name, model_code, notes -----------------------------------------
-test_that("simple sso functions work", {
+# model_name --------------------------------------------------------------
+test_that("model_name works", {
   expect_error(model_name(old_sso), old_sso_msg)
   expect_error(model_name(not_sso), not_sso_msg)
   sso2 <- model_name(sso, "test_rename")
   expect_identical(model_name(sso2), "test_rename")
   expect_error(model_name(sso, 1234), "should be a single string")
   expect_error(model_name(sso, c("a", "b")), "should be a single string")
-  
+})
+
+# model_code --------------------------------------------------------------
+test_that("model_code works", {
   expect_error(model_code(old_sso), old_sso_msg)
   expect_error(model_code(not_sso), not_sso_msg)
   sso2 <- model_code(sso, "test_code")
   expect_identical(model_code(sso2), "test_code")
   expect_identical(model_code(sso2), slot(sso2, "model_code"))
   expect_error(model_code(sso, 1234), "should be NULL or a string")
-  
+})
+
+# notes -------------------------------------------------------------------
+test_that("notes works", {
   expect_error(notes(old_sso), old_sso_msg)
   expect_error(notes(not_sso), not_sso_msg)
   sso2 <- notes(sso, "test_notes_replace", replace = TRUE)
@@ -82,12 +88,12 @@ test_that("generate_quantity works", {
                       sso@posterior_sample[,, "theta[2]", drop=FALSE])
   
   # test when sso only has one chain
-  sso3 <- as.shinystan(list(chain1 = cbind(beta1 = rnorm(100), beta2 = rnorm(100), sigma = rexp(100))))
-  sso3 <- generate_quantity(sso3, param1 = "beta1", param2 = "beta2", 
-                            fun = "+", new_name = "beta1plusbeta2")
-  expect_equivalent(sso3@posterior_sample[,, "beta1plusbeta2", drop=FALSE], 
-                    sso3@posterior_sample[,, "beta1", drop=FALSE] + 
-                      sso3@posterior_sample[,, "beta2", drop=FALSE])
+  sso3 <- as.shinystan(list(cbind(b1 = rnorm(100), b2 = rnorm(100), s = rexp(100))))
+  sso3 <- generate_quantity(sso3, param1 = "b1", param2 = "b2", 
+                            fun = "+", new_name = "b1plusb2")
+  expect_equivalent(sso3@posterior_sample[,, "b1plusb2", drop=FALSE], 
+                    sso3@posterior_sample[,, "b1", drop=FALSE] + 
+                      sso3@posterior_sample[,, "b2", drop=FALSE])
 })
 
 
