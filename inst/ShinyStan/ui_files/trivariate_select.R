@@ -9,7 +9,8 @@ fluidRow(
       "trivariate_param_y",
       label = strong_bl("y-axis"),
       choices = .param_list,
-      selected = .param_list[1L],
+      selected = if (length(unlist(.param_list)) > 1) 
+        unlist(.param_list)[2] else unlist(.param_list)[1],
       multiple = FALSE
     )
   ),
