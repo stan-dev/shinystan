@@ -203,7 +203,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   nl <- if (partial) lags else lags + 1 
   ch <- factor(rep(1:nc, each = nl), labels = paste0("chain:", 1:nc))
   ll <- rep(seq(if (partial) 1 else 0, lags), nc)
-  data.frame(chains = ch, ac = do.call(c, ac_list), lag = ll)
+  data.frame(chains = ch, ac = do.call("c", args = ac_list), lag = ll)
 }
 .ac_plot_data_multi <- function(dat, lags, partial = FALSE) {
   nc <- length(unique(dat$chains))
@@ -215,7 +215,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   ch <- factor(rep(rep(1:nc, each = nl), np), labels = paste0("chain:", 1:nc))
   ll <- rep(seq(if (partial) 1 else 0, lags), nc * np)
   pp <- factor(rep(1:np, each = nc * nl), labels = levels(dat$parameters))
-  data.frame(parameters = pp, chains = ch, ac = do.call(c, ac_list), lag = ll)
+  data.frame(parameters = pp, chains = ch, ac = do.call("c", args = ac_list), lag = ll)
 }
 
 # markov chain autocorrelation plot for single parameters

@@ -50,8 +50,8 @@ shinystan <- setClass(
     summary          = "matrix",
     sampler_params   = "list",
     n_chain          = "numeric",
-    n_iter            = "numeric",
-    n_warmup          = "numeric",
+    n_iter           = "numeric",
+    n_warmup         = "numeric",
     user_model_info  = "character",
     model_code       = "character",
     misc             = "list"
