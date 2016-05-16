@@ -8,16 +8,15 @@ launch_shinystan(object, rstudio = getOption("shinystan.rstudio"), ...)
 }
 \arguments{
 \item{object}{An object of class shinystan, stanfit, or stanreg. To use other
-types of objects first create a shinystan object using
+types of objects first create a shinystan object using 
 \code{\link{as.shinystan}}.}
 
-\item{rstudio}{Only relevant for RStudio users. The default 
-(\code{rstudio=FALSE}) is to launch the app in the default web browser 
-rather than RStudio's pop-up Viewer. Users can change the default to 
-\code{TRUE} by setting the global option \code{options(shinystan.rstudio = 
-TRUE)}.}
+\item{rstudio}{Only relevant for RStudio users. The default (\code{FALSE}) is
+to launch the app in the user's default web browser rather than RStudio's
+pop-up Viewer. Users can change the default to \code{TRUE} by setting the
+global option \code{options(shinystan.rstudio = TRUE)}.}
 
-\item{...}{Optionally, arguments to pass to \code{\link[shiny]{runApp}}.}
+\item{...}{Optional arguments passed to \code{\link[shiny]{runApp}}.}
 }
 \value{
 The \code{launch_shinystan} function is used for the side effect of 

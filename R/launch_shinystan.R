@@ -18,14 +18,13 @@
 #' 
 #' @export
 #' @param object An object of class shinystan, stanfit, or stanreg. To use other
-#'   types of objects first create a shinystan object using
+#'   types of objects first create a shinystan object using 
 #'   \code{\link{as.shinystan}}.
-#' @param rstudio Only relevant for RStudio users. The default 
-#'   (\code{rstudio=FALSE}) is to launch the app in the default web browser 
-#'   rather than RStudio's pop-up Viewer. Users can change the default to 
-#'   \code{TRUE} by setting the global option \code{options(shinystan.rstudio = 
-#'   TRUE)}.
-#' @param ... Optionally, arguments to pass to \code{\link[shiny]{runApp}}.
+#' @param rstudio Only relevant for RStudio users. The default (\code{FALSE}) is
+#'   to launch the app in the user's default web browser rather than RStudio's
+#'   pop-up Viewer. Users can change the default to \code{TRUE} by setting the
+#'   global option \code{options(shinystan.rstudio = TRUE)}.
+#' @param ... Optional arguments passed to \code{\link[shiny]{runApp}}.
 #' 
 #' @return The \code{launch_shinystan} function is used for the side effect of 
 #'   starting the ShinyStan app, but it also returns a shinystan object, an
@@ -98,19 +97,14 @@ launch_shinystan <- function(object,
 #'
 #' @aliases eight_schools
 #' @export
+#' @inheritParams launch_shinystan
 #' @param demo_name The name of the demo. Currently \code{"eight_schools"} is 
-#'   the only option, but additional demos will be available in future releases.
+#'   the only option, but additional demos may be available in future releases.
 #'   \describe{
 #'   \item{\code{eight_schools}}{Hierarchical meta-analysis model. See 
 #'    \emph{Meta Analysis} chapter of the Stan manual (chapter 11.2 in version
 #'    2.9), \url{http://mc-stan.org/documentation/}.}
 #'   }
-#' @param rstudio Only relevant for RStudio users. The default 
-#'   (\code{rstudio=FALSE}) is to launch the app in the default web browser 
-#'   rather than RStudio's pop-up Viewer. Users can change the default to 
-#'   \code{TRUE} by setting the global option \code{options(shinystan.rstudio = 
-#'   TRUE)}.
-#' @param ... Optional arguments to pass to \code{\link[shiny]{runApp}}.
 #' @return An S4 shinystan object.
 #'   
 #' @template seealso-launch
