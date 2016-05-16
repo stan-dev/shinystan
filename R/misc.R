@@ -59,7 +59,7 @@ grepl_ic <- function(pattern, x, ignore.case = TRUE) {
 release_questions <- function() {
   c(
     "Have you updated version numbers in the citation?",
-    "Have you updated NEWS.md?"
+    "Have you updated NEWS.md? and inst/NEWS?"
   )
 }
 # nocov end
