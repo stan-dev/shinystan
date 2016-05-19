@@ -500,7 +500,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
 
 # dynamic trace plot ------------------------------------------------------
 .param_trace_dynamic <- function(param_samps, param_name=NULL, chain,
-                                 # warmup_val, warmup_shade = TRUE,
+                                 warmup_val, warmup_shade = TRUE,
                                  stack = FALSE, grid = FALSE) {
   
   dim_samps <- dim(param_samps)
@@ -521,9 +521,11 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
     }
   }
 
-  # shade_to <- if (warmup_shade) paste0(warmup_val,"-01-01") else "0001-01-01"
   `%>%` <- dygraphs::`%>%`
-  y_axis_label_remove <- if (stack) "white" else NULL
+  shade_to <- if (warmup_shade) 
+    paste0(warmup_val,"-01-01") else "0001-01-01"
+  y_axis_label_remove <- if (stack) 
+    "white" else NULL
   clrs <- color_vector(nChains) 
   if (chain != 0) clrs <- clrs[chain]
   dygraphs::dygraph(param_chains, xlab = "", ylab = "") %>%
@@ -540,6 +542,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                 hideOnMouseOut = TRUE,
                 highlightSeriesOpts = list(strokeWidth = 1.75)) %>%
     dygraphs::dyRoller(rollPeriod = 1) %>%
+    dygraphs::dyShading(from = "0001-01-01", to = shade_to, color = "#EFEFEF", axis = "x") %>%
     dygraphs::dyCSS(css = "css/ShinyStan_dygraphs.css")
 }
 
