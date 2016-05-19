@@ -19,7 +19,9 @@ dynamic_trace_plot_multiview <- reactive({
     args = list(
       param_samps = multiview_samps(),
       chain = chain,
-      stack = stack
+      stack = stack,
+      warmup_val = N_WARMUP,
+      warmup_shade = isTRUE(input$multiview_warmup) && N_WARMUP > 0
     )
   )
 })

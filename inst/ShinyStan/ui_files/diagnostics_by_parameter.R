@@ -20,4 +20,6 @@ div(class = "diagnostics-navlist-tabpanel",
         plotOutput_200px("param_vs_accept_stat_out"),
         plotOutput_200px("param_vs_treedepth_out")
       )
-    ))
+    ),
+    br()
+)

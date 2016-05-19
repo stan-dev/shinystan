@@ -115,10 +115,12 @@ alpha_calc_lines <- function(N) {
 
 # transformations ---------------------------------------------------------
 transformation_selectInput <- function(id) {
-  selectInput(id,
-              label = NULL,
-              choices = transformation_choices,
-              selected = "identity")
+  selectInput(
+    id,
+    label = NULL,
+    choices = transformation_choices,
+    selected = "identity"
+  )
 }
 
 transform_helpText <- function(var = "x") {
@@ -176,11 +178,16 @@ plot_descriptions <-
 
 # stan manual reference ---------------------------------------------------
 stan_manual <- function() {
-  helpText(style = "font-size: 12px;",
-           "Glossary entries are compiled (with minor edits) from various excepts of the",
-           a("Stan Modeling Language User's Guide and Reference Manual", 
-             href = "http://mc-stan.org/documentation/"),
-           "(", a(href = "http://creativecommons.org/licenses/by/3.0/", "CC BY (v3)"), ")"
+  helpText(
+    style = "font-size: 12px;",
+    "Glossary entries are compiled (with minor edits) from various excerpts of the",
+    a(
+      "Stan Modeling Language User's Guide and Reference Manual",
+      href = "http://mc-stan.org/documentation/"
+    ),
+    "(",
+    a(href = "http://creativecommons.org/licenses/by/3.0/", "CC BY (v3)"),
+    ")"
   )
 }
 
