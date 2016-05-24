@@ -2,8 +2,8 @@
 ^\.Rproj\.user$
 LICENSE
 ^\.travis\.yml$
-^NEWS\.md$
 ^README\.md$
 .gitignore
 ^cran-comments\.md$
 ^revdep$
+man-roxygen/*

@@ -1,4 +1,19 @@
-# `shinystan news`
+### Version 2.2.0
+* Add optional argument `pars` to the `as.shinystan` method for stanfit objects,
+allowing a subset of parameters to be selected for inclusion in the resulting
+shinystan object.
+* Introduce `drop_parameters` function for removing parameters from a shinystan 
+object (useful for very large objects when you only want to look at a subset of
+parameters).
+* Add **rstanarm** to Suggests (in the DESCRIPTION file) so `rstanarm::pp_check`
+can be called.
+* Allow selecting `yrep` from global environment for PPcheck
+* Change `as.shinystan` to S4 generic with methods
+* Add **rsconnect** to `Imports` in `DESCRIPTION`.
+* Rename some of the slots in shinystan objects. The `update_sso` function can
+be used to ensure that old shinystan objects have an internal structure
+compatible with this release.
+* Improve line coverage of api tests
 
 ### Version 2.1.0
 * Compatibility with recent ggplot2 update
@@ -16,13 +31,12 @@ plot ('Estimate' page)
 Version 2.0.0 has a new look, a new(ish) name, and a lot of new functionality. 
 Many bugs have also been fixed (see GitHub issue tracker). 
 
-[Available on CRAN](https://cran.rstudio.com/web/packages/shinystan/index.html).
 
 ### New names
 * The name of the R package is **shinystan** and the app/GUI is **ShinyStan**. 
 
 ### Deploy ShinyStan apps to shinyapps.io (RStudio's ShinyApps service)
-* The 'deploy_shinystan' function lets you easily deploy ShinyStan apps 
+* The `deploy_shinystan` function lets you easily deploy ShinyStan apps 
 to RStudio's shinyapps.io for any of your models. Each of your apps 
 (i.e. each of your models) will have a unique url.
 

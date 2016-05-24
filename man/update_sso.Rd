@@ -2,25 +2,34 @@
 % Please edit documentation in R/update_sso.R
 \name{update_sso}
 \alias{update_sso}
-\title{Update an object created by an earlier version of shinystan}
+\title{Update an object created by the previous version of shinystan}
 \usage{
-update_sso(old_sso)
+update_sso(sso)
 }
 \arguments{
-\item{old_sso}{An old shinystan object to update.}
+\item{sso}{A \code{\link[=as.shinystan]{shinystan object}}.}
 }
 \value{
-sso, updated.
+If \code{sso} is already compatible with your version of
+  \pkg{shinystan} then \code{sso} itself is returned and a message is printed
+  indicating that \code{sso} is already up-to-date. Otherwise an updated
+  version of \code{sso} is returned unless an error is encountered.
 }
 \description{
-Before you can use an old shinystan object (sso) with the new version of 
-shinystan you might need to run \code{update_sso}. The updated sso
-will then have all the slots that will be accessed by the ShinyStan app.
+If you encounter any errors when using a shinystan object (\code{sso}) 
+created by a previous version of \pkg{shinystan}, you might need to run
+\code{update_sso}. If \code{update_sso} does not resolve the problem and 
+you still have the object (e.g. stanfit,  stanreg, mcmc.list) from which 
+\code{sso} was originally created, you can create a new shinystan object 
+using \code{\link{as.shinystan}}.
 }
 \examples{
 \dontrun{
-sso_new <- update_sso(sso_old)
-}  
+sso_new <- update_sso(sso)
+}
 
+}
+\seealso{
+\code{\link{as.shinystan}} for creating shinystan objects.
 }
 

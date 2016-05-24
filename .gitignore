@@ -1,20 +1,14 @@
-# History files
 .Rhistory
 .Rapp.history
-
-# Example code in package build process
 *-Ex.R
-# R data files from past sessions
 .Rdata
-# RStudio files
-.Rproj.user/
-shinyStan.Rproj
-# For the Mac
-*.DS_Store
 .Rproj.user
+shinystan.Rproj
+
+*.DS_Store
 inst/doc
 ^cran-comments\.md$
-
 cran-comments.md
 
+revdep/
 *.swf

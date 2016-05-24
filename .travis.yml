@@ -1,33 +1,9 @@
 language: r
-sudo: required
+r: devel
+cache: packages
 
-cran: http://cran.rstudio.com/
-r_check_revdep: false
-pandoc: false
+r_github_packages:
+  - jimhester/covr
 
-env:
-  global:
-    - _R_CHECK_FORCE_SUGGESTS_=false
-
-r_binary_packages:
-  - coda
-  - dygraphs
-  - ggplot2
-  - gtools
-  - httpuv
-  - inline
-  - jsonlite
-  - knitr
-  - markdown
-  - reshape2
-  - Rcpp
-  - RUnit
-  - shiny
-  - testthat
-  - xts
-  - yaml
-
-notifications:
-  email:
-  on_success: change
-  on_failure: change
+after_success:
+  - Rscript -e 'covr::codecov(function_exclusions = c("launch$", "launch_shinystan_demo"), line_exclusions = list("R/zzz.R"))'

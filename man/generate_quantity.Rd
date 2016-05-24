@@ -2,20 +2,19 @@
 % Please edit documentation in R/generate_quantity.R
 \name{generate_quantity}
 \alias{generate_quantity}
-\title{Add to shinystan object a new parameter as a function of one or two 
-existing parameters}
+\title{Add new quantity to shinystan object}
 \usage{
 generate_quantity(sso, param1, param2, fun, new_name)
 }
 \arguments{
-\item{sso}{shinystan object.}
+\item{sso}{A \code{\link[=as.shinystan]{shinystan object}}.}
 
 \item{param1}{Name of first parameter as character string.}
 
 \item{param2}{Optional. Name of second paramter as character string.}
 
-\item{fun}{Function to call, i.e. \code{function(param1)} or
-\code{function(param1,param2)}. See \strong{Examples}, below.}
+\item{fun}{Function to call, i.e. \code{function(param1)} or 
+\code{function(param1,param2)}. See Examples, below.}
 
 \item{new_name}{Name for the new parameter as character string.}
 }
@@ -23,37 +22,21 @@ generate_quantity(sso, param1, param2, fun, new_name)
 sso, updated. See Examples.
 }
 \description{
-Add to shinystan object a new parameter as a function of one or two 
-existing parameters
+Add to shinystan object a new parameter as a function of one or two existing
+parameters.
 }
 \examples{
-\dontrun{
-#################
-### Example 1 ###
-#################
-
-# Below, assume X is a shinystan object and two of the
-# parameters are alpha and beta.
-
-# Add parameter gamma = inverse-logit(beta) to X
-inv_logit <- function(x) 1/(exp(-x) + 1)
-X <- generate_quantity(sso = X,
-                       fun = inv_logit,
-                       param1 = "beta",
-                       new_name = "gamma")
-
-
-# Add parameter delta = (alpha-beta)^2 to X
-X <- generate_quantity(sso = X,
-                       fun = function(x,y) (x-y)^2,
-                       param1 = "alpha",
-                       param2 = "beta",
-                       new_name = "delta")
-
-launch_shinystan(X)
-}
+# Using example shinystan object 'eight_schools'
+sso <- eight_schools
+sso <- generate_quantity(sso, fun = function(x) x^2, 
+                         param1 = "tau", new_name = "tau_sq")
+sso <- generate_quantity(sso, fun = "-", 
+                         param1 = "theta[1]", param2 = "theta[2]", 
+                         new_name = "theta1minus2")
+                         
 }
 \seealso{
-\code{\link{as.shinystan}}
+\code{\link{drop_parameters}} to remove parameters from a shinystan
+  object.
 }
 

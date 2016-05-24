@@ -2,28 +2,30 @@
 % Please edit documentation in R/launch_shinystan.R
 \name{launch_shinystan}
 \alias{launch_shinystan}
-\title{ShinyStan app}
+\title{Launch the ShinyStan app}
 \usage{
 launch_shinystan(object, rstudio = getOption("shinystan.rstudio"), ...)
 }
 \arguments{
-\item{object}{An object of class shinystan, stanfit, or stanreg. See
-\code{\link{as.shinystan}} for converting other objects to a shinystan
-object (sso).}
+\item{object}{An object of class shinystan, stanfit, or stanreg. To use other
+types of objects first create a shinystan object using 
+\code{\link{as.shinystan}}.}
 
-\item{rstudio}{Only relevant for RStudio users. The default 
-(\code{rstudio=FALSE}) is to launch the app in the default web browser 
-rather than RStudio's pop-up Viewer. Users can change the default to 
-\code{TRUE} by setting the global option \code{options(shinystan.rstudio = 
-TRUE)}.}
+\item{rstudio}{Only relevant for RStudio users. The default (\code{FALSE}) is
+to launch the app in the user's default web browser rather than RStudio's
+pop-up Viewer. Users can change the default to \code{TRUE} by setting the
+global option \code{options(shinystan.rstudio = TRUE)}.}
 
-\item{...}{Optional arguments to pass to \code{\link[shiny]{runApp}}.}
+\item{...}{Optional arguments passed to \code{\link[shiny]{runApp}}.}
 }
 \value{
-An S4 shinystan object.
+The \code{launch_shinystan} function is used for the side effect of 
+  starting the ShinyStan app, but it also returns a shinystan object, an
+  instance of S4 class \code{"shinystan"}.
 }
 \description{
-ShinyStan app
+Launch the ShinyStan app in the default web browser. RStudio users also have
+the option of launching the app in RStudio's pop-up Viewer.
 }
 \examples{
 \dontrun{
@@ -67,6 +69,11 @@ fit_sso <- as.shinystan(fit, model_name = "Example")
 
 }
 \seealso{
-\code{\link{as.shinystan}}, \code{\link{launch_shinystan_demo}}
+\code{\link{as.shinystan}} for creating shinystan objects.
+
+\code{\link{update_sso}} to update a shinystan object created by a
+  previous version of the package.
+
+\code{\link{launch_shinystan_demo}} to try a demo.
 }
 

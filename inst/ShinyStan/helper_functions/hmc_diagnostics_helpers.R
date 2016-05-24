@@ -1,18 +1,3 @@
-# This file is part of shinystan
-# Copyright (C) 2015 Jonah Gabry
-#
-# shinystan is free software; you can redistribute it and/or modify it under the
-# terms of the GNU General Public License as published by the Free Software
-# Foundation; either version 3 of the License, or (at your option) any later
-# version.
-# 
-# shinystan is distributed in the hope that it will be useful, but WITHOUT ANY
-# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-# A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License along with
-# this program; if not, see <http://www.gnu.org/licenses/>.
-
 thm <- theme_classic() %+replace% (no_lgnd + fat_axis + axis_labs + transparent)
 thm_no_yaxs <- thm + no_yaxs
 
@@ -22,7 +7,8 @@ thm_no_yaxs <- thm + no_yaxs
   })
   sp_mat <- do.call("cbind", sp_pw)
   colnames(sp_mat) <- paste0("chain:", 1:ncol(sp_mat))
-  sp_mat <- cbind(iterations = (warmup_val+1):(warmup_val + nrow(sp_mat)), sp_mat)
+  sp_mat <- cbind(iterations = seq(from = warmup_val + 1, to = warmup_val + nrow(sp_mat)), 
+                  sp_mat)
   as.data.frame(sp_mat)
 }
 
@@ -30,19 +16,28 @@ thm_no_yaxs <- thm + no_yaxs
 .sampler_param_vs_param <- function(p, sp, divergent = NULL, hit_max_td = NULL, 
                                     p_lab, sp_lab, chain = 0, violin = FALSE, 
                                     smoother = FALSE) {
-  xy_labs <- labs(y = if (missing(p_lab)) NULL else p_lab, 
-                  x = if (missing(sp_lab)) NULL else sp_lab)
+  xy_labs <- labs(
+    y = if (missing(p_lab)) NULL else p_lab, 
+    x = if (missing(sp_lab)) NULL else sp_lab
+    )
   df <- data.frame(sp = do.call("c", sp), p = c(p))
-  if (violin) df$sp <- as.factor(round(df$sp, 4))
-  if (!is.null(divergent)) df$divergent <- do.call("c", divergent)
-  if (!is.null(hit_max_td)) df$hit_max_td <- do.call("c", hit_max_td)
+  if (violin)
+    df$sp <- as.factor(round(df$sp, 4))
+  if (!is.null(divergent))
+    df$divergent <- do.call("c", divergent)
+  if (!is.null(hit_max_td))
+    df$hit_max_td <- do.call("c", hit_max_td)
   
-  base <- ggplot(df, aes(sp,p)) + xy_labs + thm 
+  base <- ggplot(df, aes(sp,p)) + 
+    xy_labs + 
+    thm 
+  
   if (chain == 0) {
     if (violin) graph <- base + geom_violin(color = vline_base_clr, fill = base_fill) 
     else {
       graph <- base + geom_point(alpha = 1/3, color = pt_outline_clr, fill = base_fill, shape = 19) 
-      if (smoother) graph <- graph + stat_smooth(color = overlay_fill, se = FALSE)
+      if (smoother) 
+        graph <- graph + stat_smooth(color = overlay_fill, se = FALSE)
       if (!is.null(divergent))
         graph <- graph + geom_point(data = subset(df, divergent == 1), aes(sp,p), 
                                     color = divergent_clr, fill = divergent_fill,
@@ -55,8 +50,10 @@ thm_no_yaxs <- thm + no_yaxs
     return(graph)
   }
   chain_data <- data.frame(sp = sp[, chain], p = p[, chain])
-  if (!is.null(divergent)) chain_data$div <- divergent[, chain]
-  if (!is.null(hit_max_td)) chain_data$hit <- hit_max_td[, chain]
+  if (!is.null(divergent))
+    chain_data$div <- divergent[, chain]
+  if (!is.null(hit_max_td))
+    chain_data$hit <- hit_max_td[, chain]
   chain_clr <- color_vector_chain(ncol(sp))[chain]
   chain_fill <- chain_clr
   if (violin) {
@@ -68,12 +65,11 @@ thm_no_yaxs <- thm + no_yaxs
     return(graph)
   }
   graph <- base + geom_point(alpha = 1/3, color = pt_outline_clr, fill = base_fill, shape = 19)
-  if (smoother) graph <- graph + 
-    stat_smooth(color = overlay_fill, se = FALSE)
-  graph <- graph + 
-    geom_point(data = chain_data, aes(sp,p), color = chain_fill, alpha = 0.5)
-  if (smoother) graph <- graph + 
-    stat_smooth(data = chain_data, aes(sp,p), color = chain_fill, se = FALSE)
+  if (smoother) 
+    graph <- graph + stat_smooth(color = overlay_fill, se = FALSE)
+  graph <- graph + geom_point(data = chain_data, aes(sp,p), color = chain_fill, alpha = 0.5)
+  if (smoother) 
+    graph <- graph + stat_smooth(data = chain_data, aes(sp,p), color = chain_fill, se = FALSE)
   if (!is.null(divergent))
     graph <- graph + geom_point(data = subset(chain_data, div == 1), aes(sp,p), 
                                 color = divergent_clr, fill = divergent_fill,
@@ -87,14 +83,18 @@ thm_no_yaxs <- thm + no_yaxs
 
 .sampler_param_vs_sampler_param_violin <- function(df_x, df_y, lab_x, lab_y, 
                                                    chain = 0) {
-  
   xy_labs <- labs(y = lab_y, x = lab_x)
   df <- data.frame(x = do.call("c", df_x), y = do.call("c", df_y))
   df$x <- as.factor(df$x)
   
-  base <- ggplot(df, aes(x,y)) + xy_labs + thm 
+  base <- ggplot(df, aes(x,y)) + 
+    xy_labs + 
+    thm
+  
   graph <- base + geom_violin(color = vline_base_clr, fill = base_fill) 
-  if (chain == 0) return(graph)
+  if (chain == 0) 
+    return(graph)
+  
   chain_clr <- color_vector_chain(ncol(df_x))[chain]
   chain_fill <- chain_clr
   chain_data <- data.frame(x = as.factor(df_x[, chain]), y = df_y[, chain])
@@ -109,7 +109,9 @@ thm_no_yaxs <- thm + no_yaxs
     geom_histogram(aes_string(y="..density.."),
                    binwidth = diff(range(mdf$value))/30, fill = base_fill, 
                    color = vline_base_clr, size = 0.2) + 
-    labs(x = if (missing(lab)) NULL else lab, y = "") + thm
+    labs(x = if (missing(lab)) NULL else lab, y = "") + 
+    thm
+  
   if (chain == 0) {
     graph <- base + 
       geom_vline(xintercept = mean(mdf$value), color = vline_base_clr, size = .8) + 
@@ -131,21 +133,25 @@ thm_no_yaxs <- thm + no_yaxs
 .treedepth_ndivergent_hist <- function(df_td, df_nd, chain = 0, divergent = c("All", 0, 1)) {
   plot_title <- theme(plot.title = element_text(size = 11, hjust = 0))
   plot_theme <- thm_no_yaxs + plot_title
-  x_lab <- if (divergent == "All") "Treedepth (All)" else paste0("Treedepth (N Divergent = ", divergent,")")
+  x_lab <- if (divergent == "All") "Treedepth (All)" else paste0("Treedepth (Divergent = ", divergent,")")
   plot_labs <- labs(x = x_lab, y = "") 
   
   mdf_td <- reshape2::melt(df_td, id.vars = "iterations")
   mdf_nd <- reshape2::melt(df_nd, id.vars = "iterations")
   mdf <- cbind(mdf_td, div = mdf_nd$value)
-  plot_data <- if (divergent == "All") mdf else subset(mdf, div == divergent)
-  if (nrow(plot_data) == 0) return(NULL)
+  plot_data <- if (divergent == "All") 
+    mdf else subset(mdf, div == divergent)
+  if (nrow(plot_data) == 0) 
+    return(NULL)
   
   graph <- ggplot(plot_data, aes(x = factor(value)), na.rm = TRUE) + 
     geom_bar(aes(y=..count../sum(..count..)), width=1, fill = base_fill,
              color = vline_base_clr, size = 0.2) + 
     plot_labs + 
     plot_theme
-  if (chain == 0) return(graph)
+  if (chain == 0) 
+    return(graph)
+  
   chain_clr <- color_vector_chain(ncol(df_td) - 1)[chain]
   chain_fill <- chain_clr
   chain_data <- subset(plot_data, variable == paste0("chain:",chain))
@@ -179,8 +185,8 @@ thm_no_yaxs <- thm + no_yaxs
   }
   `%>%` <- dygraphs::`%>%`
   y_axis_label_remove <- if (stack) "white" else NULL
-  step_plot <- param_name %in% c("Treedepth", "N Divergent")
-  fill_graph <- param_name == "N Divergent"
+  step_plot <- param_name %in% c("Treedepth", "Divergent")
+  fill_graph <- param_name == "Divergent"
   stroke_width <- if (step_plot) 0.33 else 0.75
   clrs <- color_vector(nChains) 
   if (chain != 0) clrs <- clrs[chain]

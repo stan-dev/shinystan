@@ -1,18 +1,3 @@
-# This file is part of shinystan
-# Copyright (C) 2015 Jonah Gabry
-#
-# shinystan is free software; you can redistribute it and/or modify it under the
-# terms of the GNU General Public License as published by the Free Software
-# Foundation; either version 3 of the License, or (at your option) any later
-# version.
-# 
-# shinystan is distributed in the hope that it will be useful, but WITHOUT ANY
-# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-# A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License along with
-# this program; if not, see <http://www.gnu.org/licenses/>.
-
 # param_trace_multi ------------------------------------------------------
 # trace plots for multiple parameters
 .param_trace_multi <- function(params = NULL, all_param_names, dat, 
@@ -218,7 +203,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   nl <- if (partial) lags else lags + 1 
   ch <- factor(rep(1:nc, each = nl), labels = paste0("chain:", 1:nc))
   ll <- rep(seq(if (partial) 1 else 0, lags), nc)
-  data.frame(chains = ch, ac = do.call(c, ac_list), lag = ll)
+  data.frame(chains = ch, ac = do.call("c", args = ac_list), lag = ll)
 }
 .ac_plot_data_multi <- function(dat, lags, partial = FALSE) {
   nc <- length(unique(dat$chains))
@@ -230,7 +215,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   ch <- factor(rep(rep(1:nc, each = nl), np), labels = paste0("chain:", 1:nc))
   ll <- rep(seq(if (partial) 1 else 0, lags), nc * np)
   pp <- factor(rep(1:np, each = nc * nl), labels = levels(dat$parameters))
-  data.frame(parameters = pp, chains = ch, ac = do.call(c, ac_list), lag = ll)
+  data.frame(parameters = pp, chains = ch, ac = do.call("c", args = ac_list), lag = ll)
 }
 
 # markov chain autocorrelation plot for single parameters
@@ -485,9 +470,9 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
 
 # n_eff_warnings -----------------------------------------------------------
 .n_eff_warnings <- function(summary, threshold = 10, 
-                            N_total = length(samps_post_warmup[,, 1L])) {
+                            N_total = NULL) {
   n_eff <- summary[,"n_eff"]
-  warn_params <- names(which(n_eff/N_total < threshold/100))
+  warn_params <- names(which(n_eff / N_total < threshold / 100))
   ll <- length(warn_params)
   if (ll == 0) "None"
   else paste0(warn_params, collapse = ", ")
@@ -515,7 +500,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
 
 # dynamic trace plot ------------------------------------------------------
 .param_trace_dynamic <- function(param_samps, param_name=NULL, chain,
-                                 # warmup_val, warmup_shade = TRUE,
+                                 warmup_val, warmup_shade = TRUE,
                                  stack = FALSE, grid = FALSE) {
   
   dim_samps <- dim(param_samps)
@@ -536,9 +521,11 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
     }
   }
 
-  # shade_to <- if (warmup_shade) paste0(warmup_val,"-01-01") else "0001-01-01"
   `%>%` <- dygraphs::`%>%`
-  y_axis_label_remove <- if (stack) "white" else NULL
+  shade_to <- if (warmup_shade) 
+    paste0(warmup_val,"-01-01") else "0001-01-01"
+  y_axis_label_remove <- if (stack) 
+    "white" else NULL
   clrs <- color_vector(nChains) 
   if (chain != 0) clrs <- clrs[chain]
   dygraphs::dygraph(param_chains, xlab = "", ylab = "") %>%
@@ -555,6 +542,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                 hideOnMouseOut = TRUE,
                 highlightSeriesOpts = list(strokeWidth = 1.75)) %>%
     dygraphs::dyRoller(rollPeriod = 1) %>%
+    dygraphs::dyShading(from = "0001-01-01", to = shade_to, color = "#EFEFEF", axis = "x") %>%
     dygraphs::dyCSS(css = "css/ShinyStan_dygraphs.css")
 }
 
@@ -637,7 +625,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
     y = if (transform_y == "identity") 
       samps_use[,param2] else t_y(samps_use[,param2]))
   if (!is.null(sp)) {
-    dat$divergent <- c(sapply(sp, FUN = function(y) y[, "n_divergent__"]))
+    dat$divergent <- c(sapply(sp, FUN = function(y) y[, "divergent__"]))
     dat$hit_max_td <- if (is.null(max_td)) 0 else 
       c(sapply(sp, FUN = function(y) as.numeric(y[, "treedepth__"] == max_td))) 
   } else {

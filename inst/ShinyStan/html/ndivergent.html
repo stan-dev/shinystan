@@ -1,5 +1,5 @@
 <div class = "glossary-entry">
-<h3>n_divergent</h3>
+<h3>divergent</h3>
 
 <span class="help-block" style = "margin-top: 15px;">
   <em>Quick definition</em>
@@ -7,26 +7,48 @@
   
 The number of leapfrog transitions with diverging error. Because NUTS terminates 
 at the first divergence this will be either 0 or 1 for each iteration. 
-The average value of <code>n_divergent</code> over all iterations is therefore 
+The average value of <code>divergent</code> over all iterations is therefore 
 the proportion of iterations with diverging error.
 
+<br><br>
 <h4>More details</h4>
 
-Stan uses a symplectic integrator to approximate the exact solution of the 
-Hamiltonian dynamics and when <code>stepsize</code> is too large relative 
-to the curvature of the log posterior this approximation can diverge and 
-threaten the validity of the sampler. <code>n_divergent</code> counts the 
-number of iterations within a given sample that have diverged and any 
-non-zero value suggests that the samples may be biased in which case
-the step size needs to be decreased. Note that, because sampling is 
-immediately terminated once a divergence is encountered, <code>n_divergent</code> 
-should be only 0 or 1.
-<br><br>
-<strong>
-If there are any post-warmup iterations for which <code>n_divergent = 1</code> 
-then the results may be biased and should not be used. You should try rerunning 
-the model with a higher target acceptance probability (which will decrease the
-step size) until <code>n_divergent = 0</code> for all post-warmup iterations.
-</strong>
-</div>
+<p>
+When numerical issues arise during the evaluation of the parameter
+Jacobians or the model log density, an exception is raised in the
+underlying code and the current expansion of the Hamiltonian forward
+and backward in time is halted. This is marked as a divergent
+transition.
+</p>
 
+<p>
+The primary cause of divergent transitions in Euclidean HMC (other
+than bugs in the model code) is numerical instability in the leapfrog
+integrator used to simulate the Hamiltonian evaluation. The
+fundamental problem is that a fixed step size is being multiplied by
+the gradient at a particular point, to determine the next simulated
+point. If the stepsize is too large, this can overshoot into
+ill-defined portions of the posterior.  
+</p>
+
+<p>
+<strong>
+If there are (post-warmup) divergences then the results may be biased and 
+should not be used.
+</strong>
+</p>
+
+<p>
+In some cases, simply lowering the initial step size and increasing
+the target acceptance rate will keep the step size small enough that
+sampling can proceed.  
+</p>
+
+<p>
+The exact cause of each divergent transition is printed as a warning 
+message in the output console. This can be useful in cases where managing 
+the step size is insufficient.  In such cases, a reparameterization is 
+often required so that the posterior curvature is more manageable; 
+see the section about Neal's Funnel in the Stan manual for an example.
+</p>
+</div>

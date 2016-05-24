@@ -3,37 +3,38 @@
 \docType{package}
 \name{shinystan-package}
 \alias{shinystan-package}
-\title{The ShinyStan interface and shinystan R package}
+\title{ShinyStan interface and shinystan R package}
 \description{
 Applied Bayesian data analysis is primarily implemented through 
-  the MCMC algorithms offered by various software packages. When analyzing a 
-  posterior sample obtained by one of these algorithms the first step is to 
-  check for signs that the chains have converged to the target distribution 
-  and and also for signs that the algorithm might require tuning or might be 
-  ill-suited for the given model. There may also be theoretical problems or 
-  practical inefficiencies with the specification of the model. ShinyStan
-  provides interactive plots and tables helpful for analyzing a posterior
-  sample, with particular attention to identifying potential problems with
-  the performance of the MCMC algorithm or the specification of the model. 
-  ShinyStan is powered by RStudio's Shiny web application framework and works
-  with the output of MCMC programs written in any programming language (and
-  has extended functionality for models fit using the rstan package and the
-  No-U-Turn sampler).
+  the Markov chain Monte Carlo (MCMC) algorithms offered by various software
+  packages. When analyzing a posterior sample obtained by one of these
+  algorithms the first step is to check for signs that the chains have
+  converged to the target distribution and and also for signs that the
+  algorithm might require tuning or might be ill-suited for the given model.
+  There may also be theoretical problems or practical inefficiencies with the
+  specification of the model. ShinyStan provides interactive plots and tables
+  helpful for analyzing a posterior sample, with particular attention to
+  identifying potential problems with the performance of the MCMC algorithm
+  or the specification of the model. ShinyStan is powered by RStudio's Shiny
+  web application framework and works with the output of MCMC programs
+  written in any programming language (and has extended functionality for
+  models fit using the rstan package and the No-U-Turn sampler).
 }
 \section{ShinyStan has extended functionality for Stan models}{
+ 
 
-  
-  Stan (\url{http://mc-stan.org}) models can be run in R using the
-  \pkg{rstan} package.
+Stan (\url{http://mc-stan.org}) models can be run in R using the 
+\pkg{\link[rstan]{rstan}} and \pkg{\link[rstanarm]{rstanarm}} packages.
 }
 
 \section{Saving and sharing}{
 
   
-  The \pkg{shinystan} package allows you to store the basic components of an
+  The \pkg{shinystan} package allows you to store the basic components of an 
   entire project (code, posterior samples, graphs, tables, notes) in a single
-  object. Users can save many of the plots as ggplot2 objects for further 
-  customization and easy integration in reports or post-processing for 
+  object, a \code{\link[=as.shinystan]{shinystan object}} (sso, for short).
+  Users can save many of the plots as ggplot2 objects for further
+  customization and easy integration in reports or post-processing for
   publication.
   
   The \code{\link{deploy_shinystan}} function lets you easily deploy your own
@@ -54,5 +55,21 @@ Applied Bayesian data analysis is primarily implemented through
 
  Check out the demo using \code{\link{launch_shinystan_demo}} or try it with
  one of your own models using \code{\link{launch_shinystan}}.
+}
+
+\section{Help and bug reports}{
+
+\itemize{
+ \item Stan Users Google group (\url{https://groups.google.com/forum/#!forum/stan-users})
+ \item ShinyStan issue tracker (\url{https://github.com/stan-dev/shinystan/issues})
+}
+}
+\seealso{
+\code{\link{as.shinystan}} for creating shinystan objects.
+
+\code{\link{launch_shinystan_demo}} to try a demo.
+
+\code{\link{launch_shinystan}} to launch the ShinyStan interface
+  using a particular shinystan object.
 }
 
