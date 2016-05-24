@@ -1,5 +1,3 @@
-# `shinystan news`
-
 ### Version 2.2.0
 * Add optional argument `pars` to the `as.shinystan` method for stanfit objects,
 allowing a subset of parameters to be selected for inclusion in the resulting
@@ -33,7 +31,6 @@ plot ('Estimate' page)
 Version 2.0.0 has a new look, a new(ish) name, and a lot of new functionality. 
 Many bugs have also been fixed (see GitHub issue tracker). 
 
-[Available on CRAN](https://cran.rstudio.com/web/packages/shinystan/index.html).
 
 ### New names
 * The name of the R package is **shinystan** and the app/GUI is **ShinyStan**. 
