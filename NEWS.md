@@ -1,3 +1,6 @@
+### Version 2.2.0-1
+* Fix bug in `deploy_shinystan` preventing some ShinyStan apps from being deployed
+
 ### Version 2.2.0
 * Add optional argument `pars` to the `as.shinystan` method for stanfit objects,
 allowing a subset of parameters to be selected for inclusion in the resulting
