@@ -106,10 +106,6 @@ deploy_shinystan <- function(sso, appName, account = NULL, ..., deploy = TRUE) {
     file_name <- file.path(deployDir, paste0(ff, ".R"))
     fconn <- file(file_name, 'r+')
     original_content <- readLines(fconn)
-    # if (ff %in% c("server")) {
-    #   sel <- grep(".SHINYSTAN_OBJECT", original_content)
-    #   original_content <- original_content[-sel]
-    # }
     new_lines <- get(paste0(ff, "_lines"))
     writeLines(c(new_lines, original_content), con = fconn)
     close(fconn)

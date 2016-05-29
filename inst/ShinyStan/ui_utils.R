@@ -196,24 +196,15 @@ stan_manual <- function() {
 if (!exists(".SHINYSTAN_OBJECT")) {
   .SHINYSTAN_OBJECT <- shinystan:::.sso_env[[".SHINYSTAN_OBJECT"]]
 }
-.model_name <-
-  slot(.SHINYSTAN_OBJECT, "model_name")
-.param_names <-
-  slot(.SHINYSTAN_OBJECT, "param_names")
-.param_list <-
-  .make_param_list(.SHINYSTAN_OBJECT)
-.param_list_with_groups <-
-  .make_param_list_with_groups(.SHINYSTAN_OBJECT)
-.nChains <-
-  slot(.SHINYSTAN_OBJECT, "n_chain")
-.nIter <- 
-  slot(.SHINYSTAN_OBJECT, "n_iter")
-.nWarmup <-
-  slot(.SHINYSTAN_OBJECT, "n_warmup")
-.model_code <-
-  slot(.SHINYSTAN_OBJECT, "model_code")
-.notes <-
-  slot(.SHINYSTAN_OBJECT, "user_model_info")
+.model_name <- slot(.SHINYSTAN_OBJECT, "model_name")
+.param_names <- slot(.SHINYSTAN_OBJECT, "param_names")
+.param_list <- .make_param_list(.SHINYSTAN_OBJECT)
+.param_list_with_groups <- .make_param_list_with_groups(.SHINYSTAN_OBJECT)
+.nChains <- slot(.SHINYSTAN_OBJECT, "n_chain")
+.nIter <- slot(.SHINYSTAN_OBJECT, "n_iter")
+.nWarmup <- slot(.SHINYSTAN_OBJECT, "n_warmup")
+.model_code <- slot(.SHINYSTAN_OBJECT, "model_code")
+.notes <- slot(.SHINYSTAN_OBJECT, "user_model_info")
 .has_rstanarm_ppcs <-
   isTRUE(.SHINYSTAN_OBJECT@misc$stanreg) &&
   !is.null(.SHINYSTAN_OBJECT@misc$pp_check_plots)
