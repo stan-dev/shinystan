@@ -106,18 +106,19 @@ deploy_shinystan <- function(sso, appName, account = NULL, ..., deploy = TRUE) {
     file_name <- file.path(deployDir, paste0(ff, ".R"))
     fconn <- file(file_name, 'r+')
     original_content <- readLines(fconn)
-    if (ff %in% c("ui", "server")) {
-      sel <- grep(".SHINYSTAN_OBJECT", original_content)
-      original_content <- original_content[-sel]
-    }
+    # if (ff %in% c("server")) {
+    #   sel <- grep(".SHINYSTAN_OBJECT", original_content)
+    #   original_content <- original_content[-sel]
+    # }
     new_lines <- get(paste0(ff, "_lines"))
     writeLines(c(new_lines, original_content), con = fconn)
     close(fconn)
   }
     
   # save sso to deployDir
-  object <- sso
-  save(object, file = file.path(deployDir, "sso.RData"))
+  .SHINYSTAN_OBJECT <- sso
+  save(.SHINYSTAN_OBJECT, file = file.path(deployDir, "sso.RData"))
+  
   # save ppcheck_data and set ppcheck defaults
   pp <- list(...)
   if ("ppcheck_data" %in% names(pp)) {
@@ -149,19 +150,12 @@ set_ppcheck_defaults <- function(appDir, yrep_name, y_name = "y") {
   stopifnot(is.character(yrep_name), is.character(y_name), 
             length(yrep_name) == 1, length(y_name) == 1)
   fileDir <- file.path(appDir, "server_files", "pages", "diagnose", "ppcheck", "ui")
-  y_file <- file.path(fileDir, "pp_y_from_r.R")
-  yrep_file <- file.path(fileDir, "pp_yrep_from_sso.R")
-  for (file in c("y_file", "yrep_file")) {
-    f <- get(file)
-    if (file.exists(f)) {
-      file.remove(f)
-      file.create(f)
-    }
+  ppc_file <- file.path(fileDir, "pp_get_y_and_yrep.R")
+  if (file.exists(ppc_file)) {
+    file.remove(ppc_file)
+    file.create(ppc_file)
   }
-  .write_files(
-    files = c(y_file, yrep_file),
-    lines = c(.y_lines(y_name), .yrep_lines(yrep_name))
-  )
+  .write_files(files = ppc_file, lines = .ppc_lines(y_name, yrep_name))
 }
 
 .write_files <- function(files, lines) {
@@ -173,20 +167,17 @@ set_ppcheck_defaults <- function(appDir, yrep_name, y_name = "y") {
   }
 }
 
-.y_lines <- function(y_name = "y") {
+.ppc_lines <- function(y_name = "y", yrep_name) {
   paste0(
-    "output$ui_pp_y_from_r <- renderUI({
+    "output$ui_pp_get_y <- renderUI({
       choices <- objects(envir = .GlobalEnv)
       selectizeInput('y_name', label = span(style = 'color: #337ab7;', 'y, a vector of observations'), 
       choices = c('', choices), 
       selected = '", y_name,"')
-    })")
-}
+      })
 
-.yrep_lines <- function(yrep_name) {
-  paste0(
-    "output$ui_pp_yrep_from_sso <- renderUI({
-      choices <- param_names
+    output$ui_pp_get_yrep <- renderUI({
+      choices <- PARAM_NAMES
       choices <- strsplit(choices, split = '[', fixed = TRUE)
       choices <- lapply(choices, function(i) return(i[1]))
       choices <- unique(unlist(choices))
