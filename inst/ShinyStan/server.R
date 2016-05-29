@@ -11,7 +11,7 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-# options(shiny.trace=TRUE)
+options(shiny.trace=TRUE)
 object <- get(".SHINYSTAN_OBJECT", envir = shinystan:::.sso_env)
 path_to_extract_sso <- file.path("server_files","utilities","extract_sso.R")
 server_files <- list.files("server_files", full.names = TRUE, recursive = TRUE)
