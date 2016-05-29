@@ -193,28 +193,24 @@ stan_manual <- function() {
 
 
 # objects to use in ui.R and ui_files -------------------------------------
-.model_name <-
-  slot(shinystan:::.sso_env[[".SHINYSTAN_OBJECT"]], "model_name")
-.param_names <-
-  slot(shinystan:::.sso_env[[".SHINYSTAN_OBJECT"]], "param_names")
-.param_list <-
-  .make_param_list(shinystan:::.sso_env[[".SHINYSTAN_OBJECT"]])
-.param_list_with_groups <-
-  .make_param_list_with_groups(shinystan:::.sso_env[[".SHINYSTAN_OBJECT"]])
-.nChains <-
-  slot(shinystan:::.sso_env[[".SHINYSTAN_OBJECT"]], "n_chain")
-.nIter <- 
-  slot(shinystan:::.sso_env[[".SHINYSTAN_OBJECT"]], "n_iter")
-.nWarmup <-
-  slot(shinystan:::.sso_env[[".SHINYSTAN_OBJECT"]], "n_warmup")
-.model_code <-
-  slot(shinystan:::.sso_env[[".SHINYSTAN_OBJECT"]], "model_code")
-.notes <-
-  slot(shinystan:::.sso_env[[".SHINYSTAN_OBJECT"]], "user_model_info")
+if (!exists(".SHINYSTAN_OBJECT")) {
+  .SHINYSTAN_OBJECT <- shinystan:::.sso_env[[".SHINYSTAN_OBJECT"]]
+}
+.model_name <- slot(.SHINYSTAN_OBJECT, "model_name")
+.param_names <- slot(.SHINYSTAN_OBJECT, "param_names")
+.param_list <- .make_param_list(.SHINYSTAN_OBJECT)
+.param_list_with_groups <- .make_param_list_with_groups(.SHINYSTAN_OBJECT)
+.nChains <- slot(.SHINYSTAN_OBJECT, "n_chain")
+.nIter <- slot(.SHINYSTAN_OBJECT, "n_iter")
+.nWarmup <- slot(.SHINYSTAN_OBJECT, "n_warmup")
+.model_code <- slot(.SHINYSTAN_OBJECT, "model_code")
+.notes <- slot(.SHINYSTAN_OBJECT, "user_model_info")
 .has_rstanarm_ppcs <-
-  isTRUE(shinystan:::.sso_env[[".SHINYSTAN_OBJECT"]]@misc$stanreg) &&
-  !is.null(shinystan:::.sso_env[[".SHINYSTAN_OBJECT"]]@misc$pp_check_plots)
+  isTRUE(.SHINYSTAN_OBJECT@misc$stanreg) &&
+  !is.null(.SHINYSTAN_OBJECT@misc$pp_check_plots)
 
 if (exists("object"))
   rm(object)
+if (exists(".SHINYSTAN_OBJECT"))
+  rm(.SHINYSTAN_OBJECT)
 gc()
