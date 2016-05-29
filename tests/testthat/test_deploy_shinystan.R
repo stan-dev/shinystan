@@ -23,8 +23,7 @@ test_that("deploy_shinystan preprocessing doesn't error", {
 
 test_that("deploy_shinystan pp_check processing functions ok", {
   x <- "123454321"
-  expect_output(cat(.y_lines(x)), x)
-  expect_output(cat(.yrep_lines(x)), x)
+  expect_output(cat(.ppc_lines(x, x)), x)
   
   deploy_pp_test <- deploy_shinystan(sso, appName = "test", deploy = FALSE, 
                                      ppcheck_data = rep(1, 8), 
