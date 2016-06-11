@@ -99,5 +99,12 @@ tagList(
       downloadButton("download_histogram", "ggplot2",  class = "plot-download"),
       downloadButton('save_pdf_histogram', "pdf", class = "plot-download pdf-download")
     )
+  ),
+  tabPanel(
+    title="Animation",
+    a_options("animate"),
+    imageOutput("animate_plot_out",heigh="350px"),
+    hr(),
+    downloadButton("download_animation", "gganimate",  class = "plot-download")
   )
 )
