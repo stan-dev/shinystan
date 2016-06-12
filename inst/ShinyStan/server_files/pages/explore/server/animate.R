@@ -11,7 +11,7 @@ animate_plot <- reactive({
 #    need(input$bivariate_ellipse_lev, message = FALSE),
     need(input$animate_param_x, message = FALSE)
   )
-  if(input$animate_now==0) return()
+  if(input$animate_now==0) return(list(src='blank.png'))
   
 #   if (!is.null(input$bivariate_ellipse_lev)) {
 #     validate(
@@ -58,6 +58,8 @@ animate_plot <- reactive({
 #       lines_alpha = input$bivariate_lines_alpha,
 #       transform_x = bivariate_transform_x(),
 #       transfor)
+  ))
+})  
 
 output$animate_plot_out <- renderImage({
   # Return a list with a src attribute that equals the location of the GIF file

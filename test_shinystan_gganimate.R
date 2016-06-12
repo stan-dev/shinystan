@@ -13,7 +13,8 @@ test3  <- reshape2::melt(test2,id.vars=c('mu','time','.frame','.group'),value.na
 
 testobj  <- ggplot(test3,aes(y=mu,x=x,colour=variable,frame=.frame)) + geom_point(size=3) + theme_bw() + geom_path(aes(cumulative=TRUE),size=0.1,alpha=0.5)
 animation::ani.options(interval = 1/16)
-testobj_animated  <- gganimate::gg_animate(testobj,filename='save_gif.gif')
+outfile <- tempfile(fileext='.gif')
+testobj_animated  <- gganimate::gg_animate(testobj,filename=outfile)
 print(testobj_animated)
 
 

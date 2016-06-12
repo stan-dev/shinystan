@@ -728,7 +728,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                            yend=c(tail(y, n=-1), NA),colour=variable,frame=.frame)) + geom_point(size=3) + theme_bw() + geom_path(aes(cumulative=TRUE),size=0.1,alpha=0.5)
   graph <- graph + param_labs + 
     theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)
-  animation::ani.options(interval = 1/16)
+  animation::ani.options(interval = 1/16,ani.height=350)
   animated  <- gganimate::gg_animate(graph,filename=outfile,title_frame=FALSE)
   
   return(list(src=outfile,
