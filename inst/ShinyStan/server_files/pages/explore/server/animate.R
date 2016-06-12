@@ -56,7 +56,8 @@ animate_plot <- reactive({
       lines_alpha = input$animate_lines_alpha,
       transform_x = input$animate_transform_x,
       transform_y = input$animate_transform_y,
-      frame_speed = input$animate_framespeed
+      frame_speed = input$animate_framespeed,
+      this_chain = input$animate_chain
   )
 })  
 

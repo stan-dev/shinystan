@@ -704,17 +704,24 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   params <- c(param, param2)
   nParams <- length(params)
   .nChains <- dim(samps)[2]
+  if(.nChains>1 && length(param2)==1 && this_chain=='All') {
   nIter <- dim(samps)[1] * dim(samps)[2]
-  if(param2>1) {
-  samps_use <- array(samps[,this_chain,params], c(nIter, nParams))
+  } else {
+    nIter <- dim(samps)[1]
+  }
+  if(length(param2)>1) {
+  samps_use <- array(samps[,as.numeric(this_chain),params], c(nIter, nParams))
   colnames(samps_use) <- c('y',param2)
-  } else if(this_chain=="All") {
-    param_chain <- paste0(1:N_CHAIN,collapse=", ")
-    params <- c(param,param2,param_chain)
+  } else if(this_chain=="All" && .nChains>1) {
+    param_chain <- paste0(1:.nChains,collapse=", ")
+    params <- c(param,param2)
     nParams <- length(params)
     samps_use <- array(samps[,,params], c(nIter, nParams))
-    colnames(samps_use) <- c('y',param2,param_chain)
-  } else {
+    colnames(samps_use) <- c('y',param2)
+  } else if(this_chain=="All" && .nChains==1){
+    samps_use <- array(samps[,,params], c(nIter, nParams))
+    colnames(samps_use) <- c('y',param2)
+  } else if(this_chain!="All") {
     samps_use <- array(samps[,as.numeric(this_chain),params], c(nIter, nParams))
     colnames(samps_use) <- c('y',param2)
   }
@@ -727,7 +734,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   
   if(length(param2)>1) {
     param2_label <- paste0(param2,collapse=", ")
-  }  else if(length(param2)==1 && this_chain=="All") {
+  }  else if(length(param2)==1 && this_chain=="All" && .nChains>1) {
     param2_label <- c(param2,paste0("Chain",param_chain,collapse=", "))
   } else {
     param2_label <- param2
