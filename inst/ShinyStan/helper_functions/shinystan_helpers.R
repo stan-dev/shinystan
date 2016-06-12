@@ -610,9 +610,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   samps_use <- array(samps[,,params], c(nIter, nParams))
   colnames(samps_use) <- params
   
-  t_x <- get(transform_x)
-  # t_x <- function(x) eval(parse(text = transform_x))
-  t_y <- get(transform_y)
+
   x_lab <- if (transform_x != "identity") 
     paste0(transform_x, "(", param, ")") else param
   y_lab <- if (transform_y != "identity") 
@@ -688,6 +686,11 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                           transform_x = "identity",
                           transform_y = "identity"
 ) {
+  shape_translator <- function(x) {
+    shape <- if (x >= 6) x + 9 else x
+    shape
+  }
+  
   # Need to set a file name to save the GIF to
   
   outfile <- 'gg_animate_shinystan.gif'
@@ -698,16 +701,30 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   samps_use <- array(samps[,,params], c(nIter, nParams))
   colnames(samps_use) <- c('y',param2)
   
-#   x_lab <- if (transform_x != "identity") 
-#     paste0(transform_x, "(", param, ")") else param
-#   y_lab <- if (transform_y != "identity") 
-#     paste0(transform_y, "(", param2, ")") else param2
+  param2 <- if (transform_x != "identity") 
+    paste0(transform_x, "(", param2, ")") else param2
+  param <- if (transform_y != "identity") 
+    paste0(transform_y, "(", param, ")") else param
+  
   if(length(param2)>1) {
     param2_label <- paste0(param2,collapse=", ")
   } else {
     param2_label <- param2
   }
   param_labs <- labs(x = param2_label, y = param)
+  
+  t_x <- get(transform_x)
+  # t_x <- function(x) eval(parse(text = transform_x))
+  t_y <- get(transform_y)
+  
+  if(transform_y!="identity") {
+    samps_use[,1] <- t_y(samps_use[,1])
+  }
+  if(transform_x!="identity") {
+    for(c in param2) {
+      samps_use[,c] <- t_x(samps_use[,c])
+    }
+  }
   
   dat <- as.data.frame(samps_use)
   dat$id <- 1
@@ -725,10 +742,40 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   dat <- reshape2::melt(dat,id.vars=c('y','.group','.frame','time','divergent','hit_max_td'),value.name='x')
 
   graph <- ggplot(dat, aes(x = x, y = y, xend=c(tail(x, n=-1), NA), 
-                           yend=c(tail(y, n=-1), NA),colour=variable,frame=.frame)) + geom_point(size=3) +
-                    geom_path(aes(cumulative=TRUE),size=0.1,alpha=0.5) 
+                           yend=c(tail(y, n=-1), NA),colour=variable,frame=.frame)) 
   
   if(length(param2)>1) graph <- graph + geom_text(aes(label=variable),vjust=-0.4)
+  
+
+# Add in options from bivariate plot, which should be essentially  --------
+  
+  if (lines == "hide") {
+    graph <- graph + geom_point(alpha = pt_alpha, size = pt_size, 
+                                shape = shape_translator(pt_shape))
+  } else { # if lines = "back" or "front"
+    if (lines == "back") {
+      graph <- graph + 
+        geom_path(alpha = lines_alpha, aes(cumulative=TRUE)) + 
+        geom_point(alpha = pt_alpha, size = pt_size, 
+                   shape = shape_translator(pt_shape), color = pt_color)
+    } else { # lines = "front"
+      graph <- graph + 
+        geom_point(alpha = pt_alpha, size = pt_size, 
+                   shape = shape_translator(pt_shape)) +
+        geom_path(alpha = lines_alpha,aes(cumulative=TRUE))
+    }
+  }
+  if (ellipse_lev != "None")
+    graph <- graph + stat_ellipse(level = as.numeric(ellipse_lev), 
+                                  linetype = ellipse_lty, size = ellipse_lwd, alpha = ellipse_alpha)
+  if (!all(dat$divergent == 0))
+    graph <- graph + geom_point(data = subset(dat, divergent == 1), aes(x,y), 
+                                size = pt_size + 0.5, shape = 21, 
+                                color = "#570000", fill = "#ae0001")
+  if (!all(dat$hit_max_td == 0))
+    graph <- graph + geom_point(data = subset(dat, hit_max_td == 1), aes(x,y), 
+                                size = pt_size + 0.5, shape = 21,
+                                color = "#5f4a13", fill = "#eeba30")
   
   graph <- graph + param_labs + 
     theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)
