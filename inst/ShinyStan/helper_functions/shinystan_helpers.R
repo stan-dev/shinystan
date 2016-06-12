@@ -721,7 +721,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
     samps_use[,1] <- t_y(samps_use[,1])
   }
   if(transform_x!="identity") {
-    for(i in 1:param2) {
+    for(i in 1:(nParams-1)) {
       samps_use[,(i+1)] <- t_x(samps_use[,(i+1)])
     }
   }

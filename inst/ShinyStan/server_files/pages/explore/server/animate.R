@@ -11,7 +11,7 @@ animate_plot <- reactive({
   )
 
   
-  if (!is.null(input$bivariate_ellipse_lev)) {
+  if (!is.null(input$animate_ellipse_lev)) {
     validate(
       need(is.numeric(input$animate_pt_size), message = "Point size must be numeric"),
       need(is.numeric(input$animate_pt_shape), message = "Point shape must be numeric")
@@ -20,7 +20,7 @@ animate_plot <- reactive({
     if (input$animate_ellipse_lev != "None") {
       validate(
         need(
-          input$param != input$animate_param_y,
+          input$param != input$animate_param_x,
           "For this option the x and y can't be the same parameter."
         ),
         need(
@@ -55,7 +55,7 @@ animate_plot <- reactive({
       lines_color = input$animate_lines_color,
       lines_alpha = input$animate_lines_alpha,
       transform_x = input$animate_transform_x,
-      transform_y = animate_transform_y
+      transform_y = input$animate_transform_y
   )
 })  
 
