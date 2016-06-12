@@ -43,7 +43,7 @@ animate_plot <- reactive({
       sp = if (!identical(SAMPLER_PARAMS_post_warmup, FALSE)) 
         SAMPLER_PARAMS_post_warmup else NULL,
       max_td = if ("max_td" %in% names(MISC)) MISC$max_td else NULL,
-      param = input$animate_param_y,
+      param = input$param,
       param2 = input$animate_param_x
 #       pt_alpha = input$bivariate_pt_alpha,
 #       pt_size = input$bivariate_pt_size,

@@ -704,7 +704,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
 #     paste0(transform_y, "(", param2, ")") else param2
   param_labs <- labs(x = param2, y = param)
   
-  dat <- data.frame(samps_use)
+  dat <- as.data.frame(samps_use)
   dat$id <- 1
   dat$time <- 1:nrow(dat)
   dat$ease <- 'quadratic-in-out'
