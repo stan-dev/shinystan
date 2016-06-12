@@ -102,6 +102,7 @@ tagList(
 
   tabPanel(
     title="Animation",
+    source_ui("animate_select.R"),
     a_options("animate"),
     source_ui("animate_customize.R"),
     imageOutput("animate_plot_out",heigh="350px"),

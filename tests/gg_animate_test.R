@@ -1,7 +1,7 @@
 # Use case for gg_animate
 
 require(rstan)
-
+devtools::load_all(".")
 excode <- '
   transformed data {
 real y[20];
@@ -34,5 +34,5 @@ plot(exfit)
 exfit2  <- as.shinystan(exfit)
 
 #load shiny_animate and test
-devtools::load_all(".")
+
 launch_shinystan(exfit)
