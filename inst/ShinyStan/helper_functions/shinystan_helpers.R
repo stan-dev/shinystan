@@ -690,7 +690,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
 ) {
   # Need to set a file name to save the GIF to
   
-  outfile <- tempfile(fileext='.png')
+  outfile <- tempfile(fileext='.gif')
   
   params <- c(param, param2)
   nParams <- length(params)
