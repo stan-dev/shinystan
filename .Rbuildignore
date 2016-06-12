@@ -1,9 +1,2 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-LICENSE
-^\.travis\.yml$
-^README\.md$
-.gitignore
-^cran-comments\.md$
-^revdep$
-man-roxygen/*

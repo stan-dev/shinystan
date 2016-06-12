@@ -31,6 +31,8 @@ exfit <- stan(model_code = excode, save_dso = FALSE, iter = 100,chains = 1)
 print(exfit)
 plot(exfit)
 
+exfit2  <- as.shinystan(exfit)
+
 #load shiny_animate and test
 devtools::load_all(".")
 launch_shinystan(exfit)
