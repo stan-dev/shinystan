@@ -74,9 +74,11 @@ output$animate_plot_out <- renderImage({
 
 # download
 output$download_animate <- downloadHandler(
-  filename = 'gg_animate_shinystan.gif',
+  filename = 'gg_animate_shinystan_download.gif',
   content = function(file) {
-    # File already exists, do nothing
-    
-  }
+    # File already exists
+    gif_file <- animate_plot()
+    file.copy(gif_file$src,file)
+  },
+  contentType = 'image/gif'
 )

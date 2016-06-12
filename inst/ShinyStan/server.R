@@ -38,7 +38,7 @@ function(input, output, session) {
   
   # Toggle options dropdowns
   options_trigger_ids <- c("table", "multiparam", "autocorr", "rhat_warnings", 
-                           "bivariate", "trivariate", "density", "hist")
+                           "bivariate", "trivariate", "density", "hist","animate")
   observe({
     lapply(seq_along(options_trigger_ids), function(j) {
       shinyjs::onclick(
