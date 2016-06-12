@@ -5,11 +5,11 @@
 #   eventReactive(input$bivariate_transform_go > 0, input$bivariate_transform_x)
 # bivariate_transform_y <-
 #   eventReactive(input$bivariate_transform_go > 0, input$bivariate_transform_y)
-bivariate_plot <- reactive({
+animate_plot <- reactive({
   validate(
     need(input$param, message = FALSE),
 #    need(input$bivariate_ellipse_lev, message = FALSE),
-    need(input$animate_param_y, message = FALSE)
+    need(input$animate_param_x, message = FALSE)
   )
   
 #   if (!is.null(input$bivariate_ellipse_lev)) {

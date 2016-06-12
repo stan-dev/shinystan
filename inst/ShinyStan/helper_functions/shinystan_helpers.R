@@ -688,6 +688,10 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
 #                           transform_x = "identity",
 #                           transform_y = "identity"
 ) {
+  # Need to set a file name to save the GIF to
+  
+  outfile <- tempfile(fileext='.png')
+  
   params <- c(param, param2)
   nParams <- length(params)
   nIter <- dim(samps)[1] * dim(samps)[2]
@@ -721,7 +725,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   graph <- graph + param_labs + 
     theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)
   animation::ani.options(interval = 1/16)
-  animated  <- gganimate::gg_animate(graph,filename='gg_animate_shiny.gif',title_frame=FALSE)
+  animated  <- gganimate::gg_animate(graph,filename=outfile,title_frame=FALSE)
   
-  return(list(src='gg_animate_shiny.gif'))
+  return(list(src=outfile,
+              alt="Animated scatterplot"))
 }
