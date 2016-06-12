@@ -64,8 +64,11 @@ animate_plot <- reactive({
 })
 
 output$animate_plot_out <- renderImage({
+  if (input$goButton == 0)
+    return()
+  
   # Return a list with a src attribute that equals the location of the GIF file
-  animate_plot()
+  isolate(animate_plot())
 })
 
 # download

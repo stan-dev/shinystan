@@ -13,5 +13,9 @@ fluidRow(
         unlist(.param_list)[2] else unlist(.param_list)[1],
       multiple = TRUE
     )
+  ),
+  column(
+    width=3,
+    actionButton("animate_now","Create Animation")
   )
 )

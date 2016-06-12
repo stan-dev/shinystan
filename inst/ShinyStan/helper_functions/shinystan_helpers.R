@@ -690,7 +690,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
 ) {
   # Need to set a file name to save the GIF to
   
-  outfile <- tempfile(fileext='.gif')
+  outfile <- 'gg_animate_shinystan.gif'
   
   params <- c(param, param2)
   nParams <- length(params)
@@ -702,7 +702,12 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
 #     paste0(transform_x, "(", param, ")") else param
 #   y_lab <- if (transform_y != "identity") 
 #     paste0(transform_y, "(", param2, ")") else param2
-  param_labs <- labs(x = param2, y = param)
+  if(length(param2)>1) {
+    param2_label <- paste0(param2,collapse=", ")
+  } else {
+    param2_label <- param2
+  }
+  param_labs <- labs(x = param2_label, y = param)
   
   dat <- as.data.frame(samps_use)
   dat$id <- 1
