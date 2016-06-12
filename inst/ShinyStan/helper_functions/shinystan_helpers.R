@@ -684,7 +684,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                           lines_alpha,
                           points = TRUE,
                           transform_x = "identity",
-                          transform_y = "identity"
+                          transform_y = "identity",
+                          frame_speed=1/16
 ) {
   shape_translator <- function(x) {
     shape <- if (x >= 6) x + 9 else x
@@ -779,7 +780,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   
   graph <- graph + param_labs + 
     theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)
-  animation::ani.options(interval = 1/16,ani.height=350)
+  animation::ani.options(interval = frame_speed,ani.height=350)
   animated  <- gganimate::gg_animate(graph,filename=outfile,title_frame=FALSE)
   
   return(list(src=outfile,

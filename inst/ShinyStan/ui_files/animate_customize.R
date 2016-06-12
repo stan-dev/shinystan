@@ -2,6 +2,11 @@ shinyjs::hidden(
   div(id = "animate_options",
       wellPanel(
         class = "optionswell",
+        hr(class='hroptions'),
+        strongBig('Animation'),
+        fluidRow(
+          column(width=2,numericInput("frame_speed","Adjust frames per second"))
+        ),
         hr(class = "hroptions"),
         strongBig("Transformation"),
         transform_helpText("x,y"),
