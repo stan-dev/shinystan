@@ -67,10 +67,10 @@ output$animate_plot_out <- renderImage({
 })
 
 # download
-# output$download_animate <- downloadHandler(
-#   filename = 'shinystan-bivariate-gg.RData',
-#   content = function(file) {
-#     shinystan_bivariate_gg <- bivariate_plot()
-#     save(shinystan_bivariate_gg, file = file)
-#   }
-# )
+output$download_animate <- downloadHandler(
+  filename = 'gg_animate_shinystan.gif',
+  content = function(file) {
+    # File already exists, do nothing
+    
+  }
+)

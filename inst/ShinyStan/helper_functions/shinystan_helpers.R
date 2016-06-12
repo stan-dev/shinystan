@@ -671,22 +671,22 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
 # Animation plot ----------------------------------------------------------
 
 .animate_plot <- function(samps, sp = NULL, max_td = NULL,
-                          param, param2
-#                           pt_alpha = 0.10,
-#                           pt_size = 2,
-#                           pt_shape = 10,
-#                           pt_color = "gray20",
-#                           ellipse_color = "black",
-#                           ellipse_lev = "None",
-#                           ellipse_lty = 1,
-#                           ellipse_lwd = 1,
-#                           ellipse_alpha = 1,
-#                           lines = "back",
-#                           lines_color = "gray",
-#                           lines_alpha,
-#                           points = TRUE,
-#                           transform_x = "identity",
-#                           transform_y = "identity"
+                          param, param2,
+                          pt_alpha = 0.10,
+                          pt_size = 2,
+                          pt_shape = 10,
+                          pt_color = "gray20",
+                          ellipse_color = "black",
+                          ellipse_lev = "None",
+                          ellipse_lty = 1,
+                          ellipse_lwd = 1,
+                          ellipse_alpha = 1,
+                          lines = "back",
+                          lines_color = "gray",
+                          lines_alpha,
+                          points = TRUE,
+                          transform_x = "identity",
+                          transform_y = "identity"
 ) {
   # Need to set a file name to save the GIF to
   
@@ -725,7 +725,11 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   dat <- reshape2::melt(dat,id.vars=c('y','.group','.frame','time','divergent','hit_max_td'),value.name='x')
 
   graph <- ggplot(dat, aes(x = x, y = y, xend=c(tail(x, n=-1), NA), 
-                           yend=c(tail(y, n=-1), NA),colour=variable,frame=.frame)) + geom_point(size=3) + theme_bw() + geom_path(aes(cumulative=TRUE),size=0.1,alpha=0.5)
+                           yend=c(tail(y, n=-1), NA),colour=variable,frame=.frame)) + geom_point(size=3) +
+                    geom_path(aes(cumulative=TRUE),size=0.1,alpha=0.5) 
+  
+  if(length(param2)>1) graph <- graph + geom_text(aes(label=variable),vjust=-0.2)
+  
   graph <- graph + param_labs + 
     theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)
   animation::ani.options(interval = 1/16,ani.height=350)
