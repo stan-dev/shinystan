@@ -703,11 +703,12 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   
   params <- c(param, param2)
   nParams <- length(params)
+  .nChains <- dim(samps)[2]
   nIter <- dim(samps)[1] * dim(samps)[2]
   if(param2>1) {
   samps_use <- array(samps[,this_chain,params], c(nIter, nParams))
   colnames(samps_use) <- c('y',param2)
-  } else if(this_chain="All") {
+  } else if(this_chain=="All") {
     param_chain <- paste0(1:N_CHAIN,collapse=", ")
     params <- c(param,param2,param_chain)
     nParams <- length(params)
@@ -726,10 +727,10 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   
   if(length(param2)>1) {
     param2_label <- paste0(param2,collapse=", ")
+  }  else if(length(param2)==1 && this_chain=="All") {
+    param2_label <- c(param2,paste0("Chain",param_chain,collapse=", "))
   } else {
     param2_label <- param2
-  } else if(length(param2)==1 && this_chain=="All") {
-    param2_label <- c(param2,paste0("Chain",param_chain,collapse=", "))
   }
   param_labs <- labs(x = param2_label, y = param)
   
