@@ -5,7 +5,7 @@ shinyjs::hidden(
         hr(class='hroptions'),
         strongBig('Animation'),
         fluidRow(
-          column(width=2,numericInput("frame_speed","Adjust frames per second"))
+          column(width=2,numericInput("frame_speed","Adjust frames per second",value = 5,step=1,min=1))
         ),
         hr(class = "hroptions"),
         strongBig("Transformation"),

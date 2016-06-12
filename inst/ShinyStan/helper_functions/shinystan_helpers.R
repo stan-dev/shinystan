@@ -685,7 +685,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                           points = TRUE,
                           transform_x = "identity",
                           transform_y = "identity",
-                          frame_speed=1/16
+                          frame_speed=5,
+                          this_chain="All"
 ) {
   shape_translator <- function(x) {
     shape <- if (x >= 6) x + 9 else x
@@ -696,11 +697,27 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   
   outfile <- 'gg_animate_shinystan.gif'
   
+  # Set options
+  
+  animation::ani.options(interval = 1/frame_speed,ani.height=350)
+  
   params <- c(param, param2)
   nParams <- length(params)
   nIter <- dim(samps)[1] * dim(samps)[2]
-  samps_use <- array(samps[,,params], c(nIter, nParams))
+  if(param2>1) {
+  samps_use <- array(samps[,this_chain,params], c(nIter, nParams))
   colnames(samps_use) <- c('y',param2)
+  } else if(this_chain="All") {
+    param_chain <- paste0(1:N_CHAIN,collapse=", ")
+    params <- c(param,param2,param_chain)
+    nParams <- length(params)
+    samps_use <- array(samps[,,params], c(nIter, nParams))
+    colnames(samps_use) <- c('y',param2,param_chain)
+  } else {
+    samps_use <- array(samps[,as.numeric(this_chain),params], c(nIter, nParams))
+    colnames(samps_use) <- c('y',param2)
+  }
+  
   
   param2 <- if (transform_x != "identity") 
     paste0(transform_x, "(", param2, ")") else param2
@@ -711,6 +728,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
     param2_label <- paste0(param2,collapse=", ")
   } else {
     param2_label <- param2
+  } else if(length(param2)==1 && this_chain=="All") {
+    param2_label <- c(param2,paste0("Chain",param_chain,collapse=", "))
   }
   param_labs <- labs(x = param2_label, y = param)
   
@@ -780,7 +799,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   
   graph <- graph + param_labs + 
     theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)
-  animation::ani.options(interval = frame_speed,ani.height=350)
+  
   animated  <- gganimate::gg_animate(graph,filename=outfile,title_frame=FALSE)
   
   return(list(src=outfile,

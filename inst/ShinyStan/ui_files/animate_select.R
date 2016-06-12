@@ -1,6 +1,6 @@
 fluidRow(
   column(
-    width = 3, 
+    width = 2, 
     uiOutput("ui_animate_select_y")
   ),
   column(
@@ -15,7 +15,11 @@ fluidRow(
     )
   ),
   column(
-    width=3,
+    width=2,
+    selectInput("animate_chain","Chain",choices=c("All",1:N_CHAIN),selected = "All")
+  ),
+  column(
+    width=2,
     actionButton("animate_now","Create Animation")
   )
 )
