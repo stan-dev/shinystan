@@ -11,6 +11,7 @@ animate_plot <- reactive({
 #    need(input$bivariate_ellipse_lev, message = FALSE),
     need(input$animate_param_x, message = FALSE)
   )
+  if(input$animate_now==0) return()
   
 #   if (!is.null(input$bivariate_ellipse_lev)) {
 #     validate(
@@ -36,9 +37,7 @@ animate_plot <- reactive({
 #     }
 #   }
   
-  do.call(
-    ".animate_plot",
-    args = list(
+  isolate(.animate_plot(
       samps = SAMPS_post_warmup,
       sp = if (!identical(SAMPLER_PARAMS_post_warmup, FALSE)) 
         SAMPLER_PARAMS_post_warmup else NULL,
@@ -58,17 +57,11 @@ animate_plot <- reactive({
 #       lines_color = input$bivariate_lines_color,
 #       lines_alpha = input$bivariate_lines_alpha,
 #       transform_x = bivariate_transform_x(),
-#       transform_y = bivariate_transform_y()
-    )
-  )
-})
+#       transfor)
 
 output$animate_plot_out <- renderImage({
-  if (input$goButton == 0)
-    return()
-  
   # Return a list with a src attribute that equals the location of the GIF file
-  isolate(animate_plot())
+  animate_plot()
 })
 
 # download
