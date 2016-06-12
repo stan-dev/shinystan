@@ -717,7 +717,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
     dat$hit_max_td <- 0
   }
   dat <- tweenr::tween_elements(dat,'time','id','ease',nframes=(nrow(dat)*10))
-  dat <- reshape2::melt(dat,id.vars=c('y','id','ease','time','divergent','hit_max_td'),value.name='x')
+  dat <- reshape2::melt(dat,id.vars=c('y','.group','.frame','time','divergent','hit_max_td'),value.name='x')
 
   graph <- ggplot(dat, aes(x = x, y = y, xend=c(tail(x, n=-1), NA), 
                            yend=c(tail(y, n=-1), NA),colour=variable,frame=.frame)) + geom_point(size=3) + theme_bw() + geom_path(aes(cumulative=TRUE),size=0.1,alpha=0.5)
