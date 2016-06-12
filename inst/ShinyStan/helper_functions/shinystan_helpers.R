@@ -728,7 +728,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                            yend=c(tail(y, n=-1), NA),colour=variable,frame=.frame)) + geom_point(size=3) +
                     geom_path(aes(cumulative=TRUE),size=0.1,alpha=0.5) 
   
-  if(length(param2)>1) graph <- graph + geom_text(aes(label=variable),vjust=-0.2)
+  if(length(param2)>1) graph <- graph + geom_text(aes(label=variable),vjust=-0.4)
   
   graph <- graph + param_labs + 
     theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)

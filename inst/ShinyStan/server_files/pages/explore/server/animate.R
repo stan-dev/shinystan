@@ -5,13 +5,18 @@
 #   eventReactive(input$bivariate_transform_go > 0, input$bivariate_transform_x)
 # bivariate_transform_y <-
 #   eventReactive(input$bivariate_transform_go > 0, input$bivariate_transform_y)
+blank_chart <- function() {
+  list(src='blank.png')
+}
+
+
 animate_plot <- reactive({
   validate(
     need(input$param, message = FALSE),
 #    need(input$bivariate_ellipse_lev, message = FALSE),
     need(input$animate_param_x, message = FALSE)
   )
-  if(input$animate_now==0) return(list(src='blank.png'))
+
   
 #   if (!is.null(input$bivariate_ellipse_lev)) {
 #     validate(
@@ -37,7 +42,7 @@ animate_plot <- reactive({
 #     }
 #   }
   
-  isolate(.animate_plot(
+  .animate_plot(
       samps = SAMPS_post_warmup,
       sp = if (!identical(SAMPLER_PARAMS_post_warmup, FALSE)) 
         SAMPLER_PARAMS_post_warmup else NULL,
@@ -58,12 +63,13 @@ animate_plot <- reactive({
 #       lines_alpha = input$bivariate_lines_alpha,
 #       transform_x = bivariate_transform_x(),
 #       transfor)
-  ))
+  )
 })  
 
 output$animate_plot_out <- renderImage({
+  if(input$animate_now==0) return(list(src='blank.png')) 
   # Return a list with a src attribute that equals the location of the GIF file
-  animate_plot()
+  isolate(animate_plot())
 })
 
 # download
