@@ -667,3 +667,61 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
     theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)
 }
 
+
+# Animation plot ----------------------------------------------------------
+
+.animate_plot <- function(samps, sp = NULL, max_td = NULL,
+                          param, param2
+#                           pt_alpha = 0.10,
+#                           pt_size = 2,
+#                           pt_shape = 10,
+#                           pt_color = "gray20",
+#                           ellipse_color = "black",
+#                           ellipse_lev = "None",
+#                           ellipse_lty = 1,
+#                           ellipse_lwd = 1,
+#                           ellipse_alpha = 1,
+#                           lines = "back",
+#                           lines_color = "gray",
+#                           lines_alpha,
+#                           points = TRUE,
+#                           transform_x = "identity",
+#                           transform_y = "identity"
+) {
+  params <- c(param, param2)
+  nParams <- length(params)
+  nIter <- dim(samps)[1] * dim(samps)[2]
+  samps_use <- array(samps[,,params], c(nIter, nParams))
+  colnames(samps_use) <- params
+  
+#   x_lab <- if (transform_x != "identity") 
+#     paste0(transform_x, "(", param, ")") else param
+#   y_lab <- if (transform_y != "identity") 
+#     paste0(transform_y, "(", param2, ")") else param2
+  param_labs <- labs(x = param, y = param2)
+  
+  dat <- data.frame(y = samps_use[,param])
+  dat <- cbind(data,as.data.frame(samps_use[,param2]))
+  dat$id <- 1
+  dat$time <- 1:nrow(dat)
+  dat$ease <- 'quadratic-in-out'
+  if (!is.null(sp)) {
+    dat$divergent <- c(sapply(sp, FUN = function(y) y[, "divergent__"]))
+    dat$hit_max_td <- if (is.null(max_td)) 0 else 
+      c(sapply(sp, FUN = function(y) as.numeric(y[, "treedepth__"] == max_td))) 
+  } else {
+    dat$divergent <- 0
+    dat$hit_max_td <- 0
+  }
+  dat <- tweenr::tween_elements(dat,'time','id','ease',nframes=(nrow(dat)*10))
+  dat <- reshape2::melt(dat,id.vars=c('param','id','ease','time','divergent','hit_max_td'),value.name='x')
+
+  graph <- ggplot(dat, aes(x = x, y = y, xend=c(tail(x, n=-1), NA), 
+                           yend=c(tail(y, n=-1), NA),colour=variable,frame=.frame)) + geom_point(size=3) + theme_bw() + geom_path(aes(cumulative=TRUE),size=0.1,alpha=0.5)
+  graph <- graph + param_labs + 
+    theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)
+  animation::ani.options(interval = 1/16)
+  animated  <- gganimate::gg_animate(graph,filename='gg_animate_shiny.gif',title_frame=FALSE)
+  
+  return(list(src='gg_animate_shiny.gif'))
+}
