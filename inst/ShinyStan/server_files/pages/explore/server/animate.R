@@ -1,11 +1,6 @@
 # animate scatterplot
 #Transforms would be nice, but let's start small
 
-animate_transform_x <-
-  eventReactive(input$animate_transform_go > 0, input$animate_transform_x)
-animate_transform_y <-
-  eventReactive(input$animate_transform_go > 0, input$animate_transform_y)
-
 
 
 animate_plot <- reactive({
@@ -45,7 +40,7 @@ animate_plot <- reactive({
       sp = if (!identical(SAMPLER_PARAMS_post_warmup, FALSE)) 
         SAMPLER_PARAMS_post_warmup else NULL,
       max_td = if ("max_td" %in% names(MISC)) MISC$max_td else NULL,
-      param = input$param,
+      param = input$animate_param_y,
       param2 = input$animate_param_x,
       pt_alpha = input$animate_pt_alpha,
       pt_size = input$animate_pt_size,
@@ -59,8 +54,8 @@ animate_plot <- reactive({
       lines  = input$animate_lines,
       lines_color = input$animate_lines_color,
       lines_alpha = input$animate_lines_alpha,
-      transform_x = animate_transform_x(),
-      transform_y = animate_transform_y()
+      transform_x = input$animate_transform_x,
+      transform_y = animate_transform_y
   )
 })  
 

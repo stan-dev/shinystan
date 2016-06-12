@@ -7,11 +7,7 @@ shinyjs::hidden(
         transform_helpText("x,y"),
         fluidRow(
           column(width = 3, transformation_selectInput("animate_transform_x")),
-          column(width = 3, transformation_selectInput("animate_transform_y")), 
-          column(
-            width = 2,
-            actionButton("animate_transform_go", label = "Transform", class = "transform-go")
-          )
+          column(width = 3, transformation_selectInput("animate_transform_y"))
         ),
         hr(class = "hroptions"),
         selectInput(
