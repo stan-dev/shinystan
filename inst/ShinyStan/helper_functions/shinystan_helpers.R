@@ -861,12 +861,11 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   # the -b option is the bitrate, in megabits, which adjusts the quality (and size) of the video.
   
   animated  <- gganimate::gg_animate(graph,title_frame=top_title,ani.width=1280,ani.height=720)
-  gganimate::gg_animate_save(animated,filename=outfile1,saver='webm',interval=(1/frame_speed),other.opts=paste0("-p 2 -t 4",
-                                                                                                                " --good --cpu-used=1 --codec=vp8 -w 1280 -h 720  --target-bitrate=2000",
-                                                                                                                " --auto-alt-ref=1 --minsection-pct=5 --maxsection-pct=800",
-                                                                                                                " --kf-min-dist=0 --kf-max-dist=360",
-                                                                                                                " --token-parts=2 --static-thresh=0 --drop-frame=0",
-                                                                                                                "--min-q=0 --max-q=60 --end-usage=vbr"))
+  gganimate::gg_animate_save(animated,filename=outfile1,saver='webm',interval=(1/frame_speed),other.opts=paste0("-crf 10 -b:v 2M -c:a"," -s '1280x720'"," -quality 'good' -cpu-used 1",
+                                                                                                                " -auto-alt-ref 1",
+                                                                                                                " -keyint_min 0 -g 360",
+                                                                                                                " -slices 2 -static-thresh 0 -skip_threshold 0",
+                                                                                                                " -qmin 0 -qmax 60"))
 
   
   return(list(src=outfile2,

@@ -2,3 +2,7 @@
 suppress_and_print <- function(x) {
   suppressMessages(suppressWarnings(print(x)))
 }
+
+# Create help text for video tab in Explore
+
+knitr::knit('markdown/about_video.Rmd',output='markdown/about_video.md')
