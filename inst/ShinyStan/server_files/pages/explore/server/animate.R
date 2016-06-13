@@ -68,19 +68,22 @@ animate_plot <- reactive({
 })  
 
 output$animate_plot_out <- renderUI({
-  if(input$animate_now==0) return(list(src='blank.png')) 
+  if(input$animate_now==0) return(p("To animate a video of the MCMC estimates of the above parameters, 
+                                    please click on the Animate button above. Please be aware that this 
+                                    process can take a long time as a new graph must be prepared for each 
+                                    frame of the following animation. The animation file is produced in .WEBM format, 
+                                    which can be uploaded to Youtube.")) 
   # Return a list with a src attribute that equals the location of the GIF file
   output_info <- isolate(animate_plot())
-  tags$video(src=output_info$src,height='350',type='video/webm; codecs="vp8.0,vorbis"',controls="controls")
+  tags$video(src=output_info$src,height='450',type='video/webm; codecs="vp8.0,vorbis"',controls="controls")
 })
 
 # download
 output$download_animate <- downloadHandler(
-  filename = 'gg_animate_shinystan_download.gif',
+  filename = 'gg_animate_shinystan_download.webm',
   content = function(file) {
     # File already exists
-    gif_file <- animate_plot()
-    file.copy(gif_file$src,file)
+   return(paste0('www/',animate_plot()$src))
   },
-  contentType = 'image/gif'
+  contentType = 'video/webm'
 )

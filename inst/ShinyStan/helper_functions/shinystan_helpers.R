@@ -695,7 +695,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   
   # Need to set a file name to save the GIF to
   
-  outfile <- 'www/gg_animate_shinystan.mp4'
+  outfile1 <- 'www/gg_animate_shinystan.webm'
+  outfile2 <- 'gg_animate_shinystan.webm'
 
   params <- c(param, param2)
   nParams <- length(params)
@@ -821,8 +822,10 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   graph <- graph + param_labs + 
     theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)
   
-  animated  <- gganimate::gg_animate(graph,filename=outfile,title_frame=FALSE,ani.height="350",interval=1/frame_speed)
+  animated  <- gganimate::gg_animate(graph)
+  gganimate::gg_animate_save(animated,filename=outfile1,saver='webm',title_frame=FALSE)
+
   
-  return(list(src=outfile,
+  return(list(src=outfile2,
               alt="Animated scatterplot"))
 }

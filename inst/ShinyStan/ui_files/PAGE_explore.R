@@ -107,6 +107,6 @@ tagList(
     source_ui("animate_customize.R"),
     htmlOutput("animate_plot_out"),
     hr(),
-    downloadButton("download_animate", "GIF File",  class = "plot-download")
+    downloadButton("download_animate", "Download Movie",  class = "plot-download")
   )  
 ))
