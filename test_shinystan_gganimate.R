@@ -15,6 +15,7 @@ testobj  <- ggplot(test3,aes(y=mu,x=x,colour=variable,frame=.frame)) + geom_poin
 animation::ani.options(interval = 1/16)
 outfile <- tempfile(fileext='.mp4')
 testobj_animated  <- gganimate::gg_animate(testobj,filename='this_video.mp4')
+gg_animate_save(testobj_animated,filename='this_video.mp4')
 print(testobj_animated)
 
 
