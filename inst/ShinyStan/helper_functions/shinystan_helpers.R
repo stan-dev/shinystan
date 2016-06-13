@@ -692,12 +692,13 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                           tween_ratio = 10,
                           top_title=TRUE
 ) {
+  
   shape_translator <- function(x) {
     shape <- if (x >= 6) x + 9 else x
     shape
   }
-#  browser()
-  # Need to set a file name to save the GIF to
+
+  # Need to set a file name to save the WEBM to
   
   outfile1 <- 'www/gg_animate_shinystan.webm'
   outfile2 <- 'gg_animate_shinystan.webm'
@@ -714,6 +715,9 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   }
   
   .nChains <- dim(samps)[2]
+  
+  # if only one x parameter, allow multiple chains, but otherwise only use a single chain
+  
   if(.nChains>1 && length(param2)==1 && this_chain=='All') {
   nIter <- dim(samps)[1] * dim(samps)[2]
   } else {
@@ -742,6 +746,15 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   param <- if (transform_y != "identity") 
     paste0(transform_y, "(", param, ")") else param
   
+
+# After transforming, perform an optional standardization -----------------
+
+
+  
+  if(standardize) {
+    samps_use[,2:ncol(samps_use)] <- scale(samps_use[,2:ncol(samps_use)]) 
+  }
+  
   if(length(param2)>1) {
     param2_label <- paste0(param2,collapse=", ")
   }  else if(length(param2)==1 && this_chain=="All" && .nChains>1) {
@@ -763,6 +776,9 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
       samps_use[,(i+1)] <- t_x(samps_use[,(i+1)])
     }
   }
+  
+  # Now need to 'tween' the data: add interpolation to the dataset so that the frames transition smoothly
+  
   if(length(param2)>1 | this_chain!='All') {
       dat <- as.data.frame(samps_use)
       dat$id <- 1
@@ -800,7 +816,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                            yend=c(tail(y, n=-1), NA),colour=variable,frame=.frame)) 
   
 
-# Add in options from bivariate plot, which should be essentially  --------
+# Add in options from bivariate plot, which should be essentially the same --------
   
   if (lines == "hide") {
     graph <- graph + geom_point(alpha = pt_alpha, size = pt_size, 
@@ -830,7 +846,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                                 size = pt_size + 0.5, shape = 21,
                                 color = "#5f4a13", fill = "#eeba30",frame=NULL)
 
-# Set colour and label values for graphs with more than one variab --------
+# Set colour and label values for graphs with more than one variable --------
 
   if(length(param2)>1 | (.nChains>0 && this_chain=='All')) {
     graph <- graph + geom_text(aes(label=variable),vjust=-0.4) + scale_colour_brewer(palette=colour_palette)
@@ -839,6 +855,10 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   
   graph <- graph + param_labs + 
     theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)
+  
+  # Movie file is saved in WEBM format, a lightweight and opensource video codec. It is saved to 'www' directory
+  # Because that is where the shiny hmtlOutput function will look for it. 
+  # the -b option is the bitrate, in megabits, which adjusts the quality (and size) of the video.
   
   animated  <- gganimate::gg_animate(graph,title_frame=top_title)
   gganimate::gg_animate_save(animated,filename=outfile1,saver='webm',interval=(1/frame_speed),other.opts=paste0("-pix_fmt yuv420p"," -loglevel error"," -crf 10 -b:v 1M"))
