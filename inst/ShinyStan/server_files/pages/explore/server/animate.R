@@ -1,7 +1,13 @@
 # animate scatterplot
 #Transforms would be nice, but let's start small
 
+# Set options
 
+# animate_package_options <- reactive({
+# 
+# animation::ani.options(interval = 1/input$frame_speed,ani.height=350)
+# 
+# })
 
 animate_plot <- reactive({
   validate(
@@ -56,15 +62,16 @@ animate_plot <- reactive({
       lines_alpha = input$animate_lines_alpha,
       transform_x = input$animate_transform_x,
       transform_y = input$animate_transform_y,
-      frame_speed = input$animate_framespeed,
-      this_chain = input$animate_chain
+      this_chain = input$animate_chain,
+      frame_speed = input$frame_speed
   )
 })  
 
-output$animate_plot_out <- renderImage({
+output$animate_plot_out <- renderUI({
   if(input$animate_now==0) return(list(src='blank.png')) 
   # Return a list with a src attribute that equals the location of the GIF file
-  isolate(animate_plot())
+  output_info <- isolate(animate_plot())
+  tags$video(src=output_info$src,height='350',type='video/webm; codecs="vp8.0,vorbis"',controls="controls")
 })
 
 # download

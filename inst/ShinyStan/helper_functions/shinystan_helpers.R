@@ -685,8 +685,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                           points = TRUE,
                           transform_x = "identity",
                           transform_y = "identity",
-                          frame_speed=5,
-                          this_chain="All"
+                          this_chain="All",
+                          frame_speed=16
 ) {
   shape_translator <- function(x) {
     shape <- if (x >= 6) x + 9 else x
@@ -695,12 +695,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   
   # Need to set a file name to save the GIF to
   
-  outfile <- 'gg_animate_shinystan.gif'
-  
-  # Set options
-  
-  animation::ani.options(interval = 1/frame_speed,ani.height=350)
-  
+  outfile <- 'www/gg_animate_shinystan.mp4'
+
   params <- c(param, param2)
   nParams <- length(params)
   .nChains <- dim(samps)[2]
@@ -713,7 +709,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   samps_use <- array(samps[,as.numeric(this_chain),params], c(nIter, nParams))
   colnames(samps_use) <- c('y',param2)
   } else if(this_chain=="All" && .nChains>1) {
-    param_chain <- paste0(1:.nChains,collapse=", ")
+    param_chain <- paste0("Chain ",1:.nChains)
     params <- c(param,param2)
     nParams <- length(params)
     samps_use <- array(samps[,,params], c(nIter, nParams))
@@ -753,26 +749,43 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
       samps_use[,(i+1)] <- t_x(samps_use[,(i+1)])
     }
   }
-  
-  dat <- as.data.frame(samps_use)
-  dat$id <- 1
-  dat$time <- 1:nrow(dat)
-  dat$ease <- 'quadratic-in-out'
-  if (!is.null(sp)) {
-    dat$divergent <- c(sapply(sp, FUN = function(y) y[, "divergent__"]))
-    dat$hit_max_td <- if (is.null(max_td)) 0 else 
-      c(sapply(sp, FUN = function(y) as.numeric(y[, "treedepth__"] == max_td))) 
+  if(length(param2)>1 | this_chain!='All') {
+      dat <- as.data.frame(samps_use)
+      dat$id <- 1
+      dat$time <- 1:nrow(dat)
+      dat$ease <- 'quadratic-in-out'
+      if (!is.null(sp)) {
+        dat$divergent <- c(sapply(sp, FUN = function(y) y[, "divergent__"]))
+        dat$hit_max_td <- if (is.null(max_td)) 0 else 
+          c(sapply(sp, FUN = function(y) as.numeric(y[, "treedepth__"] == max_td))) 
+      } else {
+        dat$divergent <- 0
+        dat$hit_max_td <- 0
+      } 
+      dat <- tweenr::tween_elements(dat,'time','id','ease',nframes=(nrow(dat)*10))
+      dat <- reshape2::melt(dat,id.vars=c('y','.group','.frame','time','divergent','hit_max_td'),value.name='x')
   } else {
-    dat$divergent <- 0
-    dat$hit_max_td <- 0
+    dat <- as.data.frame(samps_use)
+    dat$time <- rep(1:(nIter/.nChains),times=.nChains)
+    dat$ease <- 'quadratic-in-out'
+    if (!is.null(sp)) {
+      dat$divergent <- c(sapply(sp, FUN = function(y) y[, "divergent__"]))
+      dat$hit_max_td <- if (is.null(max_td)) 0 else 
+        c(sapply(sp, FUN = function(y) as.numeric(y[, "treedepth__"] == max_td))) 
+    } else {
+      dat$divergent <- 0
+      dat$hit_max_td <- 0
+    } 
+    dat$x <- dat[,2]
+    dat$id <- rep(param_chain,each=nIter/.nChains)
+    dat <- tweenr::tween_elements(dat,'time','id','ease',nframes=dim(samps)[1]*10)
+    dat$variable <- dat$.group
   }
-  dat <- tweenr::tween_elements(dat,'time','id','ease',nframes=(nrow(dat)*10))
-  dat <- reshape2::melt(dat,id.vars=c('y','.group','.frame','time','divergent','hit_max_td'),value.name='x')
 
   graph <- ggplot(dat, aes(x = x, y = y, xend=c(tail(x, n=-1), NA), 
                            yend=c(tail(y, n=-1), NA),colour=variable,frame=.frame)) 
   
-  if(length(param2)>1) graph <- graph + geom_text(aes(label=variable),vjust=-0.4)
+  if(length(param2)>1 | (.nChains>0 && this_chain=='All')) graph <- graph + geom_text(aes(label=variable),vjust=-0.4)
   
 
 # Add in options from bivariate plot, which should be essentially  --------
@@ -808,7 +821,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   graph <- graph + param_labs + 
     theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)
   
-  animated  <- gganimate::gg_animate(graph,filename=outfile,title_frame=FALSE)
+  animated  <- gganimate::gg_animate(graph,filename=outfile,title_frame=FALSE,ani.height="350",interval=1/frame_speed)
   
   return(list(src=outfile,
               alt="Animated scatterplot"))
