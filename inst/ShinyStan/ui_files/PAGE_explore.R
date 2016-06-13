@@ -103,7 +103,7 @@ tagList(
   tabPanel(
     title="Animation",
     source_ui("animate_select.R"),
-    source_ui("animate_select2.R")
+    source_ui("animate_select2.R"),
     a_options("animate"),
     source_ui("animate_customize.R"),
     htmlOutput("animate_plot_out"),

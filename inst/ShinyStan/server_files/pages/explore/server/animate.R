@@ -13,11 +13,12 @@ animate_plot <- reactive({
   validate(
     need(input$param, message = FALSE),
     need(input$animate_ellipse_lev, message = FALSE),
-    need(input$animate_param_x, message = FALSE),
-    need((length(input$animate_param_x)>1 && input$animate_chain!='All'),
-      message='Please select a specific chain if examining more than one x variable.'
-    )
+    need(input$animate_param_x, message = FALSE)
   )
+  
+  if(length(input$animate_param_x)>1) 
+    validate(need(input$animate_chain!='All',
+              message='Please select a specific chain if examining more than one x variable.'))
 
   
   if (!is.null(input$animate_ellipse_lev)) {

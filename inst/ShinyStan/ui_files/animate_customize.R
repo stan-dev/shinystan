@@ -6,7 +6,11 @@ shinyjs::hidden(
         strongBig('Animation'),
         fluidRow(
           column(width=2,numericInput("frame_speed","Adjust frames per second",value = 5,step=1,min=1)),
-          column(width=6,numericInput("frame_tween","Add how many smoothing frames for each actual frame?",value=10,min=1,step=1))
+          column(width=3,numericInput("frame_tween","Add how many smoothing frames for each actual frame?",value=10,min=1,step=1)),
+          column(width = 4,selectInput("animate_color",label = strong_bl("Color Palette"),choices = row.names(RColorBrewer::brewer.pal.info),selected = "Set1",
+              multiple = FALSE
+            )
+          )
         ),
         hr(class = "hroptions"),
         strongBig("Transformation"),
