@@ -822,8 +822,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   graph <- graph + param_labs + 
     theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)
   
-  animated  <- gganimate::gg_animate(graph)
-  gganimate::gg_animate_save(animated,filename=outfile1,saver='webm',title_frame=FALSE)
+  animated  <- gganimate::gg_animate(graph,title_frame=FALSE)
+  gganimate::gg_animate_save(animated,filename=outfile1,saver='webm',interval=(1/frame_speed))
 
   
   return(list(src=outfile2,

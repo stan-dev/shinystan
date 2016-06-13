@@ -13,7 +13,10 @@ animate_plot <- reactive({
   validate(
     need(input$param, message = FALSE),
     need(input$animate_ellipse_lev, message = FALSE),
-    need(input$animate_param_x, message = FALSE)
+    need(input$animate_param_x, message = FALSE),
+    need((length(input$animate_param_x)>1 && input$animate_chain!='All'),
+      message='Please select a specific chain if examining more than one x variable.'
+    )
   )
 
   
@@ -82,8 +85,8 @@ output$animate_plot_out <- renderUI({
 output$download_animate <- downloadHandler(
   filename = 'gg_animate_shinystan_download.webm',
   content = function(file) {
-    # File already exists
-   return(paste0('www/',animate_plot()$src))
+
+    file.copy('www/gg_animate_shinystan.webm',file)
   },
   contentType = 'video/webm'
 )
