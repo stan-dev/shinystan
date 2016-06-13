@@ -54,14 +54,12 @@ animate_plot <- reactive({
       pt_alpha = input$animate_pt_alpha,
       pt_size = input$animate_pt_size,
       pt_shape = input$animate_pt_shape,
-      pt_color = input$animate_pt_color,
       ellipse_lev = input$animate_ellipse_lev,
       ellipse_color = input$animate_ellipse_color,
       ellipse_lty = input$animate_ellipse_lty,
       ellipse_lwd = input$animate_ellipse_lwd,
       ellipse_alpha = input$animate_ellipse_alpha,
       lines  = input$animate_lines,
-      lines_color = input$animate_lines_color,
       lines_alpha = input$animate_lines_alpha,
       transform_x = input$animate_transform_x,
       transform_y = input$animate_transform_y,
@@ -71,7 +69,8 @@ animate_plot <- reactive({
       row_max = input$animate_iters[2],
       standardize = input$animate_standardize,
       colour_palette = input$animate_color,
-      tween_ratio = input$frame_tween
+      tween_ratio = input$frame_tween,
+      top_title = input$animate_title
   )
 })  
 

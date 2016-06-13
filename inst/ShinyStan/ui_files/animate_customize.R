@@ -5,11 +5,12 @@ shinyjs::hidden(
         hr(class='hroptions'),
         strongBig('Animation'),
         fluidRow(
-          column(width=2,numericInput("frame_speed","Adjust frames per second",value = 5,step=1,min=1)),
-          column(width=3,numericInput("frame_tween","Add how many smoothing frames for each actual frame?",value=10,min=1,step=1)),
-          column(width = 4,selectInput("animate_color",label = strong_bl("Color Palette"),choices = row.names(RColorBrewer::brewer.pal.info),selected = "Set1",
+          column(width=2,numericInput("frame_speed",strongMed("Adjust frames per second"),value = 5,step=1,min=1)),
+          column(width=3,numericInput("frame_tween",strongMed("Add how many smoothing frames for each actual frame?"),value=10,min=1,step=1)),
+          column(width = 4,selectInput("animate_color",label = strongMed("Color Palette"),choices = row.names(RColorBrewer::brewer.pal.info),selected = "Set1",
               multiple = FALSE
-            )
+            ),
+          column(width=2,checkboxInput("animate_title","Frame counter?",value=FALSE))
           )
         ),
         hr(class = "hroptions"),
@@ -30,10 +31,6 @@ shinyjs::hidden(
         conditionalPanel(
           condition = "input.animate_options_display == 'Points'",
           fluidRow(
-            column(
-              width = 3,
-              shinyjs::colourInput("animate_pt_color", strongMed("Color"), base_fill)
-            ),
             column(
               width = 2,
               numericInput(
@@ -142,10 +139,6 @@ shinyjs::hidden(
                 choices = c(Hide = "hide", Back = "back", Front = "front"),
                 selected = "back"
               )
-            ),
-            column(
-              width = 3,
-              shinyjs::colourInput("animate_lines_color", strongMed("Color"), "gray")
             ),
             column(
               width = 2,

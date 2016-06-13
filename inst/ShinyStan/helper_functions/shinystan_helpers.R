@@ -673,14 +673,12 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                           pt_alpha = 0.10,
                           pt_size = 2,
                           pt_shape = 10,
-                          pt_color = "gray20",
                           ellipse_color = "black",
                           ellipse_lev = "None",
                           ellipse_lty = 1,
                           ellipse_lwd = 1,
                           ellipse_alpha = 1,
                           lines = "back",
-                          lines_color = "gray",
                           lines_alpha,
                           points = TRUE,
                           transform_x = "identity",
@@ -691,7 +689,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                           row_max = NULL,
                           standardize = FALSE,
                           colour_palette = "Set1",
-                          tween_ratio = 10
+                          tween_ratio = 10,
+                          top_title=TRUE
 ) {
   shape_translator <- function(x) {
     shape <- if (x >= 6) x + 9 else x
@@ -825,11 +824,11 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   if (!all(dat$divergent == 0))
     graph <- graph + geom_point(data = subset(dat, divergent == 1), aes(x,y), 
                                 size = pt_size + 0.5, shape = 21, 
-                                color = "#570000", fill = "#ae0001")
+                                color = "#570000", fill = "#ae0001",frame=NULL)
   if (!all(dat$hit_max_td == 0))
     graph <- graph + geom_point(data = subset(dat, hit_max_td == 1), aes(x,y), 
                                 size = pt_size + 0.5, shape = 21,
-                                color = "#5f4a13", fill = "#eeba30")
+                                color = "#5f4a13", fill = "#eeba30",frame=NULL)
 
 # Set colour and label values for graphs with more than one variab --------
 
@@ -841,8 +840,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   graph <- graph + param_labs + 
     theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)
   
-  animated  <- gganimate::gg_animate(graph,title_frame=FALSE)
-  gganimate::gg_animate_save(animated,filename=outfile1,saver='webm',interval=(1/frame_speed))
+  animated  <- gganimate::gg_animate(graph,title_frame=top_title)
+  gganimate::gg_animate_save(animated,filename=outfile1,saver='webm',interval=(1/frame_speed),other.opts=paste0("-pix_fmt yuv420p"," -loglevel error"," -crf 10 -b:v 1M"))
 
   
   return(list(src=outfile2,

@@ -5,4 +5,4 @@ test_shinystan_gganimate.R
 save_gif.gif
 dropping_balls.gif
 "dropping balls.gif"
-inst/ShinyStan/www/gg_animate.shinystan.webm
+inst/ShinyStan/www/gg_animate_shinystan.webm

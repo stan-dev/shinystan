@@ -16,7 +16,7 @@ fluidRow(
   ),
   column(
     width=2,
-    selectInput("animate_chain","Chain",choices=c("All",1:.nChains),selected = "All")
+    selectInput("animate_chain",label = strong_bl("chain"),choices=c("All",1:.nChains),selected = "All")
   ),
   column(
     width=2,
