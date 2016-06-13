@@ -75,11 +75,7 @@ animate_plot <- reactive({
 })  
 
 output$animate_plot_out <- renderUI({
-  if(input$animate_now==0) return(p("To animate a video of the MCMC estimates of the above parameters, 
-                                    please click on the Animate button above. Please be aware that this 
-                                    process can take a long time as a new graph must be prepared for each 
-                                    frame of the following animation. The animation file is produced in .WEBM format, 
-                                    which can be uploaded to Youtube.")) 
+  if(input$animate_now==0) return(includeMarkdown('www/about_video.Rmd'))
   # Return a list with a src attribute that equals the location of the GIF file
   output_info <- isolate(animate_plot())
   tags$video(src=output_info$src,height='650',type='video/webm; codecs="vp8.0,vorbis"',controls="controls")

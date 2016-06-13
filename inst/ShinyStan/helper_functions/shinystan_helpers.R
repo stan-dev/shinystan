@@ -860,8 +860,13 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   # Because that is where the shiny hmtlOutput function will look for it. 
   # the -b option is the bitrate, in megabits, which adjusts the quality (and size) of the video.
   
-  animated  <- gganimate::gg_animate(graph,title_frame=top_title,ani.width=1920,ani.height=1400)
-  gganimate::gg_animate_save(animated,filename=outfile1,saver='webm',interval=(1/frame_speed),other.opts=paste0("-pix_fmt yuv420p"," -loglevel error"," -crf 10 -b:v 1M"))
+  animated  <- gganimate::gg_animate(graph,title_frame=top_title,ani.width=1280,ani.height=720)
+  gganimate::gg_animate_save(animated,filename=outfile1,saver='webm',interval=(1/frame_speed),other.opts=paste0("-p 2 -t 4",
+                                                                                                                " --good --cpu-used=1 --codec=vp8 -w 1280 -h 720  --target-bitrate=2000",
+                                                                                                                " --auto-alt-ref=1 --minsection-pct=5 --maxsection-pct=800",
+                                                                                                                " --kf-min-dist=0 --kf-max-dist=360",
+                                                                                                                " --token-parts=2 --static-thresh=0 --drop-frame=0",
+                                                                                                                "--min-q=0 --max-q=60 --end-usage=vbr"))
 
   
   return(list(src=outfile2,

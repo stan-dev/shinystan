@@ -31,12 +31,5 @@ devtools::install_github("dgrtwo/gganimate")
 
 You are now ready to create movie files. Please be aware that the greater number of iterations you include in a movie, and the greater number of frames used to smooth the movie (see the options panel), the more time will be required to produce the result. For example, if you select 20 iterations and a frame smoothing factor of 10, this will require the production of 20 * 10 = 200 charts before the video can compile. Reducing the frame smoothing factor will produce a jumpy video.
 
-The videos are produced in the .WEBM format. This format may not display in Safari or Internet Explorer without additional plugins; however, it will play correctly on Chrome and Firefox. The movie can also be uploaded directly to Youtube to share and/or watch. To do so, click the download Movie button at the bottom of the screen to download the movie to your computer.
+The videos are produced in the .WEBM format. This format may not display in Safari or Internet Explorer without additional plugins; however, it will play correctly on Chrome and Firefox. The movie can also be uploaded directly to Youtube to share and/or watch. To share on Youtube, first download the movie to your computer using the download button at the bottom of the screen.
 
-You can also embed plots, for example:
-
-```{r, echo=FALSE}
-plot(cars)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
