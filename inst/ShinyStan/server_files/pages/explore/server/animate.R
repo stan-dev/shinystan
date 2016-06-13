@@ -45,9 +45,8 @@ animate_plot <- reactive({
   }
   
   .animate_plot(
-      samps = SAMPS_post_warmup,
-      sp = if (!identical(SAMPLER_PARAMS_post_warmup, FALSE)) 
-        SAMPLER_PARAMS_post_warmup else NULL,
+      samps = SAMPS_all,
+      sp = SAMPLER_PARAMS,
       max_td = if ("max_td" %in% names(MISC)) MISC$max_td else NULL,
       param = input$animate_param_y,
       param2 = input$animate_param_x,
@@ -66,7 +65,12 @@ animate_plot <- reactive({
       transform_x = input$animate_transform_x,
       transform_y = input$animate_transform_y,
       this_chain = input$animate_chain,
-      frame_speed = input$frame_speed
+      frame_speed = input$frame_speed,
+      row_min = input$animate_iters[[1]],
+      row_max = input$animate_iters[[2]],
+      standardize = input$animate_standardize,
+      colour_palette = input$animate_color,
+      tween_ratio = input$animate_tween
   )
 })  
 

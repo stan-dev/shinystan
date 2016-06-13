@@ -686,7 +686,12 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                           transform_x = "identity",
                           transform_y = "identity",
                           this_chain="All",
-                          frame_speed=16
+                          frame_speed=16,
+                          row_min = NULL,
+                          row_max = NULL,
+                          standardize = FALSE,
+                          colour_palette = "Set1",
+                          tween_ratio = 10
 ) {
   shape_translator <- function(x) {
     shape <- if (x >= 6) x + 9 else x
@@ -700,6 +705,15 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
 
   params <- c(param, param2)
   nParams <- length(params)
+  
+  # Adjust number of rows per slider Input
+  
+  if(!is.null(row_min)) {
+    samps <- samps[row_min:row_max,,]
+    sp <- lapply(sp,function(x) {x <- x[row_min:row_max,]
+                                return(x)})
+  }
+  
   .nChains <- dim(samps)[2]
   if(.nChains>1 && length(param2)==1 && this_chain=='All') {
   nIter <- dim(samps)[1] * dim(samps)[2]
@@ -756,14 +770,14 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
       dat$time <- 1:nrow(dat)
       dat$ease <- 'quadratic-in-out'
       if (!is.null(sp)) {
-        dat$divergent <- c(sapply(sp[,as.numeric(this_chain),], FUN = function(y) y[, "divergent__"]))
+        dat$divergent <- sp[[as.numeric(this_chain)]][, "divergent__"]
         dat$hit_max_td <- if (is.null(max_td)) 0 else 
-          c(sapply(sp[,as.numeric(this_chain),], FUN = function(y) as.numeric(y[, "treedepth__"] == max_td))) 
+          as.numeric(sp[[as.numeric(this_chain)]][, "treedepth__"] == max_td)
       } else {
         dat$divergent <- 0
         dat$hit_max_td <- 0
       } 
-      dat <- tweenr::tween_elements(dat,'time','id','ease',nframes=(nrow(dat)*10))
+      dat <- tweenr::tween_elements(dat,'time','id','ease',nframes=(nrow(dat)*tween_ratio))
       dat <- reshape2::melt(dat,id.vars=c('y','.group','.frame','time','divergent','hit_max_td'),value.name='x')
   } else {
     dat <- as.data.frame(samps_use)
@@ -779,14 +793,12 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
     } 
     dat$x <- dat[,2]
     dat$id <- rep(param_chain,each=nIter/.nChains)
-    dat <- tweenr::tween_elements(dat,'time','id','ease',nframes=dim(samps)[1]*10)
+    dat <- tweenr::tween_elements(dat,'time','id','ease',nframes=dim(samps)[1]*tween_ratio)
     dat$variable <- dat$.group
   }
 
   graph <- ggplot(dat, aes(x = x, y = y, xend=c(tail(x, n=-1), NA), 
                            yend=c(tail(y, n=-1), NA),colour=variable,frame=.frame)) 
-  
-  if(length(param2)>1 | (.nChains>0 && this_chain=='All')) graph <- graph + geom_text(aes(label=variable),vjust=-0.4)
   
 
 # Add in options from bivariate plot, which should be essentially  --------
@@ -818,6 +830,13 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
     graph <- graph + geom_point(data = subset(dat, hit_max_td == 1), aes(x,y), 
                                 size = pt_size + 0.5, shape = 21,
                                 color = "#5f4a13", fill = "#eeba30")
+
+# Set colour and label values for graphs with more than one variab --------
+
+  if(length(param2)>1 | (.nChains>0 && this_chain=='All')) {
+    graph <- graph + geom_text(aes(label=variable),vjust=-0.4) + scale_colour_brewer(palette=colour_palette)
+  }
+  
   
   graph <- graph + param_labs + 
     theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)
