@@ -756,9 +756,9 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
       dat$time <- 1:nrow(dat)
       dat$ease <- 'quadratic-in-out'
       if (!is.null(sp)) {
-        dat$divergent <- c(sapply(sp, FUN = function(y) y[, "divergent__"]))
+        dat$divergent <- c(sapply(sp[,as.numeric(this_chain),], FUN = function(y) y[, "divergent__"]))
         dat$hit_max_td <- if (is.null(max_td)) 0 else 
-          c(sapply(sp, FUN = function(y) as.numeric(y[, "treedepth__"] == max_td))) 
+          c(sapply(sp[,as.numeric(this_chain),], FUN = function(y) as.numeric(y[, "treedepth__"] == max_td))) 
       } else {
         dat$divergent <- 0
         dat$hit_max_td <- 0
