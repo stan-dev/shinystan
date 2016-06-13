@@ -78,7 +78,7 @@ output$animate_plot_out <- renderUI({
   if(input$animate_now==0) return(includeMarkdown('markdown/about_video.md'))
   # Return a list with a src attribute that equals the location of the GIF file
   output_info <- isolate(animate_plot())
-  tags$video(src=output_info$src,height='550',width='700',type='video/webm; codecs="vp8.0,vorbis"',controls="controls")
+  tags$video(src=output_info$src,height='750',width='1200',type='video/webm; codecs="vp8.0,vorbis"',controls="controls")
 })
 
 # download

@@ -852,20 +852,21 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
     graph <- graph + geom_text(aes(label=variable),vjust=-0.4) + scale_colour_brewer(palette=colour_palette)
   }
   
+  # Adjust text because otherwise it looks too small
   
   graph <- graph + param_labs + 
     theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)
+  
+
+
   
   # Movie file is saved in WEBM format, a lightweight and opensource video codec. It is saved to 'www' directory
   # Because that is where the shiny hmtlOutput function will look for it. 
   # the -b option is the bitrate, in megabits, which adjusts the quality (and size) of the video.
   
-  animated  <- gganimate::gg_animate(graph,title_frame=top_title,ani.width=1280,ani.height=720)
-  gganimate::gg_animate_save(animated,filename=outfile1,saver='webm',interval=(1/frame_speed),other.opts=paste0("-crf 10 -b:v 2M -c:a"," -s '1280x720'"," -quality 'good' -cpu-used 1",
-                                                                                                                " -auto-alt-ref 1",
-                                                                                                                " -keyint_min 0 -g 360",
-                                                                                                                " -slices 2 -static-thresh 0 -skip_threshold 0",
-                                                                                                                " -qmin 0 -qmax 60"))
+  animated  <- gganimate::gg_animate(graph,title_frame=top_title)
+  gganimate::gg_animate_save(animated,filename=outfile1,saver='webm',interval=(1/frame_speed),other.opts=paste0("-c:v libvpx -pix_fmt yuv420p"," -crf 7 -b:v 2M -c:a libvorbis"))
+#                                                                                                                " -qmin 0 -qmax 60 -auto-alt-ref 1"))
 
   
   return(list(src=outfile2,

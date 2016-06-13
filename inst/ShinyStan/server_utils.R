@@ -5,4 +5,8 @@ suppress_and_print <- function(x) {
 
 # Create help text for video tab in Explore
 
-knitr::knit('markdown/about_video.Rmd',output='markdown/about_video.md')
+knitr::knit('markdown/about_video.Rmd',output='markdown/about_video.md',quiet=TRUE)
+
+# Set animation options for animation package
+
+animation::ani.options(ani.height=600,ani.width=800)

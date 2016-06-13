@@ -8,7 +8,7 @@ This page will create videos of MCMC parameter exploration relative to another v
 ```{r,echo=FALSE}
 check_requirements <- function() {
   x <- list()
-  x$image_magick <- ifelse(system("ffmpeg --help")==0," present"," not present")
+  x$image_magick <- ifelse(class(try(system("ffmpeg --help",intern=TRUE)))=='try-error'," not present"," present")
   x$gg_animate <- ifelse(require(gganimate,quietly=TRUE)," present"," not present")
   return(x)
 }
