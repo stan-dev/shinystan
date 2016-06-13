@@ -1,0 +1,42 @@
+---
+title: "About Shinystan Video"
+author: "Robert Kubinec"
+date: "June 13, 2016"
+output: html_document
+---
+
+This page will create videos of MCMC parameter exploration relative to another variable or to the log-posterior on the y axis. It will either show multiple parameters of a single chain or multiple chains of a single parameter along the x axis. 
+
+```{r}
+check_requirements <- function() {
+  x <- list()
+  x$image_magick <- ifelse(system("ffmpeg --help")==0," present"," not present")
+  x$gg_animate <- ifelse(require(gganimate)," present"," not present")
+  return(x)
+}
+checks <- check_requirements()
+```
+
+Your system shows that the ffmpeg library is `r checks$image_magick` and the gganimate package is `r checks$gg_animate`. If either of these are listed as "not present", please read the installation instructions below.
+
+As this function relies on additional software (non-R) for support, please read through the following installation guidelines:
+
+1. Install the ffmpeg package. It is included with the ImageMagick software for Windows or Mac OS at  <http://www.imagemagick.org/script/binary-releases.php>. After installing the software, you must restart R or Rstudio.
+
+2. Install the gg_animate package in R or Rstudio from github using the following code:
+
+```
+devtools::install_github("dgrtwo/gganimate")
+```
+
+You are now ready to create movie files. Please be aware that the greater number of iterations you include in a movie, and the greater number of frames used to smooth the movie (see the options panel), the more time will be required to produce the result. For example, if you select 20 iterations and a frame smoothing factor of 10, this will require the production of 20 * 10 = 200 charts before the video can compile. Reducing the frame smoothing factor will produce a jumpy video.
+
+The videos are produced in the .WEBM format. This format may not display in Safari or Internet Explorer without additional plugins; however, it will play correctly on Chrome and Firefox. The movie can also be uploaded directly to Youtube to share and/or watch. To do so, click the download Movie button at the bottom of the screen to download the movie to your computer.
+
+You can also embed plots, for example:
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

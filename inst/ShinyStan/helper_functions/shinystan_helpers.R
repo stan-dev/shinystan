@@ -758,7 +758,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   if(length(param2)>1) {
     param2_label <- paste0(param2,collapse=", ")
   }  else if(length(param2)==1 && this_chain=="All" && .nChains>1) {
-    param2_label <- param_chain
+    param2_label <- param2
   } else {
     param2_label <- param2
   }
@@ -838,13 +838,13 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
     graph <- graph + stat_ellipse(level = as.numeric(ellipse_lev), 
                                   linetype = ellipse_lty, size = ellipse_lwd, alpha = ellipse_alpha)
   if (!all(dat$divergent == 0))
-    graph <- graph + geom_point(data = subset(dat, divergent == 1), aes(x,y), 
+    graph <- graph + geom_point(data = subset(dat, divergent == 1), aes(x,y,frame=NULL), 
                                 size = pt_size + 0.5, shape = 21, 
-                                color = "#570000", fill = "#ae0001",frame=NULL)
+                                color = "#570000", fill = "#ae0001")
   if (!all(dat$hit_max_td == 0))
-    graph <- graph + geom_point(data = subset(dat, hit_max_td == 1), aes(x,y), 
+    graph <- graph + geom_point(data = subset(dat, hit_max_td == 1), aes(x,y,frame=NULL), 
                                 size = pt_size + 0.5, shape = 21,
-                                color = "#5f4a13", fill = "#eeba30",frame=NULL)
+                                color = "#5f4a13", fill = "#eeba30")
 
 # Set colour and label values for graphs with more than one variable --------
 
@@ -860,7 +860,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   # Because that is where the shiny hmtlOutput function will look for it. 
   # the -b option is the bitrate, in megabits, which adjusts the quality (and size) of the video.
   
-  animated  <- gganimate::gg_animate(graph,title_frame=top_title)
+  animated  <- gganimate::gg_animate(graph,title_frame=top_title,ani.width=1920,ani.height=1400)
   gganimate::gg_animate_save(animated,filename=outfile1,saver='webm',interval=(1/frame_speed),other.opts=paste0("-pix_fmt yuv420p"," -loglevel error"," -crf 10 -b:v 1M"))
 
   

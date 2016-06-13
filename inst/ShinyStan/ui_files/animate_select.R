@@ -20,6 +20,7 @@ fluidRow(
   ),
   column(
     width=2,
+    strong_bl("click to start"),
     actionButton("animate_now","Create Animation")
   )
 )
