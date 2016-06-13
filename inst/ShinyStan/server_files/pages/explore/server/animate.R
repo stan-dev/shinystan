@@ -67,11 +67,11 @@ animate_plot <- reactive({
       transform_y = input$animate_transform_y,
       this_chain = input$animate_chain,
       frame_speed = input$frame_speed,
-      row_min = input$animate_iters[[1]],
-      row_max = input$animate_iters[[2]],
+      row_min = input$animate_iters[1],
+      row_max = input$animate_iters[2],
       standardize = input$animate_standardize,
       colour_palette = input$animate_color,
-      tween_ratio = input$animate_tween
+      tween_ratio = input$frame_tween
   )
 })  
 

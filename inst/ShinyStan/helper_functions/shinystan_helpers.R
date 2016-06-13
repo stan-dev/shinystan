@@ -697,7 +697,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
     shape <- if (x >= 6) x + 9 else x
     shape
   }
-  
+#  browser()
   # Need to set a file name to save the GIF to
   
   outfile1 <- 'www/gg_animate_shinystan.webm'
@@ -746,7 +746,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   if(length(param2)>1) {
     param2_label <- paste0(param2,collapse=", ")
   }  else if(length(param2)==1 && this_chain=="All" && .nChains>1) {
-    param2_label <- c(param2,paste0("Chain",param_chain,collapse=", "))
+    param2_label <- param_chain
   } else {
     param2_label <- param2
   }
@@ -811,7 +811,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
       graph <- graph + 
         geom_path(alpha = lines_alpha, aes(cumulative=TRUE)) + 
         geom_point(alpha = pt_alpha, size = pt_size, 
-                   shape = shape_translator(pt_shape), color = pt_color)
+                   shape = shape_translator(pt_shape))
     } else { # lines = "front"
       graph <- graph + 
         geom_point(alpha = pt_alpha, size = pt_size, 
