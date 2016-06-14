@@ -28,12 +28,12 @@ Depends:
     R (>= 3.1.0),
     shiny (>= 0.12.1),
     tweenr,
-    reshape2
+    reshape2,
+    knitr (>= 1.9)
 License: GPL (>=3)
 LazyData: true
 Suggests:
     coda,
-    knitr (>= 1.9),
     rmarkdown (>= 0.8.1),
     rstanarm (>= 2.9.0-3),
     testthat
