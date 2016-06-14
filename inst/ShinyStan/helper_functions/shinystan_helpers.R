@@ -690,7 +690,10 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                           standardize = FALSE,
                           colour_palette = "Set1",
                           tween_ratio = 10,
-                          top_title=TRUE
+                          top_title=TRUE,
+                          height=NULL,
+                          width=NULL,
+                          resolution=NULL
 ) {
   
   shape_translator <- function(x) {
@@ -702,6 +705,14 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   
   outfile1 <- 'www/gg_animate_shinystan.webm'
   outfile2 <- 'gg_animate_shinystan.webm'
+  
+  # options for animation
+  
+  if(is.null(height)) {
+    height <- 1000
+    width <- 1200
+    resolution <- 200
+  }
 
   params <- c(param, param2)
   nParams <- length(params)
@@ -865,8 +876,10 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   # the -b option is the bitrate, in megabits, which adjusts the quality (and size) of the video.
   
   animated  <- gganimate::gg_animate(graph,title_frame=top_title)
-  gganimate::gg_animate_save(animated,filename=outfile1,saver='webm',interval=(1/frame_speed),other.opts=paste0("-c:v libvpx -pix_fmt yuv420p"," -crf 7 -b:v 2M -c:a libvorbis"))
-#                                                                                                                " -qmin 0 -qmax 60 -auto-alt-ref 1"))
+  
+  # use separate function for better options control than the base gganimate function
+  
+  shiny_animate_save(animated,filename=outfile1,height=height,width=width,resolution=resolution)
 
   
   return(list(src=outfile2,

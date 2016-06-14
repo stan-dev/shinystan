@@ -10,6 +10,8 @@ SERVER_FILES <- server_files[!server_files %in% path_to_extract_sso]
 source("global_utils.R", local = TRUE)
 source("server_utils.R", local = TRUE)
 source(path_to_extract_sso, local = TRUE)
+# source functions for video creation
+source(server_files[grepl("new_saveVideo.R",server_files)],local=TRUE)
 
 # BEGIN server ------------------------------------------------------
 # ___________________________________________________________________

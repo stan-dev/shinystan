@@ -9,7 +9,7 @@ knitr::knit('markdown/about_video.Rmd',output='markdown/about_video.md',quiet=TR
 
 # Set animation options for animation package
 
-animation::ani.options(ani.height=1000,ani.width=1200,plot_res=200)
+animation::ani.options(ani.height=1000,ani.width=1200,plot_res=140)
 
 # Need to patch the saveVideo function from animation to allow the use of custom animation
 

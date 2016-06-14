@@ -5,14 +5,15 @@ shinyjs::hidden(
         hr(class='hroptions'),
         strongBig('Animation'),
         fluidRow(
-          column(width=2,numericInput("frame_speed",strongMed("Adjust frames per second"),value = 10,step=1,min=1)),
-          column(width=3,numericInput("frame_tween",strongMed("Add how many smoothing frames for each actual frame?"),value=10,min=1,step=1)),
+          column(width=2,numericInput("frame_speed",strongMed("Adjust frames per second"),value = 16,step=1,min=1),
+                 numericInput("animate_height",strongMed("Height in Pixels"),value=1000,step=1,min=1)),
+          column(width=3,numericInput("frame_tween",strongMed("Add how many smoothing frames for each actual frame?"),value=10,min=1,step=1),
+                 numericInput("animate_width",strongMed("Width in Pixels"),value=1000,step=1,min=1)),
           column(width = 4,selectInput("animate_color",label = strongMed("Color Palette"),choices = row.names(RColorBrewer::brewer.pal.info),selected = "Set1",
-              multiple = FALSE
-            ),
-          column(width=2,checkboxInput("animate_title","Frame counter?",value=FALSE))
-          )
-        ),
+              multiple = FALSE),
+              numericInput("animate_resolution",strongMed("Resolution (pixels)"),value=200,min=1,step=1)),
+          column(width=2,checkboxInput("animate_title",strongMed("Frame counter?"),value=FALSE))
+          ),
         hr(class = "hroptions"),
         strongBig("Transformation"),
         transform_helpText("x,y"),
