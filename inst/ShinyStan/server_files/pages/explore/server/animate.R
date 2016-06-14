@@ -46,7 +46,6 @@ animate_plot <- reactive({
       pt_size = input$animate_pt_size,
       pt_shape = input$animate_pt_shape,
       ellipse_lev = input$animate_ellipse_lev,
-      ellipse_color = input$animate_ellipse_color,
       ellipse_lty = input$animate_ellipse_lty,
       ellipse_lwd = input$animate_ellipse_lwd,
       ellipse_alpha = input$animate_ellipse_alpha,

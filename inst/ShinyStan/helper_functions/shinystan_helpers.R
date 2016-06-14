@@ -673,7 +673,6 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                           pt_alpha = 0.10,
                           pt_size = 2,
                           pt_shape = 10,
-                          ellipse_color = "black",
                           ellipse_lev = "None",
                           ellipse_lty = 1,
                           ellipse_lwd = 1,
@@ -761,11 +760,6 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
 # After transforming, perform an optional standardization -----------------
 
 
-  
-  if(standardize) {
-    samps_use[,2:ncol(samps_use)] <- scale(samps_use[,2:ncol(samps_use)]) 
-  }
-  
   if(length(param2)>1) {
     param2_label <- paste0(param2,collapse=", ")
   }  else if(length(param2)==1 && this_chain=="All" && .nChains>1) {
@@ -787,6 +781,11 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
       samps_use[,(i+1)] <- t_x(samps_use[,(i+1)])
     }
   }
+  
+  
+  if(standardize) 
+    samps_use[,2:ncol(samps_use)] <- scale(samps_use[,2:ncol(samps_use)]) 
+  
   
   # Now need to 'tween' the data: add interpolation to the dataset so that the frames transition smoothly
   

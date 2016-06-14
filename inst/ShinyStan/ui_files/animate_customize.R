@@ -8,7 +8,7 @@ shinyjs::hidden(
           column(width=2,numericInput("frame_speed",strongMed("Adjust frames per second"),value = 16,step=1,min=1),
                  numericInput("animate_height",strongMed("Height in Pixels"),value=1000,step=1,min=1)),
           column(width=3,numericInput("frame_tween",strongMed("Add how many smoothing frames for each actual frame?"),value=10,min=1,step=1),
-                 numericInput("animate_width",strongMed("Width in Pixels"),value=1200,step=1,min=1)),
+                 numericInput("animate_width",strongMed("Width in Pixels"),value=2000,step=1,min=1)),
           column(width = 4,selectInput("animate_color",label = strongMed("Color Palette"),choices = row.names(RColorBrewer::brewer.pal.info),selected = "Set1",
               multiple = FALSE),
               numericInput("animate_resolution",strongMed("Resolution (pixels)"),value=200,min=1,step=1)),
@@ -83,14 +83,6 @@ shinyjs::hidden(
                   "95%" = 0.95,
                   "99%" = 0.99
                 )
-              )
-            ),
-            column(
-              width = 3,
-              shinyjs::colourInput(
-                "animate_ellipse_color",
-                strongMed("Color"),
-                vline_base_clr
               )
             ),
             column(
