@@ -1,4 +1,4 @@
-# Use case for gg_animate
+# Use case for shinystan with animation tab 
 
 require(rstan)
 devtools::load_all(".")
