@@ -25,7 +25,7 @@ outputVideo <- function(expr, video.name = 'animation.mp4', img.name = 'Rplot', 
     
     other.opts <- paste0("-c:v libvpx -pix_fmt yuv420p"," -crf 7 -b:v 2M -c:a libvorbis")
   }
-file.ext <- '.png'
+file.ext <- 'png'
 num <-  ifelse(file.ext == 'pdf', '', '%d')
 unlink(paste(img.name, '*.', file.ext, sep = ''))
 img.fmt <-  paste(img.name, num, '.', file.ext, sep = '')
@@ -37,21 +37,21 @@ in_dir(owd, expr)
 dev.off()
 
 ## call FFmpeg
-ffmpeg <-  paste(ffmpeg, '-y', '-framerate',frame_speed, '-i',
+ffmpeg <-  paste('ffmpeg', '-y', '-framerate',frame_speed, '-i',
                basename(img.fmt), other.opts, basename(video.name))
 message('Executing: ', ffmpeg)
-cmd <- system(ffmpeg)
+cmd <- system(ffmpeg,intern=TRUE)
 
-if (cmd == 0) {
+if (class(cmd)!= 'try-error') {
   setwd(owd)
   if(!grepl(tempdir(),video.name,fixed = T))
     file.copy(file.path(tempdir(), basename(video.name)), video.name, overwrite = TRUE)
   message('\n\nVideo has been created at: ',
           output.path <- normalizePath(video.name))
-  #auto_browse(output.path)
+} else {
   
+  message('\n\n Video file creation via ffmpeg failed.')
 }
-invisible(cmd)
 
 
 }
@@ -80,7 +80,7 @@ plot_ggplot_build <- function (b, newpage = is.null(vp), vp = NULL)
 
 # This function is a modified version of the gg_animate_save function 
 
-shiny_animate_save <- function(g, filename = NULL,frame_speed=frame_speed,
+shiny_animate_save <- function(g, filename = NULL,frame_speed,
                                width,height,resolution) {
 
   g$filename <- filename

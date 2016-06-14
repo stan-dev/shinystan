@@ -1,13 +1,4 @@
-# animate scatterplot
-#Transforms would be nice, but let's start small
-
-# Set options
-
-# animate_package_options <- reactive({
-# 
-# animation::ani.options(interval = 1/input$frame_speed,ani.height=350)
-# 
-# })
+# animate scatterplot options
 
 animate_plot <- reactive({
   validate(

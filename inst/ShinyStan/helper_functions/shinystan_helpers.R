@@ -879,7 +879,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   
   # use separate function for better options control than the base gganimate function
   
-  shiny_animate_save(animated,filename=outfile1,height=height,width=width,resolution=resolution)
+  shiny_animate_save(animated,filename=outfile1,height=height,width=width,resolution=resolution,frame_speed=frame_speed)
 
   
   return(list(src=outfile2,
