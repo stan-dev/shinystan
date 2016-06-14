@@ -26,7 +26,9 @@ URL: https://github.com/stan-dev/shinystan/, http://mc-stan.org/
 BugReports: https://github.com/stan-dev/shinystan/issues/
 Depends:
     R (>= 3.1.0),
-    shiny (>= 0.12.1)
+    shiny (>= 0.12.1),
+    tweenr,
+    reshape2
 License: GPL (>=3)
 LazyData: true
 Suggests:
