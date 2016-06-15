@@ -214,3 +214,15 @@ if (exists("object"))
 if (exists(".SHINYSTAN_OBJECT"))
   rm(.SHINYSTAN_OBJECT)
 gc()
+
+# list needed for animation aspect ratio selections
+# taken from https://support.google.com/youtube/answer/6375112
+
+youtube_aspect <- list(`2160p`=list(width=3840,height=2160),
+                           `1440p`=list(width=2560,height=1440),
+                           `1080p`=list(width=1920,height=1080),
+                           `720p`=list(width=1280,height=720),
+                           `480p`=list(width=854,height=480),
+                           `360p`=list(width=640,height=360),
+                           `240p`=list(width=426,height=240))
+

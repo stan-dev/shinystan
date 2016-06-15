@@ -690,9 +690,9 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                           colour_palette = "Set1",
                           tween_ratio = 10,
                           top_title=TRUE,
-                          height=NULL,
-                          width=NULL,
-                          resolution=NULL
+                          height=youtube_aspect[["1080p"]]$height,
+                          width=youtube_aspect[["1080p"]]$width,
+                          resolution="Automatic"
 ) {
   
   shape_translator <- function(x) {
@@ -707,10 +707,10 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   
   # options for animation
   
-  if(is.null(height)) {
-    height <- 1000
-    width <- 1200
-    resolution <- 200
+  if(resolution=="Automatic") {
+    resolution <- width/8
+  } else {
+    resolution <- as.numeric(resolution)
   }
 
   params <- c(param, param2)

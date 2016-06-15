@@ -61,8 +61,8 @@ animate_plot <- reactive({
       colour_palette = input$animate_color,
       tween_ratio = input$frame_tween,
       top_title = input$animate_title,
-      height = input$animate_height,
-      width = input$animate_width,
+      height = youtube_aspect[[input$animation_quality]]$height,
+      width = youtube_aspect[[input$animation_quality]]$width,
       resolution = input$animate_resolution
   )
 })  
