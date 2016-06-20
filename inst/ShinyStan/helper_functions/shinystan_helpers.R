@@ -692,7 +692,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                           top_title=TRUE,
                           height=youtube_aspect[["1080p"]]$height,
                           width=youtube_aspect[["1080p"]]$width,
-                          resolution="Automatic"
+                          resolution="Automatic",
+                          graph_type='Scatterplot'
 ) {
   
   shape_translator <- function(x) {
@@ -706,7 +707,6 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   outfile2 <- 'gg_animate_shinystan.webm'
   
   # options for animation
-  
   if(resolution=="Automatic") {
     resolution <- width/8
   } else {
@@ -821,53 +821,75 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
     dat <- tweenr::tween_elements(dat,'time','id','ease',nframes=dim(samps)[1]*tween_ratio)
     dat$variable <- dat$.group
   }
-
-  graph <- ggplot(dat, aes(x = x, y = y, xend=c(tail(x, n=-1), NA), 
-                           yend=c(tail(y, n=-1), NA),colour=variable,frame=.frame)) 
+  
   
 
-# Add in options from bivariate plot, which should be essentially the same --------
+# Graph building for scatterplots -----------------------------------------
+
+
+  if(graph_type=='Scatterplot') {
+    graph <- ggplot(dat, aes(x = x, y = y, xend=c(tail(x, n=-1), NA), 
+                             yend=c(tail(y, n=-1), NA),colour=variable,frame=.frame)) 
+    
   
-  if (lines == "hide") {
-    graph <- graph + geom_point(alpha = pt_alpha, size = pt_size, 
-                                shape = shape_translator(pt_shape))
-  } else { # if lines = "back" or "front"
-    if (lines == "back") {
-      graph <- graph + 
-        geom_path(alpha = lines_alpha, aes(cumulative=TRUE)) + 
-        geom_point(alpha = pt_alpha, size = pt_size, 
-                   shape = shape_translator(pt_shape))
-    } else { # lines = "front"
-      graph <- graph + 
-        geom_point(alpha = pt_alpha, size = pt_size, 
-                   shape = shape_translator(pt_shape)) +
-        geom_path(alpha = lines_alpha,aes(cumulative=TRUE))
+  # Add in options from bivariate plot, which should be essentially the same --------
+    
+    if (lines == "hide") {
+      graph <- graph + geom_point(alpha = pt_alpha, size = pt_size, 
+                                  shape = shape_translator(pt_shape))
+    } else { # if lines = "back" or "front"
+      if (lines == "back") {
+        graph <- graph + 
+          geom_path(alpha = lines_alpha, aes(cumulative=TRUE)) + 
+          geom_point(alpha = pt_alpha, size = pt_size, 
+                     shape = shape_translator(pt_shape))
+      } else { # lines = "front"
+        graph <- graph + 
+          geom_point(alpha = pt_alpha, size = pt_size, 
+                     shape = shape_translator(pt_shape)) +
+          geom_path(alpha = lines_alpha,aes(cumulative=TRUE))
+      }
     }
+    if (ellipse_lev != "None")
+      graph <- graph + stat_ellipse(level = as.numeric(ellipse_lev), 
+                                    linetype = ellipse_lty, size = ellipse_lwd, alpha = ellipse_alpha)
+    if (!all(dat$divergent == 0))
+      graph <- graph + geom_point(data = subset(dat, divergent == 1), aes(x,y,frame=NULL), 
+                                  size = pt_size + 0.5, shape = 21, 
+                                  color = "#570000", fill = "#ae0001")
+    if (!all(dat$hit_max_td == 0))
+      graph <- graph + geom_point(data = subset(dat, hit_max_td == 1), aes(x,y,frame=NULL), 
+                                  size = pt_size + 0.5, shape = 21,
+                                  color = "#5f4a13", fill = "#eeba30")
+    
+    # Set colour and label values for graphs with more than one variable --------
+    
+    if(length(param2)>1 | (.nChains>0 && this_chain=='All')) {
+      graph <- graph + geom_text(aes(label=variable),vjust=-0.4) + scale_colour_brewer(palette=colour_palette)
+    }
+    
+    # Adjust text because otherwise it looks too small
+    
+    graph <- graph + param_labs + 
+      theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)
   }
-  if (ellipse_lev != "None")
-    graph <- graph + stat_ellipse(level = as.numeric(ellipse_lev), 
-                                  linetype = ellipse_lty, size = ellipse_lwd, alpha = ellipse_alpha)
-  if (!all(dat$divergent == 0))
-    graph <- graph + geom_point(data = subset(dat, divergent == 1), aes(x,y,frame=NULL), 
-                                size = pt_size + 0.5, shape = 21, 
-                                color = "#570000", fill = "#ae0001")
-  if (!all(dat$hit_max_td == 0))
-    graph <- graph + geom_point(data = subset(dat, hit_max_td == 1), aes(x,y,frame=NULL), 
-                                size = pt_size + 0.5, shape = 21,
-                                color = "#5f4a13", fill = "#eeba30")
 
-# Set colour and label values for graphs with more than one variable --------
 
-  if(length(param2)>1 | (.nChains>0 && this_chain=='All')) {
-    graph <- graph + geom_text(aes(label=variable),vjust=-0.4) + scale_colour_brewer(palette=colour_palette)
+# Code building for animated histograms -----------------------------------
+  else if(graph_type=='Density') {
+    fill_color <-  "gray20"
+    line_color <-  "gray35"
+    
+    graph <- ggplot(dat, aes(x = x, frame=.frame))
+    
+    graph <- graph +
+      geom_density(aes(group=.frame),fill=fill_color,colour=line_color) +
+      scale_colour_brewer(palette=colour_palette) + 
+      scale_fill_discrete("") +
+      labs(x = param2_label, y = "") +
+      theme_classic() %+replace% (no_lgnd + title_txt + axis_color + fat_axis + no_yaxs + transparent) 
+    
   }
-  
-  # Adjust text because otherwise it looks too small
-  
-  graph <- graph + param_labs + 
-    theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)
-  
-
 
   
   # Movie file is saved in WEBM format, a lightweight and opensource video codec. It is saved to 'www' directory

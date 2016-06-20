@@ -12,7 +12,9 @@ shinyjs::hidden(
               selectInput("animation_quality",strongMed("Select video quality"),choices = names(youtube_aspect),selected = "1080p",multiple = FALSE)),
           column(width=2,
                  selectInput("animate_resolution",strongMed("Resolution (pixels)"),choices=c("Automatic",seq(from=10,to=500,by=10)),multiple = FALSE,selected = "Automatic"),
-                 checkboxInput("animate_title",strongMed("Frame counter?"),value=FALSE))
+                 checkboxInput("animate_title",strongMed("Frame counter?"),value=FALSE)),
+          column(width=2,
+                 selectInput("animate_plot",strongMed("Plot Type"),choices=c("Scatterplot","Density"),multiple=FALSE,selected="Scatterplot"))
           ),
         hr(class = "hroptions"),
         strongBig("Transformation"),

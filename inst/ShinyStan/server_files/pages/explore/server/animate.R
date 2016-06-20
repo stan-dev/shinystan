@@ -63,7 +63,8 @@ animate_plot <- reactive({
       top_title = input$animate_title,
       height = youtube_aspect[[input$animation_quality]]$height,
       width = youtube_aspect[[input$animation_quality]]$width,
-      resolution = input$animate_resolution
+      resolution = input$animate_resolution,
+      graph_type=input$animate_plot
   )
 })  
 

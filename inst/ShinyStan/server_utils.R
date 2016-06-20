@@ -164,3 +164,4 @@ gg_animate_save <- function(g, filename = NULL, saver = NULL, ...) {
   g$saved <- TRUE
   g
 }
+
