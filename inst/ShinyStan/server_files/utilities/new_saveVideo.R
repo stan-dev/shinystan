@@ -2,23 +2,23 @@
 # Based on saveVideo function from package animate
 # Modified to use resolution and only involve png output for simplicity
 
-in_dir <- function (wd, expr) 
-{
-  owd = setwd(wd)
-  on.exit(setwd(owd))
-  expr
-}
+# in_dir <- function (wd, expr) 
+# {
+#   owd = setwd(wd)
+#   on.exit(setwd(owd))
+#   expr
+# }
 
 
 
-outputVideo <- function(expr, video.name = 'animation.mp4', img.name = 'Rplot', ffmpeg = animation::ani.options('ffmpeg'),
+outputVideo <- function(in_plots, video.name = 'animation.mp4', img.name = 'Rplot', ffmpeg = animation::ani.options('ffmpeg'),
                         other.opts=NULL, width,height,resolution,frame_speed) {
 
   if(!dir.exists(dirname(video.name))){
     dir.create(dirname(video.name))
   }
   
-  owd = setwd(tempdir())
+  owd <- setwd(tempdir())
   on.exit(setwd(owd), add = TRUE)
   
   if(is.null(other.opts)) {
@@ -28,24 +28,28 @@ outputVideo <- function(expr, video.name = 'animation.mp4', img.name = 'Rplot', 
 file.ext <- 'png'
 num <-  ifelse(file.ext == 'pdf', '', '%d')
 unlink(paste(img.name, '*.', file.ext, sep = ''))
-img.fmt <-  paste(img.name, num, '.', file.ext, sep = '')
-img.fmt <-  file.path(tempdir(), img.fmt)
+save_dir <- tempdir()
+img.fmt_template <-  paste(img.name, num, '.', file.ext, sep = '')
+img.fmt_template <-  file.path(save_dir, img.fmt)
 
-png(img.fmt, width = width,
+
+over_plots <- function(x) {
+png(file.path(save_dir,paste0('Rplot',x, num,".", file.ext)), width = width,
         height = height,res=resolution)
-in_dir(owd, expr)
+plot_ggplot_build(in_plots$plots[[x]])
 dev.off()
-
+}
+parallel::mclapply(1:length(in_plots),over_plots)
 ## call FFmpeg
 ffmpeg <-  paste('ffmpeg', '-y', '-framerate',frame_speed, '-i',
-               basename(img.fmt), other.opts, basename(video.name))
+               basename(img.fmt_template), other.opts, basename(video.name))
 message('Executing: ', ffmpeg)
 cmd <- system(ffmpeg,intern=TRUE)
 
 if (class(cmd)!= 'try-error') {
   setwd(owd)
-  if(!grepl(tempdir(),video.name,fixed = T))
-    file.copy(file.path(tempdir(), basename(video.name)), video.name, overwrite = TRUE)
+  if(!grepl(save_dir,video.name,fixed = T))
+    file.copy(file.path(save_dir, basename(video.name)), video.name, overwrite = TRUE)
   message('\n\nVideo has been created at: ',
           output.path <- normalizePath(video.name))
 } else {
@@ -88,10 +92,9 @@ shiny_animate_save <- function(g, filename = NULL,frame_speed,
   # temporarily move to directory (may be current one, that's OK)
   # this helps with animation functions like saveGIF that work only in
   # current directory
+
   withr::with_dir(dirname(filename), {
-    outputVideo(for (pl in g$plots) {
-      plot_ggplot_build(pl)
-    }, basename(filename),frame_speed=frame_speed,width=width,height=height,resolution=resolution)
+    outputVideo(g, basename(filename),frame_speed=frame_speed,width=width,height=height,resolution=resolution)
   })
   
   g$src <- base64enc::dataURI(file = filename, mime = 'video/webm')
