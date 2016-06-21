@@ -64,7 +64,8 @@ animate_plot <- reactive({
       height = youtube_aspect[[input$animation_quality]]$height,
       width = youtube_aspect[[input$animation_quality]]$width,
       resolution = input$animate_resolution,
-      graph_type=input$animate_plot
+      graph_type=input$animate_plot,
+      num_cores=input$animate_cores
   )
 })  
 

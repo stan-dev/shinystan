@@ -14,7 +14,8 @@ shinyjs::hidden(
                  selectInput("animate_resolution",strongMed("Resolution (pixels)"),choices=c("Automatic",seq(from=10,to=500,by=10)),multiple = FALSE,selected = "Automatic"),
                  checkboxInput("animate_title",strongMed("Frame counter?"),value=FALSE)),
           column(width=2,
-                 selectInput("animate_plot",strongMed("Plot Type"),choices=c("Scatterplot","Density"),multiple=FALSE,selected="Scatterplot"))
+                 selectInput("animate_plot",strongMed("Plot Type"),choices=c("Scatterplot","Density"),multiple=FALSE,selected="Scatterplot"),
+                 numericInput('animate_cores',strongMed('Number of Cores (Parallel)'),1,min=1,step=1))
           ),
         hr(class = "hroptions"),
         strongBig("Transformation"),

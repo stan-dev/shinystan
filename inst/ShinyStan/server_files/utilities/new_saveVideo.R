@@ -12,8 +12,14 @@
 
 
 outputVideo <- function(in_plots, video.name = 'animation.mp4', img.name = 'Rplot', ffmpeg = animation::ani.options('ffmpeg'),
-                        other.opts=NULL, width,height,resolution,frame_speed) {
-
+                        other.opts=NULL, width,height,resolution,frame_speed,num_cores=1) {
+  if(num_cores>1) {
+    num_chain <- num_cores
+  } else {
+    num_chain <- 1
+  }
+  
+  
   if(!dir.exists(dirname(video.name))){
     dir.create(dirname(video.name))
   }
@@ -30,16 +36,16 @@ num <-  ifelse(file.ext == 'pdf', '', '%d')
 unlink(paste(img.name, '*.', file.ext, sep = ''))
 save_dir <- tempdir()
 img.fmt_template <-  paste(img.name, num, '.', file.ext, sep = '')
-img.fmt_template <-  file.path(save_dir, img.fmt)
+img.fmt_template <-  file.path(save_dir, img.fmt_template)
 
 
 over_plots <- function(x) {
-png(file.path(save_dir,paste0('Rplot',x, num,".", file.ext)), width = width,
+png(file.path(save_dir,paste0('Rplot',x,".", file.ext)), width = width,
         height = height,res=resolution)
 plot_ggplot_build(in_plots$plots[[x]])
 dev.off()
 }
-parallel::mclapply(1:length(in_plots),over_plots)
+parallel::mclapply(1:length(in_plots$plots),over_plots,mc.cores=num_chain)
 ## call FFmpeg
 ffmpeg <-  paste('ffmpeg', '-y', '-framerate',frame_speed, '-i',
                basename(img.fmt_template), other.opts, basename(video.name))
@@ -85,16 +91,21 @@ plot_ggplot_build <- function (b, newpage = is.null(vp), vp = NULL)
 # This function is a modified version of the gg_animate_save function 
 
 shiny_animate_save <- function(g, filename = NULL,frame_speed,
-                               width,height,resolution) {
+                               width,height,resolution,parallel=TRUE,num_cores=1) {
 
   g$filename <- filename
   
   # temporarily move to directory (may be current one, that's OK)
   # this helps with animation functions like saveGIF that work only in
   # current directory
-
+  
+  if(parallel==TRUE && num_cores>1) {
+    num_cores <- num_cores
+  } else {
+    num_cores <- 1
+  }
   withr::with_dir(dirname(filename), {
-    outputVideo(g, basename(filename),frame_speed=frame_speed,width=width,height=height,resolution=resolution)
+    outputVideo(g, basename(filename),frame_speed=frame_speed,width=width,height=height,resolution=resolution,num_cores=num_cores)
   })
   
   g$src <- base64enc::dataURI(file = filename, mime = 'video/webm')

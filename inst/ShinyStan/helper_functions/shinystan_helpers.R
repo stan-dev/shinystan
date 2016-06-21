@@ -693,7 +693,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                           height=youtube_aspect[["1080p"]]$height,
                           width=youtube_aspect[["1080p"]]$width,
                           resolution="Automatic",
-                          graph_type='Scatterplot'
+                          graph_type='Scatterplot',
+                          num_cores=1
 ) {
   
   shape_translator <- function(x) {
@@ -899,8 +900,8 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   animated  <- gganimate::gg_animate(graph,title_frame=top_title)
   
   # use separate function for better options control than the base gganimate function
-  
-  shiny_animate_save(animated,filename=outfile1,height=height,width=width,resolution=resolution,frame_speed=frame_speed)
+
+  shiny_animate_save(animated,filename=outfile1,height=height,width=width,resolution=resolution,frame_speed=frame_speed,num_cores=num_cores)
 
   
   return(list(src=outfile2,
