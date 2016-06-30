@@ -47,7 +47,7 @@ outputVideo <- function(in_plots, video.name = 'animation.mp4', img.name = 'Rplo
     other.opts <- paste0("-c:v libvpx -pix_fmt yuv420p"," -crf 7 -b:v 2M -c:a libvorbis")
   }
 file.ext <- 'png'
-num <-  ifelse(file.ext == 'pdf', '', '%d')
+num <-  ifelse(file.ext == 'pdf', '', '%d03')
 unlink(paste(img.name, '*.', file.ext, sep = ''))
 save_dir <- tempdir()
 img.fmt_template <-  paste(img.name, num, '.', file.ext, sep = '')
@@ -60,6 +60,13 @@ counter_data <- data.frame(id=1:length(in_plots$plots),
 parallel::mclapply(1:num_chain,over_plots,width=width,height=height,resolution=resolution,plots=in_plots$plots,
                    counter_data=counter_data,directory=save_dir,
                    mc.cores=num_chain)
+#Rename to allow sequential video processing
+get_files <- list.files(path=save_dir,pattern="Rplots_core_")
+cores <- as.numeric(gsub(pattern="_",replacement = "",stringr::str_extract(get_files,"_[0-9]_")))
+filenums <- as.numeric(gsub(pattern="_|.png",replacement = "",stringr::str_extract(get_files,"_[0-9]+.png")))
+truenums <- cores + filenums
+truenames <- file.path(save_dir,"Rplot",truenums,'.png')
+file.rename(from = get_files,to=truenames)
 ## call FFmpeg
 ffmpeg <-  paste('ffmpeg', '-y', '-framerate',frame_speed, '-i',
                basename(img.fmt_template), other.opts, basename(video.name))
