@@ -28,7 +28,8 @@ Depends:
     R (>= 3.1.0),
     shiny (>= 0.12.1),
     tweenr,
-    knitr (>= 1.9)
+    knitr (>= 1.9),
+    stringr
 License: GPL (>=3)
 LazyData: true
 Suggests:
