@@ -9,10 +9,8 @@ over_plots <- function(x,counter_data,directory,width,height,resolution,plots) {
   files_dir <- file.path(directory,"Rplots_core_",x,"_%03d",".png")
   png(files_dir,width = width,
               height = height,res=resolution)
-  for(j in 1:100) {
     for(i in use_data$id)
       plot_ggplot_build(plots[[i]])
-  }
   dev.off()
 }
 
