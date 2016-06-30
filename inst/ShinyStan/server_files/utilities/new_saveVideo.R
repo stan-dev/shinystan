@@ -1,14 +1,31 @@
 # Make custom saving function that works better with gg_animate()
 # Based on saveVideo function from package animate
-# Modified to use resolution and only involve png output for simplicity
+# Modified to use resolution and only involve png output for simplicity, also allow for parallel processing
 
-# in_dir <- function (wd, expr) 
-# {
-#   owd = setwd(wd)
-#   on.exit(setwd(owd))
-#   expr
-# }
+# helper function for parallel
 
+over_plots <- function(x,counter_data,directory,width,height,resolution,plots) {
+  use_data <- counter_data[counter_data$parallel_counter==x,]
+  files_dir <- file.path(directory,"Rplots_core_",x,"_%03d",".png")
+  png(files_dir,width = width,
+              height = height,res=resolution)
+  for(j in 1:100) {
+    for(i in use_data$id)
+      plot_ggplot_build(plots[[i]])
+  }
+  dev.off()
+}
+
+make_parallel_counter <- function(x,y) {
+  remainder <- x%%y
+  if(remainder==0) {
+    parallel_counter <- rep(1:y,each=floor(x/y))
+  } else {
+    parallel_counter <- rep(1:y,each=floor(x/y))
+    parallel_counter <- c(parallel_counter,rep(y[length(y)],remainder))
+  }
+  return(parallel_counter)
+}
 
 
 outputVideo <- function(in_plots, video.name = 'animation.mp4', img.name = 'Rplot', ffmpeg = animation::ani.options('ffmpeg'),
@@ -39,13 +56,12 @@ img.fmt_template <-  paste(img.name, num, '.', file.ext, sep = '')
 img.fmt_template <-  file.path(save_dir, img.fmt_template)
 
 
-over_plots <- function(x) {
-png(file.path(save_dir,paste0('Rplot',x,".", file.ext)), width = width,
-        height = height,res=resolution)
-plot_ggplot_build(in_plots$plots[[x]])
-dev.off()
-}
-parallel::mclapply(1:length(in_plots$plots),over_plots,mc.cores=num_chain)
+counter_data <- data.frame(id=1:length(in_plots$plots),
+                           parallel_counter=make_parallel_counter(length(in_plots$plots),num_chain))
+
+parallel::mclapply(1:num_chain,over_plots,width=width,height=height,resolution=resolution,plots=in_plots$plots,
+                   counter_data=counter_data,directory=save_dir,
+                   mc.cores=num_chain)
 ## call FFmpeg
 ffmpeg <-  paste('ffmpeg', '-y', '-framerate',frame_speed, '-i',
                basename(img.fmt_template), other.opts, basename(video.name))
@@ -86,19 +102,6 @@ plot_ggplot_build <- function (b, newpage = is.null(vp), vp = NULL)
     grid::grid.draw(gtable)
     grid::upViewport()
   }
-}
-
-# helper function for parallel
-
-over_plots <- function(x,counter_data,directory) {
-  use_data <- counter_data[counter_data$parallel_counter==x,]
-  files_dir <- file.path(directory,"Rplots_core_",x,"_%03d",".png")
-  png(files_dir)
-  for(j in 1:100) {
-    for(i in use_data$id)
-      plot(plots[[i]])
-  }
-  dev.off()
 }
 
 # This function is a modified version of the gg_animate_save function 
