@@ -88,6 +88,19 @@ plot_ggplot_build <- function (b, newpage = is.null(vp), vp = NULL)
   }
 }
 
+# helper function for parallel
+
+over_plots <- function(x,counter_data,directory) {
+  use_data <- counter_data[counter_data$parallel_counter==x,]
+  files_dir <- file.path(directory,"Rplots_core_",x,"_%03d",".png")
+  png(files_dir)
+  for(j in 1:100) {
+    for(i in use_data$id)
+      plot(plots[[i]])
+  }
+  dev.off()
+}
+
 # This function is a modified version of the gg_animate_save function 
 
 shiny_animate_save <- function(g, filename = NULL,frame_speed,
