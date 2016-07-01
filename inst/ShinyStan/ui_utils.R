@@ -214,3 +214,6 @@ if (exists("object"))
 if (exists(".SHINYSTAN_OBJECT"))
   rm(.SHINYSTAN_OBJECT)
 gc()
+
+
+

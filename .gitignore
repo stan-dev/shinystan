@@ -1,14 +1,9 @@
-.Rhistory
-.Rapp.history
-*-Ex.R
-.Rdata
 .Rproj.user
-shinystan.Rproj
-
-*.DS_Store
-inst/doc
-^cran-comments\.md$
-cran-comments.md
-
-revdep/
-*.swf
+.Rhistory
+.RData
+test_shinystan_gganimate.R
+save_gif.gif
+dropping_balls.gif
+"dropping balls.gif"
+inst/ShinyStan/www/gg_animate_shinystan.webm
+8 schools

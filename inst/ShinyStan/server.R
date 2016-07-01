@@ -10,6 +10,8 @@ SERVER_FILES <- server_files[!server_files %in% path_to_extract_sso]
 source("global_utils.R", local = TRUE)
 source("server_utils.R", local = TRUE)
 source(path_to_extract_sso, local = TRUE)
+# source functions for video creation
+source(server_files[grepl("new_saveVideo.R",server_files)],local=TRUE)
 
 # BEGIN server ------------------------------------------------------
 # ___________________________________________________________________
@@ -38,7 +40,7 @@ function(input, output, session) {
   
   # Toggle options dropdowns
   options_trigger_ids <- c("table", "multiparam", "autocorr", "rhat_warnings", 
-                           "bivariate", "trivariate", "density", "hist")
+                           "bivariate", "trivariate", "density", "hist","animate")
   observe({
     lapply(seq_along(options_trigger_ids), function(j) {
       shinyjs::onclick(

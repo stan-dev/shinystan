@@ -610,9 +610,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   samps_use <- array(samps[,,params], c(nIter, nParams))
   colnames(samps_use) <- params
   
-  t_x <- get(transform_x)
-  # t_x <- function(x) eval(parse(text = transform_x))
-  t_y <- get(transform_y)
+
   x_lab <- if (transform_x != "identity") 
     paste0(transform_x, "(", param, ")") else param
   y_lab <- if (transform_y != "identity") 
@@ -667,3 +665,245 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
     theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)
 }
 
+
+# Animation plot ----------------------------------------------------------
+
+.animate_plot <- function(samps, sp = NULL, max_td = NULL,
+                          param, param2,
+                          pt_alpha = 0.10,
+                          pt_size = 2,
+                          pt_shape = 10,
+                          ellipse_lev = "None",
+                          ellipse_lty = 1,
+                          ellipse_lwd = 1,
+                          ellipse_alpha = 1,
+                          lines = "back",
+                          lines_alpha,
+                          points = TRUE,
+                          transform_x = "identity",
+                          transform_y = "identity",
+                          this_chain="All",
+                          frame_speed=16,
+                          row_min = NULL,
+                          row_max = NULL,
+                          standardize = FALSE,
+                          colour_palette = "Set1",
+                          tween_ratio = 10,
+                          top_title=TRUE,
+                          height=youtube_aspect[["1080p"]]$height,
+                          width=youtube_aspect[["1080p"]]$width,
+                          resolution="Automatic",
+                          graph_type='Scatterplot',
+                          num_cores=1
+) {
+  
+  shape_translator <- function(x) {
+    shape <- if (x >= 6) x + 9 else x
+    shape
+  }
+
+  # Need to set a file name to save the WEBM to
+  
+  outfile1 <- 'www/gg_animate_shinystan.webm'
+  outfile2 <- 'gg_animate_shinystan.webm'
+  
+  # options for animation
+  if(resolution=="Automatic") {
+    resolution <- width/8
+  } else {
+    resolution <- as.numeric(resolution)
+  }
+
+  params <- c(param, param2)
+  nParams <- length(params)
+  
+  # Adjust number of rows per slider Input
+  
+  if(!is.null(row_min)) {
+    samps <- samps[row_min:row_max,,]
+    sp <- lapply(sp,function(x) {x <- x[row_min:row_max,]
+                                return(x)})
+  }
+  
+  .nChains <- dim(samps)[2]
+  
+  # if only one x parameter, allow multiple chains, but otherwise only use a single chain
+  
+  if(.nChains>1 && length(param2)==1 && this_chain=='All') {
+  nIter <- dim(samps)[1] * dim(samps)[2]
+  } else {
+    nIter <- dim(samps)[1]
+  }
+  if(length(param2)>1) {
+  samps_use <- array(samps[,as.numeric(this_chain),params], c(nIter, nParams))
+  colnames(samps_use) <- c('y',param2)
+  } else if(this_chain=="All" && .nChains>1) {
+    param_chain <- paste0("Chain ",1:.nChains)
+    params <- c(param,param2)
+    nParams <- length(params)
+    samps_use <- array(samps[,,params], c(nIter, nParams))
+    colnames(samps_use) <- c('y',param2)
+  } else if(this_chain=="All" && .nChains==1){
+    samps_use <- array(samps[,,params], c(nIter, nParams))
+    colnames(samps_use) <- c('y',param2)
+  } else if(this_chain!="All") {
+    samps_use <- array(samps[,as.numeric(this_chain),params], c(nIter, nParams))
+    colnames(samps_use) <- c('y',param2)
+  }
+  
+  
+  param2 <- if (transform_x != "identity") 
+    paste0(transform_x, "(", param2, ")") else param2
+  param <- if (transform_y != "identity") 
+    paste0(transform_y, "(", param, ")") else param
+  
+
+# After transforming, perform an optional standardization -----------------
+
+
+  if(length(param2)>1) {
+    param2_label <- paste0(param2,collapse=", ")
+  }  else if(length(param2)==1 && this_chain=="All" && .nChains>1) {
+    param2_label <- param2
+  } else {
+    param2_label <- param2
+  }
+  param_labs <- labs(x = param2_label, y = param)
+  
+  t_x <- get(transform_x)
+  # t_x <- function(x) eval(parse(text = transform_x))
+  t_y <- get(transform_y)
+  
+  if(transform_y!="identity") {
+    samps_use[,1] <- t_y(samps_use[,1])
+  }
+  if(transform_x!="identity") {
+    for(i in 1:(nParams-1)) {
+      samps_use[,(i+1)] <- t_x(samps_use[,(i+1)])
+    }
+  }
+  
+  
+  if(standardize) 
+    samps_use[,2:ncol(samps_use)] <- scale(samps_use[,2:ncol(samps_use)]) 
+  
+  
+  # Now need to 'tween' the data: add interpolation to the dataset so that the frames transition smoothly
+  
+  if(length(param2)>1 | this_chain!='All') {
+      dat <- as.data.frame(samps_use)
+      dat$id <- 1
+      dat$time <- 1:nrow(dat)
+      dat$ease <- 'quadratic-in-out'
+      if (!is.null(sp)) {
+        dat$divergent <- sp[[as.numeric(this_chain)]][, "divergent__"]
+        dat$hit_max_td <- if (is.null(max_td)) 0 else 
+          as.numeric(sp[[as.numeric(this_chain)]][, "treedepth__"] == max_td)
+      } else {
+        dat$divergent <- 0
+        dat$hit_max_td <- 0
+      } 
+      dat <- tweenr::tween_elements(dat,'time','id','ease',nframes=(nrow(dat)*tween_ratio))
+      dat <- reshape2::melt(dat,id.vars=c('y','.group','.frame','time','divergent','hit_max_td'),value.name='x')
+  } else {
+    dat <- as.data.frame(samps_use)
+    dat$time <- rep(1:(nIter/.nChains),times=.nChains)
+    dat$ease <- 'quadratic-in-out'
+    if (!is.null(sp)) {
+      dat$divergent <- c(sapply(sp, FUN = function(y) y[, "divergent__"]))
+      dat$hit_max_td <- if (is.null(max_td)) 0 else 
+        c(sapply(sp, FUN = function(y) as.numeric(y[, "treedepth__"] == max_td))) 
+    } else {
+      dat$divergent <- 0
+      dat$hit_max_td <- 0
+    } 
+    dat$x <- dat[,2]
+    dat$id <- rep(param_chain,each=nIter/.nChains)
+    dat <- tweenr::tween_elements(dat,'time','id','ease',nframes=dim(samps)[1]*tween_ratio)
+    dat$variable <- dat$.group
+  }
+  
+  
+
+# Graph building for scatterplots -----------------------------------------
+
+
+  if(graph_type=='Scatterplot') {
+    graph <- ggplot(dat, aes(x = x, y = y, xend=c(tail(x, n=-1), NA), 
+                             yend=c(tail(y, n=-1), NA),colour=variable,frame=.frame)) 
+    
+  
+  # Add in options from bivariate plot, which should be essentially the same --------
+    
+    if (lines == "hide") {
+      graph <- graph + geom_point(alpha = pt_alpha, size = pt_size, 
+                                  shape = shape_translator(pt_shape))
+    } else { # if lines = "back" or "front"
+      if (lines == "back") {
+        graph <- graph + 
+          geom_path(alpha = lines_alpha, aes(cumulative=TRUE)) + 
+          geom_point(alpha = pt_alpha, size = pt_size, 
+                     shape = shape_translator(pt_shape))
+      } else { # lines = "front"
+        graph <- graph + 
+          geom_point(alpha = pt_alpha, size = pt_size, 
+                     shape = shape_translator(pt_shape)) +
+          geom_path(alpha = lines_alpha,aes(cumulative=TRUE))
+      }
+    }
+    if (ellipse_lev != "None")
+      graph <- graph + stat_ellipse(level = as.numeric(ellipse_lev), 
+                                    linetype = ellipse_lty, size = ellipse_lwd, alpha = ellipse_alpha)
+    if (!all(dat$divergent == 0))
+      graph <- graph + geom_point(data = subset(dat, divergent == 1), aes(x,y,frame=NULL), 
+                                  size = pt_size + 0.5, shape = 21, 
+                                  color = "#570000", fill = "#ae0001")
+    if (!all(dat$hit_max_td == 0))
+      graph <- graph + geom_point(data = subset(dat, hit_max_td == 1), aes(x,y,frame=NULL), 
+                                  size = pt_size + 0.5, shape = 21,
+                                  color = "#5f4a13", fill = "#eeba30")
+    
+    # Set colour and label values for graphs with more than one variable --------
+    
+    if(length(param2)>1 | (.nChains>0 && this_chain=='All')) {
+      graph <- graph + geom_text(aes(label=variable),vjust=-0.4) + scale_colour_brewer(palette=colour_palette)
+    }
+    
+    # Adjust text because otherwise it looks too small
+    
+    graph <- graph + param_labs + 
+      theme_classic() %+replace% (no_lgnd + axis_labs + fat_axis + axis_color + transparent)
+  }
+
+
+# Code building for animated histograms -----------------------------------
+  else if(graph_type=='Density') {
+    fill_color <-  "gray20"
+    line_color <-  "gray35"
+    
+    graph <- ggplot(dat, aes(x = x, frame=.frame))
+    
+    graph <- graph +
+      geom_density(aes(group=.frame),fill=fill_color,colour=line_color) +
+      scale_colour_brewer(palette=colour_palette) + 
+      scale_fill_discrete("") +
+      labs(x = param2_label, y = "") +
+      theme_classic() %+replace% (no_lgnd + title_txt + axis_color + fat_axis + no_yaxs + transparent) 
+    
+  }
+
+  
+  # Movie file is saved in WEBM format, a lightweight and opensource video codec. It is saved to 'www' directory
+  # Because that is where the shiny hmtlOutput function will look for it. 
+  # the -b option is the bitrate, in megabits, which adjusts the quality (and size) of the video.
+  
+  animated  <- gganimate::gg_animate(graph,title_frame=top_title)
+  
+  # use separate function for better options control than the base gganimate function
+
+  shiny_animate_save(animated,filename=outfile1,height=height,width=width,resolution=resolution,frame_speed=frame_speed,num_cores=num_cores)
+
+  
+  return(list(src=outfile2,
+              alt="Animated scatterplot"))
+}
