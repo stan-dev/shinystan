@@ -4,13 +4,14 @@
 
 # helper function for parallel
 
-over_plots <- function(x,counter_data,directory,width,height,resolution,plots) {
+over_plots <- function(x,counter_data,directory,width=NULL,height=NULL,resolution=NULL,plots) {
   use_data <- counter_data[counter_data$parallel_counter==x,]
-  files_dir <- file.path(directory,"Rplots_core_",x,"_%03d",".png")
+  files_dir <- file.path(directory,paste0("Rplots_core_",x,"_%d",".png"))
   png(files_dir,width = width,
               height = height,res=resolution)
-    for(i in use_data$id)
+    for(i in use_data$id) {
       plot_ggplot_build(plots[[i]])
+    }
   dev.off()
 }
 
@@ -27,7 +28,7 @@ make_parallel_counter <- function(x,y) {
 
 
 outputVideo <- function(in_plots, video.name = 'animation.mp4', img.name = 'Rplot', ffmpeg = animation::ani.options('ffmpeg'),
-                        other.opts=NULL, width,height,resolution,frame_speed,num_cores=1) {
+                        other.opts=NULL, width=NULL,height=NULL,resolution=NULL,frame_speed=NULL,num_cores=1) {
   if(num_cores>1) {
     num_chain <- num_cores
   } else {
@@ -47,12 +48,11 @@ outputVideo <- function(in_plots, video.name = 'animation.mp4', img.name = 'Rplo
     other.opts <- paste0("-c:v libvpx -pix_fmt yuv420p"," -crf 7 -b:v 2M -c:a libvorbis")
   }
 file.ext <- 'png'
-num <-  ifelse(file.ext == 'pdf', '', '%d03')
+num <-  ifelse(file.ext == 'pdf', '', '%d')
 unlink(paste(img.name, '*.', file.ext, sep = ''))
 save_dir <- tempdir()
 img.fmt_template <-  paste(img.name, num, '.', file.ext, sep = '')
 img.fmt_template <-  file.path(save_dir, img.fmt_template)
-
 
 counter_data <- data.frame(id=1:length(in_plots$plots),
                            parallel_counter=make_parallel_counter(length(in_plots$plots),num_chain))
@@ -64,8 +64,10 @@ parallel::mclapply(1:num_chain,over_plots,width=width,height=height,resolution=r
 get_files <- list.files(path=save_dir,pattern="Rplots_core_")
 cores <- as.numeric(gsub(pattern="_",replacement = "",stringr::str_extract(get_files,"_[0-9]_")))
 filenums <- as.numeric(gsub(pattern="_|.png",replacement = "",stringr::str_extract(get_files,"_[0-9]+.png")))
-truenums <- cores + filenums
-truenames <- file.path(save_dir,"Rplot",truenums,'.png')
+
+truenums <-  filenums + (cores - 1) * length(in_plots$plots)
+
+truenames <- file.path(save_dir,paste0("Rplot",truenums,'.png'))
 file.rename(from = get_files,to=truenames)
 ## call FFmpeg
 ffmpeg <-  paste('ffmpeg', '-y', '-framerate',frame_speed, '-i',
