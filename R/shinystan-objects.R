@@ -728,3 +728,139 @@ setMethod(
   
   pp_check_plots
 }
+
+
+# as.shinystan (stanjm) -------------------------------------------------
+setOldClass("stanjm")
+#' @describeIn as.shinystan Create a shinystan object from a stanjm object 
+#'   (\pkg{\link[rstanjm]{rstanjm}}).
+#'   
+#' @param ppd For stanjm objects (\pkg{rstanarm}), \code{ppd} 
+#'   (logical) indicates whether to draw from the posterior predictive 
+#'   distribution before launching ShinyStan. The default is \code{TRUE}, 
+#'   although for very large objects it can be convenient to set it to 
+#'   \code{FALSE} as drawing from the posterior predictive distribution can be 
+#'   time consuming. If \code{ppd} is \code{TRUE} then graphical posterior
+#'   predictive checks are available when ShinyStan is launched.
+#' @param seed Passed to \code{\link[rstanjm]{pp_check}} (\pkg{rstanjm}) if 
+#'   \code{ppd} is \code{TRUE}.
+#'
+setMethod(
+  "as.shinystan",
+  signature = "stanjm",
+  definition = function(X,
+                        ppd = TRUE,
+                        seed = 1234,
+                        model_name = NULL,
+                        note = NULL,
+                        ...) {
+    check_suggests("rstanjm")
+    sso <- as.shinystan(X$stanfit, ...)
+    
+    mname <- if (!is.null(model_name))
+      model_name else paste0("Fitted joint model")
+    sso <- suppressMessages(model_name(sso, mname))
+    
+    if (!is.null(note))
+      sso <- suppressMessages(notes(sso, note, replace = TRUE))
+    
+    param_names <- slot(sso, "param_names")
+    sel <- grep(":_NEW_", dimnames(slot(sso, "posterior_sample"))[[3L]], 
+                fixed = TRUE)
+    if (length(sel)) {
+      param_names <- param_names[-sel]
+      slot(sso, "posterior_sample") <- 
+        slot(sso, "posterior_sample")[, , -sel, drop = FALSE]
+      slot(sso, "summary")  <- 
+        slot(sso, "summary")[-sel, , drop = FALSE]
+    }
+    param_dims <- rep(list(numeric(0)), length(param_names))
+    names(param_dims) <- param_names
+    
+    slot(sso, "param_names") <- param_names
+    slot(sso, "param_dims") <- param_dims
+    slot(sso, "misc")[["stanjm"]] <- TRUE
+    if (isTRUE(ppd))
+      slot(sso, "misc")[["pp_check_plots"]] <- .rstanjm_pp_checks(X, seed)
+    
+    return(sso)
+  }
+)
+
+.rstanjm_pp_checks <- function(X, seed, ...) {
+  message(
+    "\nHang on... preparing graphical posterior predictive checks for rstanarm model.",
+    "\nSee help('shinystan', 'rstanarm') for how to disable this feature."
+  )
+  ppc <- rstanjm::pp_checkLong
+  pp_check_plots <- list()
+  
+  pp_check_plots[["pp_check_hist"]] <-
+    do.call("ppc",
+            list(
+              object = X,
+              check = "dist",
+              nreps = 8,
+              overlay = FALSE,
+              seed = seed
+            ))
+  pp_check_plots[["pp_check_dens"]] <-
+    do.call("ppc",
+            list(
+              object = X,
+              check = "dist",
+              nreps = 8,
+              overlay = TRUE,
+              seed = seed
+            ))
+  pp_check_plots[["pp_check_resid"]] <-
+    do.call("ppc", list(
+      object = X,
+      check = "resid",
+      nreps = 8,
+      seed = seed
+    ))
+  pp_check_plots[["pp_check_scatter"]] <-
+    do.call("ppc",
+            list(
+              object = X,
+              check = "scatter",
+              nreps = NULL,
+              seed = seed
+            ))
+  pp_check_plots[["pp_check_stat_mean"]] <-
+    do.call("ppc",
+            list(
+              object = X,
+              check = "test",
+              test = "mean",
+              seed = seed
+            ))
+  pp_check_plots[["pp_check_stat_sd"]] <-
+    do.call("ppc", list(
+      object = X,
+      check = "test",
+      test = "sd",
+      seed = seed
+    ))
+  pp_check_plots[["pp_check_stat_min"]] <-
+    do.call("ppc", list(
+      object = X,
+      check = "test",
+      test = "min",
+      seed = seed
+    ))
+  pp_check_plots[["pp_check_stat_max"]] <-
+    do.call("ppc", list(
+      object = X,
+      check = "test",
+      test = "max",
+      seed = seed
+    ))
+  
+  pp_check_plots
+}
+
+
+
+
