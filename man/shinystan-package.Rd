@@ -5,7 +5,7 @@
 \alias{shinystan-package}
 \title{ShinyStan interface and shinystan R package}
 \description{
-Applied Bayesian data analysis is primarily implemented through 
+Applied Bayesian data analysis is primarily implemented through
   the Markov chain Monte Carlo (MCMC) algorithms offered by various software
   packages. When analyzing a posterior sample obtained by one of these
   algorithms the first step is to check for signs that the chains have
@@ -21,22 +21,22 @@ Applied Bayesian data analysis is primarily implemented through
   models fit using the rstan package and the No-U-Turn sampler).
 }
 \section{ShinyStan has extended functionality for Stan models}{
- 
 
-Stan (\url{http://mc-stan.org}) models can be run in R using the 
+
+Stan (\url{http://mc-stan.org}) models can be run in R using the
 \pkg{\link[rstan]{rstan}} and \pkg{\link[rstanarm]{rstanarm}} packages.
 }
 
 \section{Saving and sharing}{
 
-  
-  The \pkg{shinystan} package allows you to store the basic components of an 
+
+  The \pkg{shinystan} package allows you to store the basic components of an
   entire project (code, posterior samples, graphs, tables, notes) in a single
   object, a \code{\link[=as.shinystan]{shinystan object}} (sso, for short).
   Users can save many of the plots as ggplot2 objects for further
   customization and easy integration in reports or post-processing for
   publication.
-  
+
   The \code{\link{deploy_shinystan}} function lets you easily deploy your own
   ShinyStan apps online for any of your models using RStudio's shinyapps.io
   service. Each of your apps (each of your models) will have a unique url and
@@ -44,14 +44,14 @@ Stan (\url{http://mc-stan.org}) models can be run in R using the
 }
 
 \section{License}{
- 
+
 
  The \pkg{shinystan} package is open source licensed under the GNU Public
  License, version 3 (GPLv3).
 }
 
 \section{Demo}{
- 
+
 
  Check out the demo using \code{\link{launch_shinystan_demo}} or try it with
  one of your own models using \code{\link{launch_shinystan}}.

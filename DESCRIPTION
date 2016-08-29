@@ -36,6 +36,7 @@ Suggests:
     rstanarm (>= 2.9.0-3),
     testthat
 Imports:
+    colourpicker,
     DT (>= 0.1),
     dygraphs (>= 0.4.5),
     ggplot2 (>= 2.1.0),

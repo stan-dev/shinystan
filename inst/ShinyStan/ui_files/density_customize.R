@@ -70,7 +70,7 @@ shinyjs::hidden(div(
             selected = "None"
           )
         )
-      )), 
+      )),
     conditionalPanel(
       condition = "input.dens_options_display == 'Aesthetics'",
       fluidRow(
@@ -85,13 +85,13 @@ shinyjs::hidden(div(
         ),
         column(
           width = 3,
-          shinyjs::colourInput("dens_fill_color", strongMed("Fill"), base_fill)
+          colourpicker::colourInput("dens_fill_color", strongMed("Fill"), base_fill)
         ),
         column(
           width = 3,
-          shinyjs::colourInput("dens_line_color", strongMed("Line"), vline_base_clr)
+          colourpicker::colourInput("dens_line_color", strongMed("Line"), vline_base_clr)
         )
-      )), 
+      )),
     conditionalPanel(
       condition = "input.dens_options_display == 'Compare'",
       fluidRow(
@@ -110,7 +110,7 @@ shinyjs::hidden(div(
               "Inverse Gamma",
               "Beta"
             )
-          )), 
+          )),
         column(
           width = 2,
           condPanel_dens_prior(

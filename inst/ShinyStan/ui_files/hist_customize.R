@@ -39,11 +39,11 @@ shinyjs::hidden(div(
       ),
       column(
         width = 3,
-        shinyjs::colourInput("hist_fill_color", strongMed("Fill"), base_fill)
+        colourpicker::colourInput("hist_fill_color", strongMed("Fill"), base_fill)
       ),
       column(
         width = 3,
-        shinyjs::colourInput("hist_line_color", strongMed("Line"), vline_base_clr)
+        colourpicker::colourInput("hist_line_color", strongMed("Line"), vline_base_clr)
       )
     )
   )

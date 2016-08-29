@@ -7,7 +7,7 @@ shinyjs::hidden(
         transform_helpText("x,y"),
         fluidRow(
           column(width = 3, transformation_selectInput("bivariate_transform_x")),
-          column(width = 3, transformation_selectInput("bivariate_transform_y")), 
+          column(width = 3, transformation_selectInput("bivariate_transform_y")),
           column(
             width = 2,
             actionButton("bivariate_transform_go", label = "Transform", class = "transform-go")
@@ -20,13 +20,13 @@ shinyjs::hidden(
           choices = c("Points", "Ellipse", "Lines"),
           selected = "Points",
           width = "50%"
-        ), 
+        ),
         conditionalPanel(
           condition = "input.bivariate_options_display == 'Points'",
           fluidRow(
             column(
               width = 3,
-              shinyjs::colourInput("bivariate_pt_color", strongMed("Color"), base_fill)
+              colourpicker::colourInput("bivariate_pt_color", strongMed("Color"), base_fill)
             ),
             column(
               width = 2,
@@ -62,7 +62,7 @@ shinyjs::hidden(
                 ticks = FALSE
               )
             )
-          )), 
+          )),
         conditionalPanel(
           condition = "input.bivariate_options_display == 'Ellipse'",
           fluidRow(
@@ -83,7 +83,7 @@ shinyjs::hidden(
             ),
             column(
               width = 3,
-              shinyjs::colourInput(
+              colourpicker::colourInput(
                 "bivariate_ellipse_color",
                 strongMed("Color"),
                 vline_base_clr
@@ -124,7 +124,7 @@ shinyjs::hidden(
               )
             )
           )
-        ), 
+        ),
         conditionalPanel(
           condition = "input.bivariate_options_display == 'Lines'",
           fluidRow(
@@ -139,7 +139,7 @@ shinyjs::hidden(
             ),
             column(
               width = 3,
-              shinyjs::colourInput("bivariate_lines_color", strongMed("Color"), "gray")
+              colourpicker::colourInput("bivariate_lines_color", strongMed("Color"), "gray")
             ),
             column(
               width = 2,
