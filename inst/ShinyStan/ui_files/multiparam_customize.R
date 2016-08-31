@@ -50,19 +50,19 @@ absolutePanel(
           label = "Color point est. by \\(\\hat{R}\\)",
           value = FALSE
         ),
-        shinyjs::colourInput(
+        colourpicker::colourInput(
           "param_plot_fill_color",
           span(style = "font-size: 12px", "Density/CI color"),
           "#590815"
         ),
-        shinyjs::colourInput(
+        colourpicker::colourInput(
           "param_plot_outline_color",
           span(style = "font-size: 12px", "Outline color"),
           "#487575"
         ),
         conditionalPanel(
           condition = "input.param_plot_color_by_rhat == false",
-          shinyjs::colourInput(
+          colourpicker::colourInput(
             "param_plot_est_color",
             span(style = "font-size: 12px", "Point estimate color"),
             base_fill

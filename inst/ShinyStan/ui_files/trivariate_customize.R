@@ -31,7 +31,7 @@ shinyjs::hidden(div(
     fluidRow(
       column(
         width = 3,
-        shinyjs::colourInput("trivariate_pt_color", strongMed("Color"), value = base_fill)
+        colourpicker::colourInput("trivariate_pt_color", strongMed("Color"), value = base_fill)
       ),
       column(
         width = 3,

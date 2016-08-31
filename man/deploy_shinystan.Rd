@@ -13,53 +13,53 @@ deploy_shinystan(sso, appName, account = NULL, ..., deploy = TRUE)
 at least four characters long and may only contain letters, numbers, dashes
 and underscores.}
 
-\item{account}{shinyapps.io account username. Only required if more than one 
+\item{account}{shinyapps.io account username. Only required if more than one
 account is configured on the system.}
 
 \item{...}{Optional arguments. See Details.}
 
-\item{deploy}{Should the app be deployed? The only reason for this to be 
+\item{deploy}{Should the app be deployed? The only reason for this to be
 \code{FALSE} is if you just want to check that the preprocessing before
 deployment is successful.}
 }
 \value{
-\link[=invisible]{Invisibly}, \code{TRUE} if deployment succeeded 
-  (did not encounter an error) or, if \code{deploy} argument is set to 
-  \code{FALSE}, the path to the temporary directory containing the app ready 
+\link[=invisible]{Invisibly}, \code{TRUE} if deployment succeeded
+  (did not encounter an error) or, if \code{deploy} argument is set to
+  \code{FALSE}, the path to the temporary directory containing the app ready
   for deployment (also invisibly).
 }
 \description{
-Requires a (free or paid) ShinyApps account. Visit 
+Requires a (free or paid) ShinyApps account. Visit
 \url{http://www.shinyapps.io/} to sign up.
 }
 \details{
-In \code{...}, the arguments \code{ppcheck_data} and 
+In \code{...}, the arguments \code{ppcheck_data} and
   \code{ppcheck_yrep} can be specified. \code{ppcheck_data} should be a
   vector of observations to use for graphical posterior predictive checking
   and \code{ppcheck_yrep} should be a character string naming the parameter
   in \code{sso} containing the posterior predictive simulations/replications.
   The value of \code{ppcheck_yrep} is only used to preselect the appropriate
-  parameter/generated quantity to use for the posterior predictive checking. 
+  parameter/generated quantity to use for the posterior predictive checking.
   \code{ppcheck_yrep} (but not \code{ppcheck_data}) can also be set
   interactively on shinyapps.io when using the app.
 }
 \examples{
 \dontrun{
-# For this example assume sso is the name of the shinystan object for 
-# the model you want to use. Assume also that you want to name your app 
-# 'my-model' and that your shinyapps.io username is 'username'. 
+# For this example assume sso is the name of the shinystan object for
+# the model you want to use. Assume also that you want to name your app
+# 'my-model' and that your shinyapps.io username is 'username'.
 
-deploy_shinystan(sso, appName = "my-model", account = "username") 
+deploy_shinystan(sso, appName = "my-model", account = "username")
 
-# If you only have one ShinyApps account configured then you can also omit 
-# the 'account' argument. 
+# If you only have one ShinyApps account configured then you can also omit
+# the 'account' argument.
 
 deploy_shinystan(sso, appName = "my-model")
 }
 
 }
 \seealso{
-The example in the \emph{Deploying to shinyapps.io} vignette that 
+The example in the \emph{Deploying to shinyapps.io} vignette that
   comes with this package.
 
   \url{http://www.shinyapps.io/} to sign up for a free or paid ShinyApps

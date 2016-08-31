@@ -1,12 +1,12 @@
 fluidRow(
-  column(
-    width = 4,
-    helpText(style = "margin-bottom: 2px;", "Table tips:"),
-    helpText(style = "margin-top: 2px; font-size: 11px;", "Drag column names to rearrange the table columns.")
-  ),
+  # column(
+  #   width = 4,
+  #   helpText(style = "margin-bottom: 2px;", "Table tips: Drag column names to rearrange the table columns.")
+  #   # helpText(style = "margin-top: 2px; font-size: 11px;", "Drag column names to rearrange the table columns.")
+  # ),
+  style = "margin-left: 4px; margin-bottom: 6px;",
   column(
     width = 2,
-    offset = 4,
     div(
       strong(id = "table_digits_txt", "Digits"),
       numericInput(
@@ -19,5 +19,9 @@ fluidRow(
       )
     )
   ),
-  column(width = 2, a_glossary("open_glossary_from_table"))
+  column(
+    width = 2, 
+    offset = 8,
+    a_glossary("open_glossary_from_table")
+  )
 )

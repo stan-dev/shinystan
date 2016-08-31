@@ -1,18 +1,9 @@
-# shinystan is free software; you can redistribute it and/or modify it under the
-# terms of the GNU General Public License as published by the Free Software
-# Foundation; either version 3 of the License, or (at your option) any later
-# version.
-# 
-# shinystan is distributed in the hope that it will be useful, but WITHOUT ANY
-# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-# A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License along with
-# this program; if not, see <http://www.gnu.org/licenses/>.
+if (exists(".SHINYSTAN_OBJECT")) {
+  object <- .SHINYSTAN_OBJECT
+} else {
+  object <- get(".SHINYSTAN_OBJECT", envir = shinystan:::.sso_env)  
+}
 
-
-# options(shiny.trace=TRUE)
-object <- get(".SHINYSTAN_OBJECT", envir = shinystan:::.sso_env)
 path_to_extract_sso <- file.path("server_files","utilities","extract_sso.R")
 server_files <- list.files("server_files", full.names = TRUE, recursive = TRUE)
 SERVER_FILES <- server_files[!server_files %in% path_to_extract_sso]
@@ -23,6 +14,12 @@ source(path_to_extract_sso, local = TRUE)
 # BEGIN server ------------------------------------------------------
 # ___________________________________________________________________
 function(input, output, session) {
+  
+  # If not running on server then automatically stop app whenever browser tab
+  # (or any session) is closed
+  if (!nzchar(Sys.getenv("SHINY_PORT"))) {
+    session$onSessionEnded(function() stopApp(object))
+  }
   
   # Stop the app when "Save & Close" button is clicked
   observeEvent(
