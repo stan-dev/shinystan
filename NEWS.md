@@ -1,3 +1,6 @@
+### Version 2.2.1
+* Better compatibility with latest releases of 'shinyjs' and 'DT' packages
+
 ### Version 2.2.0-1
 * Fix bug in `deploy_shinystan` preventing some ShinyStan apps from being deployed
 
