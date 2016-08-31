@@ -1,8 +1,11 @@
 ### Version 2.2.1
 * Better compatibility with latest releases of 'shinyjs' and 'DT' packages
+* `shinystan::launch_shinystan_demo()` now works without first having to load 
+the package with a call to `library`
 
 ### Version 2.2.0-1
-* Fix bug in `deploy_shinystan` preventing some ShinyStan apps from being deployed
+* Fix bug in `deploy_shinystan` preventing some ShinyStan apps from being
+deployed
 
 ### Version 2.2.0
 * Add optional argument `pars` to the `as.shinystan` method for stanfit objects,

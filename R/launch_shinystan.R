@@ -123,8 +123,8 @@ launch_shinystan_demo <- function(demo_name = "eight_schools",
                                   rstudio = getOption("shinystan.rstudio"),
                                   ...) {
   demo_name <- match.arg(demo_name)
-  demo_object <- get(demo_name)
-  invisible(launch(demo_object, rstudio = rstudio, ...))
+  data(list = demo_name, package = "shinystan", envir = environment())
+  invisible(launch(get(demo_name, inherits = FALSE), rstudio = rstudio, ...))
 }
 
 # Internal launch function 
