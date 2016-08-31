@@ -15,6 +15,12 @@ source(path_to_extract_sso, local = TRUE)
 # ___________________________________________________________________
 function(input, output, session) {
   
+  # If not running on server then automatically stop app whenever browser tab
+  # (or any session) is closed
+  if (!nzchar(Sys.getenv("SHINY_PORT"))) {
+    session$onSessionEnded(function() stopApp(object))
+  }
+  
   # Stop the app when "Save & Close" button is clicked
   observeEvent(
     input$save_and_close_button, 

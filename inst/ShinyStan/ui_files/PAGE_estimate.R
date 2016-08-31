@@ -13,7 +13,7 @@ tabsetPanel(
           offset = 1,
           sliderInput(
             "param_plot_ci_level",
-            h5("Credible interval"),
+            h5("Posterior interval"),
             width = "75%",
             ticks = FALSE,
             min = 50,

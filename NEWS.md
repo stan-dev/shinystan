@@ -2,6 +2,8 @@
 * Better compatibility with latest releases of 'shinyjs' and 'DT' packages
 * `shinystan::launch_shinystan_demo()` now works without first having to load 
 the package with a call to `library`
+* Unless running on a server, the app now stops running when browser tab is 
+closed
 
 ### Version 2.2.0-1
 * Fix bug in `deploy_shinystan` preventing some ShinyStan apps from being
