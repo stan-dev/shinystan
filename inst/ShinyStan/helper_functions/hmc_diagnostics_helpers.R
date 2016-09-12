@@ -2,6 +2,8 @@ thm <- theme_classic() %+replace% (no_lgnd + fat_axis + axis_labs + transparent)
 thm_no_yaxs <- thm + no_yaxs
 
 .sampler_param_pw <- function(sp, which = "accept_stat__", warmup_val) {
+  if (!which %in% colnames(sp[[1]]))
+    return(NULL)
   sp_pw <- lapply(1:length(sp), function(i) {
     out <- sp[[i]][, which]
   })
