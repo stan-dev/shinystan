@@ -1,3 +1,6 @@
+### Version 2.2.1-2
+* Fix various issues resulting in errors for models fit using static HMC (thanks to @colemonnahan)
+
 ### Version 2.2.1
 * Better compatibility with latest releases of 'shinyjs' and 'DT' packages
 * `shinystan::launch_shinystan_demo()` now works without first having to load 

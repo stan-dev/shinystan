@@ -38,7 +38,7 @@ bivariate_plot <- reactive({
     ".bivariate_plot",
     args = list(
       samps = SAMPS_post_warmup,
-      sp = if (!identical(SAMPLER_PARAMS_post_warmup, FALSE)) 
+      sp = if (!identical(SAMPLER_PARAMS_post_warmup, FALSE) && STAN_ALGORITHM == "NUTS")
         SAMPLER_PARAMS_post_warmup else NULL,
       max_td = if ("max_td" %in% names(MISC)) MISC$max_td else NULL,
       param = input$param,
