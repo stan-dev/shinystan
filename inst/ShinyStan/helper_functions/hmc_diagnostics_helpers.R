@@ -179,7 +179,7 @@ thm_no_yaxs <- thm + no_yaxs
     } else {
       param_chains <- xts::as.xts(ts(param_samps[,1], start = 1))
       for (i in 2:nChains) {
-        param_chains <- cbind(param_chains, 
+        param_chains <- cbind(param_chains,
                               xts::as.xts(ts(param_samps[,i], start = 1)))
       }
       colnames(param_chains) <- paste0("Chain", 1:nChains)
@@ -199,8 +199,9 @@ thm_no_yaxs <- thm + no_yaxs
                         fillGraph = fill_graph, fillAlpha = 0.5,
                         strokeWidth = 0.75, animatedZooms = TRUE, 
                         drawXAxis = TRUE, drawYAxis = !fill_graph, 
-                        drawAxesAtZero = TRUE, axisLineColor = "black") %>%
-    dygraphs::dyAxis("x", pixelsPerLabel = 1e6, axisLineWidth = 3) %>%
+                        drawAxesAtZero = TRUE, axisLineColor = "black", 
+                        retainDateWindow = TRUE) %>%
+    dygraphs::dyAxis("x", pixelsPerLabel = 1e7, axisLineWidth = 3) %>%
     dygraphs::dyAxis("y", pixelsPerLabel = 30, axisLabelWidth = 30) %>%
     dygraphs::dyRangeSelector(height = 1, retainDateWindow = TRUE) %>%
     dygraphs::dyLegend(show = "never") %>%

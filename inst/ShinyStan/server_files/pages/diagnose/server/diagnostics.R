@@ -36,8 +36,9 @@ selected_range <- debounce({
     "Divergence information" = "divergent"
   )
   input_nm <- paste0("dynamic_trace_diagnostic_", nm, "_out_date_window")
-  validate(need(input[[input_nm]], "Loading"))
+  validate(need(input[[input_nm]], "Updating selected range"))
   sel <- input[[input_nm]]
+  print(sel)
   high <- as.integer(strsplit(sel[[2]], "[-]")[[1]][1])
   low <- as.integer(if (is.nan(sel[[1]])) "1" else strsplit(sel[[1]], "[-]")[[1]][1])
   low:high

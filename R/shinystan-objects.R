@@ -137,6 +137,17 @@ is.shinystan <- function(X) inherits(X, "shinystan")
 #'   object.
 #' @param note Optionally, text to display on ShinyStan's notes page (stored in 
 #'   \code{user_model_info} slot).
+#' @param sampler_params,algorithm,max_treedepth Rarely used and never 
+#'   necessary. If using the \code{as.shinystan} method for arrays or lists, 
+#'   these arguments can be used to manually provide information that is 
+#'   automatically retrieved from a stanfit object when using the 
+#'   \code{as.shinystan} method for stanfit objects. If specified, 
+#'   \code{sampler_params} must have the same structure as an object returned by
+#'   \code{\link[rstan]{get_sampler_params}} (\pkg{rstan}), which is a list of 
+#'   matrices, with one matrix per chain. \code{algorithm}, if specified, must 
+#'   be either \code{"HMC"} or \code{"NUTS"}. If \code{algorithm} is 
+#'   \code{"NUTS"} then \code{max_treedepth} (an integer indicating the maximum 
+#'   allowed treedepth when the model was fit) must also be provided.
 #'   
 #' @examples  
 #' \dontrun{
@@ -153,6 +164,9 @@ setMethod(
                         param_dims = list(),
                         model_code = NULL,
                         note = NULL,
+                        sampler_params = NULL, 
+                        algorithm = NULL,
+                        max_treedepth = NULL,
                         ...) {
     validate_model_code(model_code)
     is3D <- isTRUE(length(dim(X)) == 3)
@@ -168,16 +182,39 @@ setMethod(
       parameters = param_names
     )
     
+    sp <- .validate_sampler_params(
+      sampler_params, 
+      n_chain = ncol(X), 
+      n_iter = nrow(X), 
+      algorithm = algorithm
+    )
+    
     sso <- shinystan(
       model_name = model_name,
       param_names = param_names,
       param_dims = .set_param_dims(param_dims, param_names),
       posterior_sample = X,
+      sampler_params = sp,
       summary = shinystan_monitor(X, warmup = burnin),
       n_chain = ncol(X),
       n_iter = nrow(X),
       n_warmup = burnin
     )
+    if (!is.null(sampler_params)) {
+      if (is.null(algorithm)) {
+        stop("If 'sampler_params' is specified then 'algorithm' can't be NULL.")
+      } else {
+        algorithm <- match.arg(algorithm, choices = c("HMC", "NUTS"))
+        if (algorithm == "NUTS" && is.null(max_treedepth))
+          stop("If 'algorithm' is 'NUTS' then 'max_treedepth' must be provided.")
+      }
+      slot(sso, "misc") <- list(
+        max_td = max_treedepth,
+        stan_method = "sampling",
+        stan_algorithm = algorithm,
+        sso_version = utils::packageVersion("shinystan")
+      )
+    }
     if (!is.null(note))
       sso <- suppressMessages(notes(sso, note = note, replace = TRUE))
     if (!is.null(model_code))
@@ -186,6 +223,48 @@ setMethod(
     return(sso)
   }
 )
+
+.validate_sampler_params <-
+  function(x,
+           n_chain,
+           n_iter,
+           algorithm = c("NUTS", "HMC")) {
+    if (is.null(x))
+      return(list(NA))
+    
+    if (!is.list(x) || length(x) != n_chain || !all(sapply(x, is.matrix)))
+      stop("'sampler_params' must be a list of matrices with one matrix per chain.")
+    if (!all(sapply(x, function(xj) nrow(xj) == n_iter)))
+      stop("Each matrix in 'sampler_params' must have number of rows equal to number of iterations in 'X'.")
+    
+    nms <- sapply(x, colnames)
+    if (!is.character(nms))
+      stop("Matrices in 'sampler_params' must have column names.")
+    for (j in seq_along(x)) {
+      if (!all.equal(nms[, 1], nms[, j]))
+        stop("All matrices in 'sampler_params' must have the same column names.")
+    }
+    
+    alg <- match.arg(algorithm)
+    if (alg == "NUTS") {
+      nuts_nms <-
+        c(
+          "accept_stat__",
+          "stepsize__",
+          "treedepth__",
+          "n_leapfrog__",
+          "divergent__",
+          "energy__"
+        )
+      if (!all(nms[, 1] %in% nuts_nms))
+        stop(
+          "For NUTS algorithm the following parameters must be included in 'sampler_params': ",
+          paste(nuts_nms, collapse = ", ")
+        )
+    }
+    
+    return(x)
+  }
 
 .set_param_dims <- function(param_dims = list(), 
                             param_names = character(length(param_dims))) {
@@ -243,6 +322,9 @@ setMethod(
                         param_dims = list(),
                         model_code = NULL,
                         note = NULL,
+                        sampler_params = NULL, 
+                        algorithm = NULL, 
+                        max_treedepth = NULL,
                         ...) {
     validate_model_code(model_code)
     if (!length(X))
@@ -301,6 +383,9 @@ setMethod(
       param_dims = param_dims,
       model_code = model_code,
       note = note,
+      sampler_params = sampler_params,
+      algorithm = algorithm,
+      max_treedepth = max_treedepth,
       ...
     )
   }
