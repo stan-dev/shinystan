@@ -200,6 +200,7 @@ setMethod(
       n_iter = nrow(X),
       n_warmup = burnin
     )
+    
     if (!is.null(sampler_params)) {
       if (is.null(algorithm)) {
         stop("If 'sampler_params' is specified then 'algorithm' can't be NULL.")
@@ -219,6 +220,7 @@ setMethod(
       sso <- suppressMessages(notes(sso, note = note, replace = TRUE))
     if (!is.null(model_code))
       sso <- suppressMessages(model_code(sso, code = model_code))
+    sso <- .rename_scalar(sso, oldname = "lp__", newname = "log-posterior")
     
     return(sso)
   }

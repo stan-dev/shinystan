@@ -11,6 +11,12 @@ sp_nuts_check <- reactive({
     need(input$diagnostic_chain, message = "Loading...")
   )
 })
+lp_check <- reactive({
+  validate(
+    need(lp_name %in% dimnames(SAMPS_post_warmup)[[3]], 
+         message = "Plot not displayed\n(Draws for 'lp__' or 'log-posterior' not found)")
+  )
+})
 diagnostic_chain <- reactive({
   validate(need(input$diagnostic_chain, message = "Waiting for chain (0 for all)"))
   input$diagnostic_chain
@@ -38,7 +44,6 @@ selected_range <- debounce({
   input_nm <- paste0("dynamic_trace_diagnostic_", nm, "_out_date_window")
   validate(need(input[[input_nm]], "Updating selected range"))
   sel <- input[[input_nm]]
-  print(sel)
   high <- as.integer(strsplit(sel[[2]], "[-]")[[1]][1])
   low <- as.integer(if (is.nan(sel[[1]])) "1" else strsplit(sel[[1]], "[-]")[[1]][1])
   low:high
@@ -66,6 +71,7 @@ dynamic_trace_diagnostic_stepsize <- reactive({
 })
 stepsize_vs_lp <- reactive({
   sp_nuts_check()
+  lp_check()
   chain <- diagnostic_chain()
   sel <- selected_range()
   stepsize <- .stepsize_pw[if (!is.null(sel)) sel,-1L, drop = FALSE] # drop iterations column
@@ -98,6 +104,7 @@ stepsize_vs_accept_stat <- reactive({
 # sample (accept_stat, lp) ------------------------------------------------
 dynamic_trace_diagnostic_lp <- reactive({
   sp_nuts_check()
+  lp_check()
   chain <- diagnostic_chain()
   samps <- SAMPS_post_warmup[, , lp_name]
   lab <- "Log Posterior"
@@ -131,6 +138,7 @@ dynamic_trace_diagnostic_accept_stat <- reactive({
 })
 lp_hist <- reactive({
   sp_nuts_check()
+  lp_check()
   chain <- diagnostic_chain()
   sel <- selected_range()
   lp <- SAMPS_post_warmup[if (!is.null(sel)) sel,, lp_name]
@@ -146,6 +154,7 @@ accept_stat_hist <- reactive({
 })
 accept_stat_vs_lp <- reactive({
   sp_nuts_check()
+  lp_check()
   sel <- selected_range()
   metrop <- .accept_stat_pw[if (!is.null(sel)) sel, -1L, drop = FALSE] # drop iterations column
   lp <- SAMPS_post_warmup[if (!is.null(sel)) sel, , lp_name]
@@ -226,6 +235,7 @@ treedepth_ndivergent1_hist <- reactive({
 })
 treedepth_vs_lp <- reactive({
   sp_nuts_check()
+  lp_check()
   chain <- diagnostic_chain()
   sel <- selected_range()
   treedepth <- .treedepth_pw[if (!is.null(sel)) sel,-1L, drop = FALSE] # drop iterations column
@@ -282,6 +292,7 @@ dynamic_trace_diagnostic_ndivergent <- reactive({
 })
 ndivergent_vs_lp <- reactive({
   sp_nuts_check()
+  lp_check()
   chain <- diagnostic_chain()
   sel <- selected_range()
   ndivergent <- .ndivergent_pw[if (!is.null(sel)) sel,-1L, drop = FALSE] # drop iterations column
@@ -337,6 +348,7 @@ dynamic_trace_diagnostic_parameter <- reactive({
 })
 param_vs_lp <- reactive({
   sp_nuts_check()
+  lp_check()
   param <- diagnostic_param()
   chain <- diagnostic_chain()
   sel <- selected_range()
