@@ -15,7 +15,7 @@ MCMC simulations. The ShinyStan interface is coded primarily in R using
 the [Shiny](http://shiny.rstudio.com) web application framework and is
 available via the **shinystan** R package.
 
-#### Installing the shinystan R package
+### Installation
 
 * Install from CRAN:
 
@@ -33,8 +33,7 @@ if (!require("devtools"))
 devtools::install_github("stan-dev/shinystan", build_vignettes = TRUE)
 ```
 
-
-#### Demo
+### Demo
 
 After installing run
 
@@ -43,7 +42,12 @@ library("shinystan")
 launch_shinystan_demo()
 ```
 
-#### About ShinyStan
+### Screenshots
+
+<img src=https://github.com/stan-dev/shinystan/blob/develop/images/home.png width=40% />
+----
+<img src=https://github.com/stan-dev/shinystan/blob/develop/images/explore.png width=25% /><img src=https://github.com/stan-dev/shinystan/blob/develop/images/diagnose.png width=25% />
+### About ShinyStan
 
 Applied Bayesian data analysis is primarily implemented through the MCMC
 algorithms offered by various software packages. When analyzing a posterior sample
