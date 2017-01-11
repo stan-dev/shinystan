@@ -38,7 +38,7 @@ Suggests:
 Imports:
     colourpicker,
     DT (>= 0.2),
-    dygraphs (>= 0.4.5),
+    dygraphs (>= 1.1.1.2),
     ggplot2 (>= 2.1.0),
     gridExtra,
     gtools,

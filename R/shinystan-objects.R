@@ -754,32 +754,31 @@ setMethod(
     do.call("ppc",
             list(
               object = X,
-              check = "dist",
+              plotfun = "hist",
               nreps = 8,
-              overlay = FALSE,
               seed = seed
             ))
   pp_check_plots[["pp_check_dens"]] <-
     do.call("ppc",
             list(
               object = X,
-              check = "dist",
-              nreps = 8,
-              overlay = TRUE,
+              plotfun = "dens_overlay",
+              nreps = 50,
               seed = seed
             ))
   pp_check_plots[["pp_check_resid"]] <-
-    do.call("ppc", list(
-      object = X,
-      check = "resid",
-      nreps = 8,
-      seed = seed
-    ))
+    do.call("ppc", 
+            list(
+              object = X,
+              plotfun = "error_hist",
+              nreps = 8,
+              seed = seed
+            ))
   pp_check_plots[["pp_check_scatter"]] <-
     do.call("ppc",
             list(
               object = X,
-              check = "scatter",
+              plotfun = "scatter_avg",
               nreps = NULL,
               seed = seed
             ))
@@ -787,31 +786,34 @@ setMethod(
     do.call("ppc",
             list(
               object = X,
-              check = "test",
-              test = "mean",
+              plotfun = "stat",
+              stat = "mean",
               seed = seed
             ))
   pp_check_plots[["pp_check_stat_sd"]] <-
-    do.call("ppc", list(
-      object = X,
-      check = "test",
-      test = "sd",
-      seed = seed
-    ))
+    do.call("ppc", 
+            list(
+              object = X,
+              plotfun = "stat",
+              stat = "sd",
+              seed = seed
+            ))
   pp_check_plots[["pp_check_stat_min"]] <-
-    do.call("ppc", list(
-      object = X,
-      check = "test",
-      test = "min",
-      seed = seed
-    ))
+    do.call("ppc", 
+            list(
+              object = X,
+              plotfun = "stat",
+              stat = "min",
+              seed = seed
+            ))
   pp_check_plots[["pp_check_stat_max"]] <-
-    do.call("ppc", list(
-      object = X,
-      check = "test",
-      test = "max",
-      seed = seed
-    ))
+    do.call("ppc", 
+            list(
+              object = X,
+              plotfun = "stat",
+              stat = "max",
+              seed = seed
+            ))
   
   pp_check_plots
 }

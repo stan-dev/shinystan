@@ -58,7 +58,9 @@ grepl_ic <- function(pattern, x, ignore.case = TRUE) {
 # release reminders (for devtools)
 release_questions <- function() {
   c(
-    "Have you updated version numbers in the citation?",
+    "Have you updated version numbers in inst/CITATION?",
+    "Have you updated version numbers in the citation on the About page?",
+    "Have you updated version numbers in the citation on the Stan website?",
     "Have you updated NEWS.md? and inst/NEWS?"
   )
 }

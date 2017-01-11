@@ -16,21 +16,27 @@
 #' @docType package
 #' @name shinystan-package
 #'
-#' @description Applied Bayesian data analysis is primarily implemented through
-#'   the Markov chain Monte Carlo (MCMC) algorithms offered by various software
-#'   packages. When analyzing a posterior sample obtained by one of these
-#'   algorithms the first step is to check for signs that the chains have
-#'   converged to the target distribution and and also for signs that the
-#'   algorithm might require tuning or might be ill-suited for the given model.
-#'   There may also be theoretical problems or practical inefficiencies with the
-#'   specification of the model. ShinyStan provides interactive plots and tables
-#'   helpful for analyzing a posterior sample, with particular attention to
-#'   identifying potential problems with the performance of the MCMC algorithm
-#'   or the specification of the model. ShinyStan is powered by RStudio's Shiny
-#'   web application framework and works with the output of MCMC programs
-#'   written in any programming language (and has extended functionality for
-#'   models fit using the rstan package and the No-U-Turn sampler).
-#'
+#' @description 
+#' \if{html}{
+#'   \figure{stanlogo.png}{options: width="50px" alt="mc-stan.org"}
+#'   \emph{Stan Development Team}
+#' }
+#' 
+#' Applied Bayesian data analysis is primarily implemented through the Markov
+#' chain Monte Carlo (MCMC) algorithms offered by various software packages.
+#' When analyzing a posterior sample obtained by one of these algorithms the
+#' first step is to check for signs that the chains have converged to the target
+#' distribution and and also for signs that the algorithm might require tuning
+#' or might be ill-suited for the given model. There may also be theoretical
+#' problems or practical inefficiencies with the specification of the model.
+#' ShinyStan provides interactive plots and tables helpful for analyzing a
+#' posterior sample, with particular attention to identifying potential problems
+#' with the performance of the MCMC algorithm or the specification of the model.
+#' ShinyStan is powered by RStudio's Shiny web application framework and works
+#' with the output of MCMC programs written in any programming language (and has
+#' extended functionality for models fit using the rstan package and the
+#' No-U-Turn sampler).
+#' 
 #' @section ShinyStan has extended functionality for Stan models:
 #'
 #' Stan (\url{http://mc-stan.org}) models can be run in R using the
