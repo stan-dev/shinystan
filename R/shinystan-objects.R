@@ -145,9 +145,9 @@ is.shinystan <- function(X) inherits(X, "shinystan")
 #'   \code{sampler_params} must have the same structure as an object returned by
 #'   \code{\link[rstan]{get_sampler_params}} (\pkg{rstan}), which is a list of 
 #'   matrices, with one matrix per chain. \code{algorithm}, if specified, must 
-#'   be either \code{"HMC"} or \code{"NUTS"}. If \code{algorithm} is 
-#'   \code{"NUTS"} then \code{max_treedepth} (an integer indicating the maximum 
-#'   allowed treedepth when the model was fit) must also be provided.
+#'   be either \code{"NUTS"} or \code{"HMC"} (static HMC). If \code{algorithm}
+#'   is \code{"NUTS"} then \code{max_treedepth} (an integer indicating the
+#'   maximum allowed treedepth when the model was fit) must also be provided.
 #'   
 #' @examples  
 #' \dontrun{
