@@ -13,7 +13,9 @@ data(line, package = "coda")
 mcmc1 <- line
 mcmc2 <- line[[1L]]
 
-stanreg1 <- suppressWarnings(stan_glm(mpg ~ wt, data = mtcars, seed = 12345, iter = 200, refresh = 0))
+suppressWarnings(capture.output(
+  stanreg1 <- stan_glm(mpg ~ wt, data = mtcars, seed = 12345, iter = 200, refresh = 0)
+))
 stanfit1 <- stanreg1$stanfit
 
 # load 'old_sso', a shinystan object created by previous shinystan version
