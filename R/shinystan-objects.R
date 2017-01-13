@@ -237,7 +237,8 @@ setMethod(
     if (!is.list(x) || length(x) != n_chain || !all(sapply(x, is.matrix)))
       stop("'sampler_params' must be a list of matrices with one matrix per chain.")
     if (!all(sapply(x, function(xj) nrow(xj) == n_iter)))
-      stop("Each matrix in 'sampler_params' must have number of rows equal to number of iterations in 'X'.")
+      stop("Each matrix in 'sampler_params' must have number of rows ",
+           "equal to number of iterations in 'X'.")
     
     nms <- sapply(x, colnames)
     if (!is.character(nms))
@@ -259,10 +260,8 @@ setMethod(
           "energy__"
         )
       if (!all(nms[, 1] %in% nuts_nms))
-        stop(
-          "For NUTS algorithm the following parameters must be included in 'sampler_params': ",
-          paste(nuts_nms, collapse = ", ")
-        )
+        stop("For NUTS algorithm the following parameters must be included ", 
+             "in 'sampler_params': ", paste(nuts_nms, collapse = ", "))
     }
     
     return(x)
