@@ -71,18 +71,37 @@ test_that("as.shinystan stanfit helpers work", {
 })
 
 
+test_that("deprecation of burnin works properly", {
+  expect_error(as.shinystan(array1, warmup = 2, burnin = 3), 
+               "can't both be specified")
+  expect_warning(x <- as.shinystan(array1, burnin = 8), 
+                 "Use the 'warmup' argument instead")
+  expect_equal(x@n_warmup, 8)
+  expect_silent(x <- as.shinystan(array1, warmup = 7))
+  expect_equal(x@n_warmup, 7)
+})
+
+
 
 # as.shinystan ------------------------------------------------------------
 test_that("as.shinystan (array) creates sso", {
-  expect_is(x <- as.shinystan(array1, model_name = "test", note = "test"), "shinystan")
+  expect_s4_class(x <- as.shinystan(array1, model_name = "test", note = "test"), "shinystan")
   expect_identical(sso_version(x), utils::packageVersion("shinystan"))
+  expect_equal(x@model_name, "test")
+  expect_equal(x@user_model_info, "test")
   
   # with sampler_params
   samp <- sso@posterior_sample
   sp <- sso@sampler_params
-  x <- as.shinystan(samp, sampler_params = sp, burnin = 1000, 
-                    max_treedepth = 11, algorithm = "NUTS")
-  expect_is(x, "shinystan")
+  x <- as.shinystan(samp, sampler_params = sp, warmup = 759, 
+                    max_treedepth = 14, algorithm = "NUTS")
+  expect_s4_class(x, "shinystan")
+  expect_equal(x@n_warmup, 759)
+  expect_equal(x@n_chain, dim(samp)[2])
+  expect_equal(x@n_iter, dim(samp)[1])
+  expect_equivalent(x@posterior_sample, samp)
+  expect_equal(x@misc$max_td, 14)
+  expect_equal(x@misc$stan_algorithm, "NUTS")
 })
 test_that("as.shinystan (mcmc.list) creates sso", {
   expect_is(x <- as.shinystan(mcmc1, model_name = "test", note = "test", model_code = "test"), "shinystan")
@@ -102,9 +121,9 @@ test_that("as.shinystan (list of matrices) creates sso", {
   samp <- sso@posterior_sample
   for (j in 1:ncol(samp)) samp_list[[j]] <- samp[, j, ]
   sp <- sso@sampler_params
-  x <- as.shinystan(samp_list, sampler_params = sp, burnin = 1000, 
+  x <- as.shinystan(samp_list, sampler_params = sp, warmup = 1000, 
                     max_treedepth = 11, algorithm = "NUTS")
-  expect_is(x, "shinystan")
+  expect_s4_class(x, "shinystan")
 })
 test_that("as.shinystan (stanreg) creates sso", {
   expect_message(x <- as.shinystan(stanreg1, model_name = "test"), 
