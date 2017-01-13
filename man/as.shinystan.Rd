@@ -16,10 +16,12 @@ as.shinystan(X, ...)
 is.shinystan(X)
 
 \S4method{as.shinystan}{array}(X, model_name = "unnamed model", burnin = 0,
-  param_dims = list(), model_code = NULL, note = NULL, ...)
+  param_dims = list(), model_code = NULL, note = NULL,
+  sampler_params = NULL, algorithm = NULL, max_treedepth = NULL, ...)
 
 \S4method{as.shinystan}{list}(X, model_name = "unnamed model", burnin = 0,
-  param_dims = list(), model_code = NULL, note = NULL, ...)
+  param_dims = list(), model_code = NULL, note = NULL,
+  sampler_params = NULL, algorithm = NULL, max_treedepth = NULL, ...)
 
 \S4method{as.shinystan}{mcmc.list}(X, model_name = "unnamed model",
   burnin = 0, param_dims = list(), model_code = NULL, note = NULL, ...)
@@ -57,6 +59,18 @@ object.}
 
 \item{note}{Optionally, text to display on ShinyStan's notes page (stored in 
 \code{user_model_info} slot).}
+
+\item{sampler_params, algorithm, max_treedepth}{Rarely used and never 
+necessary. If using the \code{as.shinystan} method for arrays or lists, 
+these arguments can be used to manually provide information that is 
+automatically retrieved from a stanfit object when using the 
+\code{as.shinystan} method for stanfit objects. If specified, 
+\code{sampler_params} must have the same structure as an object returned by
+\code{\link[rstan]{get_sampler_params}} (\pkg{rstan}), which is a list of 
+matrices, with one matrix per chain. \code{algorithm}, if specified, must 
+be either \code{"NUTS"} or \code{"HMC"} (static HMC). If \code{algorithm}
+is \code{"NUTS"} then \code{max_treedepth} (an integer indicating the
+maximum allowed treedepth when the model was fit) must also be provided.}
 
 \item{pars}{For stanfit objects (\pkg{rstan}), an optional character vector
 specifying which parameters should be included in the shinystan object.}
