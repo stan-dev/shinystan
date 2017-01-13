@@ -122,7 +122,9 @@ is.shinystan <- function(X) inherits(X, "shinystan")
 #'   corresponding to iterations, chains, and parameters, in that order.
 #'
 #' @param model_name A string giving a name for the model.
-#' @param burnin The number of iterations to treat as burnin (warmup). Should be
+#' @param burnin Deprecated. Use \code{warmup} instead. The \code{burnin}
+#'   argument will be removed in a future release.
+#' @param warmup The number of iterations to treat as warmup. Should be
 #'   \code{0} if warmup iterations are not included in \code{X}.
 #' @param param_dims Rarely used and never necessary. A named list giving the 
 #'   dimensions for all parameters. For scalar parameters use \code{0} as the 
@@ -160,7 +162,7 @@ setMethod(
   signature = "array",
   definition = function(X,
                         model_name = "unnamed model",
-                        burnin = 0,
+                        warmup = 0, burnin = 0, 
                         param_dims = list(),
                         model_code = NULL,
                         note = NULL,
@@ -189,16 +191,17 @@ setMethod(
       algorithm = algorithm
     )
     
+    n_warmup <- .deprecate_burnin(burnin, warmup)
     sso <- shinystan(
       model_name = model_name,
       param_names = param_names,
       param_dims = .set_param_dims(param_dims, param_names),
       posterior_sample = X,
       sampler_params = sp,
-      summary = shinystan_monitor(X, warmup = burnin),
+      summary = shinystan_monitor(X, warmup = n_warmup),
       n_chain = ncol(X),
       n_iter = nrow(X),
-      n_warmup = burnin
+      n_warmup = n_warmup
     )
     
     if (!is.null(sampler_params)) {
@@ -225,6 +228,26 @@ setMethod(
     return(sso)
   }
 )
+
+# FIXME: remove this when 'burnin' arg is removed
+.deprecate_burnin <- function(burnin = 0, warmup = 0) {
+  if (warmup == 0) {
+    if (burnin == 0) {
+      return(0)
+    } else {
+      warning("The 'burnin' argument is deprecated and will be removed ", 
+              "in a future release. Use the 'warmup' argument instead.", 
+              call. = FALSE)
+      return(burnin)
+    }
+  } else if (burnin == 0) {
+    return(warmup)
+  } else {
+    stop("'burnin' and 'warmup' can't both be specified. ", 
+         "'burnin' is deprecated. Please use 'warmup' instead.", 
+         call. = FALSE)
+  }
+}
 
 .validate_sampler_params <-
   function(x,
@@ -309,7 +332,7 @@ setMethod(
 #' # to 'beta[1]' and 'beta[2]'
 #' colnames(chain1) <- colnames(chain2) <- c(paste0("beta[",1:2,"]"), "sigma")
 #' sso2 <- as.shinystan(list(chain1, chain2), 
-#'                      model_name = "Example", burnin = 0, 
+#'                      model_name = "Example", warmup = 0, 
 #'                      param_dims = list(beta = 2, sigma = 0))
 #' launch_shinystan(sso2)
 #' }
@@ -319,7 +342,7 @@ setMethod(
   signature = "list",
   definition = function(X,
                         model_name = "unnamed model",
-                        burnin = 0,
+                        warmup = 0, burnin = 0,
                         param_dims = list(),
                         model_code = NULL,
                         note = NULL,
@@ -380,7 +403,7 @@ setMethod(
     as.shinystan(
       out,
       model_name = model_name,
-      burnin = burnin,
+      warmup = .deprecate_burnin(burnin, warmup),
       param_dims = param_dims,
       model_code = model_code,
       note = note,
@@ -403,7 +426,7 @@ setMethod(
   signature = "mcmc.list",
   definition = function(X,
                         model_name = "unnamed model",
-                        burnin = 0,
+                        warmup = 0, burnin = 0,
                         param_dims = list(),
                         model_code = NULL,
                         note = NULL,
@@ -416,7 +439,7 @@ setMethod(
         as.shinystan(
           X = list(.mcmclist2matrix(X)),
           model_name = model_name,
-          burnin = burnin,
+          warmup = .deprecate_burnin(burnin, warmup),
           param_dims = param_dims,
           model_code = model_code,
           note = note,
