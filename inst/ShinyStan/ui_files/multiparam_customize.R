@@ -23,7 +23,7 @@ absolutePanel(
         condition = "input.multiparam_options_display == 'Options'",
         checkboxInput(
           "param_plot_show_density",
-          label = "Kernal density estimates",
+          label = "Kernel density estimates",
           value = FALSE
         ),
         checkboxInput(
