@@ -16,12 +16,12 @@
 #' @docType package
 #' @name shinystan-package
 #'
-#' @description 
+#' @description
 #' \if{html}{
 #'   \figure{stanlogo.png}{options: width="50px" alt="mc-stan.org"}
 #'   \emph{Stan Development Team}
 #' }
-#' 
+#'
 #' Applied Bayesian data analysis is primarily implemented through the Markov
 #' chain Monte Carlo (MCMC) algorithms offered by various software packages.
 #' When analyzing a posterior sample obtained by one of these algorithms the
@@ -36,7 +36,7 @@
 #' with the output of MCMC programs written in any programming language (and has
 #' extended functionality for models fit using the rstan package and the
 #' No-U-Turn sampler).
-#' 
+#'
 #' @section ShinyStan has extended functionality for Stan models:
 #'
 #' Stan (\url{http://mc-stan.org}) models can be run in R using the
@@ -80,6 +80,7 @@
 #' @import methods
 #' @import shiny
 #' @import dygraphs
+#' @import bayesplot
 #' @import threejs
 #' @import utils
 #' @import xts

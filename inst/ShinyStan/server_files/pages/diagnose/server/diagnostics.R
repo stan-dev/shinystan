@@ -322,6 +322,32 @@ ndivergent_vs_accept_stat <- reactive({
 })
 
 
+
+# energy ------------------------------------------------------------------
+energy_hist <- reactive({
+  sp_nuts_check()
+  chain <- diagnostic_chain()
+  np <- bayesplot::nuts_params(SAMPLER_PARAMS_post_warmup, pars = "energy__")
+  if (chain != 0)
+    np <- subset(np, Chain == chain)
+  
+  schm <- unlist(bayesplot::color_scheme_get("brightblue"))
+  schm["light"] <- base_fill
+  schm["mid"] <- overlay_fill
+  schm["light_highlight"] <- vline_base_clr
+  schm["mid_highlight"] <- pt_outline_clr
+  bayesplot::color_scheme_set(unname(schm))
+  
+  bayesplot::mcmc_nuts_energy(np, merge_chains = isTRUE(chain != 0)) + 
+    ggplot2::facet_wrap(~ Chain, labeller = "label_both") + 
+    thm_no_yaxs + 
+    bayesplot::facet_bg(FALSE) + 
+    bayesplot::facet_text(size = rel(1)) + 
+    bayesplot::legend_move("right") + 
+    theme(legend.text.align = 0, legend.text = element_text(size = rel(1.5)))
+})
+
+
 # model parameter ---------------------------------------------------------
 dynamic_trace_diagnostic_parameter <- reactive({
   sp_nuts_check()
@@ -477,7 +503,8 @@ hmc_plots <- c("accept_stat_trace", "accept_stat_hist","accept_stat_vs_lp",
                "treedepth_vs_accept_stat", "ndivergent_vs_accept_stat", 
                "stepsize_vs_lp", "stepsize_vs_accept_stat", "stepsize_trace", 
                "param_vs_lp", "param_vs_accept_stat", "param_vs_stepsize", 
-               "param_vs_treedepth", "p_trace", "p_hist")
+               "param_vs_treedepth", "p_trace", "p_hist", 
+               "energy_hist")
 for (j in seq_along(trace_nms)) {
   local({
     fn <- paste0("dynamic_trace_diagnostic_", trace_nms[j]) 

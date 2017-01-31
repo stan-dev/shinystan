@@ -1,13 +1,19 @@
 ### Version 2.3.0
+
+#### Fixes 
+* Fix various issues resulting in errors for models fit using static HMC (thanks
+to Cole Monnahan).
 * Deprecate `burnin` argument to `as.shinystan`. Use `warmup` instead. Only 
 relevant for models _not_ fit using Stan.
-* Fix various issues resulting in errors for models fit using static HMC (thanks
-to Cole Monnahan)
+
+#### New features
+* Add NUTS energy diagnostic plots to Diagnose page
 * Allowing passing `sampler_params` to `as.shinystan`. This makes it possible to
 display sampler diagnositcs for HMC/NUTS even if not using Stan's implementation
 of those algorithms (thanks to Cole Monnahan)
 
 ### Version 2.2.1
+
 * Better compatibility with latest releases of 'shinyjs' and 'DT' packages
 * `shinystan::launch_shinystan_demo()` now works without first having to load 
 the package with a call to `library`

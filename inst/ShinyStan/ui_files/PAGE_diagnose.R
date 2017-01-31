@@ -16,12 +16,16 @@ tabsetPanel(
         source_ui("diagnostics_sample.R")
       ),
       tabPanel(
-        "Treedepth information", 
-        source_ui("diagnostics_treedepth.R")
-      ),
-      tabPanel(
         "Divergence information", 
         source_ui("diagnostics_ndivergent.R")
+      ),
+      tabPanel(
+        "Energy information", 
+        source_ui("diagnostics_energy.R")
+      ),
+      tabPanel(
+        "Treedepth information", 
+        source_ui("diagnostics_treedepth.R")
       ),
       tabPanel(
         "Step size information", 
