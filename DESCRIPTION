@@ -36,6 +36,7 @@ Suggests:
     rstanarm (>= 2.9.0-3),
     testthat
 Imports:
+    bayesplot (>= 1.1.0),
     colourpicker,
     DT (>= 0.2),
     dygraphs (>= 1.1.1.2),

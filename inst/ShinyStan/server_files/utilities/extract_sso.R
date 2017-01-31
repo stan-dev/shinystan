@@ -52,6 +52,10 @@ if (!identical(FALSE, SAMPLER_PARAMS_post_warmup)) {
     .sampler_param_pw(SAMPLER_PARAMS_post_warmup,
                       which = "accept_stat__",
                       warmup_val = N_WARMUP)
+  .energy_pw <-
+    .sampler_param_pw(SAMPLER_PARAMS_post_warmup,
+                      which = "energy__",
+                      warmup_val = N_WARMUP)
 }
 
 SUMMARY <- slot(object, "summary")
