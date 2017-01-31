@@ -1,8 +1,8 @@
 Package: shinystan
 Title: Interactive Visual and Numerical Diagnostics and Posterior Analysis for
     Bayesian Models
-Version: 2.2.1-2
-Date: 2016-08-31
+Version: 2.3.0
+Date: 2016-01-31
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"),
     email = "jsg2201@columbia.edu"),
       person(family = "Stan Development Team", role = "ctb"),
@@ -33,21 +33,21 @@ Suggests:
     coda,
     knitr (>= 1.9),
     rmarkdown (>= 0.8.1),
-    rstanarm (>= 2.9.0-3),
+    rstanarm (>= 2.14.1),
     testthat
 Imports:
     bayesplot (>= 1.1.0),
     colourpicker,
     DT (>= 0.2),
     dygraphs (>= 1.1.1.2),
-    ggplot2 (>= 2.1.0),
+    ggplot2 (>= 2.1.1),
     gridExtra,
     gtools,
     markdown (>= 0.7.4),
     methods,
     reshape2,
     rsconnect (>= 0.4.2),
-    rstan (>= 2.9.0-3),
+    rstan (>= 2.14.1),
     stats,
     shinyjs (>= 0.6.0),
     shinythemes (>= 1.0.1),
