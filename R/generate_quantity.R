@@ -79,7 +79,7 @@ generate_quantity <- function(sso, param1, param2, fun, new_name) {
   sso_new <- as.shinystan(
     posterior,
     model_name = slot(sso, "model_name"),
-    burnin = slot(sso, "n_warmup"),
+    warmup = slot(sso, "n_warmup"),
     param_dims = param_dims_new
   )
   slot(sso_new, "summary") <-
