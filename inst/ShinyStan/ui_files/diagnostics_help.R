@@ -17,6 +17,13 @@ navlistPanel(
     stan_manual()
   ),
   tabPanel(
+    "energy",
+    withMathJax(),
+    includeHTML("html/energy.html"),
+    hr(),
+    stan_manual()
+  ),
+  tabPanel(
     "stepsize",
     withMathJax(),
     includeHTML("html/stepsize.html"),
