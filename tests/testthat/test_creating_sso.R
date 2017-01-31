@@ -14,7 +14,8 @@ mcmc1 <- line
 mcmc2 <- line[[1L]]
 
 suppressWarnings(capture.output(
-  stanreg1 <- stan_glm(mpg ~ wt, data = mtcars, seed = 12345, iter = 200, refresh = 0)
+  stanreg1 <- stan_glmer(mpg ~ wt + (1 + wt|cyl), data = mtcars, 
+                         seed = 12345, iter = 200, chains = 2, refresh = 0)
 ))
 stanfit1 <- stanreg1$stanfit
 
