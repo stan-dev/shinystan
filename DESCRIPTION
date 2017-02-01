@@ -2,7 +2,7 @@ Package: shinystan
 Title: Interactive Visual and Numerical Diagnostics and Posterior Analysis for
     Bayesian Models
 Version: 2.3.0
-Date: 2016-01-31
+Date: 2017-01-31
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"),
     email = "jsg2201@columbia.edu"),
       person(family = "Stan Development Team", role = "ctb"),
@@ -24,17 +24,10 @@ Description: A graphical user interface for interactive Markov chain Monte
     fit using the rstan and rstanarm packages).
 URL: https://github.com/stan-dev/shinystan/, http://mc-stan.org/
 BugReports: https://github.com/stan-dev/shinystan/issues/
+License: GPL (>=3)
 Depends:
     R (>= 3.1.0),
     shiny (>= 0.12.1)
-License: GPL (>=3)
-LazyData: true
-Suggests:
-    coda,
-    knitr (>= 1.9),
-    rmarkdown (>= 0.8.1),
-    rstanarm (>= 2.14.1),
-    testthat
 Imports:
     bayesplot (>= 1.1.0),
     colourpicker,
@@ -55,5 +48,12 @@ Imports:
     utils,
     xtable,
     xts (>= 0.9-7)
+Suggests:
+    coda,
+    knitr (>= 1.9),
+    rmarkdown (>= 0.8.1),
+    rstanarm (>= 2.14.1),
+    testthat
+LazyData: true
 VignetteBuilder: knitr
 RoxygenNote: 5.0.1
