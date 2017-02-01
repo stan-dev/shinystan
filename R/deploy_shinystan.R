@@ -88,6 +88,7 @@ deploy_shinystan <- function(sso, appName, account = NULL, ..., deploy = TRUE) {
   ui_pkgs <- c(
     server_pkgs,
     "ggplot2",
+    "bayesplot",
     "gtools",
     "reshape2",
     "dygraphs",

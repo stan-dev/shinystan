@@ -44,14 +44,14 @@ my_sso <- launch_shinystan(as.shinystan(my_mcmc, model_name = "my_model"))
 ```
 
 If, for example, the first 100 iterations in each chain in `my_mcmc` are 
-burnin/warmup iterations, you should add the `burnin` argument when you 
+warmup iterations, you should add the `warmup` argument when you 
 call `as.shinystan`:
 
 ```r
-my_sso <- launch_shinystan(as.shinystan(my_mcmc, model_name = "my_model", burnin = 100))
+my_sso <- launch_shinystan(as.shinystan(my_mcmc, model_name = "my_model", warmup = 100))
 ```
 
-However, you should only use the `burnin` argument if the burnin iterations have 
+However, you should only use the `warmup` argument if the warmup iterations have 
 been saved and included in `my_mcmc`.   
 
 

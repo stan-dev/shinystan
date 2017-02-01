@@ -54,12 +54,6 @@ generate_quantity <- function(sso, param1, param2, fun, new_name) {
     if (two_params)
       y_samp <- posterior[, , param2]
   }
-  if (ndim == 2) {
-    # i.e. only 1 chain
-    x_samp <- posterior[, param1]
-    if (two_params)
-      y_samp <- posterior[, param2]
-  }
   
   arglist <- if (two_params)
     list(x_samp, y_samp) else list(x_samp)
@@ -79,7 +73,7 @@ generate_quantity <- function(sso, param1, param2, fun, new_name) {
   sso_new <- as.shinystan(
     posterior,
     model_name = slot(sso, "model_name"),
-    burnin = slot(sso, "n_warmup"),
+    warmup = slot(sso, "n_warmup"),
     param_dims = param_dims_new
   )
   slot(sso_new, "summary") <-

@@ -1,4 +1,5 @@
 library(shinystan)
+suppressPackageStartupMessages(library(rstan))
 suppressPackageStartupMessages(library(rstanarm))
 library(coda)
 
@@ -12,7 +13,10 @@ data(line, package = "coda")
 mcmc1 <- line
 mcmc2 <- line[[1L]]
 
-stanreg1 <- suppressWarnings(stan_glm(mpg ~ wt, data = mtcars, seed = 12345, iter = 200, refresh = 0))
+suppressWarnings(capture.output(
+  stanreg1 <- stan_glmer(mpg ~ wt + (1 + wt|cyl), data = mtcars, 
+                         seed = 12345, iter = 200, chains = 2, refresh = 0)
+))
 stanfit1 <- stanreg1$stanfit
 
 # load 'old_sso', a shinystan object created by previous shinystan version
@@ -68,32 +72,76 @@ test_that("as.shinystan stanfit helpers work", {
 })
 
 
+test_that("deprecation of burnin works properly", {
+  expect_error(as.shinystan(array1, warmup = 2, burnin = 3), 
+               "can't both be specified")
+  expect_warning(x <- as.shinystan(array1, burnin = 8), 
+                 "Use the 'warmup' argument instead")
+  expect_equal(x@n_warmup, 8)
+  expect_silent(x <- as.shinystan(array1, warmup = 7))
+  expect_equal(x@n_warmup, 7)
+})
+
+
 
 # as.shinystan ------------------------------------------------------------
-test_that("as.shinystan creates sso", {
-  # array
-  expect_is(x <- as.shinystan(array1, model_name = "test", note = "test"), "shinystan")
+test_that("as.shinystan (array) creates sso", {
+  expect_s4_class(x <- as.shinystan(array1, model_name = "test", note = "test"), "shinystan")
   expect_identical(sso_version(x), utils::packageVersion("shinystan"))
+  expect_equal(x@model_name, "test")
+  expect_equal(x@user_model_info, "test")
   
-  # mcmc.list
-  expect_is(as.shinystan(mcmc1, model_name = "test", note = "test", model_code = "test"), "shinystan")
+  # with sampler_params
+  samp <- sso@posterior_sample
+  sp <- sso@sampler_params
+  x <- as.shinystan(samp, sampler_params = sp, warmup = 759, 
+                    max_treedepth = 14, algorithm = "NUTS")
+  expect_s4_class(x, "shinystan")
+  expect_equal(x@n_warmup, 759)
+  expect_equal(x@n_chain, dim(samp)[2])
+  expect_equal(x@n_iter, dim(samp)[1])
+  expect_equivalent(x@posterior_sample, samp)
+  expect_equal(x@misc$max_td, 14)
+  expect_equal(x@misc$stan_algorithm, "NUTS")
+})
+test_that("as.shinystan (mcmc.list) creates sso", {
+  expect_is(x <- as.shinystan(mcmc1, model_name = "test", note = "test", model_code = "test"), "shinystan")
   expect_is(as.shinystan(mcmc1[1]), "shinystan")
   expect_identical(sso_version(x), utils::packageVersion("shinystan"))
-  
-  # list of matrices
-  expect_is(as.shinystan(chains1, model_code = "test"), "shinystan")
+})  
+test_that("as.shinystan (list of matrices) creates sso", {
+  expect_is(x <- as.shinystan(chains1, model_code = "test"), "shinystan")
   expect_is(as.shinystan(chains1[1]), "shinystan")
   colnames(chains1[[1]]) <- colnames(chains1[[2]]) <- c(paste0("beta[",1:2,"]"), "sigma")
   sso2 <- as.shinystan(chains1, param_dims = list(beta = 2, sigma = 0))
   expect_identical(sso2@param_dims, list(beta = 2, sigma = numeric(0)))
   expect_identical(sso_version(x), utils::packageVersion("shinystan"))
   
-  # stanreg
-  expect_is(as.shinystan(stanreg1, model_name = "test"), "shinystan")
-  expect_identical(sso_version(x), utils::packageVersion("shinystan"))
+  # with sampler_params
+  samp_list <- list()
+  samp <- sso@posterior_sample
+  for (j in 1:ncol(samp)) samp_list[[j]] <- samp[, j, ]
+  sp <- sso@sampler_params
+  x <- as.shinystan(samp_list, sampler_params = sp, warmup = 1000, 
+                    max_treedepth = 11, algorithm = "NUTS")
+  expect_s4_class(x, "shinystan")
+})
+test_that("as.shinystan (stanreg) creates sso", {
+  expect_message(x <- as.shinystan(stanreg1, model_name = "test"), 
+                 "preparing graphical posterior predictive checks")
+  expect_is(x, "shinystan")
   
-  # stanfit
-  expect_is(as.shinystan(stanfit1, model_name = "test", note = "test"), "shinystan")
+  # check that ppc plots created
+  ppc <- x@misc$pp_check_plots
+  expect_type(ppc, "list")
+  expect_s3_class(ppc[[1]], "ggplot")
+  
+  # without ppd
+  x <- as.shinystan(stanreg1, ppd = FALSE)
+  expect_null(x@misc$pp_check_plots)
+})
+test_that("as.shinystan (stanfit) creates sso", {
+  expect_is(x <- as.shinystan(stanfit1, model_name = "test", note = "test"), "shinystan")
   expect_identical(sso_version(x), utils::packageVersion("shinystan"))
 })
 

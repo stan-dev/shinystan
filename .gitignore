@@ -3,7 +3,6 @@
 *-Ex.R
 .Rdata
 .Rproj.user
-shinystan.Rproj
 
 *.DS_Store
 inst/doc

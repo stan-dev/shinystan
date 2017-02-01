@@ -15,14 +15,17 @@ as.shinystan(X, ...)
 
 is.shinystan(X)
 
-\S4method{as.shinystan}{array}(X, model_name = "unnamed model", burnin = 0,
-  param_dims = list(), model_code = NULL, note = NULL, ...)
+\S4method{as.shinystan}{array}(X, model_name = "unnamed model", warmup = 0,
+  burnin = 0, param_dims = list(), model_code = NULL, note = NULL,
+  sampler_params = NULL, algorithm = NULL, max_treedepth = NULL, ...)
 
-\S4method{as.shinystan}{list}(X, model_name = "unnamed model", burnin = 0,
-  param_dims = list(), model_code = NULL, note = NULL, ...)
+\S4method{as.shinystan}{list}(X, model_name = "unnamed model", warmup = 0,
+  burnin = 0, param_dims = list(), model_code = NULL, note = NULL,
+  sampler_params = NULL, algorithm = NULL, max_treedepth = NULL, ...)
 
 \S4method{as.shinystan}{mcmc.list}(X, model_name = "unnamed model",
-  burnin = 0, param_dims = list(), model_code = NULL, note = NULL, ...)
+  warmup = 0, burnin = 0, param_dims = list(), model_code = NULL,
+  note = NULL, ...)
 
 \S4method{as.shinystan}{stanfit}(X, pars, model_name = X@model_name,
   note = NULL, ...)
@@ -39,8 +42,11 @@ to check.}
 
 \item{model_name}{A string giving a name for the model.}
 
-\item{burnin}{The number of iterations to treat as burnin (warmup). Should be
+\item{warmup}{The number of iterations to treat as warmup. Should be
 \code{0} if warmup iterations are not included in \code{X}.}
+
+\item{burnin}{Deprecated. Use \code{warmup} instead. The \code{burnin}
+argument will be removed in a future release.}
 
 \item{param_dims}{Rarely used and never necessary. A named list giving the 
 dimensions for all parameters. For scalar parameters use \code{0} as the 
@@ -57,6 +63,18 @@ object.}
 
 \item{note}{Optionally, text to display on ShinyStan's notes page (stored in 
 \code{user_model_info} slot).}
+
+\item{sampler_params, algorithm, max_treedepth}{Rarely used and never 
+necessary. If using the \code{as.shinystan} method for arrays or lists, 
+these arguments can be used to manually provide information that is 
+automatically retrieved from a stanfit object when using the 
+\code{as.shinystan} method for stanfit objects. If specified, 
+\code{sampler_params} must have the same structure as an object returned by
+\code{\link[rstan]{get_sampler_params}} (\pkg{rstan}), which is a list of 
+matrices, with one matrix per chain. \code{algorithm}, if specified, must 
+be either \code{"NUTS"} or \code{"HMC"} (static HMC). If \code{algorithm}
+is \code{"NUTS"} then \code{max_treedepth} (an integer indicating the
+maximum allowed treedepth when the model was fit) must also be provided.}
 
 \item{pars}{For stanfit objects (\pkg{rstan}), an optional character vector
 specifying which parameters should be included in the shinystan object.}
@@ -136,7 +154,7 @@ launch_shinystan(sso)
 # to 'beta[1]' and 'beta[2]'
 colnames(chain1) <- colnames(chain2) <- c(paste0("beta[",1:2,"]"), "sigma")
 sso2 <- as.shinystan(list(chain1, chain2), 
-                     model_name = "Example", burnin = 0, 
+                     model_name = "Example", warmup = 0, 
                      param_dims = list(beta = 2, sigma = 0))
 launch_shinystan(sso2)
 }

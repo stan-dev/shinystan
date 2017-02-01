@@ -122,7 +122,9 @@ is.shinystan <- function(X) inherits(X, "shinystan")
 #'   corresponding to iterations, chains, and parameters, in that order.
 #'
 #' @param model_name A string giving a name for the model.
-#' @param burnin The number of iterations to treat as burnin (warmup). Should be
+#' @param burnin Deprecated. Use \code{warmup} instead. The \code{burnin}
+#'   argument will be removed in a future release.
+#' @param warmup The number of iterations to treat as warmup. Should be
 #'   \code{0} if warmup iterations are not included in \code{X}.
 #' @param param_dims Rarely used and never necessary. A named list giving the 
 #'   dimensions for all parameters. For scalar parameters use \code{0} as the 
@@ -137,6 +139,17 @@ is.shinystan <- function(X) inherits(X, "shinystan")
 #'   object.
 #' @param note Optionally, text to display on ShinyStan's notes page (stored in 
 #'   \code{user_model_info} slot).
+#' @param sampler_params,algorithm,max_treedepth Rarely used and never 
+#'   necessary. If using the \code{as.shinystan} method for arrays or lists, 
+#'   these arguments can be used to manually provide information that is 
+#'   automatically retrieved from a stanfit object when using the 
+#'   \code{as.shinystan} method for stanfit objects. If specified, 
+#'   \code{sampler_params} must have the same structure as an object returned by
+#'   \code{\link[rstan]{get_sampler_params}} (\pkg{rstan}), which is a list of 
+#'   matrices, with one matrix per chain. \code{algorithm}, if specified, must 
+#'   be either \code{"NUTS"} or \code{"HMC"} (static HMC). If \code{algorithm}
+#'   is \code{"NUTS"} then \code{max_treedepth} (an integer indicating the
+#'   maximum allowed treedepth when the model was fit) must also be provided.
 #'   
 #' @examples  
 #' \dontrun{
@@ -149,10 +162,13 @@ setMethod(
   signature = "array",
   definition = function(X,
                         model_name = "unnamed model",
-                        burnin = 0,
+                        warmup = 0, burnin = 0, 
                         param_dims = list(),
                         model_code = NULL,
                         note = NULL,
+                        sampler_params = NULL, 
+                        algorithm = NULL,
+                        max_treedepth = NULL,
                         ...) {
     validate_model_code(model_code)
     is3D <- isTRUE(length(dim(X)) == 3)
@@ -168,24 +184,111 @@ setMethod(
       parameters = param_names
     )
     
+    sp <- .validate_sampler_params(
+      sampler_params, 
+      n_chain = ncol(X), 
+      n_iter = nrow(X), 
+      algorithm = algorithm
+    )
+    
+    n_warmup <- .deprecate_burnin(burnin, warmup)
     sso <- shinystan(
       model_name = model_name,
       param_names = param_names,
       param_dims = .set_param_dims(param_dims, param_names),
       posterior_sample = X,
-      summary = shinystan_monitor(X, warmup = burnin),
+      sampler_params = sp,
+      summary = shinystan_monitor(X, warmup = n_warmup),
       n_chain = ncol(X),
       n_iter = nrow(X),
-      n_warmup = burnin
+      n_warmup = n_warmup
     )
+    
+    if (!is.null(sampler_params)) {
+      if (is.null(algorithm)) {
+        stop("If 'sampler_params' is specified then 'algorithm' can't be NULL.")
+      } else {
+        algorithm <- match.arg(algorithm, choices = c("HMC", "NUTS"))
+        if (algorithm == "NUTS" && is.null(max_treedepth))
+          stop("If 'algorithm' is 'NUTS' then 'max_treedepth' must be provided.")
+      }
+      slot(sso, "misc") <- list(
+        max_td = max_treedepth,
+        stan_method = "sampling",
+        stan_algorithm = algorithm,
+        sso_version = utils::packageVersion("shinystan")
+      )
+    }
     if (!is.null(note))
       sso <- suppressMessages(notes(sso, note = note, replace = TRUE))
     if (!is.null(model_code))
       sso <- suppressMessages(model_code(sso, code = model_code))
+    sso <- .rename_scalar(sso, oldname = "lp__", newname = "log-posterior")
     
     return(sso)
   }
 )
+
+# FIXME: remove this when 'burnin' arg is removed
+.deprecate_burnin <- function(burnin = 0, warmup = 0) {
+  if (warmup == 0) {
+    if (burnin == 0) {
+      return(0)
+    } else {
+      warning("The 'burnin' argument is deprecated and will be removed ", 
+              "in a future release. Use the 'warmup' argument instead.", 
+              call. = FALSE)
+      return(burnin)
+    }
+  } else if (burnin == 0) {
+    return(warmup)
+  } else {
+    stop("'burnin' and 'warmup' can't both be specified. ", 
+         "'burnin' is deprecated. Please use 'warmup' instead.", 
+         call. = FALSE)
+  }
+}
+
+.validate_sampler_params <-
+  function(x,
+           n_chain,
+           n_iter,
+           algorithm = c("NUTS", "HMC")) {
+    if (is.null(x))
+      return(list(NA))
+    
+    if (!is.list(x) || length(x) != n_chain || !all(sapply(x, is.matrix)))
+      stop("'sampler_params' must be a list of matrices with one matrix per chain.")
+    if (!all(sapply(x, function(xj) nrow(xj) == n_iter)))
+      stop("Each matrix in 'sampler_params' must have number of rows ",
+           "equal to number of iterations in 'X'.")
+    
+    nms <- sapply(x, colnames)
+    if (!is.character(nms))
+      stop("Matrices in 'sampler_params' must have column names.")
+    for (j in seq_along(x)) {
+      if (!all.equal(nms[, 1], nms[, j]))
+        stop("All matrices in 'sampler_params' must have the same column names.")
+    }
+    
+    alg <- match.arg(algorithm)
+    if (alg == "NUTS") {
+      nuts_nms <-
+        c(
+          "accept_stat__",
+          "stepsize__",
+          "treedepth__",
+          "n_leapfrog__",
+          "divergent__",
+          "energy__"
+        )
+      if (!all(nms[, 1] %in% nuts_nms))
+        stop("For NUTS algorithm the following parameters must be included ", 
+             "in 'sampler_params': ", paste(nuts_nms, collapse = ", "))
+    }
+    
+    return(x)
+  }
 
 .set_param_dims <- function(param_dims = list(), 
                             param_names = character(length(param_dims))) {
@@ -229,7 +332,7 @@ setMethod(
 #' # to 'beta[1]' and 'beta[2]'
 #' colnames(chain1) <- colnames(chain2) <- c(paste0("beta[",1:2,"]"), "sigma")
 #' sso2 <- as.shinystan(list(chain1, chain2), 
-#'                      model_name = "Example", burnin = 0, 
+#'                      model_name = "Example", warmup = 0, 
 #'                      param_dims = list(beta = 2, sigma = 0))
 #' launch_shinystan(sso2)
 #' }
@@ -239,10 +342,13 @@ setMethod(
   signature = "list",
   definition = function(X,
                         model_name = "unnamed model",
-                        burnin = 0,
+                        warmup = 0, burnin = 0,
                         param_dims = list(),
                         model_code = NULL,
                         note = NULL,
+                        sampler_params = NULL, 
+                        algorithm = NULL, 
+                        max_treedepth = NULL,
                         ...) {
     validate_model_code(model_code)
     if (!length(X))
@@ -297,10 +403,13 @@ setMethod(
     as.shinystan(
       out,
       model_name = model_name,
-      burnin = burnin,
+      warmup = .deprecate_burnin(burnin, warmup),
       param_dims = param_dims,
       model_code = model_code,
       note = note,
+      sampler_params = sampler_params,
+      algorithm = algorithm,
+      max_treedepth = max_treedepth,
       ...
     )
   }
@@ -317,7 +426,7 @@ setMethod(
   signature = "mcmc.list",
   definition = function(X,
                         model_name = "unnamed model",
-                        burnin = 0,
+                        warmup = 0, burnin = 0,
                         param_dims = list(),
                         model_code = NULL,
                         note = NULL,
@@ -330,7 +439,7 @@ setMethod(
         as.shinystan(
           X = list(.mcmclist2matrix(X)),
           model_name = model_name,
-          burnin = burnin,
+          warmup = .deprecate_burnin(burnin, warmup),
           param_dims = param_dims,
           model_code = model_code,
           note = note,
@@ -667,32 +776,31 @@ setMethod(
     do.call("ppc",
             list(
               object = X,
-              check = "dist",
+              plotfun = "hist",
               nreps = 8,
-              overlay = FALSE,
               seed = seed
             ))
   pp_check_plots[["pp_check_dens"]] <-
     do.call("ppc",
             list(
               object = X,
-              check = "dist",
-              nreps = 8,
-              overlay = TRUE,
+              plotfun = "dens_overlay",
+              nreps = 50,
               seed = seed
             ))
   pp_check_plots[["pp_check_resid"]] <-
-    do.call("ppc", list(
-      object = X,
-      check = "resid",
-      nreps = 8,
-      seed = seed
-    ))
+    do.call("ppc", 
+            list(
+              object = X,
+              plotfun = "error_hist",
+              nreps = 8,
+              seed = seed
+            ))
   pp_check_plots[["pp_check_scatter"]] <-
     do.call("ppc",
             list(
               object = X,
-              check = "scatter",
+              plotfun = "scatter_avg",
               nreps = NULL,
               seed = seed
             ))
@@ -700,31 +808,34 @@ setMethod(
     do.call("ppc",
             list(
               object = X,
-              check = "test",
-              test = "mean",
+              plotfun = "stat",
+              stat = "mean",
               seed = seed
             ))
   pp_check_plots[["pp_check_stat_sd"]] <-
-    do.call("ppc", list(
-      object = X,
-      check = "test",
-      test = "sd",
-      seed = seed
-    ))
+    do.call("ppc", 
+            list(
+              object = X,
+              plotfun = "stat",
+              stat = "sd",
+              seed = seed
+            ))
   pp_check_plots[["pp_check_stat_min"]] <-
-    do.call("ppc", list(
-      object = X,
-      check = "test",
-      test = "min",
-      seed = seed
-    ))
+    do.call("ppc", 
+            list(
+              object = X,
+              plotfun = "stat",
+              stat = "min",
+              seed = seed
+            ))
   pp_check_plots[["pp_check_stat_max"]] <-
-    do.call("ppc", list(
-      object = X,
-      check = "test",
-      test = "max",
-      seed = seed
-    ))
+    do.call("ppc", 
+            list(
+              object = X,
+              plotfun = "stat",
+              stat = "max",
+              seed = seed
+            ))
   
   pp_check_plots
 }
