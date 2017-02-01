@@ -10,8 +10,7 @@ relevant for models _not_ fit using Stan.
 * Add NUTS energy diagnostic plots to Diagnose page
 * Allowing passing `sampler_params` to `as.shinystan`. This makes it possible to
 display sampler diagnositcs for HMC/NUTS even if not using Stan's implementation
-of those algorithms (thanks to Cole Monnahan)
->>>>>>> develop
+of those algorithms (thanks to Cole Monnahan).
 
 ### Version 2.2.1
 
