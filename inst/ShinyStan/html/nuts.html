@@ -56,11 +56,17 @@ The algorithm terminates in one of two ways, either
 </ul>
  
 Rather than using a standard Metropolis step, the final parameter value 
-is selected with slice sampling along the final evolution step 
-(i.e., the second half of iterations generated).
+is selected via multinomial sampling among the Hamiltonian trajectories.
+
 <br><br>
 Configuring the no-U-turn sampler involves putting a cap on the <code>treedepth</code>
 that it evaluates during each iteration. This is controlled through a maximum depth parameter. The number of leapfrog steps taken is then bounded by 2 to the power 
 of the maximum depth minus 1.
 <br><br>
+
+<p>
+For more details see 
+<a href="https://arxiv.org/abs/1701.02434"> Betancourt, M. (2017). A conceptual introduction to Hamiltonian Monte Carlo.</a>
+</p>
+
 </div>
