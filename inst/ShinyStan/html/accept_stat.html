@@ -5,10 +5,15 @@
   <em>Quick definition</em>
 </span>
 
-The acceptance statistic used by NUTS for slice and Metropolis rejection.   
-<code>accept_stat</code> is acceptance probability averaged over samples 
-in the slice. For HMC without NUTS <code>accept_stat</code> is the standard 
-Metropolis acceptance probability.
+The acceptance statistic used by NUTS for the Metropolis correction.   
+In the original NUTS implementation a slice sampling step was used to sample a 
+state from each Hamiltonian trajectory and <code>accept_stat</code> was the acceptance 
+probability averaged over samples in the slice. In more recent versions of Stan
+the NUTS algorithm uses multinomial sampling over the states for each Hamiltonian 
+trajectory.
+
+For HMC without NUTS <code>accept_stat</code> is the standard Metropolis 
+acceptance probability.
 
 <br><br>
 <h4>More details</h4>
