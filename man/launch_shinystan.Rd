@@ -2,21 +2,33 @@
 % Please edit documentation in R/launch_shinystan.R
 \name{launch_shinystan}
 \alias{launch_shinystan}
+\alias{launch_shinystan.shinystan}
+\alias{launch_shinystan.stanfit}
+\alias{launch_shinystan.stanreg}
 \title{Launch the ShinyStan app}
 \usage{
-launch_shinystan(object, rstudio = getOption("shinystan.rstudio"), ...)
+launch_shinystan(object, ...)
+
+\method{launch_shinystan}{shinystan}(object, ...,
+  rstudio = getOption("shinystan.rstudio"))
+
+\method{launch_shinystan}{stanfit}(object, ...,
+  rstudio = getOption("shinystan.rstudio"))
+
+\method{launch_shinystan}{stanreg}(object, ...,
+  rstudio = getOption("shinystan.rstudio"))
 }
 \arguments{
-\item{object}{An object of class shinystan, stanfit, or stanreg. To use other
-types of objects first create a shinystan object using 
-\code{\link{as.shinystan}}.}
+\item{object}{An object of class \code{"shinystan"}, \code{"stanfit}, or
+\code{"stanreg"}. To use other types of objects first create a shinystan
+object using \code{\link{as.shinystan}}.}
+
+\item{...}{Optional arguments passed to \code{\link[shiny]{runApp}}.}
 
 \item{rstudio}{Only relevant for RStudio users. The default (\code{FALSE}) is
 to launch the app in the user's default web browser rather than RStudio's
 pop-up Viewer. Users can change the default to \code{TRUE} by setting the
 global option \code{options(shinystan.rstudio = TRUE)}.}
-
-\item{...}{Optional arguments passed to \code{\link[shiny]{runApp}}.}
 }
 \value{
 The \code{launch_shinystan} function is used for the side effect of 
@@ -24,7 +36,7 @@ The \code{launch_shinystan} function is used for the side effect of
   instance of S4 class \code{"shinystan"}.
 }
 \description{
-Launch the ShinyStan app in the default web browser. RStudio users also have
+Launch the ShinyStan app in the default web browser. RStudio users also have 
 the option of launching the app in RStudio's pop-up Viewer.
 }
 \examples{
@@ -76,4 +88,3 @@ fit_sso <- as.shinystan(fit, model_name = "Example")
 
 \code{\link{launch_shinystan_demo}} to try a demo.
 }
-

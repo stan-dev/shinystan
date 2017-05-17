@@ -66,4 +66,3 @@ The example in the \emph{Deploying to shinyapps.io} vignette that
   account and for details on how to configure your account on your local
   system using RStudio's \pkg{\link[rsconnect]{rsconnect}} package.
 }
-
