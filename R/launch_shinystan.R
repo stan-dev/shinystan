@@ -13,13 +13,13 @@
 
 #' Launch the ShinyStan app
 #' 
-#' Launch the ShinyStan app in the default web browser. RStudio users also have
+#' Launch the ShinyStan app in the default web browser. RStudio users also have 
 #' the option of launching the app in RStudio's pop-up Viewer.
 #' 
 #' @export
-#' @param object An object of class shinystan, stanfit, or stanreg. To use other
-#'   types of objects first create a shinystan object using 
-#'   \code{\link{as.shinystan}}.
+#' @param object An object of class \code{"shinystan"}, \code{"stanfit}, or
+#'   \code{"stanreg"}. To use other types of objects first create a shinystan
+#'   object using \code{\link{as.shinystan}}.
 #' @param rstudio Only relevant for RStudio users. The default (\code{FALSE}) is
 #'   to launch the app in the user's default web browser rather than RStudio's
 #'   pop-up Viewer. Users can change the default to \code{TRUE} by setting the
@@ -75,22 +75,54 @@
 #' # Now fit_sso is a shinystan object and so Example 1 (above) applies.
 #' }
 #'
-launch_shinystan <- function(object, 
-                             rstudio = getOption("shinystan.rstudio"), 
-                             ...) {
-  if (is.shinystan(object)) {
+launch_shinystan <- function(object, ...) {
+  UseMethod("launch_shinystan")
+}
+
+#' @rdname launch_shinystan
+#' @export
+launch_shinystan.shinystan <-
+  function(object,
+           ...,
+           rstudio = getOption("shinystan.rstudio")) {
     sso_check(object)
-  } else if (is.stanreg(object) || is.stanfit(object)) {
+    message("\nLaunching ShinyStan interface... ",
+            "for large models this  may take some time.")
+    invisible(launch(object, rstudio, ...))
+  }
+
+#' @rdname launch_shinystan
+#' @export
+launch_shinystan.stanfit <-
+  function(object,
+           ...,
+           rstudio = getOption("shinystan.rstudio")) {
+    if (is.shinystan(object)) {
+      sso_check(object)
+    } else if (is.stanreg(object) || is.stanfit(object)) {
+      
+    }
     message("\nCreating shinystan object...")
     object <- as.shinystan(object)
+    
+    message("\nLaunching ShinyStan interface... ",
+            "for large models this  may take some time.")
+    invisible(launch(object, rstudio, ...))
   }
-  if (!is.shinystan(object))
-    stop("'object' is not a valid input. See help('launch_shinystan').")
-  
-  message("\nLaunching ShinyStan interface... ",
-          "for large models this  may take some time.")
-  invisible(launch(object, rstudio, ...))
-}
+
+#' @rdname launch_shinystan
+#' @export
+launch_shinystan.stanreg <-
+  function(object,
+           ...,
+           rstudio = getOption("shinystan.rstudio")) {
+    message("\nCreating shinystan object...")
+    object <- as.shinystan(object)
+    
+    message("\nLaunching ShinyStan interface... ",
+            "for large models this  may take some time.")
+    invisible(launch(object, rstudio, ...))
+  }
 
 
 #' ShinyStan demo
