@@ -76,4 +76,3 @@ fit_sso <- as.shinystan(fit, model_name = "Example")
 
 \code{\link{launch_shinystan_demo}} to try a demo.
 }
-

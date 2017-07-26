@@ -2,8 +2,8 @@
 % Please edit documentation in R/shinystan-objects.R
 \docType{class}
 \name{shinystan-class}
-\alias{shinystan}
 \alias{shinystan-class}
+\alias{shinystan}
 \title{S4 shinystan objects}
 \description{
 See \code{\link{as.shinystan}} for documentation on creating
@@ -39,6 +39,7 @@ models only).}
 
 \item{\code{misc}}{(\code{"list"}) Miscellaneous, for internal use.}
 }}
+
 \seealso{
 \code{\link{as.shinystan}} for creating shinystan objects.
 
@@ -51,4 +52,3 @@ models only).}
 \code{\link{shinystan-metadata}} to view or change metadata
   associated with a shinystan object.
 }
-

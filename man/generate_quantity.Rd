@@ -39,4 +39,3 @@ sso <- generate_quantity(sso, fun = "-",
 \code{\link{drop_parameters}} to remove parameters from a shinystan
   object.
 }
-

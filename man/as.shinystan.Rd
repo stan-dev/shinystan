@@ -3,12 +3,12 @@
 \docType{methods}
 \name{as.shinystan}
 \alias{as.shinystan}
+\alias{is.shinystan}
 \alias{as.shinystan,array-method}
 \alias{as.shinystan,list-method}
 \alias{as.shinystan,mcmc.list-method}
 \alias{as.shinystan,stanfit-method}
 \alias{as.shinystan,stanreg-method}
-\alias{is.shinystan}
 \title{Create and test shinystan objects}
 \usage{
 as.shinystan(X, ...)
@@ -131,6 +131,7 @@ from the stanfit object.
 \item \code{stanreg}: Create a shinystan object from a stanreg object 
 (\pkg{\link[rstanarm]{rstanarm}}).
 }}
+
 \examples{
  
 \dontrun{
@@ -189,4 +190,3 @@ launch_shinystan(sso)
 \code{\link{generate_quantity}} to add a new quantity to a shinystan
   object.
 }
-

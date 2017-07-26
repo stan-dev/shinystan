@@ -14,4 +14,3 @@ This function is deprecated and will be removed in a future release. Please
 use the \code{\link{model_name}} function instead.
 }
 \keyword{internal}
-

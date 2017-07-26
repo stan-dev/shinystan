@@ -68,7 +68,7 @@
 #'
 #' @section Help and bug reports:
 #' \itemize{
-#'  \item Stan Users Google group (\url{https://groups.google.com/forum/#!forum/stan-users})
+#'  \item Stan Users forum (\url{http://discourse.mc-stan.org})
 #'  \item ShinyStan issue tracker (\url{https://github.com/stan-dev/shinystan/issues})
 #' }
 #'

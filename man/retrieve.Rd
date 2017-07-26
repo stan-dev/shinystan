@@ -54,4 +54,3 @@ retrieve(sso, "prop_divergent")
 retrieve(sso, "prop_divergent", inc_warmup = TRUE)
 
 }
-
