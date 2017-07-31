@@ -4,10 +4,10 @@ citEntry(entry = "Misc",
          title = "shinystan: Interactive Visual and Numerical Diagnostics and Posterior Analysis for Bayesian Models.",
          author = person(given = "Stan Development Team"),
          year = "2017",
-         note = "R package version 2.3.0",
+         note = "R package version 2.4.0",
          url = "http://mc-stan.org/",
          textVersion =
            paste("Stan Development Team (2017).",
-                 title = "shinystan: Interactive Visual and Numerical Diagnostics and Posterior Analysis for {Bayesian} Models. R package version 2.3.0.",
+                 title = "shinystan: Interactive Visual and Numerical Diagnostics and Posterior Analysis for {Bayesian} Models. R package version 2.4.0.",
                  "http://mc-stan.org/.")
 )

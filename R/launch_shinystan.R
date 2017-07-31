@@ -17,7 +17,7 @@
 #' the option of launching the app in RStudio's pop-up Viewer.
 #' 
 #' @export
-#' @param object An object of class \code{"shinystan"}, \code{"stanfit}, or
+#' @param object An object of class \code{"shinystan"}, \code{"stanfit"}, or
 #'   \code{"stanreg"}. To use other types of objects first create a shinystan
 #'   object using \code{\link{as.shinystan}}.
 #' @param rstudio Only relevant for RStudio users. The default (\code{FALSE}) is
@@ -69,10 +69,7 @@
 #' # Example 3: 'fit' is an mcmc.list, array or list of matrices
 #' #######################################
 #'
-#' # First create shinystan object (see ?as.shinystan for full details)
-#' fit_sso <- as.shinystan(fit, model_name = "Example")
-#' 
-#' # Now fit_sso is a shinystan object and so Example 1 (above) applies.
+#' # First create shinystan object (see ?as.shinystan) for full details)
 #' }
 #'
 launch_shinystan <- function(object, ...) {
@@ -81,44 +78,29 @@ launch_shinystan <- function(object, ...) {
 
 #' @rdname launch_shinystan
 #' @export
+launch_shinystan.default <-
+  function(object,
+           ...,
+           rstudio = getOption("shinystan.rstudio")) {
+    if (!is.shinystan(object) && 
+        !is.stanfit(object) && 
+        !is.stanreg(object)) {
+      stop("object not compatible with 'launch_shinystan'. ",
+           "Try converting to a shinystan object first using 'as.shinystan'.")
+    }
+    object <- as.shinystan(object)
+    message("\nLaunching ShinyStan interface... ",
+            "for large models this  may take some time.")
+    invisible(launch(object, rstudio, ...))
+  }
+
+#' @rdname launch_shinystan
+#' @export
 launch_shinystan.shinystan <-
   function(object,
            ...,
            rstudio = getOption("shinystan.rstudio")) {
     sso_check(object)
-    message("\nLaunching ShinyStan interface... ",
-            "for large models this  may take some time.")
-    invisible(launch(object, rstudio, ...))
-  }
-
-#' @rdname launch_shinystan
-#' @export
-launch_shinystan.stanfit <-
-  function(object,
-           ...,
-           rstudio = getOption("shinystan.rstudio")) {
-    if (is.shinystan(object)) {
-      sso_check(object)
-    } else if (is.stanreg(object) || is.stanfit(object)) {
-      
-    }
-    message("\nCreating shinystan object...")
-    object <- as.shinystan(object)
-    
-    message("\nLaunching ShinyStan interface... ",
-            "for large models this  may take some time.")
-    invisible(launch(object, rstudio, ...))
-  }
-
-#' @rdname launch_shinystan
-#' @export
-launch_shinystan.stanreg <-
-  function(object,
-           ...,
-           rstudio = getOption("shinystan.rstudio")) {
-    message("\nCreating shinystan object...")
-    object <- as.shinystan(object)
-    
     message("\nLaunching ShinyStan interface... ",
             "for large models this  may take some time.")
     invisible(launch(object, rstudio, ...))

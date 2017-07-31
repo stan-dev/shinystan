@@ -2,24 +2,20 @@
 % Please edit documentation in R/launch_shinystan.R
 \name{launch_shinystan}
 \alias{launch_shinystan}
+\alias{launch_shinystan.default}
 \alias{launch_shinystan.shinystan}
-\alias{launch_shinystan.stanfit}
-\alias{launch_shinystan.stanreg}
 \title{Launch the ShinyStan app}
 \usage{
 launch_shinystan(object, ...)
 
+\method{launch_shinystan}{default}(object, ...,
+  rstudio = getOption("shinystan.rstudio"))
+
 \method{launch_shinystan}{shinystan}(object, ...,
-  rstudio = getOption("shinystan.rstudio"))
-
-\method{launch_shinystan}{stanfit}(object, ...,
-  rstudio = getOption("shinystan.rstudio"))
-
-\method{launch_shinystan}{stanreg}(object, ...,
   rstudio = getOption("shinystan.rstudio"))
 }
 \arguments{
-\item{object}{An object of class \code{"shinystan"}, \code{"stanfit}, or
+\item{object}{An object of class \code{"shinystan"}, \code{"stanfit"}, or
 \code{"stanreg"}. To use other types of objects first create a shinystan
 object using \code{\link{as.shinystan}}.}
 
@@ -73,10 +69,7 @@ sf_sso <- launch_shinystan(sf)
 # Example 3: 'fit' is an mcmc.list, array or list of matrices
 #######################################
 
-# First create shinystan object (see ?as.shinystan for full details)
-fit_sso <- as.shinystan(fit, model_name = "Example")
-
-# Now fit_sso is a shinystan object and so Example 1 (above) applies.
+# First create shinystan object (see ?as.shinystan) for full details)
 }
 
 }
