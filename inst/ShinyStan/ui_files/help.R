@@ -16,7 +16,7 @@ div(
             "To ask a question or suggest a new feature visit the",
             a(
               "Stan users message board.", 
-              href = "https://groups.google.com/forum/?fromgroups#!forum/stan-users"
+              href = "http://discourse.mc-stan.org"
             )
           ),
           br(),

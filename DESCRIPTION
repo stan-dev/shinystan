@@ -22,12 +22,12 @@ Description: A graphical user interface for interactive Markov chain Monte
     application framework and works with the output of MCMC programs written
     in any programming language (and has extended functionality for Stan models
     fit using the rstan and rstanarm packages).
-URL: https://github.com/stan-dev/shinystan/, http://mc-stan.org/
+URL: http://mc-stan.org/, http://discourse.mc-stan.org
 BugReports: https://github.com/stan-dev/shinystan/issues/
 License: GPL (>=3)
 Depends:
     R (>= 3.1.0),
-    shiny (>= 0.12.1)
+    shiny (>= 1.0.3)
 Imports:
     bayesplot (>= 1.1.0),
     colourpicker,
