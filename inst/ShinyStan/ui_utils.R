@@ -1,6 +1,6 @@
 source_ui <- function(...) {
   source(
-    file.path("ui_files", ...), 
+    file.path("ui_files", ...),
     local = TRUE
   )$value
 }
@@ -77,11 +77,11 @@ a_glossary <- function(id) {
 
 
 # plotOutput generators ---------------------------------------------------
-dygraphOutput_175px <- function(id) 
+dygraphOutput_175px <- function(id)
   dygraphs::dygraphOutput(id, height = "175px")
-plotOutput_200px <- function(id, ...) 
+plotOutput_200px <- function(id, ...)
   plotOutput(id, height = "200px")
-plotOutput_400px <- function(id, ...) 
+plotOutput_400px <- function(id, ...)
   plotOutput(id, height = "400px")
 
 
@@ -100,7 +100,7 @@ condPanel_dens_prior <- function(dist, ...) {
 alpha_calc_pt <- function(N) {
   if (N <= 100) return(1)
   else if (N <= 200) return(0.75)
-  else if (N >= 1500) return(0.15) 
+  else if (N >= 1500) return(0.15)
   else 1 - pnorm(N/1500)
 }
 
@@ -125,20 +125,20 @@ transformation_selectInput <- function(id) {
 
 transform_helpText <- function(var = "x") {
   div(
-    if (var == "x") 
-      helpText(style = "font-size: 13px;", 
+    if (var == "x")
+      helpText(style = "font-size: 13px;",
                "To apply a transformation",
-               "select a function and click", 
+               "select a function and click",
                code("Transform"))
     else if (var == "x,y")
-      helpText(style = "font-size: 13px;", 
+      helpText(style = "font-size: 13px;",
                "To apply transformations",
-               "select a function for x and/or y", 
+               "select a function for x and/or y",
                "and click", code("Transform"))
-    else 
-      helpText(style = "font-size: 13px;", 
+    else
+      helpText(style = "font-size: 13px;",
                "To apply transformations",
-               "select a function for x, y, and/or z", 
+               "select a function for x, y, and/or z",
                "and click", code("Transform"))
   )
 }
@@ -156,9 +156,9 @@ help_points <- hT11(
   "a transition hitting the maximum treedepth."
 )
 help_dynamic <- hT11(
-  "Use your mouse or the sliders to select areas in the",
-  "traceplot to zoom into. The other plots on the screen",
-  "will update accordingly. Double-click to reset."
+  "Use your mouse to select a range in the traceplot to zoom into. ",
+  "The other plots on the screen will update accordingly. ",
+  "Double-click to reset."
 )
 
 
