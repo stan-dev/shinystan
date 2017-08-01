@@ -62,7 +62,7 @@ Code} tab. For \code{stanfit} (\pkg{rstan}) and \code{stanreg}
 object.}
 
 \item{note}{Optionally, text to display on ShinyStan's notes page (stored in 
-\code{user_model_info} slot).}
+\code{user_model_info} slot of the shinystan object).}
 
 \item{sampler_params, algorithm, max_treedepth}{Rarely used and never 
 necessary. If using the \code{as.shinystan} method for arrays or lists, 

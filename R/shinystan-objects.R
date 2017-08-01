@@ -138,7 +138,7 @@ is.shinystan <- function(X) inherits(X, "shinystan")
 #'   (\pkg{rstanarm}) objects the model code is automatically retrieved from the
 #'   object.
 #' @param note Optionally, text to display on ShinyStan's notes page (stored in 
-#'   \code{user_model_info} slot).
+#'   \code{user_model_info} slot of the shinystan object).
 #' @param sampler_params,algorithm,max_treedepth Rarely used and never 
 #'   necessary. If using the \code{as.shinystan} method for arrays or lists, 
 #'   these arguments can be used to manually provide information that is 
