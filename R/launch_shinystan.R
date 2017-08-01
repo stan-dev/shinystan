@@ -17,9 +17,10 @@
 #' the option of launching the app in RStudio's pop-up Viewer.
 #' 
 #' @export
-#' @param object An object of class \code{"shinystan"}, \code{"stanfit"}, or
-#'   \code{"stanreg"}. To use other types of objects first create a shinystan
-#'   object using \code{\link{as.shinystan}}.
+#' @param object The object to use. For the default method this can be an object
+#'   of class \code{"shinystan"}, \code{"stanfit"}, or \code{"stanreg"}. To use
+#'   other types of objects first create a shinystan object using
+#'   \code{\link{as.shinystan}}.
 #' @param rstudio Only relevant for RStudio users. The default (\code{FALSE}) is
 #'   to launch the app in the user's default web browser rather than RStudio's
 #'   pop-up Viewer. Users can change the default to \code{TRUE} by setting the

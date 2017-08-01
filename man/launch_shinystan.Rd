@@ -15,9 +15,10 @@ launch_shinystan(object, ...)
   rstudio = getOption("shinystan.rstudio"))
 }
 \arguments{
-\item{object}{An object of class \code{"shinystan"}, \code{"stanfit"}, or
-\code{"stanreg"}. To use other types of objects first create a shinystan
-object using \code{\link{as.shinystan}}.}
+\item{object}{The object to use. For the default method this can be an object
+of class \code{"shinystan"}, \code{"stanfit"}, or \code{"stanreg"}. To use
+other types of objects first create a shinystan object using
+\code{\link{as.shinystan}}.}
 
 \item{...}{Optional arguments passed to \code{\link[shiny]{runApp}}.}
 

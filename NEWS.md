@@ -2,7 +2,8 @@
 
 * `launch_shinystan` is now an S3 generic with methods. This allows developers 
 of packages that use __shinystan__ to create their own `launch_shinystan` 
-methods instead of using a different function name.
+methods instead of using a different function name or creating a naming 
+conflict.
 
 ### Version 2.3.0
 
