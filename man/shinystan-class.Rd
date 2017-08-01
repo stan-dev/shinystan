@@ -4,10 +4,11 @@
 \name{shinystan-class}
 \alias{shinystan-class}
 \alias{shinystan}
-\title{S4 shinystan objects}
+\title{S4 \code{shinystan} objects}
 \description{
-See \code{\link{as.shinystan}} for documentation on creating
-  shinystan objects and \code{\link{eight_schools}} for an example object.
+See \code{\link{as.shinystan}} for documentation on creating 
+  \code{shinystan} objects and \code{\link{eight_schools}} for an example
+  object.
 }
 \section{Slots}{
 
@@ -31,24 +32,24 @@ models only).}
 
 \item{\code{n_warmup}}{(\code{"integer"}) Number of warmup iterations per chain.}
 
-\item{\code{user_model_info}}{(\code{"character"}) Notes to display on ShinyStan's
-\strong{Notepad} page.}
+\item{\code{user_model_info}}{(\code{"character"}) Notes to display on the
+\strong{Notepad} page in the 'ShinyStan' GUI.}
 
-\item{\code{model_code}}{(\code{"character"}) Model code to display on ShinyStan's
-\strong{Model Code} page.}
+\item{\code{model_code}}{(\code{"character"}) Model code to display on the
+\strong{Model Code} page in the 'ShinyStan' GUI.}
 
 \item{\code{misc}}{(\code{"list"}) Miscellaneous, for internal use.}
 }}
 
 \seealso{
-\code{\link{as.shinystan}} for creating shinystan objects.
+\code{\link{as.shinystan}} for creating \code{shinystan} objects.
 
-\code{\link{drop_parameters}} to remove parameters from a shinystan
-  object.
+\code{\link{drop_parameters}} to remove parameters from a
+  \code{shinystan} object.
 
-\code{\link{generate_quantity}} to add a new quantity to a shinystan
-  object.
+\code{\link{generate_quantity}} to add a new quantity to a
+  \code{shinystan} object.
 
 \code{\link{shinystan-metadata}} to view or change metadata
-  associated with a shinystan object.
+  associated with a \code{shinystan} object.
 }

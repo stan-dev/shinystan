@@ -12,11 +12,12 @@
 
 
 # shinystan class definition ------------------------------------------
-#' S4 shinystan objects
+#' S4 \code{shinystan} objects
 #'
 #' @aliases shinystan-class
-#' @description See \code{\link{as.shinystan}} for documentation on creating
-#'   shinystan objects and \code{\link{eight_schools}} for an example object.
+#' @description See \code{\link{as.shinystan}} for documentation on creating 
+#'   \code{shinystan} objects and \code{\link{eight_schools}} for an example
+#'   object.
 #'  
 #' @slot model_name (\code{"character"}) Model name.
 #' @slot param_names (\code{"character"}) Parameter names.
@@ -28,17 +29,17 @@
 #' @slot n_chain (\code{"integer"}) Number of chains.
 #' @slot n_iter (\code{"integer"}) Number of iterations per chain.
 #' @slot n_warmup (\code{"integer"}) Number of warmup iterations per chain.
-#' @slot user_model_info (\code{"character"}) Notes to display on ShinyStan's
-#'   \strong{Notepad} page.
-#' @slot model_code (\code{"character"}) Model code to display on ShinyStan's
-#'   \strong{Model Code} page.
+#' @slot user_model_info (\code{"character"}) Notes to display on the
+#'   \strong{Notepad} page in the 'ShinyStan' GUI.
+#' @slot model_code (\code{"character"}) Model code to display on the
+#'   \strong{Model Code} page in the 'ShinyStan' GUI.
 #' @slot misc (\code{"list"}) Miscellaneous, for internal use.
 #' 
 #' @template seealso-as.shinystan
 #' @template seealso-drop_parameters
 #' @template seealso-generate_quantity
 #' @seealso \code{\link{shinystan-metadata}} to view or change metadata
-#'   associated with a shinystan object.
+#'   associated with a \code{shinystan} object.
 #' 
 shinystan <- setClass(
   Class = "shinystan",
@@ -77,30 +78,31 @@ shinystan <- setClass(
 # create shinystan objects ------------------------------------------------
   
 # as.shinystan (generic) --------------------------------------------------
-#' Create and test shinystan objects
+#' Create and test \code{shinystan} objects
 #' 
-#' @description The \code{as.shinystan} function creates shinystan objects that 
-#'   can be used with \code{\link{launch_shinystan}} and various other functions
-#'   in the \pkg{shinystan} package. \code{as.shinystan} is a generic for which 
-#'   the \pkg{shinystan} package provides several methods. Currently methods are
-#'   provided for creating shinystan objects from arrays, lists of matrices,
-#'   stanfit objects (\pkg{rstan}), stanreg objects (\pkg{rstanarm}), and
-#'   mcmc.list objects (\pkg{coda}).
+#' @description The \code{as.shinystan} function creates \code{shinystan}
+#'   objects that can be used with \code{\link{launch_shinystan}} and various
+#'   other functions in the \pkg{shinystan} package. \code{as.shinystan} is a
+#'   generic for which the \pkg{shinystan} package provides several methods.
+#'   Currently methods are provided for creating \code{shinystan} objects from
+#'   arrays, lists of matrices, \code{stanfit} objects (\pkg{rstan}),
+#'   \code{stanreg} objects (\pkg{rstanarm}), and \code{mcmc.list} objects
+#'   (\pkg{coda}).
 #'   
-#'   \code{is.shinystan} tests if an object is a shinystan object.
+#'   \code{is.shinystan} tests if an object is a \code{shinystan} object.
 #'
 #' @name as.shinystan
 #' @export
-#' @param X For \code{as.shinystan}, an object to be converted to a shinystan 
-#'   object. See the Methods section below. For \code{is.shinystan}, an object
-#'   to check.
+#' @param X For \code{as.shinystan}, an object to be converted to a
+#'   \code{shinystan} object. See the Methods section below. For
+#'   \code{is.shinystan}, an object to check.
 #' @param ... Arguments passed to the individual methods.
 #'   
-#' @return \code{as.shinystan} returns a shinystan object, which is an instance 
-#'   of S4 class \code{"shinystan"}.
+#' @return \code{as.shinystan} returns a \code{shinystan} object, which is an
+#'   instance of S4 class \code{"shinystan"}.
 #'   
-#'   \code{is.shinystan} returns \code{TRUE} if the tested object is a shinystan
-#'   object and \code{FALSE} otherwise.
+#'   \code{is.shinystan} returns \code{TRUE} if the tested object is a
+#'   \code{shinystan} object and \code{FALSE} otherwise.
 #'
 #' @template seealso-launch
 #' @template seealso-drop_parameters   
@@ -117,7 +119,7 @@ setGeneric("as.shinystan", function(X, ...) {
 is.shinystan <- function(X) inherits(X, "shinystan")
 
 # as.shinystan (array) ---------------------------------------------------
-#' @describeIn as.shinystan Create a shinystan object from a 3-D
+#' @describeIn as.shinystan Create a \code{shinystan} object from a 3-D
 #'   \code{\link{array}} of simulations. The array should have dimensions
 #'   corresponding to iterations, chains, and parameters, in that order.
 #'
@@ -137,8 +139,9 @@ is.shinystan <- function(X) inherits(X, "shinystan")
 #'   Code} tab. For \code{stanfit} (\pkg{rstan}) and \code{stanreg}
 #'   (\pkg{rstanarm}) objects the model code is automatically retrieved from the
 #'   object.
-#' @param note Optionally, text to display on ShinyStan's notes page (stored in 
-#'   \code{user_model_info} slot of the shinystan object).
+#' @param note Optionally, text to display on the \strong{Notepad} page in the 
+#'   'ShinyStan' GUI (stored in \code{user_model_info} slot of the
+#'   \code{shinystan} object).
 #' @param sampler_params,algorithm,max_treedepth Rarely used and never 
 #'   necessary. If using the \code{as.shinystan} method for arrays or lists, 
 #'   these arguments can be used to manually provide information that is 
@@ -309,11 +312,11 @@ setMethod(
 
 
 # as.shinystan (list) ---------------------------------------------------
-#' @describeIn as.shinystan Create a shinystan object from a \code{\link{list}}
-#'   of matrices. Each \code{\link{matrix}} (or 2-D array) should contain the
-#'   simulations for an individual chain and all of the matrices should have the
-#'   same number of iterations (rows) and parameters (columns). Parameters
-#'   should have the same names and be in the same order.
+#' @describeIn as.shinystan Create a \code{shinystan} object from a
+#'   \code{\link{list}} of matrices. Each \code{\link{matrix}} (or 2-D array)
+#'   should contain the simulations for an individual chain and all of the
+#'   matrices should have the same number of iterations (rows) and parameters
+#'   (columns). Parameters should have the same names and be in the same order.
 #'   
 #' @examples 
 #' \dontrun{   
@@ -418,8 +421,8 @@ setMethod(
 
 # as.shinystan (mcmc.list) -----------------------------------------------
 setOldClass("mcmc.list")
-#' @describeIn as.shinystan Create a shinystan object from an mcmc.list 
-#'   (\pkg{coda}).
+#' @describeIn as.shinystan Create a \code{shinystan} object from an 
+#'   \code{mcmc.list} object (\pkg{coda}).
 #' 
 setMethod(
   "as.shinystan",
@@ -505,13 +508,14 @@ setMethod(
 # as.shinystan (stanfit) -------------------------------------------------
 setClass("stanfit", getClass("stanfit", where = getNamespace("rstan")))
 
-#' @describeIn as.shinystan Create a shinystan object from a stanfit object 
-#'   (\pkg{\link[rstan]{rstan}}). Fewer optional arguments are available for 
-#'   this method because all important information can be taken automatically 
-#'   from the stanfit object.
+#' @describeIn as.shinystan Create a \code{shinystan} object from a
+#'   \code{stanfit} object (\pkg{\link[rstan]{rstan}}). Fewer optional arguments
+#'   are available for this method because all important information can be
+#'   taken automatically from the \code{stanfit} object.
 #'   
-#' @param pars For stanfit objects (\pkg{rstan}), an optional character vector
-#'   specifying which parameters should be included in the shinystan object.
+#' @param pars For stanfit objects (\pkg{rstan}), an optional character vector 
+#'   specifying which parameters should be included in the \code{shinystan}
+#'   object.
 #'
 #' @examples
 #' \dontrun{
@@ -698,16 +702,16 @@ setMethod(
 
 # as.shinystan (stanreg) -------------------------------------------------
 setOldClass("stanreg")
-#' @describeIn as.shinystan Create a shinystan object from a stanreg object 
-#'   (\pkg{\link[rstanarm]{rstanarm}}).
+#' @describeIn as.shinystan Create a \code{shinystan} object from a
+#'   \code{stanreg} object (\pkg{\link[rstanarm]{rstanarm}}).
 #'   
-#' @param ppd For stanreg objects (\pkg{rstanarm}), \code{ppd} 
+#' @param ppd For \code{stanreg} objects (\pkg{rstanarm}), \code{ppd} 
 #'   (logical) indicates whether to draw from the posterior predictive 
-#'   distribution before launching ShinyStan. The default is \code{TRUE}, 
+#'   distribution before launching the app. The default is \code{TRUE}, 
 #'   although for very large objects it can be convenient to set it to 
 #'   \code{FALSE} as drawing from the posterior predictive distribution can be 
 #'   time consuming. If \code{ppd} is \code{TRUE} then graphical posterior
-#'   predictive checks are available when ShinyStan is launched.
+#'   predictive checks are available when 'ShinyStan' is launched.
 #' @param seed Passed to \code{\link[rstanarm]{pp_check}} (\pkg{rstanarm}) if 
 #'   \code{ppd} is \code{TRUE}.
 #'   

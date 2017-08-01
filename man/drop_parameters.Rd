@@ -2,7 +2,7 @@
 % Please edit documentation in R/drop_parameters.R
 \name{drop_parameters}
 \alias{drop_parameters}
-\title{Drop parameters from a shinystan object}
+\title{Drop parameters from a \code{shinystan} object}
 \usage{
 drop_parameters(sso, pars)
 }
@@ -18,11 +18,12 @@ only a subset of the elements of a non-scalar parameter.}
 \code{sso}, with \code{pars} dropped.
 }
 \description{
-Remove selected parameters from a shinystan object. This is useful if you 
-have a very large shinystan object when you only want to look at a subset of 
-parameters. With a smaller shinystan object, \code{\link{launch_shinystan}} 
-will be faster and you should experience better performance (responsiveness) 
-after launching when using the ShinyStan app.
+Remove selected parameters from a \code{shinystan} object. This is useful if 
+you have a very large \code{shinystan} object when you only want to look at a
+subset of parameters. With a smaller \code{shinystan} object, 
+\code{\link{launch_shinystan}} will be faster and you should experience 
+better performance (responsiveness) after launching when using the
+'ShinyStan' app.
 }
 \examples{
 # Using example shinystan object 'eight_schools'
@@ -38,6 +39,6 @@ print(sso@param_names)
 
 }
 \seealso{
-\code{\link{generate_quantity}} to add a new quantity to a shinystan
-  object.
+\code{\link{generate_quantity}} to add a new quantity to a
+  \code{shinystan} object.
 }

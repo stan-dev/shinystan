@@ -4,7 +4,7 @@
 \alias{launch_shinystan}
 \alias{launch_shinystan.default}
 \alias{launch_shinystan.shinystan}
-\title{Launch the ShinyStan app}
+\title{Launch the 'ShinyStan' app}
 \usage{
 launch_shinystan(object, ...)
 
@@ -22,19 +22,20 @@ other types of objects first create a shinystan object using
 
 \item{...}{Optional arguments passed to \code{\link[shiny]{runApp}}.}
 
-\item{rstudio}{Only relevant for RStudio users. The default (\code{FALSE}) is
-to launch the app in the user's default web browser rather than RStudio's
-pop-up Viewer. Users can change the default to \code{TRUE} by setting the
-global option \code{options(shinystan.rstudio = TRUE)}.}
+\item{rstudio}{Only relevant for 'RStudio' users. The default (\code{FALSE})
+is to launch the app in the user's default web browser rather than the 
+pop-up Viewer provided by 'RStudio'. Users can change the default to
+\code{TRUE} by setting the global option \code{options(shinystan.rstudio =
+TRUE)}.}
 }
 \value{
 The \code{launch_shinystan} function is used for the side effect of 
-  starting the ShinyStan app, but it also returns a shinystan object, an
-  instance of S4 class \code{"shinystan"}.
+  starting the 'ShinyStan' app, but it also returns a \code{shinystan}
+  object, an instance of S4 class \code{"shinystan"}.
 }
 \description{
-Launch the ShinyStan app in the default web browser. RStudio users also have 
-the option of launching the app in RStudio's pop-up Viewer.
+Launch the 'ShinyStan' app in the default web browser. 'RStudio' users also
+have the option of launching the app in the pop-up Viewer.
 }
 \examples{
 \dontrun{
@@ -75,10 +76,10 @@ sf_sso <- launch_shinystan(sf)
 
 }
 \seealso{
-\code{\link{as.shinystan}} for creating shinystan objects.
+\code{\link{as.shinystan}} for creating \code{shinystan} objects.
 
-\code{\link{update_sso}} to update a shinystan object created by a
-  previous version of the package.
+\code{\link{update_sso}} to update a \code{shinystan} object created
+  by a previous version of the package.
 
 \code{\link{launch_shinystan_demo}} to try a demo.
 }

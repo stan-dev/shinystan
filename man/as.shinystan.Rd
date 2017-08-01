@@ -9,7 +9,7 @@
 \alias{as.shinystan,mcmc.list-method}
 \alias{as.shinystan,stanfit-method}
 \alias{as.shinystan,stanreg-method}
-\title{Create and test shinystan objects}
+\title{Create and test \code{shinystan} objects}
 \usage{
 as.shinystan(X, ...)
 
@@ -34,9 +34,9 @@ is.shinystan(X)
   model_name = NULL, note = NULL, ...)
 }
 \arguments{
-\item{X}{For \code{as.shinystan}, an object to be converted to a shinystan 
-object. See the Methods section below. For \code{is.shinystan}, an object
-to check.}
+\item{X}{For \code{as.shinystan}, an object to be converted to a
+\code{shinystan} object. See the Methods section below. For
+\code{is.shinystan}, an object to check.}
 
 \item{...}{Arguments passed to the individual methods.}
 
@@ -61,8 +61,9 @@ Code} tab. For \code{stanfit} (\pkg{rstan}) and \code{stanreg}
 (\pkg{rstanarm}) objects the model code is automatically retrieved from the
 object.}
 
-\item{note}{Optionally, text to display on ShinyStan's notes page (stored in 
-\code{user_model_info} slot of the shinystan object).}
+\item{note}{Optionally, text to display on the \strong{Notepad} page in the 
+'ShinyStan' GUI (stored in \code{user_model_info} slot of the
+\code{shinystan} object).}
 
 \item{sampler_params, algorithm, max_treedepth}{Rarely used and never 
 necessary. If using the \code{as.shinystan} method for arrays or lists, 
@@ -76,60 +77,62 @@ be either \code{"NUTS"} or \code{"HMC"} (static HMC). If \code{algorithm}
 is \code{"NUTS"} then \code{max_treedepth} (an integer indicating the
 maximum allowed treedepth when the model was fit) must also be provided.}
 
-\item{pars}{For stanfit objects (\pkg{rstan}), an optional character vector
-specifying which parameters should be included in the shinystan object.}
+\item{pars}{For stanfit objects (\pkg{rstan}), an optional character vector 
+specifying which parameters should be included in the \code{shinystan}
+object.}
 
-\item{ppd}{For stanreg objects (\pkg{rstanarm}), \code{ppd} 
+\item{ppd}{For \code{stanreg} objects (\pkg{rstanarm}), \code{ppd} 
 (logical) indicates whether to draw from the posterior predictive 
-distribution before launching ShinyStan. The default is \code{TRUE}, 
+distribution before launching the app. The default is \code{TRUE}, 
 although for very large objects it can be convenient to set it to 
 \code{FALSE} as drawing from the posterior predictive distribution can be 
 time consuming. If \code{ppd} is \code{TRUE} then graphical posterior
-predictive checks are available when ShinyStan is launched.}
+predictive checks are available when 'ShinyStan' is launched.}
 
 \item{seed}{Passed to \code{\link[rstanarm]{pp_check}} (\pkg{rstanarm}) if 
 \code{ppd} is \code{TRUE}.}
 }
 \value{
-\code{as.shinystan} returns a shinystan object, which is an instance 
-  of S4 class \code{"shinystan"}.
+\code{as.shinystan} returns a \code{shinystan} object, which is an
+  instance of S4 class \code{"shinystan"}.
   
-  \code{is.shinystan} returns \code{TRUE} if the tested object is a shinystan
-  object and \code{FALSE} otherwise.
+  \code{is.shinystan} returns \code{TRUE} if the tested object is a
+  \code{shinystan} object and \code{FALSE} otherwise.
 }
 \description{
-The \code{as.shinystan} function creates shinystan objects that 
-  can be used with \code{\link{launch_shinystan}} and various other functions
-  in the \pkg{shinystan} package. \code{as.shinystan} is a generic for which 
-  the \pkg{shinystan} package provides several methods. Currently methods are
-  provided for creating shinystan objects from arrays, lists of matrices,
-  stanfit objects (\pkg{rstan}), stanreg objects (\pkg{rstanarm}), and
-  mcmc.list objects (\pkg{coda}).
+The \code{as.shinystan} function creates \code{shinystan}
+  objects that can be used with \code{\link{launch_shinystan}} and various
+  other functions in the \pkg{shinystan} package. \code{as.shinystan} is a
+  generic for which the \pkg{shinystan} package provides several methods.
+  Currently methods are provided for creating \code{shinystan} objects from
+  arrays, lists of matrices, \code{stanfit} objects (\pkg{rstan}),
+  \code{stanreg} objects (\pkg{rstanarm}), and \code{mcmc.list} objects
+  (\pkg{coda}).
   
-  \code{is.shinystan} tests if an object is a shinystan object.
+  \code{is.shinystan} tests if an object is a \code{shinystan} object.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{array}: Create a shinystan object from a 3-D
+\item \code{array}: Create a \code{shinystan} object from a 3-D
 \code{\link{array}} of simulations. The array should have dimensions
 corresponding to iterations, chains, and parameters, in that order.
 
-\item \code{list}: Create a shinystan object from a \code{\link{list}}
-of matrices. Each \code{\link{matrix}} (or 2-D array) should contain the
-simulations for an individual chain and all of the matrices should have the
-same number of iterations (rows) and parameters (columns). Parameters
-should have the same names and be in the same order.
+\item \code{list}: Create a \code{shinystan} object from a
+\code{\link{list}} of matrices. Each \code{\link{matrix}} (or 2-D array)
+should contain the simulations for an individual chain and all of the
+matrices should have the same number of iterations (rows) and parameters
+(columns). Parameters should have the same names and be in the same order.
 
-\item \code{mcmc.list}: Create a shinystan object from an mcmc.list 
-(\pkg{coda}).
+\item \code{mcmc.list}: Create a \code{shinystan} object from an 
+\code{mcmc.list} object (\pkg{coda}).
 
-\item \code{stanfit}: Create a shinystan object from a stanfit object 
-(\pkg{\link[rstan]{rstan}}). Fewer optional arguments are available for 
-this method because all important information can be taken automatically 
-from the stanfit object.
+\item \code{stanfit}: Create a \code{shinystan} object from a
+\code{stanfit} object (\pkg{\link[rstan]{rstan}}). Fewer optional arguments
+are available for this method because all important information can be
+taken automatically from the \code{stanfit} object.
 
-\item \code{stanreg}: Create a shinystan object from a stanreg object 
-(\pkg{\link[rstanarm]{rstanarm}}).
+\item \code{stanreg}: Create a \code{shinystan} object from a
+\code{stanreg} object (\pkg{\link[rstanarm]{rstanarm}}).
 }}
 
 \examples{
@@ -181,12 +184,12 @@ launch_shinystan(sso)
 
 }
 \seealso{
-\code{\link{launch_shinystan}} to launch the ShinyStan interface
-  using a particular shinystan object.
+\code{\link{launch_shinystan}} to launch the 'ShinyStan' interface 
+  using a particular \code{shinystan} object.
 
-\code{\link{drop_parameters}} to remove parameters from a shinystan
-  object.
+\code{\link{drop_parameters}} to remove parameters from a
+  \code{shinystan} object.
 
-\code{\link{generate_quantity}} to add a new quantity to a shinystan
-  object.
+\code{\link{generate_quantity}} to add a new quantity to a
+  \code{shinystan} object.
 }

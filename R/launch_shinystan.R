@@ -11,25 +11,26 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-#' Launch the ShinyStan app
+#' Launch the 'ShinyStan' app
 #' 
-#' Launch the ShinyStan app in the default web browser. RStudio users also have 
-#' the option of launching the app in RStudio's pop-up Viewer.
+#' Launch the 'ShinyStan' app in the default web browser. 'RStudio' users also
+#' have the option of launching the app in the pop-up Viewer.
 #' 
 #' @export
 #' @param object The object to use. For the default method this can be an object
 #'   of class \code{"shinystan"}, \code{"stanfit"}, or \code{"stanreg"}. To use
 #'   other types of objects first create a shinystan object using
 #'   \code{\link{as.shinystan}}.
-#' @param rstudio Only relevant for RStudio users. The default (\code{FALSE}) is
-#'   to launch the app in the user's default web browser rather than RStudio's
-#'   pop-up Viewer. Users can change the default to \code{TRUE} by setting the
-#'   global option \code{options(shinystan.rstudio = TRUE)}.
+#' @param rstudio Only relevant for 'RStudio' users. The default (\code{FALSE})
+#'   is to launch the app in the user's default web browser rather than the 
+#'   pop-up Viewer provided by 'RStudio'. Users can change the default to
+#'   \code{TRUE} by setting the global option \code{options(shinystan.rstudio =
+#'   TRUE)}.
 #' @param ... Optional arguments passed to \code{\link[shiny]{runApp}}.
 #' 
 #' @return The \code{launch_shinystan} function is used for the side effect of 
-#'   starting the ShinyStan app, but it also returns a shinystan object, an
-#'   instance of S4 class \code{"shinystan"}.
+#'   starting the 'ShinyStan' app, but it also returns a \code{shinystan}
+#'   object, an instance of S4 class \code{"shinystan"}.
 #'   
 #' @template seealso-as.shinystan 
 #' @template seealso-update_sso 
@@ -108,7 +109,7 @@ launch_shinystan.shinystan <-
   }
 
 
-#' ShinyStan demo
+#' 'ShinyStan' demo
 #'
 #' @aliases eight_schools
 #' @export
@@ -117,8 +118,8 @@ launch_shinystan.shinystan <-
 #'   the only option, but additional demos may be available in future releases.
 #'   \describe{
 #'   \item{\code{eight_schools}}{Hierarchical meta-analysis model. See 
-#'    \emph{Meta Analysis} chapter of the Stan manual (chapter 11.2 in version
-#'    2.9), \url{http://mc-stan.org/documentation/}.}
+#'    \emph{Meta Analysis} chapter of the 'Stan' manual 
+#'    \url{http://mc-stan.org/users/documentation/}.}
 #'   }
 #' @return An S4 shinystan object.
 #'   

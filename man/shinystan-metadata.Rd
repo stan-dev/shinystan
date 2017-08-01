@@ -6,7 +6,7 @@
 \alias{model_code}
 \alias{notes}
 \alias{model_name}
-\title{View or change metadata associated with a shinystan object}
+\title{View or change metadata associated with a \code{shinystan} object}
 \usage{
 sso_info(sso)
 
@@ -37,29 +37,31 @@ notes.}
   chains, iterations, warmup iterations, etc. It does not return anything.
 
 \code{model_code} returns or replaces model code stored in a 
-  shinystan object. If \code{code} is \code{NULL} then any existing model
-  code stored in \code{sso} is returned as a character string. If \code{code}
-  is specified then an updated shinystan object is returned with \code{code}
-  added. For shinystan objects created from stanfit (\pkg{rstan}) and stanreg
-  (\pkg{rstanarm}) objects, model code is automatically taken from that
-  object and does not need to be added manually. From within the ShinyStan
-  interface model code can be viewed on the \strong{Model Code} page.
+  \code{shinystan} object. If \code{code} is \code{NULL} then any existing 
+  model code stored in \code{sso} is returned as a character string. If 
+  \code{code} is specified then an updated \code{shinystan} object is 
+  returned with \code{code} added. For \code{shinystan} objects created from 
+  stanfit (\pkg{rstan}) and stanreg (\pkg{rstanarm}) objects, model code is 
+  automatically taken from that object and does not need to be added 
+  manually. From within the 'ShinyStan' interface model code can be viewed on
+  the \strong{Model Code} page.
 
-\code{notes} returns, amends, or replaces notes stored in a shinystan
-  object. If \code{note} is \code{NULL} then any existing notes stored in 
-  \code{sso} are returned as a character string. If \code{note} is specified 
-  then an updated shinystan object is returned with either \code{note} added 
-  to the previous notes (if \code{replace=FALSE}) or overwritten by 
-  \code{note} (if \code{replace = TRUE}). From within the ShinyStan
-  interface, notes are viewable on the \strong{Notepad} page.
+\code{notes} returns, amends, or replaces notes stored in a
+  \code{shinystan} object. If \code{note} is \code{NULL} then any existing
+  notes stored in \code{sso} are returned as a character string. If
+  \code{note} is specified then an updated \code{shinystan} object is
+  returned with either \code{note} added to the previous notes (if
+  \code{replace=FALSE}) or overwritten by \code{note} (if \code{replace =
+  TRUE}). From within the 'ShinyStan' interface, notes are viewable on the
+  \strong{Notepad} page.
 
 \code{model_name} returns or replaces the model name associated with 
-  a shinystan object. If \code{name} is \code{NULL} then the current model
-  name is returned. If \code{name} is specified then \code{sso} is returned
-  with an updated model name.
+  a \code{shinystan} object. If \code{name} is \code{NULL} then the current
+  model name is returned. If \code{name} is specified then \code{sso} is
+  returned with an updated model name.
 }
 \description{
-View or change metadata associated with a shinystan object
+View or change metadata associated with a \code{shinystan} object
 }
 \examples{
 # use eight_schools example object
@@ -123,11 +125,11 @@ identical(model_name(sso), "some other name")
 
 }
 \seealso{
-\code{\link{as.shinystan}} for creating shinystan objects.
+\code{\link{as.shinystan}} for creating \code{shinystan} objects.
 
-\code{\link{drop_parameters}} to remove parameters from a shinystan
-  object.
+\code{\link{drop_parameters}} to remove parameters from a
+  \code{shinystan} object.
 
-\code{\link{generate_quantity}} to add a new quantity to a shinystan
-  object.
+\code{\link{generate_quantity}} to add a new quantity to a
+  \code{shinystan} object.
 }

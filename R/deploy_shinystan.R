@@ -11,9 +11,9 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-#' Deploy a ShinyStan app on the web using shinyapps.io by RStudio
+#' Deploy a 'ShinyStan' app on the web using 'shinyapps.io' by 'RStudio'
 #'
-#' Requires a (free or paid) ShinyApps account. Visit
+#' Requires a (free or paid) 'ShinyApps' account. Visit
 #' \url{http://www.shinyapps.io/} to sign up.
 #'
 #' @export
@@ -46,13 +46,13 @@
 #' @seealso The example in the \emph{Deploying to shinyapps.io} vignette that
 #'   comes with this package.
 #'
-#'   \url{http://www.shinyapps.io/} to sign up for a free or paid ShinyApps
+#'   \url{http://www.shinyapps.io/} to sign up for a free or paid 'ShinyApps'
 #'   account and for details on how to configure your account on your local
-#'   system using RStudio's \pkg{\link[rsconnect]{rsconnect}} package.
+#'   system using the \pkg{\link[rsconnect]{rsconnect}} package from 'RStudio'.
 #'
 #' @examples
 #' \dontrun{
-#' # For this example assume sso is the name of the shinystan object for
+#' # For this example assume sso is the name of the \code{shinystan} object for
 #' # the model you want to use. Assume also that you want to name your app
 #' # 'my-model' and that your shinyapps.io username is 'username'.
 #'
