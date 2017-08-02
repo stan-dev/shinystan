@@ -19,7 +19,7 @@ available via the **shinystan** R package.
 
 * Install from CRAN:
 
-```{r}
+```r
 install.packages("shinystan")
 ```
 
@@ -27,7 +27,7 @@ If this fails, try adding the arguments `type='source'` and/or `repos='http://cr
 
 * Install from GitHub (requires [devtools](https://github.com/hadley/devtools) package):
 
-```{r}
+```r
 if (!require("devtools"))
   install.packages("devtools")
 devtools::install_github("stan-dev/shinystan", build_vignettes = TRUE)
