@@ -12,7 +12,7 @@ old_sso_msg <- "use the 'update_sso' function to update your object"
 
 # launch_shinystan --------------------------------------------------------
 test_that("launch_shinystan throws appropriate errors", {
-  expect_error(launch_shinystan(sso@summary), "not a valid input")
+  expect_error(launch_shinystan(sso@summary), "object not compatible")
   expect_error(launch_shinystan(old_sso), old_sso_msg)
 })
 

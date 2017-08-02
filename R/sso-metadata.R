@@ -11,7 +11,7 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-#' View or change metadata associated with a shinystan object
+#' View or change metadata associated with a \code{shinystan} object
 #' 
 #' @name shinystan-metadata
 #' @template args-sso
@@ -72,13 +72,14 @@ sso_info <- function(sso) {
 #'   used as an argument to \code{\link{cat}}. See \strong{Examples}.
 #'   
 #' @return \code{model_code} returns or replaces model code stored in a 
-#'   shinystan object. If \code{code} is \code{NULL} then any existing model
-#'   code stored in \code{sso} is returned as a character string. If \code{code}
-#'   is specified then an updated shinystan object is returned with \code{code}
-#'   added. For shinystan objects created from stanfit (\pkg{rstan}) and stanreg
-#'   (\pkg{rstanarm}) objects, model code is automatically taken from that
-#'   object and does not need to be added manually. From within the ShinyStan
-#'   interface model code can be viewed on the \strong{Model Code} page.
+#'   \code{shinystan} object. If \code{code} is \code{NULL} then any existing 
+#'   model code stored in \code{sso} is returned as a character string. If 
+#'   \code{code} is specified then an updated \code{shinystan} object is 
+#'   returned with \code{code} added. For \code{shinystan} objects created from 
+#'   stanfit (\pkg{rstan}) and stanreg (\pkg{rstanarm}) objects, model code is 
+#'   automatically taken from that object and does not need to be added 
+#'   manually. From within the 'ShinyStan' interface model code can be viewed on
+#'   the \strong{Model Code} page.
 #'
 #' @examples
 #' ##################
@@ -142,13 +143,14 @@ validate_model_code <- function(code) {
 #'   if \code{note} is specified then its content is appended to the existing
 #'   notes.
 #'   
-#' @return \code{notes} returns, amends, or replaces notes stored in a shinystan
-#'   object. If \code{note} is \code{NULL} then any existing notes stored in 
-#'   \code{sso} are returned as a character string. If \code{note} is specified 
-#'   then an updated shinystan object is returned with either \code{note} added 
-#'   to the previous notes (if \code{replace=FALSE}) or overwritten by 
-#'   \code{note} (if \code{replace = TRUE}). From within the ShinyStan
-#'   interface, notes are viewable on the \strong{Notepad} page.
+#' @return \code{notes} returns, amends, or replaces notes stored in a
+#'   \code{shinystan} object. If \code{note} is \code{NULL} then any existing
+#'   notes stored in \code{sso} are returned as a character string. If
+#'   \code{note} is specified then an updated \code{shinystan} object is
+#'   returned with either \code{note} added to the previous notes (if
+#'   \code{replace=FALSE}) or overwritten by \code{note} (if \code{replace =
+#'   TRUE}). From within the 'ShinyStan' interface, notes are viewable on the
+#'   \strong{Notepad} page.
 #'   
 #' @examples 
 #' #############
@@ -196,9 +198,9 @@ notes <- function(sso, note = NULL, replace = FALSE) {
 #' @param name A string giving the new model name to use.
 #'   
 #' @return \code{model_name} returns or replaces the model name associated with 
-#'   a shinystan object. If \code{name} is \code{NULL} then the current model
-#'   name is returned. If \code{name} is specified then \code{sso} is returned
-#'   with an updated model name.
+#'   a \code{shinystan} object. If \code{name} is \code{NULL} then the current
+#'   model name is returned. If \code{name} is specified then \code{sso} is
+#'   returned with an updated model name.
 #' 
 #' @examples
 #' ##################

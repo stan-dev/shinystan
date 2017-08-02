@@ -30,6 +30,5 @@ sso_new <- update_sso(sso)
 
 }
 \seealso{
-\code{\link{as.shinystan}} for creating shinystan objects.
+\code{\link{as.shinystan}} for creating \code{shinystan} objects.
 }
-

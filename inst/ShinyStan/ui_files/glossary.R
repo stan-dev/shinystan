@@ -34,6 +34,11 @@ div(
         includeHTML("html/ndivergent.html")
       ),
       tabPanel(
+        "energy",
+        withMathJax(),
+        includeHTML("html/energy.html")
+      ),
+      tabPanel(
         "stepsize",
         includeHTML("html/stepsize.html")
       ),

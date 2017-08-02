@@ -21,7 +21,7 @@
 #' @param fun Function to call, i.e. \code{function(param1)} or 
 #'   \code{function(param1,param2)}. See Examples, below.
 #' @param param1 Name of first parameter as character string.
-#' @param param2 Optional. Name of second paramter as character string.
+#' @param param2 Optional. Name of second parameter as character string.
 #' @param new_name Name for the new parameter as character string.
 #'   
 #' @return sso, updated. See Examples.

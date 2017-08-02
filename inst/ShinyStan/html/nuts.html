@@ -1,15 +1,16 @@
 <div class = "glossary-entry">
 <h3>HMC and NUTS (very briefly)</h3>
 
+This is a very brief overview. For more details see the Stan manual and 
+<a href="https://arxiv.org/abs/1701.02434"> Betancourt, M. (2017). A conceptual introduction to Hamiltonian Monte Carlo.</a>
+
 
 <h4>Hamiltonian Monte Carlo</h4>
 Hamiltonian Monte Carlo (HMC) is a Markov chain Monte Carlo (MCMC) method that
 uses the derivatives of the density function being sampled to generate
-efficient transitions spanning the posterior (see, e.g., 
-Betancourt and Girolami (<a href = "http://arxiv.org/abs/1312.0906">2013</a>) 
-for more details). 
-It uses an approximate Hamiltonian dynamics simulation based on numerical 
-integration which is then corrected by performing a Metropolis acceptance step.
+efficient transitions spanning the posterior. It uses an approximate Hamiltonian 
+dynamics simulation based on numerical integration which is then corrected by 
+performing a Metropolis acceptance step.
 
 <br><br>
 <span class="help-block"> <em>Algorithm summary</em> </span>
@@ -56,11 +57,17 @@ The algorithm terminates in one of two ways, either
 </ul>
  
 Rather than using a standard Metropolis step, the final parameter value 
-is selected with slice sampling along the final evolution step 
-(i.e., the second half of iterations generated).
+is selected via multinomial sampling among the Hamiltonian trajectories.
+
 <br><br>
 Configuring the no-U-turn sampler involves putting a cap on the <code>treedepth</code>
 that it evaluates during each iteration. This is controlled through a maximum depth parameter. The number of leapfrog steps taken is then bounded by 2 to the power 
 of the maximum depth minus 1.
 <br><br>
+
+<p>
+For more details see 
+<a href="https://arxiv.org/abs/1701.02434"> Betancourt, M. (2017). A conceptual introduction to Hamiltonian Monte Carlo.</a>
+</p>
+
 </div>

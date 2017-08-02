@@ -2,30 +2,40 @@
 % Please edit documentation in R/launch_shinystan.R
 \name{launch_shinystan}
 \alias{launch_shinystan}
-\title{Launch the ShinyStan app}
+\alias{launch_shinystan.default}
+\alias{launch_shinystan.shinystan}
+\title{Launch the 'ShinyStan' app}
 \usage{
-launch_shinystan(object, rstudio = getOption("shinystan.rstudio"), ...)
+launch_shinystan(object, ...)
+
+\method{launch_shinystan}{default}(object, ...,
+  rstudio = getOption("shinystan.rstudio"))
+
+\method{launch_shinystan}{shinystan}(object, ...,
+  rstudio = getOption("shinystan.rstudio"))
 }
 \arguments{
-\item{object}{An object of class shinystan, stanfit, or stanreg. To use other
-types of objects first create a shinystan object using 
+\item{object}{The object to use. For the default method this can be an object
+of class \code{"shinystan"}, \code{"stanfit"}, or \code{"stanreg"}. To use
+other types of objects first create a shinystan object using
 \code{\link{as.shinystan}}.}
 
-\item{rstudio}{Only relevant for RStudio users. The default (\code{FALSE}) is
-to launch the app in the user's default web browser rather than RStudio's
-pop-up Viewer. Users can change the default to \code{TRUE} by setting the
-global option \code{options(shinystan.rstudio = TRUE)}.}
-
 \item{...}{Optional arguments passed to \code{\link[shiny]{runApp}}.}
+
+\item{rstudio}{Only relevant for 'RStudio' users. The default (\code{FALSE})
+is to launch the app in the user's default web browser rather than the 
+pop-up Viewer provided by 'RStudio'. Users can change the default to
+\code{TRUE} by setting the global option \code{options(shinystan.rstudio =
+TRUE)}.}
 }
 \value{
 The \code{launch_shinystan} function is used for the side effect of 
-  starting the ShinyStan app, but it also returns a shinystan object, an
-  instance of S4 class \code{"shinystan"}.
+  starting the 'ShinyStan' app, but it also returns a \code{shinystan}
+  object, an instance of S4 class \code{"shinystan"}.
 }
 \description{
-Launch the ShinyStan app in the default web browser. RStudio users also have
-the option of launching the app in RStudio's pop-up Viewer.
+Launch the 'ShinyStan' app in the default web browser. 'RStudio' users also
+have the option of launching the app in the pop-up Viewer.
 }
 \examples{
 \dontrun{
@@ -61,19 +71,15 @@ sf_sso <- launch_shinystan(sf)
 # Example 3: 'fit' is an mcmc.list, array or list of matrices
 #######################################
 
-# First create shinystan object (see ?as.shinystan for full details)
-fit_sso <- as.shinystan(fit, model_name = "Example")
-
-# Now fit_sso is a shinystan object and so Example 1 (above) applies.
+# First create shinystan object (see ?as.shinystan) for full details)
 }
 
 }
 \seealso{
-\code{\link{as.shinystan}} for creating shinystan objects.
+\code{\link{as.shinystan}} for creating \code{shinystan} objects.
 
-\code{\link{update_sso}} to update a shinystan object created by a
-  previous version of the package.
+\code{\link{update_sso}} to update a \code{shinystan} object created
+  by a previous version of the package.
 
 \code{\link{launch_shinystan_demo}} to try a demo.
 }
-

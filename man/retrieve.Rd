@@ -22,15 +22,15 @@ From a shinystan object get rhat, effective sample size, posterior
 quantiles, means, standard deviations, sampler diagnostics, etc.
 }
 \details{
-The argument \code{what} can take on the values below. Args:
-  \code{arg} means that \code{arg} can be specified in \code{...} for this
+The argument \code{what} can take on the values below. 'Args:
+  \code{arg}' means that \code{arg} can be specified in \code{...} for this
   value of \code{what}.
 \describe{
   \item{\code{"rhat"}, \code{"Rhat"}, \code{"r_hat"}, or \code{"R_hat"}}{returns: Rhat statistics. Args: \code{pars}}
   \item{\code{"N_eff"}, \code{"n_eff"}, \code{"neff"}, \code{"Neff"}, \code{"ess"}, or \code{"ESS"}}{returns: Effective sample sizes. Args: \code{pars}}
   \item{\code{"mean"}}{returns: Posterior means. Args: \code{pars}}
   \item{\code{"sd"}}{returns: Posterior standard deviations. Args: \code{pars}}
-  \item{\code{"se_mean"} or \code{"mcse"}}{returns: Monte carlo standard error. Args: \code{pars}}
+  \item{\code{"se_mean"} or \code{"mcse"}}{returns: Monte Carlo standard error. Args: \code{pars}}
   \item{\code{"median"}}{returns: Posterior medians. Args: \code{pars}.}
   \item{\code{"quantiles"} or any string with \code{"quant"} in it (not case sensitive)}{returns: 2.5\%, 25\%, 50\%, 75\%, 97.5\% posterior quantiles. Args: \code{pars}.}
   \item{\code{"avg_accept_stat"} or any string with \code{"accept"} in it (not case sensitive)}{returns: Average value of "accept_stat" (which itself is the average acceptance probability over the NUTS subtree). Args: \code{inc_warmup}}
@@ -54,4 +54,3 @@ retrieve(sso, "prop_divergent")
 retrieve(sso, "prop_divergent", inc_warmup = TRUE)
 
 }
-
