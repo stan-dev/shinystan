@@ -19,7 +19,7 @@ available via the **shinystan** R package.
 
 * Install from CRAN:
 
-```{r}
+```r
 install.packages("shinystan")
 ```
 
@@ -27,7 +27,7 @@ If this fails, try adding the arguments `type='source'` and/or `repos='http://cr
 
 * Install from GitHub (requires [devtools](https://github.com/hadley/devtools) package):
 
-```{r}
+```r
 if (!require("devtools"))
   install.packages("devtools")
 devtools::install_github("stan-dev/shinystan", build_vignettes = TRUE)
@@ -79,7 +79,7 @@ and is compatible with Safari, Firefox, Chrome, and most other browsers.
 
 #### Get help or submit bug report
 
-* [Stan Users Google group](https://groups.google.com/forum/#!forum/stan-users)
+* [Ask a question at The Stan Forums](http://discourse.mc-stan.org)
 * [ShinyStan issue tracker](https://github.com/stan-dev/shinystan/issues)
 
 #### Licensing
