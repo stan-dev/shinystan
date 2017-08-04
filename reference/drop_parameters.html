@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Drop parameters from a shinystan object — drop_parameters • shinystan</title>
+<title>Drop parameters from a <code>shinystan</code> object — drop_parameters • shinystan</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -65,19 +65,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="http://mc-stan.org/users/interfaces/rstan.html">rstan</a>
+      <a href="http://mc-stan.org/rstan">rstan</a>
     </li>
     <li>
-      <a href="http://mc-stan.org/users/interfaces/rstanarm.html">rstanarm</a>
+      <a href="http://mc-stan.org/rstanarm">rstanarm</a>
     </li>
     <li>
-      <a href="http://mc-stan.org/users/interfaces/bayesplot.html">bayesplot</a>
+      <a href="http://mc-stan.org/bayesplot">bayesplot</a>
     </li>
     <li>
-      <a href="http://mc-stan.org/users/interfaces/loo.html">loo</a>
+      <a href="http://mc-stan.org/loo">loo</a>
     </li>
     <li>
-      <a href="http://mc-stan.org/users/interfaces/rstantools.html">rstantools</a>
+      <a href="http://mc-stan.org/rstantools">rstantools</a>
     </li>
   </ul>
 </li>
@@ -99,6 +99,12 @@
      
   </a>
 </li>
+<li>
+  <a href="http://discourse.mc-stan.org/">
+    <span class="fa fa-users"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -110,15 +116,16 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Drop parameters from a shinystan object</h1>
+    <h1>Drop parameters from a <code>shinystan</code> object</h1>
     </div>
 
     
-    <p>Remove selected parameters from a shinystan object. This is useful if you 
-have a very large shinystan object when you only want to look at a subset of 
-parameters. With a smaller shinystan object, <code><a href='launch_shinystan.html'>launch_shinystan</a></code> 
-will be faster and you should experience better performance (responsiveness) 
-after launching when using the ShinyStan app.</p>
+    <p>Remove selected parameters from a <code>shinystan</code> object. This is useful if 
+you have a very large <code>shinystan</code> object when you only want to look at a
+subset of parameters. With a smaller <code>shinystan</code> object, 
+<code><a href='launch_shinystan.html'>launch_shinystan</a></code> will be faster and you should experience 
+better performance (responsiveness) after launching when using the
+'ShinyStan' app.</p>
     
 
     <pre class="usage"><span class='fu'>drop_parameters</span>(<span class='no'>sso</span>, <span class='no'>pars</span>)</pre>
@@ -145,8 +152,8 @@ only a subset of the elements of a non-scalar parameter.</p></td>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='generate_quantity.html'>generate_quantity</a></code> to add a new quantity to a shinystan
-  object.</p>
+    <p><code><a href='generate_quantity.html'>generate_quantity</a></code> to add a new quantity to a
+  <code>shinystan</code> object.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

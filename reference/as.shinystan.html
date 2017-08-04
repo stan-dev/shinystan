@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create and test shinystan objects — as.shinystan • shinystan</title>
+<title>Create and test <code>shinystan</code> objects — as.shinystan • shinystan</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -65,19 +65,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="http://mc-stan.org/users/interfaces/rstan.html">rstan</a>
+      <a href="http://mc-stan.org/rstan">rstan</a>
     </li>
     <li>
-      <a href="http://mc-stan.org/users/interfaces/rstanarm.html">rstanarm</a>
+      <a href="http://mc-stan.org/rstanarm">rstanarm</a>
     </li>
     <li>
-      <a href="http://mc-stan.org/users/interfaces/bayesplot.html">bayesplot</a>
+      <a href="http://mc-stan.org/bayesplot">bayesplot</a>
     </li>
     <li>
-      <a href="http://mc-stan.org/users/interfaces/loo.html">loo</a>
+      <a href="http://mc-stan.org/loo">loo</a>
     </li>
     <li>
-      <a href="http://mc-stan.org/users/interfaces/rstantools.html">rstantools</a>
+      <a href="http://mc-stan.org/rstantools">rstantools</a>
     </li>
   </ul>
 </li>
@@ -99,6 +99,12 @@
      
   </a>
 </li>
+<li>
+  <a href="http://discourse.mc-stan.org/">
+    <span class="fa fa-users"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -110,19 +116,20 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create and test shinystan objects</h1>
+    <h1>Create and test <code>shinystan</code> objects</h1>
     </div>
 
     
-    <p>The <code>as.shinystan</code> function creates shinystan objects that 
-  can be used with <code><a href='launch_shinystan.html'>launch_shinystan</a></code> and various other functions
-  in the <span class="pkg">shinystan</span> package. <code>as.shinystan</code> is a generic for which 
-  the <span class="pkg">shinystan</span> package provides several methods. Currently methods are
-  provided for creating shinystan objects from arrays, lists of matrices,
-  stanfit objects (<span class="pkg">rstan</span>), stanreg objects (<span class="pkg">rstanarm</span>), and
-  mcmc.list objects (<span class="pkg">coda</span>).
+    <p>The <code>as.shinystan</code> function creates <code>shinystan</code>
+  objects that can be used with <code><a href='launch_shinystan.html'>launch_shinystan</a></code> and various
+  other functions in the <span class="pkg">shinystan</span> package. <code>as.shinystan</code> is a
+  generic for which the <span class="pkg">shinystan</span> package provides several methods.
+  Currently methods are provided for creating <code>shinystan</code> objects from
+  arrays, lists of matrices, <code>stanfit</code> objects (<span class="pkg">rstan</span>),
+  <code>stanreg</code> objects (<span class="pkg">rstanarm</span>), and <code>mcmc.list</code> objects
+  (<span class="pkg">coda</span>).
 
-    <code>is.shinystan</code> tests if an object is a shinystan object.</p>
+    <code>is.shinystan</code> tests if an object is a <code>shinystan</code> object.</p>
     
 
     <pre class="usage"><span class='fu'>as.shinystan</span>(<span class='no'>X</span>, <span class='no'>...</span>)
@@ -157,9 +164,9 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>X</th>
-      <td><p>For <code>as.shinystan</code>, an object to be converted to a shinystan 
-object. See the Methods section below. For <code>is.shinystan</code>, an object
-to check.</p></td>
+      <td><p>For <code>as.shinystan</code>, an object to be converted to a
+<code>shinystan</code> object. See the Methods section below. For
+<code>is.shinystan</code>, an object to check.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -198,8 +205,9 @@ object.</p></td>
     </tr>
     <tr>
       <th>note</th>
-      <td><p>Optionally, text to display on ShinyStan's notes page (stored in 
-<code>user_model_info</code> slot).</p></td>
+      <td><p>Optionally, text to display on the <strong>Notepad</strong> page in the 
+'ShinyStan' GUI (stored in <code>user_model_info</code> slot of the
+<code>shinystan</code> object).</p></td>
     </tr>
     <tr>
       <th>sampler_params, algorithm, max_treedepth</th>
@@ -217,18 +225,19 @@ maximum allowed treedepth when the model was fit) must also be provided.</p></td
     </tr>
     <tr>
       <th>pars</th>
-      <td><p>For stanfit objects (<span class="pkg">rstan</span>), an optional character vector
-specifying which parameters should be included in the shinystan object.</p></td>
+      <td><p>For stanfit objects (<span class="pkg">rstan</span>), an optional character vector 
+specifying which parameters should be included in the <code>shinystan</code>
+object.</p></td>
     </tr>
     <tr>
       <th>ppd</th>
-      <td><p>For stanreg objects (<span class="pkg">rstanarm</span>), <code>ppd</code> 
+      <td><p>For <code>stanreg</code> objects (<span class="pkg">rstanarm</span>), <code>ppd</code> 
 (logical) indicates whether to draw from the posterior predictive 
-distribution before launching ShinyStan. The default is <code>TRUE</code>, 
+distribution before launching the app. The default is <code>TRUE</code>, 
 although for very large objects it can be convenient to set it to 
 <code>FALSE</code> as drawing from the posterior predictive distribution can be 
 time consuming. If <code>ppd</code> is <code>TRUE</code> then graphical posterior
-predictive checks are available when ShinyStan is launched.</p></td>
+predictive checks are available when 'ShinyStan' is launched.</p></td>
     </tr>
     <tr>
       <th>seed</th>
@@ -239,41 +248,41 @@ predictive checks are available when ShinyStan is launched.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>as.shinystan</code> returns a shinystan object, which is an instance 
-  of S4 class <code>"shinystan"</code>.
+    <p><code>as.shinystan</code> returns a <code>shinystan</code> object, which is an
+  instance of S4 class <code>"shinystan"</code>.
   
-  <code>is.shinystan</code> returns <code>TRUE</code> if the tested object is a shinystan
-  object and <code>FALSE</code> otherwise.</p>
+  <code>is.shinystan</code> returns <code>TRUE</code> if the tested object is a
+  <code>shinystan</code> object and <code>FALSE</code> otherwise.</p>
     
     <h2 class="hasAnchor" id="methods-by-class-"><a class="anchor" href="#methods-by-class-"></a>Methods (by class)</h2>
 
     <ul>
-<li><p><code>array</code>: Create a shinystan object from a 3-D
+<li><p><code>array</code>: Create a <code>shinystan</code> object from a 3-D
 <code>array</code> of simulations. The array should have dimensions
 corresponding to iterations, chains, and parameters, in that order.</p></li>
-<li><p><code>list</code>: Create a shinystan object from a <code>list</code>
-of matrices. Each <code>matrix</code> (or 2-D array) should contain the
-simulations for an individual chain and all of the matrices should have the
-same number of iterations (rows) and parameters (columns). Parameters
-should have the same names and be in the same order.</p></li>
-<li><p><code>mcmc.list</code>: Create a shinystan object from an mcmc.list 
-(<span class="pkg">coda</span>).</p></li>
-<li><p><code>stanfit</code>: Create a shinystan object from a stanfit object 
-(<span class="pkg"><a href='http://www.rdocumentation.org/packages/rstan/topics/rstan'>rstan</a></span>). Fewer optional arguments are available for 
-this method because all important information can be taken automatically 
-from the stanfit object.</p></li>
-<li><p><code>stanreg</code>: Create a shinystan object from a stanreg object 
-(<span class="pkg"><a href='http://www.rdocumentation.org/packages/rstanarm/topics/rstanarm-package'>rstanarm</a></span>).</p></li>
+<li><p><code>list</code>: Create a <code>shinystan</code> object from a
+<code>list</code> of matrices. Each <code>matrix</code> (or 2-D array)
+should contain the simulations for an individual chain and all of the
+matrices should have the same number of iterations (rows) and parameters
+(columns). Parameters should have the same names and be in the same order.</p></li>
+<li><p><code>mcmc.list</code>: Create a <code>shinystan</code> object from an 
+<code>mcmc.list</code> object (<span class="pkg">coda</span>).</p></li>
+<li><p><code>stanfit</code>: Create a <code>shinystan</code> object from a
+<code>stanfit</code> object (<span class="pkg"><a href='http://www.rdocumentation.org/packages/rstan/topics/rstan'>rstan</a></span>). Fewer optional arguments
+are available for this method because all important information can be
+taken automatically from the <code>stanfit</code> object.</p></li>
+<li><p><code>stanreg</code>: Create a <code>shinystan</code> object from a
+<code>stanreg</code> object (<span class="pkg"><a href='http://www.rdocumentation.org/packages/rstanarm/topics/rstanarm-package'>rstanarm</a></span>).</p></li>
 </ul>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='launch_shinystan.html'>launch_shinystan</a></code> to launch the ShinyStan interface
-  using a particular shinystan object.
-    <code><a href='drop_parameters.html'>drop_parameters</a></code> to remove parameters from a shinystan
-  object.
-    <code><a href='generate_quantity.html'>generate_quantity</a></code> to add a new quantity to a shinystan
-  object.</p>
+    <p><code><a href='launch_shinystan.html'>launch_shinystan</a></code> to launch the 'ShinyStan' interface 
+  using a particular <code>shinystan</code> object.
+    <code><a href='drop_parameters.html'>drop_parameters</a></code> to remove parameters from a
+  <code>shinystan</code> object.
+    <code><a href='generate_quantity.html'>generate_quantity</a></code> to add a new quantity to a
+  <code>shinystan</code> object.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

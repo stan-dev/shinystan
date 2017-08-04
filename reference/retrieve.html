@@ -65,19 +65,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="http://mc-stan.org/users/interfaces/rstan.html">rstan</a>
+      <a href="http://mc-stan.org/rstan">rstan</a>
     </li>
     <li>
-      <a href="http://mc-stan.org/users/interfaces/rstanarm.html">rstanarm</a>
+      <a href="http://mc-stan.org/rstanarm">rstanarm</a>
     </li>
     <li>
-      <a href="http://mc-stan.org/users/interfaces/bayesplot.html">bayesplot</a>
+      <a href="http://mc-stan.org/bayesplot">bayesplot</a>
     </li>
     <li>
-      <a href="http://mc-stan.org/users/interfaces/loo.html">loo</a>
+      <a href="http://mc-stan.org/loo">loo</a>
     </li>
     <li>
-      <a href="http://mc-stan.org/users/interfaces/rstantools.html">rstantools</a>
+      <a href="http://mc-stan.org/rstantools">rstantools</a>
     </li>
   </ul>
 </li>
@@ -96,6 +96,12 @@
 <li>
   <a href="https://github.com/stan-dev/shinystan">
     <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="http://discourse.mc-stan.org/">
+    <span class="fa fa-users"></span>
      
   </a>
 </li>
@@ -143,14 +149,14 @@ Details, below.</p></td>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The argument <code>what</code> can take on the values below. Args:
-  <code>arg</code> means that <code>arg</code> can be specified in <code>...</code> for this
+    <p>The argument <code>what</code> can take on the values below. 'Args:
+  <code>arg</code>' means that <code>arg</code> can be specified in <code>...</code> for this
   value of <code>what</code>.</p><dl class='dl-horizontal'>
   <dt><code>"rhat"</code>, <code>"Rhat"</code>, <code>"r_hat"</code>, or <code>"R_hat"</code></dt><dd><p>returns: Rhat statistics. Args: <code>pars</code></p></dd>
   <dt><code>"N_eff"</code>, <code>"n_eff"</code>, <code>"neff"</code>, <code>"Neff"</code>, <code>"ess"</code>, or <code>"ESS"</code></dt><dd><p>returns: Effective sample sizes. Args: <code>pars</code></p></dd>
   <dt><code>"mean"</code></dt><dd><p>returns: Posterior means. Args: <code>pars</code></p></dd>
   <dt><code>"sd"</code></dt><dd><p>returns: Posterior standard deviations. Args: <code>pars</code></p></dd>
-  <dt><code>"se_mean"</code> or <code>"mcse"</code></dt><dd><p>returns: Monte carlo standard error. Args: <code>pars</code></p></dd>
+  <dt><code>"se_mean"</code> or <code>"mcse"</code></dt><dd><p>returns: Monte Carlo standard error. Args: <code>pars</code></p></dd>
   <dt><code>"median"</code></dt><dd><p>returns: Posterior medians. Args: <code>pars</code>.</p></dd>
   <dt><code>"quantiles"</code> or any string with <code>"quant"</code> in it (not case sensitive)</dt><dd><p>returns: 2.5%, 25%, 50%, 75%, 97.5% posterior quantiles. Args: <code>pars</code>.</p></dd>
   <dt><code>"avg_accept_stat"</code> or any string with <code>"accept"</code> in it (not case sensitive)</dt><dd><p>returns: Average value of "accept_stat" (which itself is the average acceptance probability over the NUTS subtree). Args: <code>inc_warmup</code></p></dd>

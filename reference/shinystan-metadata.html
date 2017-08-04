@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>View or change metadata associated with a shinystan object — shinystan-metadata • shinystan</title>
+<title>View or change metadata associated with a <code>shinystan</code> object — shinystan-metadata • shinystan</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -65,19 +65,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="http://mc-stan.org/users/interfaces/rstan.html">rstan</a>
+      <a href="http://mc-stan.org/rstan">rstan</a>
     </li>
     <li>
-      <a href="http://mc-stan.org/users/interfaces/rstanarm.html">rstanarm</a>
+      <a href="http://mc-stan.org/rstanarm">rstanarm</a>
     </li>
     <li>
-      <a href="http://mc-stan.org/users/interfaces/bayesplot.html">bayesplot</a>
+      <a href="http://mc-stan.org/bayesplot">bayesplot</a>
     </li>
     <li>
-      <a href="http://mc-stan.org/users/interfaces/loo.html">loo</a>
+      <a href="http://mc-stan.org/loo">loo</a>
     </li>
     <li>
-      <a href="http://mc-stan.org/users/interfaces/rstantools.html">rstantools</a>
+      <a href="http://mc-stan.org/rstantools">rstantools</a>
     </li>
   </ul>
 </li>
@@ -99,6 +99,12 @@
      
   </a>
 </li>
+<li>
+  <a href="http://discourse.mc-stan.org/">
+    <span class="fa fa-users"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -110,11 +116,11 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>View or change metadata associated with a shinystan object</h1>
+    <h1>View or change metadata associated with a <code>shinystan</code> object</h1>
     </div>
 
     
-    <p>View or change metadata associated with a shinystan object</p>
+    <p>View or change metadata associated with a <code>shinystan</code> object</p>
     
 
     <pre class="usage"><span class='fu'>sso_info</span>(<span class='no'>sso</span>)
@@ -161,34 +167,36 @@ notes.</p></td>
   chains, iterations, warmup iterations, etc. It does not return anything.
 
 <code>model_code</code> returns or replaces model code stored in a 
-  shinystan object. If <code>code</code> is <code>NULL</code> then any existing model
-  code stored in <code>sso</code> is returned as a character string. If <code>code</code>
-  is specified then an updated shinystan object is returned with <code>code</code>
-  added. For shinystan objects created from stanfit (<span class="pkg">rstan</span>) and stanreg
-  (<span class="pkg">rstanarm</span>) objects, model code is automatically taken from that
-  object and does not need to be added manually. From within the ShinyStan
-  interface model code can be viewed on the <strong>Model Code</strong> page.
+  <code>shinystan</code> object. If <code>code</code> is <code>NULL</code> then any existing 
+  model code stored in <code>sso</code> is returned as a character string. If 
+  <code>code</code> is specified then an updated <code>shinystan</code> object is 
+  returned with <code>code</code> added. For <code>shinystan</code> objects created from 
+  stanfit (<span class="pkg">rstan</span>) and stanreg (<span class="pkg">rstanarm</span>) objects, model code is 
+  automatically taken from that object and does not need to be added 
+  manually. From within the 'ShinyStan' interface model code can be viewed on
+  the <strong>Model Code</strong> page.
 
-<code>notes</code> returns, amends, or replaces notes stored in a shinystan
-  object. If <code>note</code> is <code>NULL</code> then any existing notes stored in 
-  <code>sso</code> are returned as a character string. If <code>note</code> is specified 
-  then an updated shinystan object is returned with either <code>note</code> added 
-  to the previous notes (if <code>replace=FALSE</code>) or overwritten by 
-  <code>note</code> (if <code>replace = TRUE</code>). From within the ShinyStan
-  interface, notes are viewable on the <strong>Notepad</strong> page.
+<code>notes</code> returns, amends, or replaces notes stored in a
+  <code>shinystan</code> object. If <code>note</code> is <code>NULL</code> then any existing
+  notes stored in <code>sso</code> are returned as a character string. If
+  <code>note</code> is specified then an updated <code>shinystan</code> object is
+  returned with either <code>note</code> added to the previous notes (if
+  <code>replace=FALSE</code>) or overwritten by <code>note</code> (if <code>replace =
+  TRUE</code>). From within the 'ShinyStan' interface, notes are viewable on the
+  <strong>Notepad</strong> page.
 
 <code>model_name</code> returns or replaces the model name associated with 
-  a shinystan object. If <code>name</code> is <code>NULL</code> then the current model
-  name is returned. If <code>name</code> is specified then <code>sso</code> is returned
-  with an updated model name.</p>
+  a <code>shinystan</code> object. If <code>name</code> is <code>NULL</code> then the current
+  model name is returned. If <code>name</code> is specified then <code>sso</code> is
+  returned with an updated model name.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='as.shinystan.html'>as.shinystan</a></code> for creating shinystan objects.
-    <code><a href='drop_parameters.html'>drop_parameters</a></code> to remove parameters from a shinystan
-  object.
-    <code><a href='generate_quantity.html'>generate_quantity</a></code> to add a new quantity to a shinystan
-  object.</p>
+    <p><code><a href='as.shinystan.html'>as.shinystan</a></code> for creating <code>shinystan</code> objects.
+    <code><a href='drop_parameters.html'>drop_parameters</a></code> to remove parameters from a
+  <code>shinystan</code> object.
+    <code><a href='generate_quantity.html'>generate_quantity</a></code> to add a new quantity to a
+  <code>shinystan</code> object.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

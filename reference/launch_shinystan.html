@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Launch the ShinyStan app — launch_shinystan • shinystan</title>
+<title>Launch the 'ShinyStan' app — launch_shinystan • shinystan</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -65,19 +65,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="http://mc-stan.org/users/interfaces/rstan.html">rstan</a>
+      <a href="http://mc-stan.org/rstan">rstan</a>
     </li>
     <li>
-      <a href="http://mc-stan.org/users/interfaces/rstanarm.html">rstanarm</a>
+      <a href="http://mc-stan.org/rstanarm">rstanarm</a>
     </li>
     <li>
-      <a href="http://mc-stan.org/users/interfaces/bayesplot.html">bayesplot</a>
+      <a href="http://mc-stan.org/bayesplot">bayesplot</a>
     </li>
     <li>
-      <a href="http://mc-stan.org/users/interfaces/loo.html">loo</a>
+      <a href="http://mc-stan.org/loo">loo</a>
     </li>
     <li>
-      <a href="http://mc-stan.org/users/interfaces/rstantools.html">rstantools</a>
+      <a href="http://mc-stan.org/rstantools">rstantools</a>
     </li>
   </ul>
 </li>
@@ -99,6 +99,12 @@
      
   </a>
 </li>
+<li>
+  <a href="http://discourse.mc-stan.org/">
+    <span class="fa fa-users"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -110,49 +116,59 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Launch the ShinyStan app</h1>
+    <h1>Launch the 'ShinyStan' app</h1>
     </div>
 
     
-    <p>Launch the ShinyStan app in the default web browser. RStudio users also have
-the option of launching the app in RStudio's pop-up Viewer.</p>
+    <p>Launch the 'ShinyStan' app in the default web browser. 'RStudio' users also
+have the option of launching the app in the pop-up Viewer.</p>
     
 
-    <pre class="usage"><span class='fu'>launch_shinystan</span>(<span class='no'>object</span>, <span class='kw'>rstudio</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"shinystan.rstudio"</span>), <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>launch_shinystan</span>(<span class='no'>object</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for default</span>
+<span class='fu'>launch_shinystan</span>(<span class='no'>object</span>, <span class='no'>...</span>,
+  <span class='kw'>rstudio</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"shinystan.rstudio"</span>))
+
+<span class='co'># S3 method for shinystan</span>
+<span class='fu'>launch_shinystan</span>(<span class='no'>object</span>, <span class='no'>...</span>,
+  <span class='kw'>rstudio</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"shinystan.rstudio"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>An object of class shinystan, stanfit, or stanreg. To use other
-types of objects first create a shinystan object using 
+      <td><p>The object to use. For the default method this can be an object
+of class <code>"shinystan"</code>, <code>"stanfit"</code>, or <code>"stanreg"</code>. To use
+other types of objects first create a shinystan object using
 <code><a href='as.shinystan.html'>as.shinystan</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>rstudio</th>
-      <td><p>Only relevant for RStudio users. The default (<code>FALSE</code>) is
-to launch the app in the user's default web browser rather than RStudio's
-pop-up Viewer. Users can change the default to <code>TRUE</code> by setting the
-global option <code>options(shinystan.rstudio = TRUE)</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>Optional arguments passed to <code><a href='http://www.rdocumentation.org/packages/shiny/topics/runApp'>runApp</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>rstudio</th>
+      <td><p>Only relevant for 'RStudio' users. The default (<code>FALSE</code>)
+is to launch the app in the user's default web browser rather than the 
+pop-up Viewer provided by 'RStudio'. Users can change the default to
+<code>TRUE</code> by setting the global option <code>options(shinystan.rstudio =
+TRUE)</code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>The <code>launch_shinystan</code> function is used for the side effect of 
-  starting the ShinyStan app, but it also returns a shinystan object, an
-  instance of S4 class <code>"shinystan"</code>.</p>
+  starting the 'ShinyStan' app, but it also returns a <code>shinystan</code>
+  object, an instance of S4 class <code>"shinystan"</code>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='as.shinystan.html'>as.shinystan</a></code> for creating shinystan objects.
-    <code><a href='update_sso.html'>update_sso</a></code> to update a shinystan object created by a
-  previous version of the package.
+    <p><code><a href='as.shinystan.html'>as.shinystan</a></code> for creating <code>shinystan</code> objects.
+    <code><a href='update_sso.html'>update_sso</a></code> to update a <code>shinystan</code> object created
+  by a previous version of the package.
     <code><a href='launch_shinystan_demo.html'>launch_shinystan_demo</a></code> to try a demo.</p>
     
 
@@ -190,10 +206,7 @@ global option <code>options(shinystan.rstudio = TRUE)</code>.</p></td>
   <span class='co'># Example 3: 'fit' is an mcmc.list, array or list of matrices</span>
   <span class='co'>#######################################</span>
 
-  <span class='co'># First create shinystan object (see ?as.shinystan for full details)</span>
-  <span class='no'>fit_sso</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as.shinystan.html'>as.shinystan</a></span>(<span class='no'>fit</span>, <span class='kw'>model_name</span> <span class='kw'>=</span> <span class='st'>"Example"</span>)
-
-  <span class='co'># Now fit_sso is a shinystan object and so Example 1 (above) applies.</span>
+  <span class='co'># First create shinystan object (see ?as.shinystan) for full details)</span>
 })</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
