@@ -11,7 +11,7 @@ generate_quantity(sso, param1, param2, fun, new_name)
 
 \item{param1}{Name of first parameter as character string.}
 
-\item{param2}{Optional. Name of second paramter as character string.}
+\item{param2}{Optional. Name of second parameter as character string.}
 
 \item{fun}{Function to call, i.e. \code{function(param1)} or 
 \code{function(param1,param2)}. See Examples, below.}
@@ -36,7 +36,6 @@ sso <- generate_quantity(sso, fun = "-",
                          
 }
 \seealso{
-\code{\link{drop_parameters}} to remove parameters from a shinystan
-  object.
+\code{\link{drop_parameters}} to remove parameters from a
+  \code{shinystan} object.
 }
-

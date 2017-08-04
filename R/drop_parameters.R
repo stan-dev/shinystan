@@ -11,13 +11,14 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-#' Drop parameters from a shinystan object
+#' Drop parameters from a \code{shinystan} object
 #' 
-#' Remove selected parameters from a shinystan object. This is useful if you 
-#' have a very large shinystan object when you only want to look at a subset of 
-#' parameters. With a smaller shinystan object, \code{\link{launch_shinystan}} 
-#' will be faster and you should experience better performance (responsiveness) 
-#' after launching when using the ShinyStan app.
+#' Remove selected parameters from a \code{shinystan} object. This is useful if 
+#' you have a very large \code{shinystan} object when you only want to look at a
+#' subset of parameters. With a smaller \code{shinystan} object, 
+#' \code{\link{launch_shinystan}} will be faster and you should experience 
+#' better performance (responsiveness) after launching when using the
+#' 'ShinyStan' app.
 #'
 #' @export
 #' @template args-sso

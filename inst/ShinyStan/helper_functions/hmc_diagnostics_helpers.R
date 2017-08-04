@@ -203,7 +203,6 @@ thm_no_yaxs <- thm + no_yaxs
                         retainDateWindow = TRUE) %>%
     dygraphs::dyAxis("x", pixelsPerLabel = 1e7, axisLineWidth = 3) %>%
     dygraphs::dyAxis("y", pixelsPerLabel = 30, axisLabelWidth = 30) %>%
-    dygraphs::dyRangeSelector(height = 1, retainDateWindow = TRUE) %>%
     dygraphs::dyLegend(show = "never") %>%
     dygraphs::dyHighlight(highlightCircleSize = 2,
                           highlightSeriesBackgroundAlpha = 1/3,

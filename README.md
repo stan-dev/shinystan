@@ -4,7 +4,7 @@
 
 # ShinyStan
 
-[![Travis-CI Build Status](https://travis-ci.org/stan-dev/shinystan.svg?branch=develop)](https://travis-ci.org/stan-dev/shinystan)
+[![Travis-CI Build Status](https://travis-ci.org/stan-dev/shinystan.svg?branch=master)](https://travis-ci.org/stan-dev/shinystan)
 [![Codecov](http://codecov.io/gh/stan-dev/shinystan/branch/master/graph/badge.svg)](https://codecov.io/gh/stan-dev/shinystan)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/shinystan?color=blue)](http://cran.r-project.org/web/packages/shinystan)
 [![RStudio CRAN Mirror Downloads](http://cranlogs.r-pkg.org/badges/grand-total/shinystan?color=blue)](http://cran.rstudio.com/package=shinystan)
@@ -19,7 +19,7 @@ available via the **shinystan** R package.
 
 * Install from CRAN:
 
-```{r}
+```r
 install.packages("shinystan")
 ```
 
@@ -27,7 +27,7 @@ If this fails, try adding the arguments `type='source'` and/or `repos='http://cr
 
 * Install from GitHub (requires [devtools](https://github.com/hadley/devtools) package):
 
-```{r}
+```r
 if (!require("devtools"))
   install.packages("devtools")
 devtools::install_github("stan-dev/shinystan", build_vignettes = TRUE)
@@ -79,7 +79,7 @@ and is compatible with Safari, Firefox, Chrome, and most other browsers.
 
 #### Get help or submit bug report
 
-* [Stan Users Google group](https://groups.google.com/forum/#!forum/stan-users)
+* [Ask a question at The Stan Forums](http://discourse.mc-stan.org)
 * [ShinyStan issue tracker](https://github.com/stan-dev/shinystan/issues)
 
 #### Licensing

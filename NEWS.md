@@ -1,3 +1,10 @@
+### Version 2.4.0
+
+* `launch_shinystan` is now an S3 generic with methods. This allows developers 
+of packages that use __shinystan__ to create their own `launch_shinystan` 
+methods instead of using a different function name or creating a naming 
+conflict.
+
 ### Version 2.3.0
 
 #### Fixes 
@@ -10,7 +17,7 @@ relevant for models _not_ fit using Stan.
 * Add NUTS energy diagnostic plots to Diagnose page
 * Allowing passing `sampler_params` to `as.shinystan`. This makes it possible to
 display sampler diagnositcs for HMC/NUTS even if not using Stan's implementation
-of those algorithms (thanks to Cole Monnahan)
+of those algorithms (thanks to Cole Monnahan).
 
 ### Version 2.2.1
 
