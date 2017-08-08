@@ -100,12 +100,3 @@ which lets you easily deploy your own ShinyStan apps online using RStudio's
 your models. Each of your apps (each of your models) will have a unique url
 and is compatible with Safari, Firefox, Chrome, and most other browsers.
 
-### Get help or submit bug report
-
-* [The Stan Forums](http://discourse.mc-stan.org/)
-* [ShinyStan issue tracker](https://github.com/stan-dev/shinystan/issues)
-
-### Licensing
-
-The **shinystan** R package and ShinyStan interface are open source licensed under
-the GNU Public License, version 3 (GPLv3).
