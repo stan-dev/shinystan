@@ -124,6 +124,119 @@
     </div>
 
     <div class="contents">
+    <div id="shinystan-2-4-0" class="section level1">
+<h1 class="hasAnchor">
+<a href="#shinystan-2-4-0" class="anchor"></a>shinystan 2.4.0</h1>
+<ul>
+<li>
+<code>launch_shinystan</code> is now an S3 generic with methods. This allows developers of packages that use <strong>shinystan</strong> to create their own <code>launch_shinystan</code> methods instead of using a different function name or creating a naming conflict.</li>
+</ul>
+</div>
+    <div id="shinystan-2-3-0" class="section level1">
+<h1 class="hasAnchor">
+<a href="#shinystan-2-3-0" class="anchor"></a>shinystan 2.3.0</h1>
+<div id="fixes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#fixes" class="anchor"></a>Fixes</h3>
+<ul>
+<li>Fix various issues resulting in errors for models fit using static HMC (thanks to Cole Monnahan).</li>
+<li>Deprecate <code>burnin</code> argument to <code>as.shinystan</code>. Use <code>warmup</code> instead. Only relevant for models <em>not</em> fit using Stan.</li>
+</ul>
+</div>
+<div id="new-features" class="section level3">
+<h3 class="hasAnchor">
+<a href="#new-features" class="anchor"></a>New features</h3>
+<ul>
+<li>Add NUTS energy diagnostic plots to Diagnose page</li>
+<li>Allowing passing <code>sampler_params</code> to <code>as.shinystan</code>. This makes it possible to display sampler diagnositcs for HMC/NUTS even if not using Stan’s implementation of those algorithms (thanks to Cole Monnahan).</li>
+</ul>
+</div>
+</div>
+    <div id="shinystan-2-2-1" class="section level1">
+<h1 class="hasAnchor">
+<a href="#shinystan-2-2-1" class="anchor"></a>shinystan 2.2.1</h1>
+<ul>
+<li>Better compatibility with latest releases of ‘shinyjs’ and ‘DT’ packages</li>
+<li>
+<code><a href="http://www.rdocumentation.org/packages/shinystan/topics/launch_shinystan_demo">shinystan::launch_shinystan_demo()</a></code> now works without first having to load the package with a call to <code>library</code>
+</li>
+<li>Unless running on a server, the app now stops running when browser tab is closed</li>
+</ul>
+</div>
+    <div id="shinystan-2-2-0-1" class="section level1">
+<h1 class="hasAnchor">
+<a href="#shinystan-2-2-0-1" class="anchor"></a>shinystan 2.2.0-1</h1>
+<ul>
+<li>Fix bug in <code>deploy_shinystan</code> preventing some ShinyStan apps from being deployed</li>
+</ul>
+</div>
+    <div id="shinystan-2-2-0" class="section level1">
+<h1 class="hasAnchor">
+<a href="#shinystan-2-2-0" class="anchor"></a>shinystan 2.2.0</h1>
+<ul>
+<li>Add optional argument <code>pars</code> to the <code>as.shinystan</code> method for stanfit objects, allowing a subset of parameters to be selected for inclusion in the resulting shinystan object.</li>
+<li>Introduce <code>drop_parameters</code> function for removing parameters from a shinystan object (useful for very large objects when you only want to look at a subset of parameters).</li>
+<li>Add <strong>rstanarm</strong> to Suggests (in the DESCRIPTION file) so <code><a href="http://www.rdocumentation.org/packages/rstanarm/topics/pp_check.stanreg">rstanarm::pp_check</a></code> can be called.</li>
+<li>Allow selecting <code>yrep</code> from global environment for PPcheck</li>
+<li>Change <code>as.shinystan</code> to S4 generic with methods</li>
+<li>Add <strong>rsconnect</strong> to <code>Imports</code> in <code>DESCRIPTION</code>.</li>
+<li>Rename some of the slots in shinystan objects. The <code>update_sso</code> function can be used to ensure that old shinystan objects have an internal structure compatible with this release.</li>
+<li>Improve line coverage of api tests</li>
+</ul>
+</div>
+    <div id="shinystan-2-1-0" class="section level1">
+<h1 class="hasAnchor">
+<a href="#shinystan-2-1-0" class="anchor"></a>shinystan 2.1.0</h1>
+<ul>
+<li>Compatibility with recent ggplot2 update</li>
+<li>Select parameters via regular expressions in parameters plot (‘Estimate’ page)</li>
+<li>Fix error when selecting an entire parameter group in parameters plot (‘Estimate’ page)</li>
+</ul>
+</div>
+    <div id="shinystan-2-0-1" class="section level1">
+<h1 class="hasAnchor">
+<a href="#shinystan-2-0-1" class="anchor"></a>shinystan 2.0.1</h1>
+<ul>
+<li>Fixes small bugs and typos</li>
+<li>Adds support for stanreg objects</li>
+<li>Moves ggplot2 from Depends to Imports</li>
+</ul>
+</div>
+    <div id="shinystan-2-0-0-major-update-initial-cran-release" class="section level1">
+<h1 class="hasAnchor">
+<a href="#shinystan-2-0-0-major-update-initial-cran-release" class="anchor"></a>shinystan 2.0.0 (major update, initial CRAN release)</h1>
+<p>Version 2.0.0 has a new look, a new(ish) name, and a lot of new functionality. Many bugs have also been fixed (see GitHub issue tracker).</p>
+<div id="new-names" class="section level3">
+<h3 class="hasAnchor">
+<a href="#new-names" class="anchor"></a>New names</h3>
+<ul>
+<li>The name of the R package is <strong>shinystan</strong> and the app/GUI is <strong>ShinyStan</strong>.</li>
+</ul>
+</div>
+<div id="deploy-shinystan-apps-to-shinyapps-io-rstudios-shinyapps-service" class="section level3">
+<h3 class="hasAnchor">
+<a href="#deploy-shinystan-apps-to-shinyapps-io-rstudios-shinyapps-service" class="anchor"></a>Deploy ShinyStan apps to shinyapps.io (RStudio’s ShinyApps service)</h3>
+<ul>
+<li>The <code>deploy_shinystan</code> function lets you easily deploy ShinyStan apps to RStudio’s shinyapps.io for any of your models. Each of your apps (i.e. each of your models) will have a unique url.</li>
+</ul>
+</div>
+<div id="some-of-the-new-features-in-shinystan-app" class="section level3">
+<h3 class="hasAnchor">
+<a href="#some-of-the-new-features-in-shinystan-app" class="anchor"></a>Some of the new features in ShinyStan app</h3>
+<ul>
+<li>Rebranding (new look to reflect changes to Stan logo and website)</li>
+<li>HMC/NUTS diagnostic plots (‘Diagnose’ page, ‘HMC/NUTS (plots)’ tab)</li>
+<li>Specify transformations (e.g. log, logit, sqrt, etc.) for density, histogram, bivariate, trivariate plots (on ‘Explore’ page) and HMC/NUTS diagnostics plots.</li>
+<li>Many plots can now also be saved as pdf</li>
+<li>Bivariate scatterplot plot also shows divergent transitions and max treedepth saturation (on ‘Explore’ page)</li>
+<li>More detailed glossary entries</li>
+<li>(Experimental) Introduce basic graphical posterior predictive checking (‘Diagnose’ page, ‘PPcheck’ tab) for limited class of models</li>
+<li>Option to show partial autocorrelations (‘Diagnose’ page, ‘Autocorrelation’ tab)</li>
+<li>Better customization of of posterior summary statistics table</li>
+<li>Many improvements to GUI design</li>
+</ul>
+</div>
+</div>
     </div>
   </div>
 
@@ -131,6 +244,14 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#shinystan-2-4-0">2.4.0</a></li>
+        <li><a href="#shinystan-2-3-0">2.3.0</a></li>
+        <li><a href="#shinystan-2-2-1">2.2.1</a></li>
+        <li><a href="#shinystan-2-2-0-1">2.2.0-1</a></li>
+        <li><a href="#shinystan-2-2-0">2.2.0</a></li>
+        <li><a href="#shinystan-2-1-0">2.1.0</a></li>
+        <li><a href="#shinystan-2-0-1">2.0.1</a></li>
+        <li><a href="#shinystan-2-0-0-major-update-initial-cran-release">2.0.0</a></li>
       </ul>
     </div>
   </div>

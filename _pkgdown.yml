@@ -38,7 +38,7 @@ articles:
   - title: "Getting Started"
     desc: >
       The best way to get started is to play around with the demo by running 
-      `launch_shinystan_demo()`. The document below provides additional 
+      launch_shinystan_demo(). The document below provides additional 
       information about some of the R functions in the package. 
     contents:
       - shinystan-package
