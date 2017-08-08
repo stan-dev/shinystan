@@ -57,6 +57,9 @@
 <li>
   <a href="../reference/index.html">Functions</a>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Other Packages
@@ -133,8 +136,28 @@
       <tbody>
         <tr>
           <th colspan="2">
-            <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-            <p class="section-desc"></p>
+            <h2 id="section-launching-the-app" class="hasAnchor"><a href="#section-launching-the-app" class="anchor"></a>Launching the app</h2>
+            <p class="section-desc"><p>Functions for launching the app using a particular model or launching a demo of the app.</p></p>
+          </th>
+        </tr>
+        <tr>
+          <!--  -->
+          <td>
+            <p><code><a href="launch_shinystan.html">launch_shinystan</a></code> </p>
+          </td>
+          <td><p>Launch the 'ShinyStan' app</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="launch_shinystan_demo.html">launch_shinystan_demo</a></code> </p>
+          </td>
+          <td><p>'ShinyStan' demo</p></td>
+        </tr>
+      </tbody><tbody>
+        <tr>
+          <th colspan="2">
+            <h2 id="section-shinystan-objects" class="hasAnchor"><a href="#section-shinystan-objects" class="anchor"></a>shinystan objects</h2>
+            <p class="section-desc"><p>Functions for creating and examining shinystan objects.</p></p>
           </th>
         </tr>
         <tr>
@@ -146,43 +169,7 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="deploy_shinystan.html">deploy_shinystan</a></code> </p>
-          </td>
-          <td><p>Deploy a 'ShinyStan' app on the web using 'shinyapps.io' by 'RStudio'</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="drop_parameters.html">drop_parameters</a></code> </p>
-          </td>
-          <td><p>Drop parameters from a <code>shinystan</code> object</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="generate_quantity.html">generate_quantity</a></code> </p>
-          </td>
-          <td><p>Add new quantity to shinystan object</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="launch_shinystan_demo.html">launch_shinystan_demo</a></code> </p>
-          </td>
-          <td><p>'ShinyStan' demo</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="launch_shinystan.html">launch_shinystan</a></code> </p>
-          </td>
-          <td><p>Launch the 'ShinyStan' app</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="retrieve.html">retrieve</a></code> </p>
-          </td>
-          <td><p>Get summary statistics from shinystan object</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="shinystan-class.html">shinystan-class</a></code> </p>
+            <p></p>
           </td>
           <td><p>S4 <code>shinystan</code> objects</p></td>
         </tr><tr>
@@ -194,15 +181,49 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="shinystan-package.html">shinystan-package</a></code> </p>
+            <p><code><a href="retrieve.html">retrieve</a></code> </p>
           </td>
-          <td><p>'ShinyStan' interface and <code>shinystan</code> R package</p></td>
+          <td><p>Get summary statistics from shinystan object</p></td>
+        </tr>
+      </tbody><tbody>
+        <tr>
+          <th colspan="2">
+            <h2 id="section-modifying-shinystan-objects" class="hasAnchor"><a href="#section-modifying-shinystan-objects" class="anchor"></a>Modifying shinystan objects</h2>
+            <p class="section-desc"><p>Functions for changing existing shinystan objects.</p></p>
+          </th>
+        </tr>
+        <tr>
+          <!--  -->
+          <td>
+            <p><code><a href="drop_parameters.html">drop_parameters</a></code> </p>
+          </td>
+          <td><p>Drop parameters from a <code>shinystan</code> object</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="update_sso.html">update_sso</a></code> </p>
           </td>
           <td><p>Update an object created by the previous version of shinystan</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="generate_quantity.html">generate_quantity</a></code> </p>
+          </td>
+          <td><p>Add new quantity to shinystan object</p></td>
+        </tr>
+      </tbody><tbody>
+        <tr>
+          <th colspan="2">
+            <h2 id="section-deploying-apps" class="hasAnchor"><a href="#section-deploying-apps" class="anchor"></a>Deploying apps</h2>
+            <p class="section-desc"><p>Functions for deploying shinystan apps on shinyapps.io.</p></p>
+          </th>
+        </tr>
+        <tr>
+          <!--  -->
+          <td>
+            <p><code><a href="deploy_shinystan.html">deploy_shinystan</a></code> </p>
+          </td>
+          <td><p>Deploy a 'ShinyStan' app on the web using 'shinyapps.io' by 'RStudio'</p></td>
         </tr>
       </tbody>
       </table>
@@ -212,7 +233,10 @@
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#section-launching-the-app">Launching the app</a></li>
+      <li><a href="#section-shinystan-objects">shinystan objects</a></li>
+      <li><a href="#section-modifying-shinystan-objects">Modifying shinystan objects</a></li>
+      <li><a href="#section-deploying-apps">Deploying apps</a></li>
     </ul>
   </div>
 </div>

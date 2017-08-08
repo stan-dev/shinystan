@@ -102,7 +102,7 @@ and is compatible with Safari, Firefox, Chrome, and most other browsers.
 
 ### Get help or submit bug report
 
-* [Stan Users Discourse group](http://discourse.mc-stan.org/)
+* [The Stan Forums](http://discourse.mc-stan.org/)
 * [ShinyStan issue tracker](https://github.com/stan-dev/shinystan/issues)
 
 ### Licensing

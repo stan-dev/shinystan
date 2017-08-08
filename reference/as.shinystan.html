@@ -57,6 +57,9 @@
 <li>
   <a href="../reference/index.html">Functions</a>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Other Packages
@@ -127,9 +130,8 @@
   Currently methods are provided for creating <code>shinystan</code> objects from
   arrays, lists of matrices, <code>stanfit</code> objects (<span class="pkg">rstan</span>),
   <code>stanreg</code> objects (<span class="pkg">rstanarm</span>), and <code>mcmc.list</code> objects
-  (<span class="pkg">coda</span>).
-
-    <code>is.shinystan</code> tests if an object is a <code>shinystan</code> object.</p>
+  (<span class="pkg">coda</span>).</p>  
+<p><code>is.shinystan</code> tests if an object is a <code>shinystan</code> object.</p>
     
 
     <pre class="usage"><span class='fu'>as.shinystan</span>(<span class='no'>X</span>, <span class='no'>...</span>)
@@ -249,9 +251,8 @@ predictive checks are available when 'ShinyStan' is launched.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>as.shinystan</code> returns a <code>shinystan</code> object, which is an
-  instance of S4 class <code>"shinystan"</code>.
-  
-  <code>is.shinystan</code> returns <code>TRUE</code> if the tested object is a
+  instance of S4 class <code>"shinystan"</code>.</p>  
+<p><code>is.shinystan</code> returns <code>TRUE</code> if the tested object is a
   <code>shinystan</code> object and <code>FALSE</code> otherwise.</p>
     
     <h2 class="hasAnchor" id="methods-by-class-"><a class="anchor" href="#methods-by-class-"></a>Methods (by class)</h2>
@@ -286,52 +287,49 @@ taken automatically from the <code>stanfit</code> object.</p></li>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='fu'>not_run</span>({
-  <span class='no'>sso</span> <span class='kw'>&lt;-</span> <span class='fu'>as.shinystan</span>(<span class='no'>X</span>, <span class='no'>...</span>) <span class='co'># replace ... with optional arguments or omit it</span>
-  <span class='fu'><a href='launch_shinystan.html'>launch_shinystan</a></span>(<span class='no'>sso</span>)
-})
+    <pre class="examples"><div class='input'> 
+</div><span class='co'># NOT RUN {</span>
+<span class='no'>sso</span> <span class='kw'>&lt;-</span> <span class='fu'>as.shinystan</span>(<span class='no'>X</span>, <span class='no'>...</span>) <span class='co'># replace ... with optional arguments or omit it</span>
+<span class='fu'><a href='launch_shinystan.html'>launch_shinystan</a></span>(<span class='no'>sso</span>)
+<span class='co'># }</span><div class='input'>
+</div><span class='co'># NOT RUN {</span>
+<span class='co'>########################</span>
+<span class='co'>### list of matrices ###</span>
+<span class='co'>########################</span>
 
-<span class='fu'>not_run</span>({
+<span class='co'># Generate some fake data</span>
+<span class='no'>chain1</span> <span class='kw'>&lt;-</span> <span class='fu'>cbind</span>(<span class='kw'>beta1</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>100</span>), <span class='kw'>beta2</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>100</span>), <span class='kw'>sigma</span> <span class='kw'>=</span> <span class='fu'>rexp</span>(<span class='fl'>100</span>))
+<span class='no'>chain2</span> <span class='kw'>&lt;-</span> <span class='fu'>cbind</span>(<span class='kw'>beta1</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>100</span>), <span class='kw'>beta2</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>100</span>), <span class='kw'>sigma</span> <span class='kw'>=</span> <span class='fu'>rexp</span>(<span class='fl'>100</span>))
+<span class='no'>sso</span> <span class='kw'>&lt;-</span> <span class='fu'>as.shinystan</span>(<span class='fu'>list</span>(<span class='no'>chain1</span>, <span class='no'>chain2</span>))
+<span class='fu'><a href='launch_shinystan.html'>launch_shinystan</a></span>(<span class='no'>sso</span>)
 
-  <span class='co'>########################</span>
-  <span class='co'>### list of matrices ###</span>
-  <span class='co'>########################</span>
-
-  <span class='co'># Generate some fake data</span>
-  <span class='no'>chain1</span> <span class='kw'>&lt;-</span> <span class='fu'>cbind</span>(<span class='kw'>beta1</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>100</span>), <span class='kw'>beta2</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>100</span>), <span class='kw'>sigma</span> <span class='kw'>=</span> <span class='fu'>rexp</span>(<span class='fl'>100</span>))
-  <span class='no'>chain2</span> <span class='kw'>&lt;-</span> <span class='fu'>cbind</span>(<span class='kw'>beta1</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>100</span>), <span class='kw'>beta2</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>100</span>), <span class='kw'>sigma</span> <span class='kw'>=</span> <span class='fu'>rexp</span>(<span class='fl'>100</span>))
-  <span class='no'>sso</span> <span class='kw'>&lt;-</span> <span class='fu'>as.shinystan</span>(<span class='fu'>list</span>(<span class='no'>chain1</span>, <span class='no'>chain2</span>))
-  <span class='fu'><a href='launch_shinystan.html'>launch_shinystan</a></span>(<span class='no'>sso</span>)
-
-  <span class='co'># We can also specify some or all of the optional arguments</span>
-  <span class='co'># note: in order to use param_dims we need to rename 'beta1' and 'beta2'</span>
-  <span class='co'># to 'beta[1]' and 'beta[2]'</span>
-  <span class='fu'>colnames</span>(<span class='no'>chain1</span>) <span class='kw'>&lt;-</span> <span class='fu'>colnames</span>(<span class='no'>chain2</span>) <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fu'>paste0</span>(<span class='st'>"beta["</span>,<span class='fl'>1</span>:<span class='fl'>2</span>,<span class='st'>"]"</span>), <span class='st'>"sigma"</span>)
-  <span class='no'>sso2</span> <span class='kw'>&lt;-</span> <span class='fu'>as.shinystan</span>(<span class='fu'>list</span>(<span class='no'>chain1</span>, <span class='no'>chain2</span>),
-                       <span class='kw'>model_name</span> <span class='kw'>=</span> <span class='st'>"Example"</span>, <span class='kw'>warmup</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-                       <span class='kw'>param_dims</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>beta</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>sigma</span> <span class='kw'>=</span> <span class='fl'>0</span>))
-  <span class='fu'><a href='launch_shinystan.html'>launch_shinystan</a></span>(<span class='no'>sso2</span>)
-})
-
-<span class='fu'>not_run</span>({
-  <span class='co'>######################</span>
-  <span class='co'>### stanfit object ###</span>
-  <span class='co'>######################</span>
-  <span class='fu'>library</span>(<span class='st'>"rstan"</span>)
-  <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>stan_demo</span>(<span class='st'>"eight_schools"</span>)
-  <span class='no'>sso</span> <span class='kw'>&lt;-</span> <span class='fu'>as.shinystan</span>(<span class='no'>fit</span>, <span class='kw'>model_name</span> <span class='kw'>=</span> <span class='st'>"example"</span>)
-})
-
-<span class='fu'>not_run</span>({
-  <span class='co'>######################</span>
-  <span class='co'>### stanreg object ###</span>
-  <span class='co'>######################</span>
-  <span class='fu'>library</span>(<span class='st'>"rstanarm"</span>)
-  <span class='fu'>example</span>(<span class='st'>"example_model"</span>)
-  <span class='no'>sso</span> <span class='kw'>&lt;-</span> <span class='fu'>as.shinystan</span>(<span class='no'>example_model</span>)
-  <span class='fu'><a href='launch_shinystan.html'>launch_shinystan</a></span>(<span class='no'>sso</span>)
-})</div></pre>
+<span class='co'># We can also specify some or all of the optional arguments</span>
+<span class='co'># note: in order to use param_dims we need to rename 'beta1' and 'beta2'</span>
+<span class='co'># to 'beta[1]' and 'beta[2]'</span>
+<span class='fu'>colnames</span>(<span class='no'>chain1</span>) <span class='kw'>&lt;-</span> <span class='fu'>colnames</span>(<span class='no'>chain2</span>) <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fu'>paste0</span>(<span class='st'>"beta["</span>,<span class='fl'>1</span>:<span class='fl'>2</span>,<span class='st'>"]"</span>), <span class='st'>"sigma"</span>)
+<span class='no'>sso2</span> <span class='kw'>&lt;-</span> <span class='fu'>as.shinystan</span>(<span class='fu'>list</span>(<span class='no'>chain1</span>, <span class='no'>chain2</span>),
+                     <span class='kw'>model_name</span> <span class='kw'>=</span> <span class='st'>"Example"</span>, <span class='kw'>warmup</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+                     <span class='kw'>param_dims</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>beta</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>sigma</span> <span class='kw'>=</span> <span class='fl'>0</span>))
+<span class='fu'><a href='launch_shinystan.html'>launch_shinystan</a></span>(<span class='no'>sso2</span>)
+<span class='co'># }</span><div class='input'>
+</div><span class='co'># NOT RUN {</span>
+<span class='co'>######################</span>
+<span class='co'>### stanfit object ###</span>
+<span class='co'>######################</span>
+<span class='fu'>library</span>(<span class='st'>"rstan"</span>)
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/rstan/topics/stan_demo'>stan_demo</a></span>(<span class='st'>"eight_schools"</span>)
+<span class='no'>sso</span> <span class='kw'>&lt;-</span> <span class='fu'>as.shinystan</span>(<span class='no'>fit</span>, <span class='kw'>model_name</span> <span class='kw'>=</span> <span class='st'>"example"</span>)
+<span class='co'># }</span><div class='input'>
+</div><span class='co'># NOT RUN {</span>
+<span class='co'>######################</span>
+<span class='co'>### stanreg object ###</span>
+<span class='co'>######################</span>
+<span class='fu'>library</span>(<span class='st'>"rstanarm"</span>)
+<span class='fu'>example</span>(<span class='st'>"example_model"</span>)
+<span class='no'>sso</span> <span class='kw'>&lt;-</span> <span class='fu'>as.shinystan</span>(<span class='no'>example_model</span>)
+<span class='fu'><a href='launch_shinystan.html'>launch_shinystan</a></span>(<span class='no'>sso</span>)
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

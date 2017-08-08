@@ -57,6 +57,9 @@
 <li>
   <a href="../reference/index.html">Functions</a>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Other Packages
@@ -121,7 +124,7 @@
 
     
     <p>Requires a (free or paid) 'ShinyApps' account. Visit
-<a href = 'http://www.shinyapps.io/'>http://www.shinyapps.io/</a> to sign up.</p>
+<a href='http://www.shinyapps.io/'>http://www.shinyapps.io/</a> to sign up.</p>
     
 
     <pre class="usage"><span class='fu'>deploy_shinystan</span>(<span class='no'>sso</span>, <span class='no'>appName</span>, <span class='kw'>account</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>deploy</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
@@ -179,24 +182,25 @@ deployment is successful.</p></td>
 
     <p>The example in the <em>Deploying to shinyapps.io</em> vignette that
   comes with this package.</p>
-<p><a href = 'http://www.shinyapps.io/'>http://www.shinyapps.io/</a> to sign up for a free or paid 'ShinyApps'
+<p><a href='http://www.shinyapps.io/'>http://www.shinyapps.io/</a> to sign up for a free or paid 'ShinyApps'
   account and for details on how to configure your account on your local
   system using the <span class="pkg"><a href='http://www.rdocumentation.org/packages/rsconnect/topics/rsconnect-package'>rsconnect</a></span> package from 'RStudio'.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
-  <span class='co'># For this example assume sso is the name of the \code{shinystan} object for</span>
-  <span class='co'># the model you want to use. Assume also that you want to name your app</span>
-  <span class='co'># 'my-model' and that your shinyapps.io username is 'username'.</span>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='co'># For this example assume sso is the name of the \code{shinystan} object for</span>
+<span class='co'># the model you want to use. Assume also that you want to name your app</span>
+<span class='co'># 'my-model' and that your shinyapps.io username is 'username'.</span>
 
-  <span class='fu'>deploy_shinystan</span>(<span class='no'>sso</span>, <span class='kw'>appName</span> <span class='kw'>=</span> <span class='st'>"my-model"</span>, <span class='kw'>account</span> <span class='kw'>=</span> <span class='st'>"username"</span>)
+<span class='fu'>deploy_shinystan</span>(<span class='no'>sso</span>, <span class='kw'>appName</span> <span class='kw'>=</span> <span class='st'>"my-model"</span>, <span class='kw'>account</span> <span class='kw'>=</span> <span class='st'>"username"</span>)
 
-  <span class='co'># If you only have one ShinyApps account configured then you can also omit</span>
-  <span class='co'># the 'account' argument.</span>
+<span class='co'># If you only have one ShinyApps account configured then you can also omit</span>
+<span class='co'># the 'account' argument.</span>
 
-  <span class='fu'>deploy_shinystan</span>(<span class='no'>sso</span>, <span class='kw'>appName</span> <span class='kw'>=</span> <span class='st'>"my-model"</span>)
-})</div></pre>
+<span class='fu'>deploy_shinystan</span>(<span class='no'>sso</span>, <span class='kw'>appName</span> <span class='kw'>=</span> <span class='st'>"my-model"</span>)
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

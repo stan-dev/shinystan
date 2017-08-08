@@ -10,6 +10,8 @@ navbar:
       href: articles/index.html
     - text: "Functions"
       href: reference/index.html
+    - text: "News"
+      href: news/index.html
     - text: "Other Packages"
       menu:
         - text: "rstan"
@@ -35,12 +37,41 @@ navbar:
 articles:
   - title: "Getting Started"
     desc: >
-      The document below provides an introduction to using shinystan
-      to visualize model diagnostics.
+      The best way to get started is to play around with the demo by running 
+      `launch_shinystan_demo()`. The document below provides additional 
+      information about some of the R functions in the package. 
     contents:
-      - shinystan_package
+      - shinystan-package
   - title: "Hosting your App"
     desc: >
-      The document below explains how to host a shinystan app online.
+      The document below explains one way to host a shinystan app online.
+    contents:
+      - deploy_shinystan
+      
+reference:
+  - title: "Launching the app"
+    desc: >
+      Functions for launching the app using a particular model or launching a demo of the app.
+    contents:
+      - launch_shinystan
+      - launch_shinystan_demo
+  - title: "shinystan objects"
+    desc: >
+      Functions for creating and examining shinystan objects.
+    contents:
+      - as.shinystan
+      - shinystan-class
+      - shinystan-metadata
+      - retrieve
+  - title: "Modifying shinystan objects"
+    desc: >
+      Functions for changing existing shinystan objects.
+    contents:
+      - drop_parameters
+      - update_sso
+      - generate_quantity
+  - title: "Deploying apps"
+    desc: >
+      Functions for deploying shinystan apps on shinyapps.io.
     contents:
       - deploy_shinystan
