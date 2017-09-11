@@ -84,7 +84,7 @@ your models. Each of your apps (each of your models) will have a unique url
 and is compatible with Safari, Firefox, Chrome, and most other browsers.
 
 
-#### Licensing
+### Licensing
 
 The **shinystan** R package and ShinyStan interface are open source licensed under
 the GNU Public License, version 3 (GPLv3).
