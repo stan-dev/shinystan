@@ -15,6 +15,12 @@ MCMC simulations. The ShinyStan interface is coded primarily in R using
 the [Shiny](http://shiny.rstudio.com) web application framework and is
 available via the **shinystan** R package.
 
+### Resources
+
+* [mc-stan.org/shinystan](http://mc-stan.org/shinystan) (online documentation)
+* [Ask a question](http://discourse.mc-stan.org) (Stan Forums on Discourse)
+* [Open an issue](https://github.com/stan-dev/shinystan/issues) (GitHub issues for bug reports, feature requests)
+
 ### Installation
 
 * Install from CRAN:
@@ -77,10 +83,6 @@ which lets you easily deploy your own ShinyStan apps online using RStudio's
 your models. Each of your apps (each of your models) will have a unique url
 and is compatible with Safari, Firefox, Chrome, and most other browsers.
 
-#### Get help or submit bug report
-
-* [Ask a question at The Stan Forums](http://discourse.mc-stan.org)
-* [ShinyStan issue tracker](https://github.com/stan-dev/shinystan/issues)
 
 #### Licensing
 
