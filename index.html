@@ -9,8 +9,19 @@
     Bayesian Models • shinystan</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><meta property="og:title" content="Interactive Visual and Numerical Diagnostics and Posterior Analysis for
+    Bayesian Models">
+<meta property="og:description" content="A graphical user interface for interactive Markov chain Monte
+    Carlo (MCMC) diagnostics and plots and tables helpful for analyzing a
+    posterior sample. The interface is powered by the 'Shiny' web
+    application framework from 'RStudio' and works with the output of MCMC 
+    programs written in any programming language (and has extended 
+    functionality for 'Stan' models fit using the 'rstan' and 'rstanarm' 
+    packages).">
+<meta property="og:image" content="/logo.png">
+<meta name="twitter:card" content="summary">
+<!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
@@ -25,8 +36,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">shinystan</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="index.html">shinystan</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">2.4.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
@@ -99,22 +114,22 @@
     
 
 <p><br></p>
-<div style="text-align:center">
-<a href="http://mc-stan.org">
-<img src="https://raw.githubusercontent.com/stan-dev/logos/master/logo.png" width="200" alt="Stan Logo"></a>
+<div style="text-align:left">
+<span><a href="http://mc-stan.org">
+<img src="https://raw.githubusercontent.com/stan-dev/logos/master/logo_tm.png" width="100" alt="Stan Logo"></a><h2><strong>shinystan</strong></h2>
+<h4>Interactive diagnostics and posterior analysis for Bayesian models</h4></span>
 </div>
 <p><br></p>
 <p>ShinyStan provides immediate, informative, customizable visual and numerical summaries of model parameters and convergence diagnostics for MCMC simulations. The ShinyStan interface is coded primarily in R using the <a href="http://shiny.rstudio.com">Shiny</a> web application framework and is available via the <strong>shinystan</strong> R package.</p>
-<p><br></p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>Install from <strong>CRAN</strong>:</p>
+<p>Install the latest release from <strong>CRAN</strong>:</p>
 <pre class="{r}"><code>install.packages("shinystan")</code></pre>
-<p>If this fails, try adding the arguments <code>type='source'</code> and/or <code>repos='http://cran.rstudio.com'</code>.</p>
-<p>Install from <strong>GitHub</strong> (requires <a href="https://github.com/hadley/devtools">devtools</a> package):</p>
-<pre class="{r}"><code>if (!require("devtools"))
+<p>Install the development version from <strong>GitHub</strong>:</p>
+<pre class="{r}"><code>if (!require("devtools")) {
   install.packages("devtools")
+}
 devtools::install_github("stan-dev/shinystan", build_vignettes = TRUE)</code></pre>
 <p><br></p>
 </div>
@@ -139,40 +154,48 @@ launch_shinystan_demo()</code></pre>
 </div>
 <p><br></p>
 </div>
-<div id="about-shinystan" class="section level2">
+<div id="about" class="section level2">
 <h2 class="hasAnchor">
-<a href="#about-shinystan" class="anchor"></a>About ShinyStan</h2>
+<a href="#about" class="anchor"></a>About</h2>
 <p>Applied Bayesian data analysis is primarily implemented through the MCMC algorithms offered by various software packages. When analyzing a posterior sample obtained by one of these algorithms the first step is to check for signs that the chains have converged to the target distribution and and also for signs that the algorithm might require tuning or might be ill-suited for the given model. There may also be theoretical problems or practical inefficiencies with the specification of the model.</p>
-<p>ShinyStan provides interactive plots and tables helpful for analyzing a posterior sample, with particular attention to identifying potential problems with the performance of the MCMC algorithm or the specification of the model. ShinyStan is powered by RStudio’s Shiny web application framework and works with the output of MCMC programs written in any programming language (and has extended functionality for models fit using <a href="http://mc-stan.org/interfaces/rstan.html">rstan</a> and the No-U-Turn sampler).</p>
-<div id="saving-and-deploying-sharing" class="section level3">
-<h3 class="hasAnchor">
-<a href="#saving-and-deploying-sharing" class="anchor"></a>Saving and deploying (sharing)</h3>
-<p>The <strong>shinystan</strong> package allows you to store the basic components of an entire project (code, posterior samples, graphs, tables, notes) in a single object. Users can save many of the plots as ggplot2 objects for further customization and easy integration in reports or post-processing for publication.</p>
-<p><strong>shinystan</strong> also provides the <code>deploy_shinystan</code> function, which lets you easily deploy your own ShinyStan apps online using RStudio’s <a href="https://www.shinyapps.io">ShinyApps</a> service for any of your models. Each of your apps (each of your models) will have a unique url and is compatible with Safari, Firefox, Chrome, and most other browsers.</p>
-</div>
+<p>ShinyStan provides interactive plots and tables helpful for analyzing a posterior sample, with particular attention to identifying potential problems with the performance of the MCMC algorithm or the specification of the model. ShinyStan is powered by RStudio’s Shiny web application framework and works with the output of MCMC programs written in any programming language (and has extended functionality for models fit using <a href="http://mc-stan.org/rstan/">rstan</a> and the No-U-Turn sampler).</p>
 </div>
 
   </div>
 
   <div class="col-md-3" id="sidebar">
-    <h2>Links</h2>
+    <div class="links">
+<h2>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cran.r-project.org/package=shinystan">https://​cran.r-project.org/​package=shinystan</a>
+<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=shinystan">https://​cloud.r-project.org/​package=shinystan</a>
 </li>
 <li>Report a bug at <br><a href="https://github.com/stan-dev/shinystan/issues/">https://​github.com/​stan-dev/​shinystan/​issues/​</a>
 </li>
+<li>Ask a question at <br><a href="http://discourse.mc-stan.org/">http://​discourse.mc-stan.org/​</a>
+</li>
 </ul>
+</div>
+<div class="license">
 <h2>License</h2>
-<p>GPL (&gt;=3)</p>
+<ul class="list-unstyled">
+<li>GPL (&gt;=3)</li>
+</ul>
+</div>
+<div class="citation">
 <h2>Citation</h2>
 <ul class="list-unstyled">
 <li><a href="authors.html">Citing shinystan</a></li>
 </ul>
+</div>
+<div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>Jonah Gabry <br><small class="roles"> Author, maintainer </small> </li>
+<li>Jonah Gabry <br><small class="roles"> Author, maintainer </small>  </li>
 <li><a href="authors.html">All authors...</a></li>
 </ul>
+</div>
+
+  <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://travis-ci.org/stan-dev/shinystan"><img src="https://travis-ci.org/stan-dev/shinystan.svg?branch=develop" alt="Travis-CI Build Status"></a></li>
@@ -182,6 +205,7 @@ launch_shinystan_demo()</code></pre>
 </ul>
 </div>
 </div>
+</div>
 
 
       <footer><div class="copyright">
@@ -189,11 +213,13 @@ launch_shinystan_demo()</code></pre>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
 </div>
+
+  
 
   </body>
 </html>

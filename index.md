@@ -6,10 +6,10 @@
 
 <br>
 
-<div style="text-align:center">
-<a href="http://mc-stan.org">
-<img src="https://raw.githubusercontent.com/stan-dev/logos/master/logo.png" width=200 alt="Stan Logo"/>
-</a>
+<div style="text-align:left">
+<span><a href="http://mc-stan.org">
+<img src="https://raw.githubusercontent.com/stan-dev/logos/master/logo_tm.png" width=100 alt="Stan Logo"/> </a><h2><strong>shinystan</strong></h2>
+<h4>Interactive diagnostics and posterior analysis for Bayesian models</h4></span>
 </div>
 
 <br>
@@ -20,23 +20,21 @@ MCMC simulations. The ShinyStan interface is coded primarily in R using
 the [Shiny](http://shiny.rstudio.com) web application framework and is
 available via the **shinystan** R package.
 
-<br>
 
 ## Installation
 
-Install from **CRAN**:
+Install the latest release from **CRAN**:
 
 ```{r}
 install.packages("shinystan")
 ```
 
-If this fails, try adding the arguments `type='source'` and/or `repos='http://cran.rstudio.com'`.
-
-Install from **GitHub** (requires [devtools](https://github.com/hadley/devtools) package):
+Install the development version from **GitHub**:
 
 ```{r}
-if (!require("devtools"))
+if (!require("devtools")) {
   install.packages("devtools")
+}
 devtools::install_github("stan-dev/shinystan", build_vignettes = TRUE)
 ```
 
@@ -69,7 +67,7 @@ launch_shinystan_demo()
 
 <br>
 
-## About ShinyStan
+## About
 
 Applied Bayesian data analysis is primarily implemented through the MCMC
 algorithms offered by various software packages. When analyzing a posterior sample
@@ -84,19 +82,6 @@ posterior sample, with particular attention to identifying potential problems
 with the performance of the MCMC algorithm or the specification of the model.
 ShinyStan is powered by RStudio's Shiny web application framework and works with
 the output of MCMC programs written in any programming language (and has extended
-functionality for models fit using [rstan](http://mc-stan.org/interfaces/rstan.html)
+functionality for models fit using [rstan](http://mc-stan.org/rstan/)
 and the No-U-Turn sampler).
-
-### Saving and deploying (sharing)
-
-The **shinystan** package allows you to store the basic components of an entire
-project (code, posterior samples, graphs, tables, notes) in a single object.
-Users can save many of the plots as ggplot2 objects for further customization
-and easy integration in reports or post-processing for publication.
-
-**shinystan** also provides the `deploy_shinystan` function,
-which lets you easily deploy your own ShinyStan apps online using RStudio's
-[ShinyApps](https://www.shinyapps.io) service for any of
-your models. Each of your apps (each of your models) will have a unique url
-and is compatible with Safari, Firefox, Chrome, and most other browsers.
 
