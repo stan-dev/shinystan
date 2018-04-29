@@ -4,7 +4,6 @@
 
 * Fixed problem with extracting info from fits reconstructed from CSV files (#128,#158), thanks to @martinmodrak
 
-
 # shinystan 2.4.0
 
 * `launch_shinystan` is now an S3 generic with methods. This allows developers 

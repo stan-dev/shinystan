@@ -21,13 +21,13 @@ available via the **shinystan** R package.
 
 ### Installation
 
-* Install from CRAN:
+* Install the latest release from CRAN:
 
 ```r
 install.packages("shinystan")
 ```
 
-* Install from GitHub (requires [devtools](https://github.com/r-lib/devtools) package):
+* Install the development version from GitHub (requires [devtools](https://github.com/r-lib/devtools) package):
 
 ```r
 if (!require("devtools")) {

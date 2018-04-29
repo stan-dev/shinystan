@@ -8,4 +8,4 @@ r_github_packages:
   - jimhester/covr
 
 after_success:
-  - Rscript -e 'covr::codecov(function_exclusions = c("launch$", "launch_shinystan_demo"), line_exclusions = list("R/zzz.R"))'
+  - Rscript -e 'covr::codecov(function_exclusions = c("launch_shinystan_demo"), line_exclusions = list("R/zzz.R"))'
