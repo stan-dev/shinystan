@@ -1,25 +1,35 @@
-### Version 2.4.0
+# shinystan 2.5.0
+
+* New website with online documentation: http://mc-stan.org/shinystan
+
+* Fixed problem with extracting info from fits reconstructed from CSV files (#128,#158), thanks to @martinmodrak
+
+
+# shinystan 2.4.0
 
 * `launch_shinystan` is now an S3 generic with methods. This allows developers 
 of packages that use __shinystan__ to create their own `launch_shinystan` 
 methods instead of using a different function name or creating a naming 
 conflict.
 
-### Version 2.3.0
+# shinystan 2.3.0
 
-#### Fixes 
+### Fixes 
 * Fix various issues resulting in errors for models fit using static HMC (thanks
 to Cole Monnahan).
+
 * Deprecate `burnin` argument to `as.shinystan`. Use `warmup` instead. Only 
 relevant for models _not_ fit using Stan.
 
-#### New features
+### New features
+
 * Add NUTS energy diagnostic plots to Diagnose page
+
 * Allowing passing `sampler_params` to `as.shinystan`. This makes it possible to
 display sampler diagnositcs for HMC/NUTS even if not using Stan's implementation
 of those algorithms (thanks to Cole Monnahan).
 
-### Version 2.2.1
+# shinystan 2.2.1
 
 * Better compatibility with latest releases of 'shinyjs' and 'DT' packages
 * `shinystan::launch_shinystan_demo()` now works without first having to load 
@@ -27,11 +37,11 @@ the package with a call to `library`
 * Unless running on a server, the app now stops running when browser tab is 
 closed
 
-### Version 2.2.0-1
+# shinystan 2.2.0-1
 * Fix bug in `deploy_shinystan` preventing some ShinyStan apps from being
 deployed
 
-### Version 2.2.0
+# shinystan 2.2.0
 * Add optional argument `pars` to the `as.shinystan` method for stanfit objects,
 allowing a subset of parameters to be selected for inclusion in the resulting
 shinystan object.
@@ -48,18 +58,18 @@ be used to ensure that old shinystan objects have an internal structure
 compatible with this release.
 * Improve line coverage of api tests
 
-### Version 2.1.0
+# shinystan 2.1.0
 * Compatibility with recent ggplot2 update
 * Select parameters via regular expressions in parameters plot ('Estimate' page)
 * Fix error when selecting an entire parameter group in parameters 
 plot ('Estimate' page)
 
-### Version 2.0.1
+# shinystan 2.0.1
 * Fixes small bugs and typos
 * Adds support for stanreg objects
 * Moves ggplot2 from Depends to Imports
 
-### Version 2.0.0 (major update, initial CRAN release)
+# shinystan 2.0.0 (major update, initial CRAN release)
 
 Version 2.0.0 has a new look, a new(ish) name, and a lot of new functionality. 
 Many bugs have also been fixed (see GitHub issue tracker). 

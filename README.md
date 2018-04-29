@@ -1,6 +1,4 @@
-<a href="http://mc-stan.org">
-<img src="https://raw.githubusercontent.com/stan-dev/logos/master/logo.png" width=200 alt="Stan Logo"/>
-</a>
+[<img src="https://raw.githubusercontent.com/stan-dev/logos/master/logo_tm.png" width=100 alt="Stan Logo"/>](http://mc-stan.org)
 
 # ShinyStan
 
@@ -15,6 +13,12 @@ MCMC simulations. The ShinyStan interface is coded primarily in R using
 the [Shiny](http://shiny.rstudio.com) web application framework and is
 available via the **shinystan** R package.
 
+### Resources
+
+* [mc-stan.org/shinystan](http://mc-stan.org/shinystan) (Website with online documentation)
+* [Ask a question](http://discourse.mc-stan.org) (Stan Forums on Discourse)
+* [Open an issue](https://github.com/stan-dev/shinystan/issues) (GitHub issues for bug reports, feature requests)
+
 ### Installation
 
 * Install from CRAN:
@@ -23,13 +27,12 @@ available via the **shinystan** R package.
 install.packages("shinystan")
 ```
 
-If this fails, try adding the arguments `type='source'` and/or `repos='http://cran.rstudio.com'`.
-
-* Install from GitHub (requires [devtools](https://github.com/hadley/devtools) package):
+* Install from GitHub (requires [devtools](https://github.com/r-lib/devtools) package):
 
 ```r
-if (!require("devtools"))
+if (!require("devtools")) {
   install.packages("devtools")
+}
 devtools::install_github("stan-dev/shinystan", build_vignettes = TRUE)
 ```
 
@@ -77,12 +80,8 @@ which lets you easily deploy your own ShinyStan apps online using RStudio's
 your models. Each of your apps (each of your models) will have a unique url
 and is compatible with Safari, Firefox, Chrome, and most other browsers.
 
-#### Get help or submit bug report
 
-* [Ask a question at The Stan Forums](http://discourse.mc-stan.org)
-* [ShinyStan issue tracker](https://github.com/stan-dev/shinystan/issues)
-
-#### Licensing
+### Licensing
 
 The **shinystan** R package and ShinyStan interface are open source licensed under
 the GNU Public License, version 3 (GPLv3).
