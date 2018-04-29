@@ -1,3 +1,10 @@
+# shinystan 2.5.0
+
+* New website with online documentation: http://mc-stan.org/shinystan
+
+* Fixed problem with extracting info from fits reconstructed from CSV files (#128,#158), thanks to @martinmodrak
+
+
 # shinystan 2.4.0
 
 * `launch_shinystan` is now an S3 generic with methods. This allows developers 
@@ -10,11 +17,14 @@ conflict.
 ### Fixes 
 * Fix various issues resulting in errors for models fit using static HMC (thanks
 to Cole Monnahan).
+
 * Deprecate `burnin` argument to `as.shinystan`. Use `warmup` instead. Only 
 relevant for models _not_ fit using Stan.
 
 ### New features
+
 * Add NUTS energy diagnostic plots to Diagnose page
+
 * Allowing passing `sampler_params` to `as.shinystan`. This makes it possible to
 display sampler diagnositcs for HMC/NUTS even if not using Stan's implementation
 of those algorithms (thanks to Cole Monnahan).

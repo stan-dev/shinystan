@@ -40,6 +40,8 @@
 #' @template seealso-generate_quantity
 #' @seealso \code{\link{shinystan-metadata}} to view or change metadata
 #'   associated with a \code{shinystan} object.
+#'   
+#' @template reference-muth
 #' 
 shinystan <- setClass(
   Class = "shinystan",

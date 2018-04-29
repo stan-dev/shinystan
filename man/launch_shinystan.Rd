@@ -75,6 +75,17 @@ sf_sso <- launch_shinystan(sf)
 }
 
 }
+\references{
+Muth, C., Oravecz, Z., and Gabry, J. (2018)
+User-friendly Bayesian regression modeling: A tutorial with rstanarm and shinystan.
+\emph{The Quantitative Methods for Psychology}. 14(2), 99--119.
+\url{https://www.tqmp.org/RegularArticles/vol14-2/p099/p099.pdf}
+
+Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., and Gelman,
+  A. (2018). Visualization in Bayesian workflow. \emph{Journal of the Royal
+  Statistical Society Series A}, accepted for publication. arXiv preprint:
+  \url{http://arxiv.org/abs/1709.01449}.
+}
 \seealso{
 \code{\link{as.shinystan}} for creating \code{shinystan} objects.
 
