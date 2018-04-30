@@ -1,6 +1,6 @@
 ---
 title: 'Getting Started'
-date: "09/17/2015"
+date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
     toc: true
@@ -32,12 +32,25 @@ launch_shinystan(my_stanfit)
 then ShinyStan will launch but no shinystan object will be saved upon quitting
 the app. 
 
+Sometimes keeping only a subset of parameters before can improve performance.
+This can be done by creating an object with `as.shinystan` and specifying the
+`pars` argument. The resulting shinystan object can then be passed to
+`launch_shinystan()`.
+
+
+### stanreg and brmsfit objects
+
+The **rstanarm** and **brms** packages provide `launch_shinystan` methods for stanreg and brmsfit objects, 
+respectively. For example, the method for stanreg objects is 
+documented at 
+
+http://mc-stan.org/rstanarm/reference/launch_shinystan.stanreg.html
 
 ## mcmc.list objects
 
-If you have an `mcmc.list` object called `my_mcmc` then you can use the 
-`as.shinystan` function to convert `my_mcmc` into a shinystan object that 
-can then be used with `launch_shinystan`: 
+If you have an `mcmc.list` object called `my_mcmc` then you can use the
+`as.shinystan` function to convert `my_mcmc` into a shinystan object that can
+then be used with `launch_shinystan`:
 
 ```r
 my_sso <- launch_shinystan(as.shinystan(my_mcmc, model_name = "my_model"))
@@ -163,6 +176,4 @@ sso <- model_name(sso, "new_model_name")
 ```
 
 where `"new_model_name"` is the new name you want to give your model.
-
-
 
