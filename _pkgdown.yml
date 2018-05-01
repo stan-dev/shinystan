@@ -57,7 +57,8 @@ articles:
       
 reference:
   - title: "Package overview"
-    desc:  "Details about the shinystan R package"
+    desc: > 
+      Details about the shinystan R package.
     contents: 
       - shinystan-package
   - title: "Launching the app"

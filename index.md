@@ -15,15 +15,17 @@
 <br> 
 <div style="text-align:center">
 <a href="http://mc-stan.org/assets/img/shinystan/home.png">
-<img src="http://mc-stan.org/assets/img/shinystan/home.png" width=19% />
+<img src="http://mc-stan.org/assets/img/shinystan/home.png" width=23.75% />
 </a>
 <a href="http://mc-stan.org/assets/img/shinystan/explore.png">
-<img src="http://mc-stan.org/assets/img/shinystan/explore.png" width=24.5% />
+<img src="http://mc-stan.org/assets/img/shinystan/explore.png" width=30.625% />
 </a>
 <a href="http://mc-stan.org/assets/img/shinystan/diagnose.png">
-<img src="http://mc-stan.org/assets/img/shinystan/diagnose.png" width=24.5% />
+<img src="http://mc-stan.org/assets/img/shinystan/diagnose.png" width=30.625% />
 </a>
 </div>
+
+<br>
 
 ShinyStan provides immediate, informative, customizable visual and
 numerical summaries of model parameters and convergence diagnostics for
