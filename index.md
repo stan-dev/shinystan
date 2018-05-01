@@ -13,13 +13,13 @@
 <br> 
 <div style="text-align:center">
 <a href="/assets/img/shinystan/home.png">
-<img src="/assets/img/shinystan/home.png" style="width: 27%;"/>
+<img src="/assets/img/shinystan/home.png" style="width: 25.7%;"/>
 </a>
 <a href="/assets/img/shinystan/explore.png">
-<img src="/assets/img/shinystan/explore.png" style="width: 35%;"/>
+<img src="/assets/img/shinystan/explore.png" style="width: 33.33%;"/>
 </a>
 <a href="/assets/img/shinystan/diagnose.png">
-<img src="/assets/img/shinystan/diagnose.png" style="width: 35%;"/>
+<img src="/assets/img/shinystan/diagnose.png" style="width: 33.33%;"/>
 </a>
 </div>
 
