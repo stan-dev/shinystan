@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>All news • shinystan</title>
+<title>Changelog • shinystan</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -18,13 +18,22 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Changelog" />
+
+<meta property="og:image" content="/logo.png" />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +56,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">shinystan</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">shinystan</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">2.5.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -80,6 +93,9 @@
       <a href="http://mc-stan.org/loo">loo</a>
     </li>
     <li>
+      <a href="http://mc-stan.org/projpred">projpred</a>
+    </li>
+    <li>
       <a href="http://mc-stan.org/rstantools">rstantools</a>
     </li>
   </ul>
@@ -109,6 +125,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -116,63 +133,76 @@
       
       </header>
 
-      <div class="row">
-
-  <div class="col-md-9">
+<div class="row">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Change log <small>All releases</small></h1>
+      <h1>Changelog <small></small></h1>
+      
     </div>
 
-    <div class="contents">
+    <div id="shinystan-2-5-0" class="section level1">
+<h1 class="page-header">
+<a href="#shinystan-2-5-0" class="anchor"></a>shinystan 2.5.0<small> 2018-05-01 </small>
+</h1>
+<ul>
+<li><p>New website with online documentation: <a href="http://mc-stan.org/shinystan" class="uri">http://mc-stan.org/shinystan</a></p></li>
+<li><p>Fixed problem with extracting info from fits reconstructed from CSV files (#128,#158), thanks to <a href='http://github.com/martinmodrak'>@martinmodrak</a></p></li>
+</ul>
+</div>
     <div id="shinystan-2-4-0" class="section level1">
-<h1 class="hasAnchor">
-<a href="#shinystan-2-4-0" class="anchor"></a>shinystan 2.4.0</h1>
+<h1 class="page-header">
+<a href="#shinystan-2-4-0" class="anchor"></a>shinystan 2.4.0<small> 2017-08-02 </small>
+</h1>
 <ul>
 <li>
 <code>launch_shinystan</code> is now an S3 generic with methods. This allows developers of packages that use <strong>shinystan</strong> to create their own <code>launch_shinystan</code> methods instead of using a different function name or creating a naming conflict.</li>
 </ul>
 </div>
     <div id="shinystan-2-3-0" class="section level1">
-<h1 class="hasAnchor">
-<a href="#shinystan-2-3-0" class="anchor"></a>shinystan 2.3.0</h1>
+<h1 class="page-header">
+<a href="#shinystan-2-3-0" class="anchor"></a>shinystan 2.3.0<small> 2017-02-01 </small>
+</h1>
 <div id="fixes" class="section level3">
 <h3 class="hasAnchor">
 <a href="#fixes" class="anchor"></a>Fixes</h3>
 <ul>
-<li>Fix various issues resulting in errors for models fit using static HMC (thanks to Cole Monnahan).</li>
-<li>Deprecate <code>burnin</code> argument to <code>as.shinystan</code>. Use <code>warmup</code> instead. Only relevant for models <em>not</em> fit using Stan.</li>
+<li><p>Fix various issues resulting in errors for models fit using static HMC (thanks to Cole Monnahan).</p></li>
+<li><p>Deprecate <code>burnin</code> argument to <code>as.shinystan</code>. Use <code>warmup</code> instead. Only relevant for models <em>not</em> fit using Stan.</p></li>
 </ul>
 </div>
 <div id="new-features" class="section level3">
 <h3 class="hasAnchor">
 <a href="#new-features" class="anchor"></a>New features</h3>
 <ul>
-<li>Add NUTS energy diagnostic plots to Diagnose page</li>
-<li>Allowing passing <code>sampler_params</code> to <code>as.shinystan</code>. This makes it possible to display sampler diagnositcs for HMC/NUTS even if not using Stan’s implementation of those algorithms (thanks to Cole Monnahan).</li>
+<li><p>Add NUTS energy diagnostic plots to Diagnose page</p></li>
+<li><p>Allowing passing <code>sampler_params</code> to <code>as.shinystan</code>. This makes it possible to display sampler diagnositcs for HMC/NUTS even if not using Stan’s implementation of those algorithms (thanks to Cole Monnahan).</p></li>
 </ul>
 </div>
 </div>
     <div id="shinystan-2-2-1" class="section level1">
-<h1 class="hasAnchor">
-<a href="#shinystan-2-2-1" class="anchor"></a>shinystan 2.2.1</h1>
+<h1 class="page-header">
+<a href="#shinystan-2-2-1" class="anchor"></a>shinystan 2.2.1<small> 2016-08-31 </small>
+</h1>
 <ul>
 <li>Better compatibility with latest releases of ‘shinyjs’ and ‘DT’ packages</li>
 <li>
-<code><a href="http://www.rdocumentation.org/packages/shinystan/topics/launch_shinystan_demo">shinystan::launch_shinystan_demo()</a></code> now works without first having to load the package with a call to <code>library</code>
+<code><a href="../reference/launch_shinystan_demo.html">shinystan::launch_shinystan_demo()</a></code> now works without first having to load the package with a call to <code>library</code>
 </li>
 <li>Unless running on a server, the app now stops running when browser tab is closed</li>
 </ul>
 </div>
     <div id="shinystan-2-2-0-1" class="section level1">
-<h1 class="hasAnchor">
-<a href="#shinystan-2-2-0-1" class="anchor"></a>shinystan 2.2.0-1</h1>
+<h1 class="page-header">
+<a href="#shinystan-2-2-0-1" class="anchor"></a>shinystan 2.2.0-1<small> Unreleased </small>
+</h1>
 <ul>
 <li>Fix bug in <code>deploy_shinystan</code> preventing some ShinyStan apps from being deployed</li>
 </ul>
 </div>
     <div id="shinystan-2-2-0" class="section level1">
-<h1 class="hasAnchor">
-<a href="#shinystan-2-2-0" class="anchor"></a>shinystan 2.2.0</h1>
+<h1 class="page-header">
+<a href="#shinystan-2-2-0" class="anchor"></a>shinystan 2.2.0<small> 2016-05-25 </small>
+</h1>
 <ul>
 <li>Add optional argument <code>pars</code> to the <code>as.shinystan</code> method for stanfit objects, allowing a subset of parameters to be selected for inclusion in the resulting shinystan object.</li>
 <li>Introduce <code>drop_parameters</code> function for removing parameters from a shinystan object (useful for very large objects when you only want to look at a subset of parameters).</li>
@@ -185,8 +215,9 @@
 </ul>
 </div>
     <div id="shinystan-2-1-0" class="section level1">
-<h1 class="hasAnchor">
-<a href="#shinystan-2-1-0" class="anchor"></a>shinystan 2.1.0</h1>
+<h1 class="page-header">
+<a href="#shinystan-2-1-0" class="anchor"></a>shinystan 2.1.0<small> 2016-01-06 </small>
+</h1>
 <ul>
 <li>Compatibility with recent ggplot2 update</li>
 <li>Select parameters via regular expressions in parameters plot (‘Estimate’ page)</li>
@@ -194,8 +225,9 @@
 </ul>
 </div>
     <div id="shinystan-2-0-1" class="section level1">
-<h1 class="hasAnchor">
-<a href="#shinystan-2-0-1" class="anchor"></a>shinystan 2.0.1</h1>
+<h1 class="page-header">
+<a href="#shinystan-2-0-1" class="anchor"></a>shinystan 2.0.1<small> 2015-09-17 </small>
+</h1>
 <ul>
 <li>Fixes small bugs and typos</li>
 <li>Adds support for stanreg objects</li>
@@ -203,8 +235,9 @@
 </ul>
 </div>
     <div id="shinystan-2-0-0-major-update-initial-cran-release" class="section level1">
-<h1 class="hasAnchor">
-<a href="#shinystan-2-0-0-major-update-initial-cran-release" class="anchor"></a>shinystan 2.0.0 (major update, initial CRAN release)</h1>
+<h1 class="page-header">
+<a href="#shinystan-2-0-0-major-update-initial-cran-release" class="anchor"></a>shinystan 2.0.0 (major update, initial CRAN release)<small> 2015-08-10 </small>
+</h1>
 <p>Version 2.0.0 has a new look, a new(ish) name, and a lot of new functionality. Many bugs have also been fixed (see GitHub issue tracker).</p>
 <div id="new-names" class="section level3">
 <h3 class="hasAnchor">
@@ -237,13 +270,13 @@
 </ul>
 </div>
 </div>
-    </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#shinystan-2-5-0">2.5.0</a></li>
         <li><a href="#shinystan-2-4-0">2.4.0</a></li>
         <li><a href="#shinystan-2-3-0">2.3.0</a></li>
         <li><a href="#shinystan-2-2-1">2.2.1</a></li>
@@ -264,11 +297,14 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

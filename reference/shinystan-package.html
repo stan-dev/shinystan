@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>'ShinyStan' interface and <code>shinystan</code> R package — shinystan-package • shinystan</title>
+<title><span class="pkg">shinystan</span> R package ('ShinyStan' graphical user interface) — shinystan-package • shinystan</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -18,13 +18,39 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="<span class="pkg">shinystan</span> R package ('ShinyStan' graphical user interface) — shinystan-package" />
+
+<meta property="og:description" content="
+  Stan Development Team
+Applied Bayesian data analysis is primarily implemented through the Markov
+chain Monte Carlo (MCMC) algorithms offered by various software packages.
+When analyzing a posterior sample obtained by one of these algorithms the
+first step is to check for signs that the chains have converged to the target
+distribution and and also for signs that the algorithm might require tuning
+or might be ill-suited for the given model. There may also be theoretical
+problems or practical inefficiencies with the specification of the model. The
+ShinyStan app provides interactive plots and tables helpful for analyzing a
+posterior sample, with particular attention to identifying potential problems
+with the performance of the MCMC algorithm or the specification of the model.
+ShinyStan is powered by the Shiny web application framework by RStudio
+(http://shiny.rstudio.com/) and works with the output of MCMC programs
+written in any programming language (and has extended functionality for
+models fit using the rstan package and the No-U-Turn sampler)." />
+
+<meta property="og:image" content="/logo.png" />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +73,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">shinystan</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">shinystan</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">2.5.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -80,6 +110,9 @@
       <a href="http://mc-stan.org/loo">loo</a>
     </li>
     <li>
+      <a href="http://mc-stan.org/projpred">projpred</a>
+    </li>
+    <li>
       <a href="http://mc-stan.org/rstantools">rstantools</a>
     </li>
   </ul>
@@ -109,6 +142,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -116,37 +150,43 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>'ShinyStan' interface and <code>shinystan</code> R package</h1>
+    <h1><span class="pkg">shinystan</span> R package ('ShinyStan' graphical user interface)</h1>
+    
+    <div class="hidden name"><code>shinystan-package.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p><img src='figures/stanlogo.png' width="50px" alt="mc-stan.org" />
   <em>Stan Development Team</em></p>
-<p>Applied Bayesian data analysis is primarily implemented through the Markov 
-chain Monte Carlo (MCMC) algorithms offered by various software packages. 
-When analyzing a posterior sample obtained by one of these algorithms the 
+<p>Applied Bayesian data analysis is primarily implemented through the Markov
+chain Monte Carlo (MCMC) algorithms offered by various software packages.
+When analyzing a posterior sample obtained by one of these algorithms the
 first step is to check for signs that the chains have converged to the target
-distribution and and also for signs that the algorithm might require tuning 
-or might be ill-suited for the given model. There may also be theoretical 
+distribution and and also for signs that the algorithm might require tuning
+or might be ill-suited for the given model. There may also be theoretical
 problems or practical inefficiencies with the specification of the model. The
-'ShinyStan' app provides interactive plots and tables helpful for analyzing a
+ShinyStan app provides interactive plots and tables helpful for analyzing a
 posterior sample, with particular attention to identifying potential problems
 with the performance of the MCMC algorithm or the specification of the model.
-'ShinyStan' is powered by the 'Shiny' web application framework by 'RStudio' 
-and works with the output of MCMC programs written in any programming 
-language (and has extended functionality for models fit using the <span class="pkg">rstan</span>
-package and the No-U-Turn sampler).</p>
+ShinyStan is powered by the Shiny web application framework by RStudio
+(<a href='http://shiny.rstudio.com/'>http://shiny.rstudio.com/</a>) and works with the output of MCMC programs
+written in any programming language (and has extended functionality for
+models fit using the <span class="pkg">rstan</span> package and the No-U-Turn sampler).</p>
     
+    </div>
 
         
-    <h2 class="hasAnchor" id="-shinystan-has-extended-functionality-for-stan-models"><a class="anchor" href="#-shinystan-has-extended-functionality-for-stan-models"></a>'ShinyStan' has extended functionality for 'Stan' models</h2>
+    <h2 class="hasAnchor" id="shinystan-has-extended-functionality-for-stan-models"><a class="anchor" href="#shinystan-has-extended-functionality-for-stan-models"></a>ShinyStan has extended functionality for Stan models</h2>
 
     
-    <p>'Stan' (<a href='http://mc-stan.org'>http://mc-stan.org</a>) models can be run in <span style="R">R</span> using the
-<span class="pkg"><a href='http://www.rdocumentation.org/packages/rstan/topics/rstan'>rstan</a></span> and <span class="pkg"><a href='http://www.rdocumentation.org/packages/rstanarm/topics/rstanarm-package'>rstanarm</a></span> packages.</p>
+    <p>Stan (<a href='http://mc-stan.org'>http://mc-stan.org</a>) models can be run in <span style="R">R</span> using the
+<span class="pkg"><a href='http://www.rdocumentation.org/packages/rstan/topics/rstan'>rstan</a></span> package. Other packages like
+<span class="pkg"><a href='http://www.rdocumentation.org/packages/rstanarm/topics/rstanarm-package'>rstanarm</a></span> and <span class="pkg"><a href='http://www.rdocumentation.org/packages/brms/topics/brms-package'>brms</a></span> provide
+higher-level interfaces to Stan that use <span class="pkg">rstan</span> internally.</p>
     
     <h2 class="hasAnchor" id="saving-and-sharing"><a class="anchor" href="#saving-and-sharing"></a>Saving and sharing</h2>
 
@@ -158,7 +198,7 @@ package and the No-U-Turn sampler).</p>
   customization and easy integration in reports or post-processing for
   publication.</p>
 <p>The <code><a href='deploy_shinystan.html'>deploy_shinystan</a></code> function lets you easily deploy your own
-  'ShinyStan' apps online for any of your models using the shinyapps.io 
+  ShinyStan apps online for any of your models using the shinyapps.io 
   service from 'RStudio'. Each of your apps (each of your models) will have a
   unique url and will be compatible with most web browsers.</p>
     
@@ -174,20 +214,33 @@ package and the No-U-Turn sampler).</p>
     <p>Check out the demo using <code><a href='launch_shinystan_demo.html'>launch_shinystan_demo</a></code> or try it with
  one of your own models using <code><a href='launch_shinystan.html'>launch_shinystan</a></code>.</p>
     
-    <h2 class="hasAnchor" id="help-and-bug-reports"><a class="anchor" href="#help-and-bug-reports"></a>Help and bug reports</h2>
+    <h2 class="hasAnchor" id="resources"><a class="anchor" href="#resources"></a>Resources</h2>
 
     
     <ul>
-<li><p>'Stan' forums (<a href='http://discourse.mc-stan.org'>http://discourse.mc-stan.org</a>)</p></li>
-<li><p>'ShinyStan' issue tracker (<a href='https://github.com/stan-dev/shinystan/issues'>https://github.com/stan-dev/shinystan/issues</a>)</p></li>
+<li><p>Web page with online documentation
+   (<a href='http://mc-stan.org/shinystan'>http://mc-stan.org/shinystan</a>)</p></li>
+<li><p>Stan Forums on Discourse (<a href='http://discourse.mc-stan.org'>http://discourse.mc-stan.org</a>)</p></li>
+<li><p>GitHub issue tracker (<a href='https://github.com/stan-dev/shinystan/issues'>https://github.com/stan-dev/shinystan/issues</a>)</p></li>
 </ul>
+    
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Muth, C., Oravecz, Z., and Gabry, J. (2018)
+User-friendly Bayesian regression modeling: A tutorial with rstanarm and shinystan.
+<em>The Quantitative Methods for Psychology</em>. 14(2), 99--119.
+<a href='https://www.tqmp.org/RegularArticles/vol14-2/p099/p099.pdf'>https://www.tqmp.org/RegularArticles/vol14-2/p099/p099.pdf</a></p>
+<p>Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., and Gelman,
+  A. (2018). Visualization in Bayesian workflow. <em>Journal of the Royal
+  Statistical Society Series A</em>, accepted for publication. arXiv preprint:
+  <a href='http://arxiv.org/abs/1709.01449'>http://arxiv.org/abs/1709.01449</a>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='as.shinystan.html'>as.shinystan</a></code> for creating <code>shinystan</code> objects.
-    <code><a href='launch_shinystan_demo.html'>launch_shinystan_demo</a></code> to try a demo.
-    <code><a href='launch_shinystan.html'>launch_shinystan</a></code> to launch the 'ShinyStan' interface 
-  using a particular <code>shinystan</code> object.</p>
+    <div class='dont-index'><p><code><a href='as.shinystan.html'>as.shinystan</a></code> for creating <code>shinystan</code> objects.</p>
+<p><code><a href='launch_shinystan_demo.html'>launch_shinystan_demo</a></code> to try a demo.</p>
+<p><code><a href='launch_shinystan.html'>launch_shinystan</a></code> to launch the 'ShinyStan' interface 
+  using a particular <code>shinystan</code> object.</p></div>
     
 
   </div>
@@ -195,7 +248,7 @@ package and the No-U-Turn sampler).</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
-      <li><a href="#-shinystan-has-extended-functionality-for-stan-models">'ShinyStan' has extended functionality for 'Stan' models</a></li>
+      <li><a href="#shinystan-has-extended-functionality-for-stan-models">ShinyStan has extended functionality for Stan models</a></li>
 
       <li><a href="#saving-and-sharing">Saving and sharing</a></li>
 
@@ -203,7 +256,9 @@ package and the No-U-Turn sampler).</p>
 
       <li><a href="#demo">Demo</a></li>
 
-      <li><a href="#help-and-bug-reports">Help and bug reports</a></li>
+      <li><a href="#resources">Resources</a></li>
+
+      <li><a href="#references">References</a></li>
 
       <li><a href="#see-also">See also</a></li>
           </ul>
@@ -217,11 +272,14 @@ package and the No-U-Turn sampler).</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

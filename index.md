@@ -12,7 +12,18 @@
 <h4>Interactive diagnostics and posterior analysis for Bayesian models</h4></span>
 </div>
 
-<br>
+<br> 
+<div style="text-align:center">
+<a href="http://mc-stan.org/assets/img/shinystan/home.png">
+<img src="http://mc-stan.org/assets/img/shinystan/home.png" width=19% />
+</a>
+<a href="http://mc-stan.org/assets/img/shinystan/explore.png">
+<img src="http://mc-stan.org/assets/img/shinystan/explore.png" width=24.5% />
+</a>
+<a href="http://mc-stan.org/assets/img/shinystan/diagnose.png">
+<img src="http://mc-stan.org/assets/img/shinystan/diagnose.png" width=24.5% />
+</a>
+</div>
 
 ShinyStan provides immediate, informative, customizable visual and
 numerical summaries of model parameters and convergence diagnostics for
@@ -38,8 +49,6 @@ if (!require("devtools")) {
 devtools::install_github("stan-dev/shinystan", build_vignettes = TRUE)
 ```
 
-<br>
-
 ## Demo
 
 After installing run
@@ -49,25 +58,8 @@ library("shinystan")
 launch_shinystan_demo()
 ```
 
-<br>
 
-## Screenshots
-
-<div style="text-align:center">
-<a href="https://raw.githubusercontent.com/stan-dev/shinystan/develop/images/home.png">
-<img src=https://raw.githubusercontent.com/stan-dev/shinystan/develop/images/home.png width=19% />
-</a>
-<a href="https://raw.githubusercontent.com/stan-dev/shinystan/develop/images/explore.png">
-<img src=https://raw.githubusercontent.com/stan-dev/shinystan/develop/images/explore.png width=24.5% />
-</a>
-<a href="https://raw.githubusercontent.com/stan-dev/shinystan/develop/images/diagnose.png">
-<img src=https://raw.githubusercontent.com/stan-dev/shinystan/develop/images/diagnose.png width=24.5% />
-</a>
-</div>
-
-<br>
-
-## About
+## More info
 
 Applied Bayesian data analysis is primarily implemented through the MCMC
 algorithms offered by various software packages. When analyzing a posterior sample

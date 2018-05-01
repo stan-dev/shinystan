@@ -18,13 +18,25 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Launch the 'ShinyStan' app — launch_shinystan" />
+
+<meta property="og:description" content="Launch the 'ShinyStan' app in the default web browser. 'RStudio' users also
+have the option of launching the app in the pop-up Viewer." />
+
+<meta property="og:image" content="/logo.png" />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +59,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">shinystan</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">shinystan</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">2.5.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -80,6 +96,9 @@
       <a href="http://mc-stan.org/loo">loo</a>
     </li>
     <li>
+      <a href="http://mc-stan.org/projpred">projpred</a>
+    </li>
+    <li>
       <a href="http://mc-stan.org/rstantools">rstantools</a>
     </li>
   </ul>
@@ -109,6 +128,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -116,16 +136,20 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Launch the 'ShinyStan' app</h1>
+    
+    <div class="hidden name"><code>launch_shinystan.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Launch the 'ShinyStan' app in the default web browser. 'RStudio' users also
 have the option of launching the app in the pop-up Viewer.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>launch_shinystan</span>(<span class='no'>object</span>, <span class='no'>...</span>)
 
@@ -137,7 +161,7 @@ have the option of launching the app in the pop-up Viewer.</p>
 <span class='fu'>launch_shinystan</span>(<span class='no'>object</span>, <span class='no'>...</span>,
   <span class='kw'>rstudio</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"shinystan.rstudio"</span>))</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -167,12 +191,23 @@ TRUE)</code>.</p></td>
   starting the 'ShinyStan' app, but it also returns a <code>shinystan</code>
   object, an instance of S4 class <code>"shinystan"</code>.</p>
     
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Muth, C., Oravecz, Z., and Gabry, J. (2018)
+User-friendly Bayesian regression modeling: A tutorial with rstanarm and shinystan.
+<em>The Quantitative Methods for Psychology</em>. 14(2), 99--119.
+<a href='https://www.tqmp.org/RegularArticles/vol14-2/p099/p099.pdf'>https://www.tqmp.org/RegularArticles/vol14-2/p099/p099.pdf</a></p>
+<p>Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., and Gelman,
+  A. (2018). Visualization in Bayesian workflow. <em>Journal of the Royal
+  Statistical Society Series A</em>, accepted for publication. arXiv preprint:
+  <a href='http://arxiv.org/abs/1709.01449'>http://arxiv.org/abs/1709.01449</a>.</p>
+    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='as.shinystan.html'>as.shinystan</a></code> for creating <code>shinystan</code> objects.
-    <code><a href='update_sso.html'>update_sso</a></code> to update a <code>shinystan</code> object created
-  by a previous version of the package.
-    <code><a href='launch_shinystan_demo.html'>launch_shinystan_demo</a></code> to try a demo.</p>
+    <div class='dont-index'><p><code><a href='as.shinystan.html'>as.shinystan</a></code> for creating <code>shinystan</code> objects.</p>
+<p><code><a href='update_sso.html'>update_sso</a></code> to update a <code>shinystan</code> object created
+  by a previous version of the package.</p>
+<p><code><a href='launch_shinystan_demo.html'>launch_shinystan_demo</a></code> to try a demo.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -220,6 +255,8 @@ TRUE)</code>.</p></td>
       
       <li><a href="#value">Value</a></li>
 
+      <li><a href="#references">References</a></li>
+
       <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
@@ -234,11 +271,14 @@ TRUE)</code>.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

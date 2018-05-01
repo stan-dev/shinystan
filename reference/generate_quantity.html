@@ -18,13 +18,25 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Add new quantity to shinystan object — generate_quantity" />
+
+<meta property="og:description" content="Add to shinystan object a new parameter as a function of one or two existing
+parameters." />
+
+<meta property="og:image" content="/logo.png" />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +59,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">shinystan</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">shinystan</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">2.5.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -80,6 +96,9 @@
       <a href="http://mc-stan.org/loo">loo</a>
     </li>
     <li>
+      <a href="http://mc-stan.org/projpred">projpred</a>
+    </li>
+    <li>
       <a href="http://mc-stan.org/rstantools">rstantools</a>
     </li>
   </ul>
@@ -109,6 +128,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -116,20 +136,24 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Add new quantity to shinystan object</h1>
+    
+    <div class="hidden name"><code>generate_quantity.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Add to shinystan object a new parameter as a function of one or two existing
 parameters.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>generate_quantity</span>(<span class='no'>sso</span>, <span class='no'>param1</span>, <span class='no'>param2</span>, <span class='no'>fun</span>, <span class='no'>new_name</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -161,8 +185,8 @@ parameters.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='drop_parameters.html'>drop_parameters</a></code> to remove parameters from a
-  <code>shinystan</code> object.</p>
+    <div class='dont-index'><p><code><a href='drop_parameters.html'>drop_parameters</a></code> to remove parameters from a
+  <code>shinystan</code> object.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -197,11 +221,14 @@ parameters.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

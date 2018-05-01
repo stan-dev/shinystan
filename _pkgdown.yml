@@ -56,6 +56,10 @@ articles:
       - deploy_shinystan
       
 reference:
+  - title: "Package overview"
+    desc:  "Details about the shinystan R package"
+    contents: 
+      - shinystan-package
   - title: "Launching the app"
     desc: >
       Functions for launching the app using a particular model or launching a demo of the app.
@@ -64,16 +68,12 @@ reference:
       - launch_shinystan_demo
   - title: "shinystan objects"
     desc: >
-      Functions for creating and examining shinystan objects.
+      Functions for creating, examining, and modifying shinystan objects.
     contents:
       - as.shinystan
       - shinystan-class
       - shinystan-metadata
       - retrieve
-  - title: "Modifying shinystan objects"
-    desc: >
-      Functions for changing existing shinystan objects.
-    contents:
       - drop_parameters
       - update_sso
       - generate_quantity
