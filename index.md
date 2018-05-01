@@ -1,10 +1,10 @@
 
-[![Travis-CI Build Status](https://travis-ci.org/stan-dev/shinystan.svg?branch=develop)](https://travis-ci.org/stan-dev/shinystan)
+[![Travis-CI Build Status](https://travis-ci.org/stan-dev/shinystan.svg?branch=master)](https://travis-ci.org/stan-dev/shinystan)
 [![Codecov](http://codecov.io/gh/stan-dev/shinystan/branch/master/graph/badge.svg)](https://codecov.io/gh/stan-dev/shinystan)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/shinystan?color=blue)](http://cran.r-project.org/web/packages/shinystan)
-[![RStudio CRAN Mirror Downloads](http://cranlogs.r-pkg.org/badges/grand-total/shinystan?color=blue)](http://cran.rstudio.com/package=shinystan)
 
-<br>
+<!--
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/shinystan?color=blue)](http://cran.r-project.org/web/packages/shinystan)
+[![RStudio CRAN Mirror Downloads](http://cranlogs.r-pkg.org/badges/shinystan?color=blue)](http://cran.rstudio.com/package=shinystan)-->
 
 <div style="text-align:left">
 <span><a href="http://mc-stan.org">
@@ -14,14 +14,14 @@
 
 <br> 
 <div style="text-align:center">
-<a href="http://mc-stan.org/assets/img/shinystan/home.png">
-<img src="http://mc-stan.org/assets/img/shinystan/home.png" width=23.75% />
+<a href="/assets/img/shinystan/home.png">
+<img src="/assets/img/shinystan/home.png" style="width: 27%;"/>
 </a>
-<a href="http://mc-stan.org/assets/img/shinystan/explore.png">
-<img src="http://mc-stan.org/assets/img/shinystan/explore.png" width=30.625% />
+<a href="/assets/img/shinystan/explore.png">
+<img src="/assets/img/shinystan/explore.png" style="width: 35%;"/>
 </a>
-<a href="http://mc-stan.org/assets/img/shinystan/diagnose.png">
-<img src="http://mc-stan.org/assets/img/shinystan/diagnose.png" width=30.625% />
+<a href="/assets/img/shinystan/diagnose.png">
+<img src="/assets/img/shinystan/diagnose.png" style="width: 35%;"/>
 </a>
 </div>
 
