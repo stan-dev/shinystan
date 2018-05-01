@@ -4,14 +4,8 @@ div(
   p(
     strong("The idea behind posterior predictive checking is simple:")
   ),
-  p(
-    style = "text-indent: 10px",
-    em("If our model is a good fit then we should be able to use it to generate")
-  ),
-  p(
-    style = "text-indent: 10px", 
-    em("data that looks a lot like the data we observed.")
-  ),
+  p(em("If our model is a good fit then we should be able to use it to generate")),
+  p(em("data that looks a lot like the data we observed.")),
   br(),
   p(
     "To generate this 'replicated' data we use the",

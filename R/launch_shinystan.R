@@ -35,7 +35,9 @@
 #' @template seealso-as.shinystan 
 #' @template seealso-update_sso 
 #' @template seealso-demo
-#'   
+#' 
+#' @template reference-muth
+#' @template reference-bayesvis
 #'   
 #' @examples
 #' \dontrun{
