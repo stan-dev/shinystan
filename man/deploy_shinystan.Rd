@@ -2,9 +2,11 @@
 % Please edit documentation in R/deploy_shinystan.R
 \name{deploy_shinystan}
 \alias{deploy_shinystan}
-\title{Deploy a 'ShinyStan' app on the web using 'shinyapps.io' by 'RStudio'}
+\title{Deploy a 'ShinyStan' app on the web using 'shinyapps.io' by 'RStudio' or 
+render a Shiny code, which can be uploaded and run on a private server.}
 \usage{
-deploy_shinystan(sso, appName, account = NULL, ..., deploy = TRUE)
+deploy_shinystan(sso, appName, account = NULL, ..., deploy = TRUE,
+  local = FALSE, path = getwd())
 }
 \arguments{
 \item{sso}{A \code{\link[=as.shinystan]{shinystan object}}.}
@@ -21,6 +23,12 @@ account is configured on the system.}
 \item{deploy}{Should the app be deployed? The only reason for this to be
 \code{FALSE} is if you just want to check that the preprocessing before
 deployment is successful.}
+
+\item{local}{If TRUE, the app won't be sent to shinyapps.io but the Shiny code
+will be generated and saved in a folder in the working directory.}
+
+\item{path}{If \code{local} = TRUE, this argument can be used to specify the absolute
+path to a location, where the Shiny code should be generated.}
 }
 \value{
 \link[=invisible]{Invisibly}, \code{TRUE} if deployment succeeded
@@ -29,8 +37,8 @@ deployment is successful.}
   for deployment (also invisibly).
 }
 \description{
-Requires a (free or paid) 'ShinyApps' account. Visit
-\url{http://www.shinyapps.io/} to sign up.
+Uploading to the 'shinyapps.io' requires a (free or paid) 'ShinyApps' account. 
+Visit \url{http://www.shinyapps.io/} to sign up.
 }
 \details{
 In \code{...}, the arguments \code{ppcheck_data} and
@@ -55,12 +63,16 @@ deploy_shinystan(sso, appName = "my-model", account = "username")
 # the 'account' argument.
 
 deploy_shinystan(sso, appName = "my-model")
+
+# If you only want to generate the Shiny code set the 'local' = TRUE argument.
+
+deploy_shinystan(sso, appName = "my-model", local = TRUE)
 }
 
 }
 \seealso{
-The example in the \emph{Deploying to shinyapps.io} vignette that
-  comes with this package.
+The example in the \emph{Deploying to shinyapps.io or private server} 
+  vignette that comes with this package.
 
   \url{http://www.shinyapps.io/} to sign up for a free or paid 'ShinyApps'
   account and for details on how to configure your account on your local

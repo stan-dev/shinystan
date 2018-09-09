@@ -1,18 +1,20 @@
 ---
-title: 'Deploying to shinyapps.io'
+title: 'Deploying to shinyapps.io or private server'
 date: "09/17/2015"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{ShinyStan: Deploying to shinyapps.io}
+  %\VignetteIndexEntry{ShinyStan: Deploying to shinyapps.io or private server}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-Create a ShinyStan app unique to your model and host it online with RStudio's ShinyApps service (shinyapps.io). Each app you deploy will have a unique url.  
+Create a ShinyStan app unique to your model and host it online with RStudio's ShinyApps service (shinyapps.io). Each app you deploy will have a unique url. Or generate the Shiny code and host the app on your own server.
 
 *Note: R users who don't use RStudio's IDE can still deploy ShinyStan apps to shinyapps.io.* 
 
-## Step 1: ShinyApps account
+## Deploying to shinyapps.io
+
+### Step 1: ShinyApps account
 
 **Signup**
 
@@ -37,7 +39,7 @@ rsconnect::setAccountInfo(name, token, secret)
 where `name` is your ShinyApps account name, and `token` and `secret` can be
 found from your ShinyApps account web page.
 
-## Step 2: Use `deploy_shinystan` to deploy your app to shinyapps.io
+### Step 2: Use `deploy_shinystan` to deploy your app to shinyapps.io
 
 The `deploy_shinystan` function will deploy a ShinyStan app unique to your model
 to RStudio's ShinyApps service.
@@ -83,3 +85,34 @@ deploy_shinystan(my_sso, appName = "MyModel",
 If the deployment process is successful the url for your app will be printed to the console and it should open in your web browser. You can also view your app by going to http://www.shinyapps.io and logging into your account.
 
 
+## Deploying to a private server
+
+### Step 1: Private server with R, RStan and ShinyStan installed
+
+To deploy your app to a private server you need to have **R**, **rstan** and **shinystan** with all its dependencies installed on your private server. If you need help with that, there is a beautiful step by step guide which will help you with that: https://deanattali.com/2015/05/09/setup-rstudio-shiny-server-digital-ocean/.
+
+
+### Step 2: Use `deploy_shinystan` with `local = TRUE` argument to generate a complete Shiny code
+
+When local = TRUE, the `deploy_shinystan` function will create a folder containing all files needed for your server to run the ShinyStan application. 
+
+For the example below assume that 
+
+- `my_sso` is the shinystan object you want to use
+- the name you want to use for the app is `MyModel`.
+
+To render the app use the command
+
+```r
+deploy_shinystan(my_sso, appName = "MyModel", local = TRUE)
+```
+
+Then the directory called `MyModel` will be created in the working directory. You can open it and run or edit the generated Shiny code. To run it from your server, you need to copy the created folder to a directory on your server containing your other Shiny applications.
+
+You can also add a path argument which will generate the Shiny code on a specified absolute path, for example
+
+```r
+deploy_shinystan(my_sso, appName = "MyModel", local = TRUE, path = “C:/shiny-server”)
+```
+
+will generate the Shiny code at “C:/shiny-server” location.

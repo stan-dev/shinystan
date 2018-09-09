@@ -11,10 +11,11 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-#' Deploy a 'ShinyStan' app on the web using 'shinyapps.io' by 'RStudio'
+#' Deploy a 'ShinyStan' app on the web using 'shinyapps.io' by 'RStudio' or 
+#' render a Shiny code, which can be uploaded and run on a private server.
 #'
-#' Requires a (free or paid) 'ShinyApps' account. Visit
-#' \url{http://www.shinyapps.io/} to sign up.
+#' Uploading to the 'shinyapps.io' requires a (free or paid) 'ShinyApps' account. 
+#' Visit \url{http://www.shinyapps.io/} to sign up.
 #'
 #' @export
 #' @template args-sso
@@ -23,6 +24,10 @@
 #'   and underscores.
 #' @param account shinyapps.io account username. Only required if more than one
 #'   account is configured on the system.
+#' @param local If TRUE, the app won't be sent to shinyapps.io but the Shiny code
+#'   will be generated and saved in a folder in the working directory.
+#' @param path If \code{local} = TRUE, this argument can be used to specify the absolute
+#'   path to a location, where the Shiny code should be generated.
 #' @param ... Optional arguments. See Details.
 #' @param deploy Should the app be deployed? The only reason for this to be
 #'   \code{FALSE} is if you just want to check that the preprocessing before
@@ -43,8 +48,8 @@
 #'   \code{ppcheck_yrep} (but not \code{ppcheck_data}) can also be set
 #'   interactively on shinyapps.io when using the app.
 #'
-#' @seealso The example in the \emph{Deploying to shinyapps.io} vignette that
-#'   comes with this package.
+#' @seealso The example in the \emph{Deploying to shinyapps.io or private server} 
+#'   vignette that comes with this package.
 #'
 #'   \url{http://www.shinyapps.io/} to sign up for a free or paid 'ShinyApps'
 #'   account and for details on how to configure your account on your local
@@ -62,11 +67,15 @@
 #' # the 'account' argument.
 #'
 #' deploy_shinystan(sso, appName = "my-model")
+#' 
+#' # If you only want to generate the Shiny code set the 'local' = TRUE argument.
+#'
+#' deploy_shinystan(sso, appName = "my-model", local = TRUE)
 #' }
 #'
 #' @importFrom rsconnect deployApp
 #'
-deploy_shinystan <- function(sso, appName, account = NULL, ..., deploy = TRUE) {
+deploy_shinystan <- function(sso, appName, account = NULL, ..., deploy = TRUE,  local = FALSE, path = getwd()) {
   sso_check(sso)
   if (missing(appName))
     stop("'appName' is required.")
@@ -133,12 +142,18 @@ deploy_shinystan <- function(sso, appName, account = NULL, ..., deploy = TRUE) {
   if (!deploy)
     return(invisible(deployDir))
 
-  rsconnect::deployApp(
-    appDir = deployDir,
-    appName = appName,
-    account = account,
-    lint = TRUE
-  )
+  if (local) {
+    # check if dirrectory exists, if not, create it
+    ifelse(!dir.exists(file.path(path, appName)), dir.create(file.path(path, appName)), FALSE)                    
+    file.copy(from = file.path(deployDir,list.files(deployDir)), to = file.path(path, appName), recursive = TRUE)
+  }else{
+    rsconnect::deployApp(
+      appDir = deployDir,
+      appName = appName,
+      account = account,
+      lint = TRUE
+    )
+  }
 }
 
 
