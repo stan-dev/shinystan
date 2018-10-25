@@ -54,7 +54,7 @@ launch_shinystan_demo()
 Applied Bayesian data analysis is primarily implemented through the MCMC
 algorithms offered by various software packages. When analyzing a posterior sample
 obtained by one of these algorithms the first step is to check for signs that
-the chains have converged to the target distribution and and also for signs that
+the chains have converged to the target distribution and also for signs that
 the algorithm might require tuning or might be ill-suited for the given model.
 There may also be theoretical problems or practical inefficiencies with the
 specification of the model.
