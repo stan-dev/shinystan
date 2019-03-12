@@ -1,11 +1,25 @@
 divergentScatterUI <- function(id){
   ns <- NS(id)
+  
+  inverse <- function(x) 1/x
+  cloglog <- function(x) log(-log1p(-x))
+  square <- function(x) x^2
+  transformation_choices <- c(
+    "abs", "atanh",
+    cauchit = "pcauchy", "cloglog",
+    "exp", "expm1",
+    "identity", "inverse", inv_logit = "plogis",
+    "log", "log10", "log2", "log1p", logit = "qlogis",
+    probit = "pnorm", "square", "sqrt"
+  )
+
   tagList(
     wellPanel(
       fluidRow(
         column(width = 3, h5(textOutput(ns("diagnostic_chain_text")))),
         column(width = 4, h5("Parameter")),
-        column(width = 4, h5("Transformation"))
+        column(width = 2, h5("Transformation X")),
+        column(width = 2, h5("Transformation Y"))
       ),
       fluidRow(
         column(
@@ -31,8 +45,23 @@ divergentScatterUI <- function(id){
           )
         ),
         column(
-          width = 4,
-          uiOutput(ns("transform"))
+          width = 2,
+          #uiOutput(ns("transform"))
+          div(style = "width: 100px;",
+              selectInput(
+                inputId = ns("transformation"),
+                label = NULL,
+                choices = transformation_choices,
+                selected = "identity"
+              ))),
+        column(width = 2,
+          div(style = "width: 100px;",
+              selectInput(
+                inputId = ns("transformation2"),
+                label = NULL,
+                choices = transformation_choices,
+                selected = "identity"
+              ))
         )
       )
     ),
@@ -46,38 +75,6 @@ divergentScatter <- function(input, output, session){
   chain <- reactive(input$diagnostic_chain)
   param <- reactive(input$diagnostic_param)
   
-  output$transform <- renderUI({
-    
-    inverse <- function(x) 1/x
-    cloglog <- function(x) log(-log1p(-x))
-    square <- function(x) x^2
-    
-    validate(
-      need(length(param()) == 2, "Select two parameters.")
-    )
-    transformation_choices <- c(
-      "abs", "atanh",
-      cauchit = "pcauchy", "cloglog",
-      "exp", "expm1",
-      "identity", "inverse", inv_logit = "plogis",
-      "log", "log10", "log2", "log1p", logit = "qlogis",
-      probit = "pnorm", "square", "sqrt"
-    )
-    fluidRow(
-      selectInput(
-        inputId = session$ns("transformation"),
-        label = NULL,
-        choices = transformation_choices,
-        selected = "identity"
-      ),
-      selectInput(
-        inputId = session$ns("transformation2"),
-        label = NULL,
-        choices = transformation_choices,
-        selected = "identity"
-      )
-    )
-  })
   
   transform1 <- reactive({input$transformation})
   transform2 <- reactive({input$transformation2})
@@ -127,9 +124,9 @@ divergentScatter <- function(input, output, session){
       },
       np_style = scatter_style_np(div_color = "green", div_alpha = 0.8)
     ) + labs(#title = "",
-             #subtitle = "Generated via ShinyStan",
-             caption = paste0("Scatter plot of ", parameters[1]," and ", parameters[2],
-                              " with highlighted divergent transitions."))
+      #subtitle = "Generated via ShinyStan",
+      caption = paste0("Scatter plot of ", parameters[1]," and ", parameters[2],
+                       " with highlighted divergent transitions."))
     
     
   }
@@ -142,4 +139,4 @@ divergentScatter <- function(input, output, session){
   return(reactive({plotOut(parameters = param(), chain = chain(),
                            transformations = transform())}))
   
-  }
+}

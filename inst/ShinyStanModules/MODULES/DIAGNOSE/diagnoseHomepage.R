@@ -29,7 +29,6 @@ diagnose <- function(input, output, session){
     
     callModule(statsTableHMC, "statsTableHMC")
     callModule(rhat_n_eff_se_mean_stats, "rhat_n_eff_se_mean_stats")
-    callModule(autoCorrelationStats, "autoCorrelationStats")
     
     getInputReactiveDiagnosePlots <- reactive({
       list(
@@ -70,7 +69,6 @@ diagnose <- function(input, output, session){
     callModule(autoCorrelation, "autoCorrelation")
     
     callModule(rhat_n_eff_se_mean_stats, "rhat_n_eff_se_mean_stats")
-    callModule(autoCorrelationStats, "autoCorrelationStats")
   }
   
 
@@ -163,11 +161,6 @@ diagnose <- function(input, output, session){
           title = withMathJax("\\(\\hat{R}, \\text{ } n_{eff}, \\text{ se}_{mean}\\)"),
           id = session$ns("rhat_n_eff_se_meanTab"),
           rhat_n_eff_se_mean_statsUI(session$ns("rhat_n_eff_se_mean_stats"))
-        ),
-        tabPanel(
-          title = "Autocorrelation",
-          id = session$ns("autocorrelationTab"),
-          autoCorrelationStatsUI(session$ns("autoCorrelationStats"))
         )
       )
     ),
@@ -218,11 +211,6 @@ diagnose <- function(input, output, session){
           title = withMathJax("\\(\\hat{R}, \\text{ } n_{eff}, \\text{ se}_{mean}\\)"),
           id = session$ns("rhat_n_eff_se_meanTab"),
           rhat_n_eff_se_mean_statsUI(session$ns("rhat_n_eff_se_mean_stats"))
-        ),
-        tabPanel(
-          title = "Autocorrelation",
-          id = session$ns("autocorrelationTab"),
-          autoCorrelationStatsUI(session$ns("autoCorrelationStats"))
         )
       )
     )
@@ -234,23 +222,5 @@ diagnose <- function(input, output, session){
     validate(need(sso@misc$stan_method == "variational", ""))
     h4("Currently no diagnostics available for Variational Inference")
   })
-  
-  
-  return(reactive({
-    list("divergentScatterPlot" = getDivergentScatterPlot(),
-         # "parcoordPlot" = getParcoordPlot(),
-         # "pairsPlot" = getPairsPlot(),
-         "pairsPlot" = NULL,
-         "parcoordPlot" = NULL,
-         "divergentTransitionsPlot" = getDivergentTransitionsPlot(),
-         "energyPlot" = getEnergyPlot(),
-         "treedepthPlot" = getTreedepthPlot(),
-         "stepSizePlot" = getStepSizePlot(),
-         "acceptancePlot" = getAcceptancePlot(),
-         "tracePlot" = getTracePlot(),
-         "rhatPlot" = getRhatNeffSEmeanPlots()["rhatPlot"],
-         "n_effPlot" = getRhatNeffSEmeanPlots()["n_effPlot"],
-         "se_meanPlot" = getRhatNeffSEmeanPlots()["se_meanPlot"])
-    }))
   
 }

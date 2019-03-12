@@ -20,7 +20,8 @@ source("MODULES/DIAGNOSE/autoCorrelation.r", local = TRUE)
 
 source("MODULES/DIAGNOSE/statsTableHMC.r", local = TRUE)
 source("MODULES/DIAGNOSE/rhat_n_eff_se_mean_stats.r", local = TRUE)
-source("MODULES/DIAGNOSE/autoCorrelationStats.r", local = TRUE)
+
+source("MODULES/DIAGNOSE/report.r", local = TRUE)
 
 # estimate tab
 source("MODULES/ESTIMATE/estimateHomepage.r", local = TRUE)
@@ -40,9 +41,7 @@ source("MODULES/MORE/about.r", local = TRUE)
 source("MODULES/MORE/modelCode.r", local = TRUE)
 source("MODULES/MORE/help.r", local = TRUE)
 source("MODULES/MORE/glossary.r", local = TRUE)
-# source("MODULES/MORE/test.r", local = TRUE)
-# report
-source("MODULES/REPORT/report2.r", local = TRUE)
+
 # Begin shinyUI -----------------------------------------------------------
 # _________________________________________________________________________
 tagList(
@@ -98,28 +97,21 @@ tagList(
         title = "Model Code",
         modelCodeUI("modelCode")
       ),
-      
-      #### about ####
-      tabPanel(
-        title = "About",
-        aboutUI("about")
-      ),
-      
-    tabPanel(
-      title = "Report",
-      reportUI("report")
-    ),
       #### glossary ####
       tabPanel(
         title = "Glossary",
         glossaryUI("glossary")
       ),
-      
+      #### about ####
+      tabPanel(
+        title = "About",
+        aboutUI("about")
+      ),
       #### help ####
       tabPanel(
         title = "Help",
         helpUI("help")
-    )
+      )
     )
     
   ) # End navbarPage

@@ -33,13 +33,15 @@ statsTableHMCUI <- function(id){
           )
         ),column(
           width = 4,
+          div(style = "width: 100px;",
           numericInput(
             ns("sampler_digits"),
             label = NULL,
-            value = 4,
+            value = 2,
             min = 0,
             max = 10,
             step = 1
+          )
           )
         )
       )

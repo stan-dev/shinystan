@@ -21,7 +21,8 @@ server <- function(input, output, session) {
   
   source("MODULES/DIAGNOSE/statsTableHMC.r", local = TRUE)
   source("MODULES/DIAGNOSE/rhat_n_eff_se_mean_stats.r", local = TRUE)
-  source("MODULES/DIAGNOSE/autoCorrelationStats.r", local = TRUE)
+  
+  source("MODULES/DIAGNOSE/report.r", local = TRUE)
   
   # estimate tab
   source("MODULES/ESTIMATE/estimateHomepage.r", local = TRUE)
@@ -41,9 +42,6 @@ server <- function(input, output, session) {
   source("MODULES/MORE/modelCode.r", local = TRUE)
   source("MODULES/MORE/help.r", local = TRUE)
   source("MODULES/MORE/glossary.r", local = TRUE)
-  # source("MODULES/MORE/test.r", local = TRUE)
-  # report
-  source("MODULES/REPORT/report2.r", local = TRUE)
   
   # internal functions or events that are required for general use.
   # save and close button
@@ -70,7 +68,7 @@ server <- function(input, output, session) {
   # home tab
   callModule(homepage, "homepage")
   # diagnose tab
-  getDiagnosePlots <- callModule(diagnose, "diagnoseHomepage")
+  callModule(diagnose, "diagnoseHomepage")
   # estimate tab
   callModule(estimate, "estimateHomepage")
   # about tab
@@ -78,9 +76,6 @@ server <- function(input, output, session) {
   callModule(modelCode, "modelCode")
   callModule(help, "help")
   callModule(glossary, "glossary")
-  # callModule(report, "report", ggplotsList = getDiagnosePlots[getDiagnosePlots != "pairsPlot"],
-  #            getPairsPlot = getDiagnosePlots[getDiagnosePlots == "pairsPlot"], 
-  #            getParcoordPlot = getDiagnosePlots[getDiagnosePlots == "parcoordPlot"])
   
 }
 
