@@ -23,8 +23,9 @@ homepageUI <- function(id){
             br(),
             h2("Model:"),
             h4(sso@model_name),
+            br(),
             warningsUI(ns("warnings")))), #note this used to be .model_name
-    br(), br(),
+    br(), 
     # html used to be called, now directly in module
     HTML("
 <div id = 'links_nav_div'>
