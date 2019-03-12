@@ -56,5 +56,6 @@ Suggests:
     rstanarm (>= 2.17.4),
     testthat
 LazyData: true
+Encoding: UTF-8
 VignetteBuilder: knitr
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1

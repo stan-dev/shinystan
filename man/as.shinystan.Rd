@@ -15,13 +15,15 @@ as.shinystan(X, ...)
 
 is.shinystan(X)
 
-\S4method{as.shinystan}{array}(X, model_name = "unnamed model", warmup = 0,
-  burnin = 0, param_dims = list(), model_code = NULL, note = NULL,
-  sampler_params = NULL, algorithm = NULL, max_treedepth = NULL, ...)
+\S4method{as.shinystan}{array}(X, model_name = "unnamed model",
+  warmup = 0, burnin = 0, param_dims = list(), model_code = NULL,
+  note = NULL, sampler_params = NULL, algorithm = NULL,
+  max_treedepth = NULL, ...)
 
-\S4method{as.shinystan}{list}(X, model_name = "unnamed model", warmup = 0,
-  burnin = 0, param_dims = list(), model_code = NULL, note = NULL,
-  sampler_params = NULL, algorithm = NULL, max_treedepth = NULL, ...)
+\S4method{as.shinystan}{list}(X, model_name = "unnamed model",
+  warmup = 0, burnin = 0, param_dims = list(), model_code = NULL,
+  note = NULL, sampler_params = NULL, algorithm = NULL,
+  max_treedepth = NULL, ...)
 
 \S4method{as.shinystan}{mcmc.list}(X, model_name = "unnamed model",
   warmup = 0, burnin = 0, param_dims = list(), model_code = NULL,

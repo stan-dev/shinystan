@@ -155,6 +155,6 @@ launch <- function(sso, rstudio = FALSE, ...) {
   
   .sso_env$.SHINYSTAN_OBJECT <- sso  # see zzz.R for .sso_env
   on.exit(.sso_env$.SHINYSTAN_OBJECT <- NULL, add = TRUE)
-  shiny::runApp(system.file("ShinyStan", package = "shinystan"), 
+  shiny::runApp(system.file("ShinyStanModules", package = "shinystan"), 
                 launch.browser = launch.browser, ...)
 }

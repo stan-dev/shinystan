@@ -55,7 +55,7 @@ source("MODULES/REPORT/report2.r")
 
 # Example data and fit in global environment
 # Assume you have a SSO object in global environment
-sso <- shinystan::eight_schools
+sso <- get(".SHINYSTAN_OBJECT", envir = shinystan:::.sso_env) 
 # sso <- shinystan::as.shinystan(readRDS("DATA/fit_full_model_cp.rds"))
 # sso <- readRDS("TEST MODELS/eight_schools_meanfield.rds")
 # test different models
