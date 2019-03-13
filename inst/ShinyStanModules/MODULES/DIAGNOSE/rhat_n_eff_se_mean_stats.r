@@ -37,8 +37,8 @@ rhat_n_eff_se_mean_statsUI <- function(id){
 rhat_n_eff_se_mean_stats <- function(input, output, session){
   
   MCMCtable <- reactive({
-    out <- sso@summary[, c("Rhat", "n_eff", "se_mean", "sd")]
-    out[, 2] <- out[, 2] / ((sso@n_iter - sso@n_warmup) * sso@n_chain)
+    out <- shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, c("Rhat", "n_eff", "se_mean", "sd")]
+    out[, 2] <- out[, 2] / ((shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter - shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) * shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain)
     out[, 3] <- out[, 3] / out[, 4]
     out <- out[, 1:3]
     # colnames(out) <-  c(withMathJax("\\(\\hat{R}\\)"), withMathJax("\\(n_{eff} / N\\)"), 

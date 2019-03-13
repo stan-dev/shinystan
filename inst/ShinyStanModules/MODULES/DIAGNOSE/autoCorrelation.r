@@ -17,7 +17,7 @@ autoCorrelationUI <- function(id){
                            value = 0,
                            min = 0,
                            # don't allow changing chains if only 1 chain
-                           max = ifelse(sso@n_chain == 1, 0, sso@n_chain)
+                           max = ifelse(shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain == 1, 0, shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain)
                          )
           )),
         column(
@@ -26,8 +26,8 @@ autoCorrelationUI <- function(id){
             inputId = ns("diagnostic_param"),
             label = NULL,
             multiple = TRUE,
-            choices = sso@param_names,
-            selected = sso@param_names[1]
+            choices = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names,
+            selected = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[1]
           )
         ),
         column(
@@ -37,7 +37,7 @@ autoCorrelationUI <- function(id){
                            label = NULL,
                            value = 20,
                            min = 1,
-                           max = (sso@n_iter - sso@n_warmup - 2),
+                           max = (shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter - shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup - 2),
                            step = 1
                          )
           ))
@@ -73,12 +73,12 @@ autoCorrelation <- function(input, output, session){
       need(length(param()) > 0, "Select at least one parameter."),
       need(is.na(chain()) == FALSE, "Select chains"),
       need(is.null(lags()) == FALSE & is.na(lags()) == FALSE, "Select lags"),
-      need(lags() > 0 & lags() < (sso@n_iter - sso@n_warmup - 1), "Number of lags is inappropriate.")
+      need(lags() > 0 & lags() < (shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter - shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup - 1), "Number of lags is inappropriate.")
     )
     mcmc_acf_bar( if(chain() != 0) {
-      sso@posterior_sample[(1 + sso@n_warmup) : sso@n_iter, chain(), ]
+      shinystan:::.sso_env$.SHINYSTAN_OBJECT@posterior_sample[(1 + shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) : shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter, chain(), ]
     } else {
-      sso@posterior_sample[(1 + sso@n_warmup) : sso@n_iter, , ]
+      shinystan:::.sso_env$.SHINYSTAN_OBJECT@posterior_sample[(1 + shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) : shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter, , ]
     }, pars = param(),
     lags = lags()
     )

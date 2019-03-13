@@ -17,7 +17,7 @@ energyUI <- function(id){
                            value = 0,
                            min = 0,
                            # don't allow changing chains if only 1 chain
-                           max = ifelse(sso@n_chain == 1, 0, sso@n_chain)
+                           max = ifelse(shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain == 1, 0, shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain)
                          )
           )),
         column(
@@ -46,14 +46,14 @@ energy <- function(input, output, session){
     color_scheme_set("blue")
     mcmc_nuts_energy(
       if(chain != 0) {
-        nuts_params(list(sso@sampler_params[[chain]]) %>%
+        nuts_params(list(shinystan:::.sso_env$.SHINYSTAN_OBJECT@sampler_params[[chain]]) %>%
                       lapply(., as.data.frame) %>%
-                      lapply(., filter, row_number() > sso@n_warmup) %>%
+                      lapply(., filter, row_number() > shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) %>%
                       lapply(., as.matrix))
       } else {
-        nuts_params(sso@sampler_params %>%
+        nuts_params(shinystan:::.sso_env$.SHINYSTAN_OBJECT@sampler_params %>%
                       lapply(., as.data.frame) %>%
-                      lapply(., filter, row_number() > sso@n_warmup) %>%
+                      lapply(., filter, row_number() > shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) %>%
                       lapply(., as.matrix)) 
         
       }

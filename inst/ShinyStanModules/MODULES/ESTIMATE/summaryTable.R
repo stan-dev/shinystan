@@ -17,8 +17,8 @@ summaryTableUI <- function(id){
             inputId = ns("diagnostic_param"),
             label = NULL,
             multiple = TRUE,
-            choices = sso@param_names,
-            selected = if(length(sso@param_names) > 9) sso@param_names[1:10] else sso@param_names
+            choices = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names,
+            selected = if(length(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names) > 9) shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[1:10] else shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names
           )
         ),
         column(
@@ -48,24 +48,24 @@ summaryTable <- function(input, output, session){
   
   summaryStats <- reactive({
     
-    remove.colums <- if(sso@misc$stan_method == "sampling"){
-      c(which(colnames(sso@summary) == "Rhat"), which(colnames(sso@summary) == "n_eff"))
+    remove.colums <- if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_method == "sampling"){
+      c(which(colnames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary) == "Rhat"), which(colnames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary) == "n_eff"))
     } else {
-      c(which(colnames(sso@summary) == "Rhat"), which(colnames(sso@summary) == "n_eff"),
-        which(colnames(sso@summary) == "se_mean"))
+      c(which(colnames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary) == "Rhat"), which(colnames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary) == "n_eff"),
+        which(colnames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary) == "se_mean"))
     }
     
     if(length(param()) == 1){
       
-      out <- sso@summary[param(), -remove.colums]
+      out <- shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[param(), -remove.colums]
       out <- matrix(out, nrow = 1)
       rownames(out) <- param()
-      colnames(out) <- colnames(sso@summary)[-remove.colums]
+      colnames(out) <- colnames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)[-remove.colums]
       out <- formatC(round(out, digits()), format = 'f', digits = digits())
       out
       
     } else {
-      out <- sso@summary[param(), -remove.colums]
+      out <- shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[param(), -remove.colums]
       out <- formatC(round(out, digits()), format = 'f', digits = digits())
       out
     }

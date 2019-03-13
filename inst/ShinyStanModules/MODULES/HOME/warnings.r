@@ -4,12 +4,12 @@ warningsUI <- function (id) {
   fluidRow(
     wellPanel(id = "warningTab",
               
-              if(sso@misc$stan_method == "sampling" & sso@misc$stan_algorithm == "NUTS") uiOutput(ns("divergence")),
-              if(sso@misc$stan_method == "sampling" & sso@misc$stan_algorithm == "NUTS") uiOutput(ns("treedepth")),
-              if(sso@misc$stan_method == "sampling" & sso@misc$stan_algorithm == "NUTS") uiOutput(ns("energy")),
-              if(sso@misc$stan_method == "sampling") uiOutput(ns("n_eff")),
-              if(sso@misc$stan_method == "sampling") uiOutput(ns("se_mean")),
-              if(sso@misc$stan_method == "sampling") uiOutput(ns("rhat"))
+              if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_method == "sampling" & shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_algorithm == "NUTS") uiOutput(ns("divergence")),
+              if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_method == "sampling" & shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_algorithm == "NUTS") uiOutput(ns("treedepth")),
+              if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_method == "sampling" & shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_algorithm == "NUTS") uiOutput(ns("energy")),
+              if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_method == "sampling") uiOutput(ns("n_eff")),
+              if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_method == "sampling") uiOutput(ns("se_mean")),
+              if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_method == "sampling") uiOutput(ns("rhat"))
     )
   )
   
@@ -20,19 +20,19 @@ warnings <- function (input, output, session) {
   output$divergence <- renderUI({
     ns <- session$ns
     
-    checkDivergences <- lapply(sso@sampler_params, "[", , "divergent__") %>%
+    checkDivergences <- lapply(shinystan:::.sso_env$.SHINYSTAN_OBJECT@sampler_params, "[", , "divergent__") %>%
       lapply(., as.data.frame) %>%
-      lapply(., filter, row_number() > sso@n_warmup) %>%
+      lapply(., filter, row_number() > shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) %>%
       lapply(., function (x) x > 0 ) %>% lapply(., sum) %>% 
       unlist(.) %>% sum(.) %>%
-      paste0(., " of ", (sso@n_iter-sso@n_warmup) * sso@n_chain,
+      paste0(., " of ", (shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter-shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) * shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain,
              " iterations ended with a divergence (",
-             round((. / ((sso@n_iter-sso@n_warmup) * sso@n_chain)) * 100, 1),
+             round((. / ((shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter-shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) * shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain)) * 100, 1),
              "%).")
     
-    if(lapply(sso@sampler_params, "[", , "divergent__") %>%
+    if(lapply(shinystan:::.sso_env$.SHINYSTAN_OBJECT@sampler_params, "[", , "divergent__") %>%
        lapply(., as.data.frame) %>%
-       lapply(., filter, row_number() > sso@n_warmup) %>%
+       lapply(., filter, row_number() > shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) %>%
        lapply(., function (x) x > 0 ) %>% lapply(., sum) %>% 
        unlist(.) %>% sum(.) > 0) {
       HTML(paste0("<div style='background-color:white; color:black; text-align: left;
@@ -49,21 +49,21 @@ warnings <- function (input, output, session) {
   output$treedepth <- renderUI({
     ns <- session$ns
     
-    check_treedepth <- lapply(sso@sampler_params, "[", , "treedepth__") %>%
+    check_treedepth <- lapply(shinystan:::.sso_env$.SHINYSTAN_OBJECT@sampler_params, "[", , "treedepth__") %>%
       lapply(., as.data.frame) %>%
-      lapply(., filter, row_number() > sso@n_warmup) %>%
-      lapply(., function (x) x == sso@misc$max_td ) %>% lapply(., sum) %>% 
+      lapply(., filter, row_number() > shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) %>%
+      lapply(., function (x) x == shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$max_td ) %>% lapply(., sum) %>% 
       unlist(.) %>% sum(.) %>%
-      paste0(., " of ", (sso@n_iter-sso@n_warmup) * sso@n_chain,
+      paste0(., " of ", (shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter-shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) * shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain,
              " iterations saturated the maximum tree depth of ", 
-             sso@misc$max_td, " (",
-             round((. / ((sso@n_iter-sso@n_warmup) * sso@n_chain)) * 100, 1),
+             shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$max_td, " (",
+             round((. / ((shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter-shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) * shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain)) * 100, 1),
              "%).")
     
-    if(lapply(sso@sampler_params, "[", , "treedepth__") %>%
+    if(lapply(shinystan:::.sso_env$.SHINYSTAN_OBJECT@sampler_params, "[", , "treedepth__") %>%
        lapply(., as.data.frame) %>%
-       lapply(., filter, row_number() > sso@n_warmup) %>%
-       lapply(., function (x) x == sso@misc$max_td ) %>% 
+       lapply(., filter, row_number() > shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) %>%
+       lapply(., function (x) x == shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$max_td ) %>% 
        lapply(., sum) %>% unlist(.) %>% sum(.) > 0) {
       HTML(paste0("<div style='background-color:white; color:black; text-align: left;
                     padding:5px; opacity:1'>", "<li>", 
@@ -78,13 +78,13 @@ warnings <- function (input, output, session) {
   output$energy <- renderUI({
     ns <- session$ns
     
-    energy <- lapply(sso@sampler_params, "[", , "energy__") %>%
+    energy <- lapply(shinystan:::.sso_env$.SHINYSTAN_OBJECT@sampler_params, "[", , "energy__") %>%
       lapply(., as.data.frame) %>% 
-      lapply(., filter, row_number() > sso@n_warmup) 
+      lapply(., filter, row_number() > shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) 
     
     EBFMIs <- c()
     
-    for(chain in 1:sso@n_chain) {
+    for(chain in 1:shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain) {
       EBFMIs[chain] <- apply(energy[[chain]], 2, function(x){
         numer <- sum(diff(x)^2)/length(x)
         denom <- var(x)
@@ -108,7 +108,7 @@ warnings <- function (input, output, session) {
   
   output$n_eff <- renderUI({
     
-    bad_n_eff <- rownames(sso@summary)[sso@summary[, "n_eff"] / ((sso@n_iter- sso@n_warmup) * sso@n_chain) < .1]
+    bad_n_eff <- rownames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)[shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "n_eff"] / ((shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter- shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) * shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain) < .1]
     bad_n_eff <- bad_n_eff[!is.na(bad_n_eff)]
     n_effWarning <- paste(length(bad_n_eff), 
                           "parameters have an effective sample size less than 10% of the total sample size.")
@@ -126,7 +126,7 @@ warnings <- function (input, output, session) {
   
   output$se_mean <- renderUI({
     
-    bad_se_mean <- rownames(sso@summary)[sso@summary[, "se_mean"] / sso@summary[, "sd"] > .1]
+    bad_se_mean <- rownames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)[shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "se_mean"] / shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "sd"] > .1]
     bad_se_mean <- bad_se_mean[!is.na(bad_se_mean)]
     se_meanWarning <- paste(length(bad_se_mean), 
                             "parameters have a Monte Carlo standard error greater than 10% of the posterior standard deviation.")
@@ -143,7 +143,7 @@ warnings <- function (input, output, session) {
   
   output$rhat <- renderUI({
     
-    bad_rhat <- rownames(sso@summary)[sso@summary[, "Rhat"] > 1.1]
+    bad_rhat <- rownames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)[shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "Rhat"] > 1.1]
     bad_rhat <- bad_rhat[!is.na(bad_rhat)]
     rhatWarning <- paste(length(bad_rhat), 
                          "parameters have an Rhat value above 1.1.")

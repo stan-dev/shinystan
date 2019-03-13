@@ -22,8 +22,8 @@ intervalsPlotUI <- function(id){
             inputId = ns("diagnostic_param"),
             label = NULL,
             multiple = TRUE,
-            choices = sso@param_names,
-            selected = c(sso@param_names[1])
+            choices = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names,
+            selected = c(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[1])
           )
         ),
         column(
@@ -60,7 +60,7 @@ intervalsPlot <- function(input, output, session){
       need(length(param()) > 0, "Select at least one parameter.")
     )
     mcmc_intervals(
-      sso@posterior_sample[(1 + sso@n_warmup) : sso@n_iter, , ],
+      shinystan:::.sso_env$.SHINYSTAN_OBJECT@posterior_sample[(1 + shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) : shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter, , ],
       pars = param(),
       point_est = tolower(pointEstimate()),
       prob = interval()/100

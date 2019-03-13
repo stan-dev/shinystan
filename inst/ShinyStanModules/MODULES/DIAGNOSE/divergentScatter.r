@@ -30,7 +30,7 @@ divergentScatterUI <- function(id){
                            value = 0,
                            min = 0,
                            # don't allow changing chains if only 1 chain
-                           max = ifelse(sso@n_chain == 1, 0, sso@n_chain)
+                           max = ifelse(shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain == 1, 0, shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain)
                          )
           )),
         column(
@@ -39,8 +39,8 @@ divergentScatterUI <- function(id){
             inputId = ns("diagnostic_param"),
             label = NULL,
             multiple = TRUE,
-            choices = sso@param_names,
-            selected = c(sso@param_names[1],sso@param_names[which(sso@param_names == "log-posterior")]),
+            choices = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names,
+            selected = c(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[1],shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[which(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names == "log-posterior")]),
             options = list(maxItems = 2)
           )
         ),
@@ -104,21 +104,21 @@ divergentScatter <- function(input, output, session){
     )
     mcmc_scatter(
       if(chain != 0) {
-        sso@posterior_sample[(1 + sso@n_warmup) : sso@n_iter, chain, ]
+        shinystan:::.sso_env$.SHINYSTAN_OBJECT@posterior_sample[(1 + shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) : shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter, chain, ]
       } else {
-        sso@posterior_sample[(1 + sso@n_warmup) : sso@n_iter, , ]
+        shinystan:::.sso_env$.SHINYSTAN_OBJECT@posterior_sample[(1 + shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) : shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter, , ]
       },
       pars = parameters,
       transformations = transformations,
       np = if(chain != 0) {
-        nuts_params(list(sso@sampler_params[[chain]]) %>%
+        nuts_params(list(shinystan:::.sso_env$.SHINYSTAN_OBJECT@sampler_params[[chain]]) %>%
                       lapply(., as.data.frame) %>%
-                      lapply(., filter, row_number() > sso@n_warmup) %>%
+                      lapply(., filter, row_number() > shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) %>%
                       lapply(., as.matrix))
       } else {
-        nuts_params(sso@sampler_params %>%
+        nuts_params(shinystan:::.sso_env$.SHINYSTAN_OBJECT@sampler_params %>%
                       lapply(., as.data.frame) %>%
-                      lapply(., filter, row_number() > sso@n_warmup) %>%
+                      lapply(., filter, row_number() > shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) %>%
                       lapply(., as.matrix)) 
         
       },

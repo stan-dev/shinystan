@@ -15,7 +15,7 @@ aboutUI <- function(id){
     )),
     div(
       style = "text-align: center; margin-top: 100px;",
-      h5(paste("Version:", sso@misc$sso_version)),
+      h5(paste("Version:", shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$sso_version)),
       br(),
       a(
         style = "font-size: 16px;",

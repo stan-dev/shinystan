@@ -4,16 +4,16 @@ diagnoseUI <- function(id){
   
   # encapsulate everything in taglist, see https://shiny.rstudio.com/articles/modules.html
   tagList(
-    if(sso@misc$stan_method == "sampling" & sso@misc$stan_algorithm == "NUTS") uiOutput(ns("HMC")),
-    if(sso@misc$stan_method == "sampling" & sso@misc$stan_algorithm != "NUTS") uiOutput(ns("MCMC")),
-    if(sso@misc$stan_method != "sampling") uiOutput(ns("VI"))
+    if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_method == "sampling" & shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_algorithm == "NUTS") uiOutput(ns("HMC")),
+    if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_method == "sampling" & shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_algorithm != "NUTS") uiOutput(ns("MCMC")),
+    if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_method != "sampling") uiOutput(ns("VI"))
   )
   
 }
 
 diagnose <- function(input, output, session){
   
-  if(sso@misc$stan_method == "sampling" & sso@misc$stan_algorithm == "NUTS"){
+  if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_method == "sampling" & shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_algorithm == "NUTS"){
     getParcoordPlot <- callModule(parallelCoordinates, "parallelCoordinates")
     getPairsPlot <- callModule(pairs, "pairs")
     getDivergentTransitionsPlot <- callModule(divergentTransitions, "divergentTransitions")
@@ -63,7 +63,7 @@ diagnose <- function(input, output, session){
                }))
     }
   
-  if(sso@misc$stan_method == "sampling" & sso@misc$stan_algorithm != "NUTS"){
+  if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_method == "sampling" & shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_algorithm != "NUTS"){
     getTracePlot <- callModule(tracePlot, "tracePlot")  
     getRhatNeffSEmeanPlots <- callModule(rhat_n_eff_se_mean, "rhat_n_eff_se_mean")
     callModule(autoCorrelation, "autoCorrelation")
@@ -74,8 +74,8 @@ diagnose <- function(input, output, session){
 
   output$HMC <- renderUI({
     validate(
-      need(sso@misc$stan_method == "sampling", ""),
-      need(sso@misc$stan_algorithm == "NUTS", ""))
+      need(shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_method == "sampling", ""),
+      need(shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_algorithm == "NUTS", ""))
     tagList(
       tags$head(
         tags$script("src"="func.js")),
@@ -175,8 +175,8 @@ diagnose <- function(input, output, session){
   
   output$MCMC <- renderUI({
     validate(
-      need(sso@misc$stan_method == "sampling", ""), 
-      need(sso@misc$stan_algorithm != "NUTS", ""))
+      need(shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_method == "sampling", ""), 
+      need(shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_algorithm != "NUTS", ""))
     
     lagList(
     tabPanel(
@@ -219,7 +219,7 @@ diagnose <- function(input, output, session){
   })
   
   output$VI <- renderUI({
-    validate(need(sso@misc$stan_method == "variational", ""))
+    validate(need(shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_method == "variational", ""))
     h4("Currently no diagnostics available for Variational Inference")
   })
   

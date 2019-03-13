@@ -17,7 +17,7 @@ tracePlotUI <- function(id){
                            value = 0,
                            min = 0,
                            # don't allow changing chains if only 1 chain
-                           max = ifelse(sso@n_chain == 1, 0, sso@n_chain)
+                           max = ifelse(shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain == 1, 0, shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain)
                          )
           )),
         column(
@@ -26,8 +26,8 @@ tracePlotUI <- function(id){
             inputId = ns("diagnostic_param"),
             label = NULL,
             multiple = TRUE,
-            choices = sso@param_names,
-            selected = sso@param_names[1]
+            choices = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names,
+            selected = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[1]
           )
         )
       )
@@ -56,28 +56,28 @@ tracePlot <- function(input, output, session){
     validate(
       need(length(parameters) > 0, "Select at least one parameter.")
     )
-    if(sso@misc$stan_method == "sampling"){
+    if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_method == "sampling"){
       mcmc_trace( if(chain != 0) {
-        sso@posterior_sample[(1 + sso@n_warmup) : sso@n_iter, chain, ]
+        shinystan:::.sso_env$.SHINYSTAN_OBJECT@posterior_sample[(1 + shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) : shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter, chain, ]
       } else {
-        sso@posterior_sample[(1 + sso@n_warmup) : sso@n_iter, , ]
+        shinystan:::.sso_env$.SHINYSTAN_OBJECT@posterior_sample[(1 + shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) : shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter, , ]
       }, pars = parameters,
       np = if(chain != 0){
-        nuts_params(list(sso@sampler_params[[chain]]) %>%
+        nuts_params(list(shinystan:::.sso_env$.SHINYSTAN_OBJECT@sampler_params[[chain]]) %>%
                       lapply(., as.data.frame) %>%
-                      lapply(., filter, row_number() > sso@n_warmup) %>%
+                      lapply(., filter, row_number() > shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) %>%
                       lapply(., as.matrix))
       } else {
-        nuts_params(sso@sampler_params %>%
+        nuts_params(shinystan:::.sso_env$.SHINYSTAN_OBJECT@sampler_params %>%
                       lapply(., as.data.frame) %>%
-                      lapply(., filter, row_number() > sso@n_warmup) %>%
+                      lapply(., filter, row_number() > shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) %>%
                       lapply(., as.matrix))
       }
       )} else {
         mcmc_trace( if(chain != 0) {
-          sso@posterior_sample[(1 + sso@n_warmup) : sso@n_iter, chain, ]
+          shinystan:::.sso_env$.SHINYSTAN_OBJECT@posterior_sample[(1 + shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) : shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter, chain, ]
         } else {
-          sso@posterior_sample[(1 + sso@n_warmup) : sso@n_iter, , ]
+          shinystan:::.sso_env$.SHINYSTAN_OBJECT@posterior_sample[(1 + shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) : shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter, , ]
         }, pars = parameters) 
       }
     

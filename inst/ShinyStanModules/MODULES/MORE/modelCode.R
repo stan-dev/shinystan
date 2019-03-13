@@ -22,7 +22,7 @@ modelCodeUI <- function(id){
       wrap = "off",
       cols = 80,
       rows = 20,
-      sso@model_code
+      shinystan:::.sso_env$.SHINYSTAN_OBJECT@model_code
     )
   )
   )

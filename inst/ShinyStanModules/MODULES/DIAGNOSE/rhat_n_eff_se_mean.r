@@ -65,7 +65,7 @@ rhat_n_eff_se_mean <- function(input, output, session){
   
   plotOut_rhat <- function(){
     color_scheme_set("blue")
-    mcmc_rhat_hist(sso@summary[, "Rhat"])
+    mcmc_rhat_hist(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "Rhat"])
   }
   
   output$rhatPlot <- renderPlot({
@@ -74,7 +74,7 @@ rhat_n_eff_se_mean <- function(input, output, session){
   
   plotOut_n_eff <- function(){
     color_scheme_set("blue")
-    mcmc_neff_hist(sso@summary[, "n_eff"] / ((sso@n_iter - sso@n_warmup) * sso@n_chain))
+    mcmc_neff_hist(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "n_eff"] / ((shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter - shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) * shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain))
   }
   
   output$n_effPlot <- renderPlot({
@@ -82,12 +82,12 @@ rhat_n_eff_se_mean <- function(input, output, session){
   })
   
   plotOut_se_mean <- function(){
-    se_sd_table <- tibble(diagnostic = rep("se_sd_ratio", length(sso@param_names)),
-                          parameter = as.factor(sso@param_names),
-                          value = sso@summary[, "se_mean"] / sso@summary[, "sd"],
-                          rating = cut(sso@summary[, "se_mean"] / sso@summary[, "sd"], breaks = c(Inf, 0.5, 0.1, 0), 
+    se_sd_table <- tibble(diagnostic = rep("se_sd_ratio", length(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names)),
+                          parameter = as.factor(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names),
+                          value = shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "se_mean"] / shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "sd"],
+                          rating = cut(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "se_mean"] / shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "sd"], breaks = c(Inf, 0.5, 0.1, 0), 
                                        labels = c("low", "ok", "high")),
-                          description = as.character(cut(sso@summary[, "se_mean"] / sso@summary[, "sd"], breaks = c(Inf, 0.5, 0.1, 0), 
+                          description = as.character(cut(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "se_mean"] / shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "sd"], breaks = c(Inf, 0.5, 0.1, 0), 
                                                          labels = c(expression(MC[se] / sd <= 0.1),
                                                                     expression(MC[se] / sd <= 0.5),
                                                                     expression(MC[se] / sd > 0.5)))))
@@ -108,7 +108,7 @@ rhat_n_eff_se_mean <- function(input, output, session){
   
   output$rhat <- renderUI({
     
-    bad_rhat <- rownames(sso@summary)[sso@summary[, "Rhat"] > reactive(input$rhat_threshold)()]
+    bad_rhat <- rownames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)[shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "Rhat"] > reactive(input$rhat_threshold)()]
     bad_rhat <- bad_rhat[!is.na(bad_rhat)]
     rhatWarning <- paste0("The following parameters have an Rhat value above ", 
                           reactive(input$rhat_threshold)(), ":<br>",
@@ -128,7 +128,7 @@ rhat_n_eff_se_mean <- function(input, output, session){
   
   output$n_eff <- renderUI({
     
-    bad_n_eff <- rownames(sso@summary)[sso@summary[, "n_eff"] / ((sso@n_iter- sso@n_warmup) * sso@n_chain) < 
+    bad_n_eff <- rownames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)[shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "n_eff"] / ((shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter- shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) * shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain) < 
                                          (reactive(input$n_eff_threshold)() / 100)]
     bad_n_eff <- bad_n_eff[!is.na(bad_n_eff)]
     n_effWarning <- paste0("The following parameters have an effective sample size less than ", 
@@ -151,7 +151,7 @@ rhat_n_eff_se_mean <- function(input, output, session){
   
   output$se_mean <- renderUI({
     
-    bad_se_mean <- rownames(sso@summary)[sso@summary[, "se_mean"] / sso@summary[, "sd"] > 
+    bad_se_mean <- rownames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)[shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "se_mean"] / shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "sd"] > 
                                            (reactive(input$mcse_threshold)() / 100)]
     bad_se_mean <- bad_se_mean[!is.na(bad_se_mean)]
     se_meanWarning <- paste0("The following parameters have a Monte Carlo standard error greater than ",

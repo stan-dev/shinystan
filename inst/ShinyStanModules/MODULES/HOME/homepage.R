@@ -22,7 +22,7 @@ homepageUI <- function(id){
         div(id = "model-name",
             br(),
             h2("Model:"),
-            h4(sso@model_name),
+            h4(shinystan:::.sso_env$.SHINYSTAN_OBJECT@model_name),
             br(),
             warningsUI(ns("warnings")))), #note this used to be .model_name
     br(), 

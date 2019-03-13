@@ -15,8 +15,8 @@ scatterPlotUI <- function(id){
             inputId = ns("diagnostic_param"),
             label = NULL,
             multiple = TRUE,
-            choices = sso@param_names,
-            selected = c(sso@param_names[1],sso@param_names[which(sso@param_names == "log-posterior")]),
+            choices = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names,
+            selected = c(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[1],shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[which(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names == "log-posterior")]),
             options = list(maxItems = 2)
           )
         ),
@@ -89,7 +89,7 @@ scatterPlot <- function(input, output, session){
       need(length(param()) == 2, "Select two parameters.")
     )
     mcmc_scatter(
-      sso@posterior_sample[(1 + sso@n_warmup) : sso@n_iter, , ],
+      shinystan:::.sso_env$.SHINYSTAN_OBJECT@posterior_sample[(1 + shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) : shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter, , ],
       pars = param(),
       transformations = transform()
     )
