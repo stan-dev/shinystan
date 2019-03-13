@@ -1,64 +1,83 @@
 rhat_n_eff_se_meanUI <- function(id){
   # for internal namespace structure
   ns <- NS(id)
-  
+
   tagList(
-    
     wellPanel(
       fluidRow(
-        column(width = 3, 
-               sliderInput(
-                 ns("rhat_threshold"),
-                 withMathJax("\\(\\hat{R} \\text{ warning threshold}\\) "),
-                 ticks = FALSE,
-                 value = 1.1,
-                 min = 1,
-                 max = 1.2,
-                 step = 0.01
-               )),
-        column(width = 3, 
-               sliderInput(
-                 ns("n_eff_threshold"),
-                 withMathJax("\\(n_{eff} \\text{ / } \\textit{N} \\text{ warning threshold}\\) "),
-                 ticks = FALSE,
-                 value = 10,
-                 min = 0,
-                 max = 100,
-                 step = 5,
-                 post = "%"
-               )),
-        column(width = 3,
-               sliderInput(
-                 ns("mcse_threshold"),
-                 "\\(\\text{se}_{mean} \\text{ / } \\textit{sd} \\text{ warning threshold}\\) ",
-                 ticks = FALSE,
-                 value = 10,
-                 min = 0,
-                 max = 100,
-                 step = 5,
-                 post = "%"
-               ))
+        column(width = 8,
+               splitLayout(
+                 sliderInput(
+                   ns("rhat_threshold"),
+                   withMathJax("\\(\\hat{R} \\text{ warning threshold}\\) "),
+                   ticks = FALSE,
+                   value = 1.1,
+                   min = 1,
+                   max = 1.2,
+                   step = 0.01
+                 ),
+                 sliderInput(
+                   ns("n_eff_threshold"),
+                   withMathJax("\\(n_{eff} \\text{ / } \\textit{N} \\text{ warning threshold}\\) "),
+                   ticks = FALSE,
+                   value = 10,
+                   min = 0,
+                   max = 100,
+                   step = 5,
+                   post = "%"
+                 ),
+                 sliderInput(
+                   ns("mcse_threshold"),
+                   "\\(\\text{se}_{mean} \\text{ / } \\textit{sd} \\text{ warning threshold}\\) ",
+                   ticks = FALSE,
+                   value = 10,
+                   min = 0,
+                   max = 100,
+                   step = 5,
+                   post = "%"
+                 )
+               )
+        ),
+        column(width = 4, align = "right",
+               splitLayout(
+                 radioButtons(
+                   ns("report"),
+                   label = h5("Report"),
+                   choices = c("Omit", "Include"),
+                   select = "Omit"
+                 ),
+                 div(style = "width: 100px;"
+                 )
+               )
+        )
       )
     ),
     fluidRow(
-      column(width = 3, h4(withMathJax("\\(\\hat{R}\\)"), align = "center")),
-      column(width = 3, h4(withMathJax("\\(n_{eff} / N\\)"), align = "center")),
-      column(width = 3, h4(withMathJax("\\(mcse / sd\\)"), align = "center"))
+      column(width = 12,
+             splitLayout(
+               verticalLayout(
+                 h4(withMathJax("\\(\\hat{R}\\)")),
+                 textOutput(ns("rhat"))   
+               ),
+               verticalLayout(
+                 h4(withMathJax("\\(n_{eff} / N\\)")),
+                 textOutput(ns("n_eff"))
+               ),
+               verticalLayout(
+                 h4(withMathJax("\\(mcse / sd\\)")),
+                 uiOutput(ns("se_mean"))
+               )
+             )
+      )
     ),
     fluidRow(
-      column(width = 3, plotOutput(ns("rhatPlot"))),
-      column(width = 3, plotOutput(ns("n_effPlot"))),
-      column(width = 3, plotOutput(ns("se_meanPlot")))
-    ),
-    fluidRow(
-      column(width = 3, uiOutput(ns("rhat"))),
-      column(width = 3, uiOutput(ns("n_eff"))),
-      column(width = 3, uiOutput(ns("se_mean")))
+      column(width = 4, plotOutput(ns("rhatPlot"))),
+      column(width = 4, plotOutput(ns("n_effPlot"))),
+      column(width = 4, plotOutput(ns("se_meanPlot")))
     )
-  )  
-  
+  )
 }
-
+  
 
 rhat_n_eff_se_mean <- function(input, output, session){
   
@@ -106,7 +125,7 @@ rhat_n_eff_se_mean <- function(input, output, session){
   })
   
   
-  output$rhat <- renderUI({
+  output$rhat <- renderText({
     
     bad_rhat <- rownames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)[shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "Rhat"] > reactive(input$rhat_threshold)()]
     bad_rhat <- bad_rhat[!is.na(bad_rhat)]
@@ -115,18 +134,13 @@ rhat_n_eff_se_mean <- function(input, output, session){
                           paste(bad_rhat, collapse = ", "))
     
     if(length(bad_rhat) < 1){
-      HTML(paste0("<div style='background-color:lightblue; color:black; 
-                  padding:5px; opacity:.3'>",
-                  "No parameters have an Rhat value above ", reactive(input$rhat_threshold)(), ".", 
-                  "</div>"))
+      paste0("No parameters have an Rhat value above ", reactive(input$rhat_threshold)(), ".")
     } else {
-      HTML(paste0("<div style='background-color:red; color:white; 
-                  padding:5px; opacity:.3'>",
-                  rhatWarning, "</div>"))
+      rhatWarning
     }
   })
   
-  output$n_eff <- renderUI({
+  output$n_eff <- renderText({
     
     bad_n_eff <- rownames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)[shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "n_eff"] / ((shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter- shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) * shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain) < 
                                          (reactive(input$n_eff_threshold)() / 100)]
@@ -136,15 +150,10 @@ rhat_n_eff_se_mean <- function(input, output, session){
                            paste(bad_n_eff, collapse = ", "))
     
     if(length(bad_n_eff) < 1){
-      HTML(paste0("<div style='background-color:lightblue; color:black; 
-                  padding:5px; opacity:.3'>",
-                  "No parameters have an effective sample size less than ",
-                  reactive(input$n_eff_threshold)(), "% of the total sample size.", 
-                  "</div>"))
+      paste0("No parameters have an effective sample size less than ",
+                  reactive(input$n_eff_threshold)(), "% of the total sample size.")
     } else {
-      HTML(paste0("<div style='background-color:red; color:white; 
-                  padding:5px; opacity:.3'>",
-                  n_effWarning, "</div>"))
+      n_effWarning
     }
   })
   

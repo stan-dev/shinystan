@@ -787,3 +787,22 @@ transition: opacity 500ms 1s;
   opacity: 0.95;
 transition-delay: 0;
 }
+
+
+/* transform action buttons */
+.generatePlot {
+color: white;
+background-color: #222222;
+height: 30px;
+width: 200px;
+padding: 5px;
+margin: 3px;
+border-radius: 15px;
+font-size: 12px;
+font-weight: bold;
+}
+.generatePlot:hover {
+  background: white;
+  color: #222222;
+  font-weight: bolder;
+}

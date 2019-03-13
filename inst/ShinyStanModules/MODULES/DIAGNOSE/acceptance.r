@@ -7,18 +7,25 @@ acceptanceUI <- function(id){
         column(width = 4), 
         column(width = 4),
         column(width = 4, align = "right",
-               verticalLayout(
-                 h5(textOutput(ns("diagnostic_chain_text"))),
+               splitLayout(
+                 radioButtons(
+                   ns("report"),
+                   label = h5("Report"),
+                   choices = c("Omit", "Include"),
+                   select = "Omit"
+                 ),
                  div(style = "width: 100px;",
                      numericInput(
                        ns("diagnostic_chain"),
-                       label = NULL,
+                       label = h5(textOutput(ns("diagnostic_chain_text"))),
                        value = 0,
                        min = 0,
                        # don't allow changing chains if only 1 chain
                        max = ifelse(shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain == 1, 0, shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain)
-                     ))
-               ))
+                     )
+                 )
+               )
+        )
       )
     ),
     plotOutput(ns("plot1"))

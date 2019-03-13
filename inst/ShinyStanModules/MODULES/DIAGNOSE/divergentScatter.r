@@ -17,6 +17,7 @@ divergentScatterUI <- function(id){
     wellPanel(
       fluidRow(
         column(width = 4, 
+               verticalLayout(
                selectizeInput(
                  inputId = ns("diagnostic_param"),
                  label = h5("Parameter"),
@@ -25,8 +26,9 @@ divergentScatterUI <- function(id){
                  selected = c(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[1],shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[which(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names == "log-posterior")]),
                  options = list(maxItems = 2)
                )
+               )
         ),
-        column(width = 4, 
+        column(width = 4,
                splitLayout(
                  div(style = "width: 100px;",
                      selectInput(
@@ -44,13 +46,20 @@ divergentScatterUI <- function(id){
                      )
                  ),
                  tags$head(tags$style(HTML("
-                              .shiny-split-layout > div {
+                                           .shiny-split-layout > div {
                                            overflow: visible;
-}
-"))) # overflow of splitlayout didn't work, so this is a fix. 
-               )
+                                           }
+                                           "))) # overflow of splitlayout didn't work, so this is a fix. 
+                 )
         ),
         column(width = 4, align = "right",
+               splitLayout(
+               radioButtons(
+                 ns("report"),
+                 label = h5("Report"),
+                 choices = c("Omit", "Include"),
+                 select = "Omit"
+               ),
                div(style = "width: 100px;",
                    numericInput(
                      ns("diagnostic_chain"),
@@ -60,6 +69,7 @@ divergentScatterUI <- function(id){
                      # don't allow changing chains if only 1 chain
                      max = ifelse(shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain == 1, 0, shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain)
                    )
+               )
                )
         )
       )

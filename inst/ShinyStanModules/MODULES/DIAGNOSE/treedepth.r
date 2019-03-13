@@ -2,32 +2,36 @@ treedepthUI <- function(id){
   ns <- NS(id)
   
   tagList(
-  wellPanel(
-    fluidRow(
-      column(width = 3, h5(textOutput(ns("diagnostic_chain_text")))), 
-      column(width = 4),
-      column(width = 4)
-    ),
-    fluidRow(
-      column(
-        width = 3, div(style = "width: 100px;",
-                       numericInput(
-                         ns("diagnostic_chain"),
-                         label = NULL,
-                         value = 0,
-                         min = 0,
-                         # don't allow changing chains if only 1 chain
-                         max = ifelse(shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain == 1, 0, shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain)
-                       )
-        )),
-      column(
-        width = 4
+    wellPanel(
+      fluidRow(
+        column(width = 4), 
+        column(width = 4),
+        column(width = 4, align = "right",
+               splitLayout(
+                 radioButtons(
+                   ns("report"),
+                   label = h5("Report"),
+                   choices = c("Omit", "Include"),
+                   select = "Omit"
+                 ),
+                 div(style = "width: 100px;",
+                     numericInput(
+                       ns("diagnostic_chain"),
+                       label = h5(textOutput(ns("diagnostic_chain_text"))),
+                       value = 0,
+                       min = 0,
+                       # don't allow changing chains if only 1 chain
+                       max = ifelse(shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain == 1, 0, shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain)
+                     )
+                 )
+               )
+        )
       )
-    )
-  ),
-  plotOutput(ns("plot1"))
+    ),
+    plotOutput(ns("plot1"))
   )
 }
+
 
 
 treedepth <- function(input, output, session){
