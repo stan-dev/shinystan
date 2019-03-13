@@ -23,7 +23,7 @@ areasPlotUI <- function(id){
             label = NULL,
             multiple = TRUE,
             choices = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names,
-            selected = c(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[1])
+            selected = if(length(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names) > 9) shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[1:10] else shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names
           )
         ),
         column(

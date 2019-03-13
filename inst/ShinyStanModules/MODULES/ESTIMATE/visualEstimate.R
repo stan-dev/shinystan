@@ -8,6 +8,16 @@ visualEstimateUI <- function(id){
     navlistPanel(
       id = ns("HMC_navlist"),
       tabPanel(
+        title = "Intervals",
+        id = ns("intervalsTab"),
+        intervalsPlotUI(ns("intervalsPlot"))
+      ),
+      tabPanel(
+        title = "Areas",
+        id = ns("areasTab"),
+        areasPlotUI(ns("areasPlot"))
+        ),  #reminder, inlcude areas ridges as option
+      tabPanel(
         title = "Scatter",
         id = ns("scatterTab"),
         scatterPlotUI(ns("scatterPlot"))
@@ -21,17 +31,6 @@ visualEstimateUI <- function(id){
         title = "Histogram",
         id = ns("histogramTab"),
         histogramPlotUI(ns("histogramPlot"))
-      ),
-      tabPanel(
-        title = "Intervals",
-        id = ns("intervalsTab"),
-        intervalsPlotUI(ns("intervalsPlot"))
-      ),
-      tabPanel(
-        title = "Areas",
-        id = ns("areasTab"),
-        areasPlotUI(ns("areasPlot"))
-        #reminder, inlcude areas ridges as option
       )
     )
   )
