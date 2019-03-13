@@ -12,56 +12,55 @@ divergentScatterUI <- function(id){
     "log", "log10", "log2", "log1p", logit = "qlogis",
     probit = "pnorm", "square", "sqrt"
   )
-
+  
   tagList(
     wellPanel(
       fluidRow(
-        column(width = 3, h5(textOutput(ns("diagnostic_chain_text")))),
-        column(width = 4, h5("Parameter")),
-        column(width = 2, h5("Transformation X")),
-        column(width = 2, h5("Transformation Y"))
-      ),
-      fluidRow(
-        column(
-          width = 3, div(style = "width: 100px;",
-                         numericInput(
-                           ns("diagnostic_chain"),
-                           label = NULL,
-                           value = 0,
-                           min = 0,
-                           # don't allow changing chains if only 1 chain
-                           max = ifelse(shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain == 1, 0, shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain)
-                         )
-          )),
-        column(
-          width = 4,
-          selectizeInput(
-            inputId = ns("diagnostic_param"),
-            label = NULL,
-            multiple = TRUE,
-            choices = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names,
-            selected = c(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[1],shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[which(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names == "log-posterior")]),
-            options = list(maxItems = 2)
-          )
+        column(width = 4, 
+               selectizeInput(
+                 inputId = ns("diagnostic_param"),
+                 label = h5("Parameter"),
+                 multiple = TRUE,
+                 choices = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names,
+                 selected = c(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[1],shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[which(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names == "log-posterior")]),
+                 options = list(maxItems = 2)
+               )
         ),
-        column(
-          width = 2,
-          #uiOutput(ns("transform"))
-          div(style = "width: 100px;",
-              selectInput(
-                inputId = ns("transformation"),
-                label = NULL,
-                choices = transformation_choices,
-                selected = "identity"
-              ))),
-        column(width = 2,
-          div(style = "width: 100px;",
-              selectInput(
-                inputId = ns("transformation2"),
-                label = NULL,
-                choices = transformation_choices,
-                selected = "identity"
-              ))
+        column(width = 4, 
+               splitLayout(
+                 div(style = "width: 100px;",
+                     selectInput(
+                       inputId = ns("transformation"),
+                       label = h5("Transformation X"),
+                       choices = transformation_choices,
+                       selected = "identity"
+                     )),
+                 div(style = "width: 100px;",
+                     selectInput(
+                       inputId = ns("transformation2"),
+                       label = h5("Transformation Y") ,
+                       choices = transformation_choices,
+                       selected = "identity"
+                     )
+                 ),
+                 tags$head(tags$style(HTML("
+                              .shiny-split-layout > div {
+                                           overflow: visible;
+}
+"))) # overflow of splitlayout didn't work, so this is a fix. 
+               )
+        ),
+        column(width = 4, align = "right",
+               div(style = "width: 100px;",
+                   numericInput(
+                     ns("diagnostic_chain"),
+                     label = h5(textOutput(ns("diagnostic_chain_text"))),
+                     value = 0,
+                     min = 0,
+                     # don't allow changing chains if only 1 chain
+                     max = ifelse(shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain == 1, 0, shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain)
+                   )
+               )
         )
       )
     ),
