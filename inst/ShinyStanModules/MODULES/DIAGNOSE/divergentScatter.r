@@ -53,13 +53,6 @@ divergentScatterUI <- function(id){
                  )
         ),
         column(width = 4, align = "right",
-               splitLayout(
-               radioButtons(
-                 ns("report"),
-                 label = h5("Report"),
-                 choices = c("Omit", "Include"),
-                 select = "Omit"
-               ),
                div(style = "width: 100px;",
                    numericInput(
                      ns("diagnostic_chain"),
@@ -70,13 +63,12 @@ divergentScatterUI <- function(id){
                      max = ifelse(shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain == 1, 0, shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain)
                    )
                )
-               )
         )
       )
     ),
     plotOutput(ns("plot1")),
     hr(), 
-    checkboxInput("IDwhatever", "Include in report?")
+    checkboxInput(ns("report"), "Include in report?")
   )
 }
 
@@ -150,7 +142,7 @@ divergentScatter <- function(input, output, session){
   
   
   return(reactive({
-    if(include() == "Include"){
+    if(include() == TRUE){
     plotOut(parameters = param(), chain = chain(),
                            transformations = transform())
     } else {

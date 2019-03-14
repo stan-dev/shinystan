@@ -25,7 +25,7 @@ diagnose <- function(input, output, session){
     
     getTracePlot <- callModule(tracePlot, "tracePlot")  
     getRhatNeffSEmeanPlots <- callModule(rhat_n_eff_se_mean, "rhat_n_eff_se_mean")
-    callModule(autoCorrelation, "autoCorrelation")
+    getAutoCorrelationPlot <- callModule(autoCorrelation, "autoCorrelation")
     
     callModule(statsTableHMC, "statsTableHMC")
     callModule(rhat_n_eff_se_mean_stats, "rhat_n_eff_se_mean_stats")
@@ -40,9 +40,10 @@ diagnose <- function(input, output, session){
            "stepSizePlot" = getStepSizePlot(),
            "acceptancePlot" = getAcceptancePlot(),
            "tracePlot" = getTracePlot(),
-           "rhatPlot" = getRhatNeffSEmeanPlots()["rhatPlot"],
-           "n_effPlot" = getRhatNeffSEmeanPlots()["n_effPlot"],
-           "se_meanPlot" = getRhatNeffSEmeanPlots()["se_meanPlot"])
+           # "rhatPlot" = getRhatNeffSEmeanPlots()["rhatPlot"],
+           # "n_effPlot" = getRhatNeffSEmeanPlots()["n_effPlot"],
+           # "se_meanPlot" = getRhatNeffSEmeanPlots()["se_meanPlot"],
+           "autoCorrelationPlot" = getAutoCorrelationPlot())
     })
     
     
@@ -114,6 +115,11 @@ diagnose <- function(input, output, session){
         ),
         "MCMC",
         tabPanel(
+          title = "Autocorrelation",
+          id = session$ns("autocorrelationTab"),
+          autoCorrelationUI(session$ns("autoCorrelation"))
+        ),
+        tabPanel(
           title = "Trace Plots",
           id = session$ns("traceTab"),
           tracePlotUI(session$ns("tracePlot"))
@@ -123,11 +129,6 @@ diagnose <- function(input, output, session){
           id = session$ns("rhat_n_eff_se_meanTab"),
           value = "rhat_neff_se_mean_plot_tab",
           rhat_n_eff_se_meanUI(session$ns("rhat_n_eff_se_mean"))
-        ),
-        tabPanel(
-          title = "Autocorrelation",
-          id = session$ns("autocorrelationTab"),
-          autoCorrelationUI(session$ns("autoCorrelation"))
         )
       )
     ),
@@ -171,6 +172,11 @@ diagnose <- function(input, output, session){
       navlistPanel(
         id = session$ns("MCMC_navlist_vis"),
         tabPanel(
+          title = "Autocorrelation",
+          id = session$ns("autocorrelationTab"),
+          autoCorrelationUI(session$ns("autoCorrelation"))
+        ),
+        tabPanel(
           title = "Trace Plots",
           id = session$ns("traceTab"),
           tracePlotUI(session$ns("tracePlot"))
@@ -180,11 +186,6 @@ diagnose <- function(input, output, session){
           value = "rhat_neff_se_mean_plot_tab",
           id = session$ns("rhat_n_eff_se_meanTab"),
           rhat_n_eff_se_meanUI(session$ns("rhat_n_eff_se_mean"))
-        ),
-        tabPanel(
-          title = "Autocorrelation",
-          id = session$ns("autocorrelationTab"),
-          autoCorrelationUI(session$ns("autoCorrelation"))
         )
       )
     ),

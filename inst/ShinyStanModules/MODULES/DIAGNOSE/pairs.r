@@ -20,13 +20,6 @@ pairsUI <- function(id){
                actionButton(ns("generatePlot"), "Generate Pairs Plot", class = "generatePlot")
                ),
         column(width = 4, align = "right",
-               splitLayout(
-                 radioButtons(
-                   ns("report"),
-                   label = h5("Report"),
-                   choices = c("Omit", "Include"),
-                   select = "Omit"
-                 ),
                  div(style = "width: 100px;",
                      numericInput(
                        ns("diagnostic_chain"),
@@ -37,11 +30,10 @@ pairsUI <- function(id){
                        max = ifelse(shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain == 1, 0, shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain)
                      )
                  )
-               )
         )
       )
     ),
-    plotOutput(ns("plot1"))
+    uiOutput(ns("plotUI"))
   )
 }
 
@@ -108,10 +100,18 @@ pairs <- function(input, output, session){
     })
   })
   
-  # "gtable" %in% class(plotOut(parameters = param_reactive(), chain = chain_reactive())))
+  observeEvent(input$generatePlot, {
+    output$plotUI <-   renderUI({
+      tagList(
+        plotOutput(session$ns("plot1")),
+        hr(), 
+        checkboxInput(session$ns("report"), "Include in report?")
+      )
+    })
+  })
   
   return(reactive({
-    if(include() == "Include"){
+    if(include() == TRUE){
       plotOut(parameters = param_reactive(), chain = chain_reactive())
     } else {
       NULL

@@ -28,13 +28,6 @@ autoCorrelationUI <- function(id){
                )
         ),
         column(width = 4, align = "right",
-               splitLayout(
-                 radioButtons(
-                   ns("report"),
-                   label = h5("Report"),
-                   choices = c("Omit", "Include"),
-                   select = "Omit"
-                 ),
                  div(style = "width: 100px;",
                      numericInput(
                        ns("diagnostic_chain"),
@@ -45,11 +38,12 @@ autoCorrelationUI <- function(id){
                        max = ifelse(shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain == 1, 0, shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain)
                      )
                  )
-               )
         )
       )
     ),
-    plotOutput(ns("plot1"))
+    plotOutput(ns("plot1")),
+    hr(), 
+    checkboxInput(ns("report"), "Include in report?")
   )
 }
 
@@ -59,6 +53,7 @@ autoCorrelation <- function(input, output, session){
   chain <- reactive(input$diagnostic_chain)
   param <- reactive(input$diagnostic_param)
   lags <- reactive(input$diagnostic_lags)
+  include <- reactive(input$report)
   
   output$diagnostic_chain_text <- renderText({
     validate(
@@ -69,22 +64,36 @@ autoCorrelation <- function(input, output, session){
     paste("Chain", chain())
   })
   
-  output$plot1 <- renderPlot({
-    
+  # create function to make the plot and call in renderplot and return
+  # needed to return plots from module so that we can use them in report.
+  plotOut <- function(chain, lags, parameters) {
     color_scheme_set("blue")
     validate(
-      need(length(param()) > 0, "Select at least one parameter."),
-      need(is.na(chain()) == FALSE, "Select chains"),
-      need(is.null(lags()) == FALSE & is.na(lags()) == FALSE, "Select lags"),
-      need(lags() > 0 & lags() < (shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter - shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup - 1), "Number of lags is inappropriate.")
+      need(length(parameters) > 0, "Select at least one parameter."),
+      need(is.na(chain) == FALSE, "Select chains"),
+      need(is.null(lags) == FALSE & is.na(lags) == FALSE, "Select lags"),
+      need(lags > 0 & lags < (shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter - shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup - 1), "Number of lags is inappropriate.")
     )
-    mcmc_acf_bar( if(chain() != 0) {
-      shinystan:::.sso_env$.SHINYSTAN_OBJECT@posterior_sample[(1 + shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) : shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter, chain(), ]
+    mcmc_acf_bar( if(chain != 0) {
+      shinystan:::.sso_env$.SHINYSTAN_OBJECT@posterior_sample[(1 + shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) : shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter, chain, ]
     } else {
       shinystan:::.sso_env$.SHINYSTAN_OBJECT@posterior_sample[(1 + shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) : shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter, , ]
-    }, pars = param(),
-    lags = lags()
+    }, pars = parameters,
+    lags = lags
     )
+  }
+  
+  output$plot1 <- renderPlot({
+    plotOut(chain = chain(), lags = lags(), parameters = param())
   })
+  
+  return(reactive({
+    if(include() == TRUE){
+      plotOut(chain = chain(), lags = lags(), parameters = param())
+    } else {
+      NULL
+    }
+  }))
+  
   
 }

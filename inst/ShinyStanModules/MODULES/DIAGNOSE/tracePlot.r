@@ -18,13 +18,6 @@ tracePlotUI <- function(id){
         column(width = 4
         ),
         column(width = 4, align = "right",
-               splitLayout(
-                 radioButtons(
-                   ns("report"),
-                   label = h5("Report"),
-                   choices = c("Omit", "Include"),
-                   select = "Omit"
-                 ),
                  div(style = "width: 100px;",
                      numericInput(
                        ns("diagnostic_chain"),
@@ -35,11 +28,12 @@ tracePlotUI <- function(id){
                        max = ifelse(shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain == 1, 0, shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain)
                      )
                  )
-               )
         )
       )
     ),
-    plotOutput(ns("plot1"))
+    plotOutput(ns("plot1")),
+    hr(), 
+    checkboxInput(ns("report"), "Include in report?")
   )
 }
 
@@ -49,6 +43,7 @@ tracePlot <- function(input, output, session){
     
   chain <- reactive(input$diagnostic_chain)
   param <- reactive(input$diagnostic_param)
+  include <- reactive(input$report)
   
   output$diagnostic_chain_text <- renderText({
     if (chain() == 0)
@@ -92,6 +87,13 @@ tracePlot <- function(input, output, session){
     plotOut(parameters = param(), chain = chain())
   })
   
-  return(reactive({plotOut(parameters = param(), chain = chain())}))
+  return(reactive({
+    if(include() == TRUE){
+      plotOut(chain = chain(), parameters = param())
+    } else {
+      NULL
+    }
+  }))
+  
   
 }

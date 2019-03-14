@@ -17,16 +17,9 @@ parallelCoordinatesUI <- function(id){
         ),
         column(width = 4,
                br(),br(),
-               actionButton(ns("generatePlot"), "Generate Pairs Plot", class = "generatePlot")
+               actionButton(ns("generatePlot"), "Generate Parcoord Plot", class = "generatePlot")
         ),
         column(width = 4, align = "right",
-               splitLayout(
-                 radioButtons(
-                   ns("report"),
-                   label = h5("Report"),
-                   choices = c("Omit", "Include"),
-                   select = "Omit"
-                 ),
                  div(style = "width: 100px;",
                      numericInput(
                        ns("diagnostic_chain"),
@@ -37,11 +30,10 @@ parallelCoordinatesUI <- function(id){
                        max = ifelse(shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain == 1, 0, shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain)
                      )
                  )
-               )
         )
       )
     ),
-    plotOutput(ns("plot1"))
+    uiOutput(ns("plotUI"))
   )
 }
 
@@ -100,8 +92,18 @@ parallelCoordinates <- function(input, output, session){
     })
   })
   
+  observeEvent(input$generatePlot, {
+    output$plotUI <-   renderUI({
+      tagList(
+        plotOutput(session$ns("plot1")),
+        hr(), 
+        checkboxInput(session$ns("report"), "Include in report?")
+      )
+    })
+  })
+  
   return(reactive({
-    if(include() == "Include"){
+    if(include() == TRUE){
       plotOut(parameters = param_reactive(), chain = chain_reactive())
     } else {
       NULL
