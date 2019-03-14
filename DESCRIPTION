@@ -3,8 +3,8 @@ Title: Interactive Visual and Numerical Diagnostics and Posterior Analysis for
     Bayesian Models
 Version: 2.5.0
 Date: 2018-04-29
-Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"),
-    email = "jsg2201@columbia.edu"),
+Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jsg2201@columbia.edu"),
+      person("Duco", "Veen", role = "aut", email = "ducoveen@gmail.com"),
       person(family = "Stan Development Team", role = "ctb"),
       person("Michael", "Andreae", role = "ctb"),
       person("Michael", "Betancourt", role = "ctb"),
@@ -12,6 +12,7 @@ Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"),
       person("Yuanjun", "Gao", role = "ctb"),
       person("Andrew", "Gelman", role = "ctb"),
       person("Ben", "Goodrich", role = "ctb"),
+      person("Lauren", "Kennedy", role = "ctb"),
       person("Daniel", "Lee", role = "ctb"),
       person("Dongying", "Song", role = "ctb"),
       person("Rob", "Trangucci", role = "ctb"))
