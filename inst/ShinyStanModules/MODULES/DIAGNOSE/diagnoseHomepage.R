@@ -30,19 +30,10 @@ diagnose <- function(input, output, session){
     callModule(statsTableHMC, "statsTableHMC")
     callModule(rhat_n_eff_se_mean_stats, "rhat_n_eff_se_mean_stats")
     
-    getInputReactiveDiagnosePlots <- reactive({
-      list(
-      "parcoordPlot" = getParcoordPlot(),
-      "pairsPlot" = getPairsPlot()
-      # "pairsPlot" = NULL,
-      # "parcoordPlot" = NULL
-      )
-    })
-    
     getDiagnosePlots <- reactive({
       list("divergentScatterPlot" = getDivergentScatterPlot(),
-           # "pairsPlot" = NULL,
-           # "parcoordPlot" = NULL,
+           "pairsPlot" = getPairsPlot(),
+           "parcoordPlot" = getParcoordPlot(),
            "divergentTransitionsPlot" = getDivergentTransitionsPlot(),
            "energyPlot" = getEnergyPlot(),
            "treedepthPlot" = getTreedepthPlot(),
@@ -55,12 +46,7 @@ diagnose <- function(input, output, session){
     })
     
     
-    callModule(report, "report", ggplotsList = getDiagnosePlots, 
-               getParcoordPlot = reactive({
-                 list("parcoordPlot" = getParcoordPlot())}),
-               getPairsPlot = reactive({
-                 list("pairsPlot" = getPairsPlot())
-               }))
+    callModule(report, "report", ggplotsList = getDiagnosePlots)
     }
   
   if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_method == "sampling" & shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_algorithm != "NUTS"){

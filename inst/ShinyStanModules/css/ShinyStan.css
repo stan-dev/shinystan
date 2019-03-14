@@ -757,24 +757,24 @@ http://tympanus.net/codrops/licensing/
 
 #selectVariableTab {
 /* Appearance */
-background-color: white;
+background-color: transparent;
 padding: 0 20px 20px 20px;
 cursor: move;
 /* Fade out while not hovering */
-  opacity: 0.65;
+/*  opacity: 0.65;*/
 zoom: 0.9;
 transition: opacity 500ms 1s;
 }
 #selectVariableTab:hover {
 /* Fade in while hovering */
-  opacity: 0.95;
+/*  opacity: 0.95;*/
 transition-delay: 0;
 }
 
 
 #warningTab {
 /* Appearance */
-background-color: white;
+background-color: transparent;
 padding: 0 20px 20px 20px;
 cursor: move;
 /* Fade out while not hovering */
@@ -803,6 +803,25 @@ font-weight: bold;
 }
 .generatePlot:hover {
   background: white;
+  color: #222222;
+  font-weight: bolder;
+}
+
+
+/* transform action buttons */
+.downloadReport {
+color: transparent;
+background-color: #222222;
+height: 30px;
+width: 200px;
+padding: 5px;
+margin: 3px;
+border-radius: 15px;
+font-size: 12px;
+font-weight: bold;
+}
+.downloadReport:hover {
+  background: transparent;
   color: #222222;
   font-weight: bolder;
 }

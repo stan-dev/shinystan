@@ -83,7 +83,7 @@ divergentScatter <- function(input, output, session){
   
   chain <- reactive(input$diagnostic_chain)
   param <- reactive(input$diagnostic_param)
-  
+  include <- reactive(input$report)
   
   transform1 <- reactive({input$transformation})
   transform2 <- reactive({input$transformation2})
@@ -145,7 +145,15 @@ divergentScatter <- function(input, output, session){
             transformations = transform())
   })
   
-  return(reactive({plotOut(parameters = param(), chain = chain(),
-                           transformations = transform())}))
+  
+  
+  return(reactive({
+    if(include() == "Include"){
+    plotOut(parameters = param(), chain = chain(),
+                           transformations = transform())
+    } else {
+    NULL
+    }
+  }))
   
 }

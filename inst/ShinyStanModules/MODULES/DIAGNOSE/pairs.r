@@ -50,10 +50,13 @@ pairs <- function(input, output, session){
   
   chain <- reactive(input$diagnostic_chain)
   param <- reactive(input$diagnostic_param)
+  include <- reactive(input$report)
   
   param_reactive <- eventReactive(input$generatePlot, {
     param()
   })
+  
+ 
   
   chain_reactive <- eventReactive(input$generatePlot, {
     chain()
@@ -67,6 +70,10 @@ pairs <- function(input, output, session){
   })
   
   plotOut <- function(parameters, chain){
+    
+    if(length(parameters) < 2) {
+      NULL
+    } else {
     
       color_scheme_set("darkgray")
       
@@ -89,17 +96,25 @@ pairs <- function(input, output, session){
                              lapply(., as.matrix))
         )
       }
+    }
   }
   
   observeEvent(input$generatePlot, {
     output$plot1 <- renderPlot({
-      
+      validate(
+        need(length(param_reactive()) > 1, "Select at least two paramters.")
+      )
      plotOut(parameters = param_reactive(), chain = chain_reactive())
     })
   })
   
-  return(reactive({ 
-    plotOut(parameters = param_reactive(), chain = chain_reactive())
-    }))
+  # "gtable" %in% class(plotOut(parameters = param_reactive(), chain = chain_reactive())))
   
+  return(reactive({
+    if(include() == "Include"){
+      plotOut(parameters = param_reactive(), chain = chain_reactive())
+    } else {
+      NULL
+    }
+  }))
 }

@@ -36,6 +36,7 @@ acceptanceUI <- function(id){
 acceptance <- function(input, output, session){
   
   chain <- reactive(input$diagnostic_chain)
+  include <- reactive(input$report)
   
   output$diagnostic_chain_text <- renderText({
     if (chain() == 0)
@@ -74,5 +75,12 @@ acceptance <- function(input, output, session){
     plotOut(chain = chain())
   })
   
-  return(reactive({plotOut(chain = chain())}))
+  return(reactive({
+    if(include() == "Include"){
+      plotOut(chain = chain())
+    } else {
+      NULL
+    }
+  }))
+  
 }

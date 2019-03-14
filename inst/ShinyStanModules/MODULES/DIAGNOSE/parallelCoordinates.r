@@ -50,6 +50,7 @@ parallelCoordinates <- function(input, output, session){
   
   chain <- reactive(input$diagnostic_chain)
   param <- reactive(input$diagnostic_param)
+  include <- reactive(input$report)
   
   param_reactive <- eventReactive(input$generatePlot, {
     param()
@@ -99,8 +100,12 @@ parallelCoordinates <- function(input, output, session){
     })
   })
   
-  return(reactive({ 
-    plotOut(parameters = param_reactive(), chain = chain_reactive())
+  return(reactive({
+    if(include() == "Include"){
+      plotOut(parameters = param_reactive(), chain = chain_reactive())
+    } else {
+      NULL
+    }
   }))
   
 }

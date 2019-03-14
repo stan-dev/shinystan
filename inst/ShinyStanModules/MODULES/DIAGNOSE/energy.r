@@ -38,6 +38,7 @@ energyUI <- function(id){
 energy <- function(input, output, session){
     
   chain <- reactive(input$diagnostic_chain)
+  include <- reactive(input$report)
   
   output$diagnostic_chain_text <- renderText({
     if (chain() == 0)
@@ -69,7 +70,11 @@ energy <- function(input, output, session){
   })
   
   return(reactive({
-    plotOut(chain = chain())
+    if(include() == "Include"){
+      plotOut(chain = chain())
+    } else {
+      NULL
+    }
   }))
   
 }
