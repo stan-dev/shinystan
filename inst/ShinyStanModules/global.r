@@ -1,7 +1,5 @@
 # call relevant packages
 library(shiny)
-library(shinydashboard)
-library(rstan)
 library(bayesplot)
 library(dplyr)
 
