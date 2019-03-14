@@ -33,14 +33,14 @@ divergentScatterUI <- function(id){
                  div(style = "width: 100px;",
                      selectInput(
                        inputId = ns("transformation"),
-                       label = h5("Transformation X"),
+                       label = h5("Transformx X"),
                        choices = transformation_choices,
                        selected = "identity"
                      )),
                  div(style = "width: 100px;",
                      selectInput(
                        inputId = ns("transformation2"),
-                       label = h5("Transformation Y") ,
+                       label = h5("Transform Y") ,
                        choices = transformation_choices,
                        selected = "identity"
                      )
@@ -74,7 +74,9 @@ divergentScatterUI <- function(id){
         )
       )
     ),
-    plotOutput(ns("plot1"))
+    plotOutput(ns("plot1")),
+    hr(), 
+    checkboxInput("IDwhatever", "Include in report?")
   )
 }
 
