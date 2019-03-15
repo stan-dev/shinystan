@@ -42,13 +42,16 @@ pairs <- function(input, output, session){
   
   chain <- reactive(input$diagnostic_chain)
   param <- reactive(input$diagnostic_param)
+  
+  # structure needed to get FALSE for report inclusion if variable is logical(0)
   include <- reactive(input$report)
+  include_report <- reactive({
+    ifelse(!is.null(include()), include(), FALSE)
+  })
   
   param_reactive <- eventReactive(input$generatePlot, {
     param()
   })
-  
- 
   
   chain_reactive <- eventReactive(input$generatePlot, {
     chain()
@@ -105,16 +108,17 @@ pairs <- function(input, output, session){
       tagList(
         plotOutput(session$ns("plot1")),
         hr(), 
-        checkboxInput(session$ns("report"), "Include in report?")
+        checkboxInput(session$ns("report"), "Include in report?", value = include())
       )
     })
   })
   
   return(reactive({
-    if(include() == TRUE){
+    if(include_report() == TRUE){
       plotOut(parameters = param_reactive(), chain = chain_reactive())
     } else {
       NULL
     }
+
   }))
 }

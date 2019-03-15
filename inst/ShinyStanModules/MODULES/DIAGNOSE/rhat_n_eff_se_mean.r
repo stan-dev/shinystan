@@ -178,6 +178,27 @@ rhat_n_eff_se_mean <- function(input, output, session){
     plotOut_se_mean()
   })
   
+  # needed to get a FALSE value for including plot in report if the page 
+  # has not been opened. Before page is opened include_.. is a logical(0) which
+  # cannot be used in logical evaluation to inlcude or not and crashes report
+  # generation. any(!is.na(.)) returns a FALSE for logical(0) and TRUE if 
+  # the variable contains a value. So if the variable is defined return the input value
+  # otherwise, if variable does not exist yet return a FALSE for report inclusion.
+  include_rhat <- reactive(input$report_rhat)
+  include_report_rhat <- reactive({
+    ifelse(any(!is.na(include_rhat())), input$report_rhat, FALSE)
+  })
+  
+  include_n_eff <- reactive(input$report_n_eff)
+  include_report_n_eff <- reactive({
+    ifelse(any(!is.na(include_n_eff())), input$report_n_eff, FALSE)
+  })
+  
+  
+  include_se_mean <- reactive(input$report_se_mean)
+  include_report_se_mean <- reactive({
+    ifelse(any(!is.na(include_se_mean())), input$report_se_mean, FALSE)
+  })
   
   output$conditionalUI <- renderUI({
     if(stat() == "\\(\\hat{R}\\)"){
@@ -185,7 +206,7 @@ rhat_n_eff_se_mean <- function(input, output, session){
         withMathJax(),
         plotOutput(session$ns("rhatPlot")),
         hr(), 
-        checkboxInput(session$ns("report_rhat"), "Include in report?")
+        checkboxInput(session$ns("report_rhat"), "Include in report?", value = include_report_rhat())
       )
     } else {
       if(stat() == "\\(n_{eff}\\)"){
@@ -193,7 +214,7 @@ rhat_n_eff_se_mean <- function(input, output, session){
           withMathJax(),
           plotOutput(session$ns("n_effPlot")),
           hr(), 
-          checkboxInput(session$ns("report_n_eff"), "Include in report?")
+          checkboxInput(session$ns("report_n_eff"), "Include in report?", value = include_report_n_eff())
         )
       } else {
         if(stat() == "\\(\\text{se}_{mean} \\text{ / } \\textit{sd}\\)"){
@@ -201,16 +222,13 @@ rhat_n_eff_se_mean <- function(input, output, session){
             withMathJax(),
             plotOutput(session$ns("se_meanPlot")),
             hr(), 
-            checkboxInput(session$ns("report_se_mean"), "Include in report?")
+            checkboxInput(session$ns("report_se_mean"), "Include in report?", value = include_report_se_mean())
           )
         }
       }
     }
   })
   
-  include_rhat <- reactive(input$report_rhat)
-  include_n_eff <- reactive(input$report_n_eff)
-  include_se_mean <- reactive(input$report_se_mean)
   
   # 
   # 
@@ -279,18 +297,90 @@ rhat_n_eff_se_mean <- function(input, output, session){
   #        "se_meanPlot" = plotOut_se_mean())
   # }))
   # 
+
   
+  
+# Did not find a functioning better system yet for creating the correct list output. Should exist....
   return(reactive({
-    list(
-      "rhatPlot" = ifelse(include_rhat() == TRUE, plotOut_rhat(), NULL),
-      "n_effPlot" = ifelse(include_n_eff() == TRUE, plotOut_n_eff(), NULL),
-      "se_meanPlot" = ifelse(include_se_mean() == TRUE, plotOut_se_mean(), NULL)
-    )
-  }))
+
+    if(include_report_rhat() == FALSE & include_report_n_eff() == FALSE & include_report_se_mean() == FALSE){
+      list(
+        "rhatPlot" = NULL,
+        "n_effPlot" = NULL,
+        "se_meanPlot" = NULL
+      )
+    } else {
+      if(include_report_rhat() == TRUE & include_report_n_eff() == FALSE & include_report_se_mean() == FALSE){
+        list(
+          "rhatPlot" = plotOut_rhat(),
+          "n_effPlot" = NULL,
+          "se_meanPlot" = NULL
+        )
+      } else {
+        if(include_report_rhat() == FALSE & include_report_n_eff() == TRUE & include_report_se_mean() == FALSE){
+          list(
+            "rhatPlot" = NULL,
+            "n_effPlot" = plotOut_n_eff(),
+            "se_meanPlot" = NULL
+          )
+        } else {
+          if(include_report_rhat() == FALSE & include_report_n_eff() == FALSE & include_report_se_mean() == TRUE){
+            list(
+              "rhatPlot" = NULL,
+              "n_effPlot" = NULL,
+              "se_meanPlot" = plotOut_se_mean()
+            )
+          } else {
+            if(include_report_rhat() == TRUE & include_report_n_eff() == TRUE & include_report_se_mean() == FALSE){
+              list(
+                "rhatPlot" = plotOut_rhat(),
+                "n_effPlot" = plotOut_n_eff(),
+                "se_meanPlot" = NULL
+              )
+            } else {
+              if(include_report_rhat() == TRUE & include_report_n_eff() == FALSE & include_report_se_mean() == TRUE){
+                list(
+                  "rhatPlot" = plotOut_rhat(),
+                  "n_effPlot" = NULL,
+                  "se_meanPlot" = plotOut_se_mean()
+                )
+              } else {
+                if(include_report_rhat() == FALSE & include_report_n_eff() == TRUE & include_report_se_mean() == TRUE){
+                  list(
+                    "rhatPlot" = NULL,
+                    "n_effPlot" = plotOut_n_eff(),
+                    "se_meanPlot" = plotOut_se_mean()
+                  )
+                } else {
+                  if( include_report_rhat() == TRUE & include_report_n_eff() == TRUE & include_report_se_mean() == TRUE){
+                    list(
+                      "rhatPlot" = plotOut_rhat(),
+                      "n_effPlot" = plotOut_n_eff(),
+                      "se_meanPlot" = plotOut_se_mean()
+                    )
+                  }
+                  
+                }
+              }
+            }
+            
+          }
+        }
+      }
+    }
+
     # list(
-    #   if(include_rhat() == TRUE) {"rhatPlot" = plotOut_rhat()} else {"rhatPlot" = NULL},
-    #   if(include_n_eff() == TRUE) {"n_effPlot" = plotOut_n_eff()} else {"n_effPlot" = NULL},
-    #   if(include_se_mean() == TRUE) {"se_meanPlot" = plotOut_se_mean()} else {"se_meanPlot" = NULL}
+    #   "rhatPlot" = ifelse(include_report_rhat() == TRUE, plotOut_rhat(), NULL),
+    #   "n_effPlot" = ifelse(include_report_n_eff() == TRUE, plotOut_n_eff(), NULL),
+    #   "se_meanPlot" = ifelse(include_report_se_mean() == TRUE, plotOut_se_mean(), NULL)
     # )
+    # list(
+    #   if(include_report_rhat() == TRUE) {"rhatPlot" = plotOut_rhat()} else {"rhatPlot" = NULL},
+    #   if(include_report_n_eff() == TRUE) {"n_effPlot" = plotOut_n_eff()} else {"n_effPlot" = NULL},
+    #   if(include_report_se_mean() == TRUE) {"se_meanPlot" = plotOut_se_mean()} else {"se_meanPlot" = NULL}
+    # )
+    
+    
+  }))
   
 }

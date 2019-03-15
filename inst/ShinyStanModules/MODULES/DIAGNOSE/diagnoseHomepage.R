@@ -40,9 +40,9 @@ diagnose <- function(input, output, session){
            "stepSizePlot" = getStepSizePlot(),
            "acceptancePlot" = getAcceptancePlot(),
            "tracePlot" = getTracePlot(),
-           # "rhatPlot" = getRhatNeffSEmeanPlots()["rhatPlot"],
-           # "n_effPlot" = getRhatNeffSEmeanPlots()["n_effPlot"],
-           # "se_meanPlot" = getRhatNeffSEmeanPlots()["se_meanPlot"],
+           "rhatPlot" = getRhatNeffSEmeanPlots()["rhatPlot"],
+           "n_effPlot" = getRhatNeffSEmeanPlots()["n_effPlot"],
+           "se_meanPlot" = getRhatNeffSEmeanPlots()["se_meanPlot"],
            "autoCorrelationPlot" = getAutoCorrelationPlot())
     })
     
