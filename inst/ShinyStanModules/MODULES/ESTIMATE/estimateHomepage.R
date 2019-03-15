@@ -11,15 +11,37 @@ estimateUI <- function(id){
 
 estimate <- function(input, output, session){
   
-  callModule(visualEstimate, "visualEstimate")
+  getVisualPlots <- callModule(visualEstimate, "visualEstimate")
   callModule(numericalEstimate, "numericalEstimate")
+  
+  getDiagnosePlots <- reactive({
+    list("areasPlot" = getVisualPlots()["areas"],
+         "densityPlot" = getVisualPlots()["density"]
+    )
+  })
+  
+  callModule(report, "report", ggplotsList = getDiagnosePlots)
+  
   
   output$estimateHomepage <- renderUI({
     tagList(
       tabsetPanel(
         id = session$ns("diagnose_tabset"),
-        visualEstimateUI(session$ns("visualEstimate")),
+        tabPanel(
+          title = "Plots",
+          id = session$ns("visualEstimateTab"),
+        visualEstimateUI(session$ns("visualEstimate"))
+        ),
+        tabPanel(
+          title = "Stats",
+          id = session$ns("numericalEstimateTab"),
         numericalEstimateUI(session$ns("numericalEstimate"))
+        ),
+        tabPanel(
+          title = "Report",
+          id = session$ns("reportTab"),
+          reportUI(session$ns("report"))
+        )
       )
     )
   })

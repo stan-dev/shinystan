@@ -19,19 +19,28 @@ plotOptions <- function(input, output, session){
     tagList(
       
       wellPanel(
-        h5("testss"),
+        splitLayout(
         selectInput(session$ns("theme"), label = "Select Theme", 
                     choices = c("bayesplot default",
                                 "classic",
                                 "dark"),
-                    selected = "bayesplot default")
+                    selected = "bayesplot default"),
+        selectInput(session$ns("color"), label = "Select Colors",
+                    choices = c("blue", "brightblue", "gray",
+                                "darkgray", "green", "pink", "purple",
+                                "red", "teal", "yellow", "mix-blue-pink", 
+                                "mix-blue-red"))
+          
+        )
         )
     )
   })
   
   plotTheme <- reactive({
-    ifelse(!is.null(input$theme), input$theme, "bayesplot default")
-    
+    out <- list()
+    out$theme <- ifelse(!is.null(input$theme), input$theme, "bayesplot default")
+    out$color <- ifelse(!is.null(input$color), input$color, "blue")
+    out
   })
   
   return(reactive({plotTheme()}))

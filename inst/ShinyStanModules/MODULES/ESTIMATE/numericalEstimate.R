@@ -2,9 +2,6 @@ numericalEstimateUI <- function(id){
   # for internal namespace structure
   ns <- NS(id)
   
-  tabPanel(
-    title = "Stats",
-    id = ns("numericalEstimate"),
     navlistPanel(
       id = ns("HMC_navlist"),
       tabPanel(
@@ -13,7 +10,7 @@ numericalEstimateUI <- function(id){
         summaryTableUI(ns("summaryTable"))
       )
     )
-  )
+  
 }
 
 

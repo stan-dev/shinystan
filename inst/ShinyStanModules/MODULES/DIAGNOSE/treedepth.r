@@ -20,10 +20,10 @@ treedepthUI <- function(id){
         )
       )
     ),
+    plotOptionsUI(ns("options")),
     plotOutput(ns("plot1")),
     hr(), 
-    checkboxInput(ns("report"), "Include in report?"),
-    plotOptionsUI(ns("options"))
+    checkboxInput(ns("report"), "Include in report?")
   )
 }
 
@@ -31,8 +31,7 @@ treedepthUI <- function(id){
 
 treedepth <- function(input, output, session){
     
-  theme <- callModule(plotOptions, "options")
-  
+  visualOptions <- callModule(plotOptions, "options")
   chain <- reactive(input$diagnostic_chain)
   include <- reactive(input$report)
     
@@ -44,7 +43,7 @@ treedepth <- function(input, output, session){
   
     plotOut <- function(chain) {
       
-    color_scheme_set("blue")
+    # color_scheme_set("blue")
     
       if(chain != 0) {
         mcmc_nuts_treedepth(
@@ -72,28 +71,30 @@ treedepth <- function(input, output, session){
   
   output$plot1 <- renderPlot({
     # change plot theme based on selection for this plot, thereafter change back.
-    save_old <- bayesplot_theme_get()
+    save_old_theme <- bayesplot_theme_get()
+    color_scheme_set(visualOptions()$color)
     bayesplot_theme_set(eval(parse(text = 
-                                     switch(theme(),
+                                     switch(visualOptions()$theme,
                                             "bayesplot default" = "theme_default()", 
                                             "classic" = "theme_classic()",
                                             "dark" = "theme_dark()"))))
     out <- plotOut(chain = chain()) 
-    bayesplot_theme_set(save_old)
+    bayesplot_theme_set(save_old_theme)
     out
   })
   
   return(reactive({
     if(include() == TRUE){
       # customized plot options return without setting the options for the other plots
-      save_old <- bayesplot_theme_get()
+      save_old_theme <- bayesplot_theme_get()
+      color_scheme_set(visualOptions()$color)
       bayesplot_theme_set(eval(parse(text = 
-                                       switch(theme(),
+                                       switch(visualOptions()$theme,
                                               "bayesplot default" = "theme_default()", 
                                               "classic" = "theme_classic()",
                                               "dark" = "theme_dark()"))))
       out <- plotOut(chain = chain()) 
-      bayesplot_theme_set(save_old)
+      bayesplot_theme_set(save_old_theme)
       out
     } else {
       NULL

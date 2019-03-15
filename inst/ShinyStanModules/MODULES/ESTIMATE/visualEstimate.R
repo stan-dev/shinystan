@@ -2,9 +2,6 @@ visualEstimateUI <- function(id){
   # for internal namespace structure
   ns <- NS(id)
   
-  tabPanel(
-    title = "Plots",
-    id = ns("visualEstimate"),
     navlistPanel(
       id = ns("HMC_navlist"),
       tabPanel(
@@ -33,7 +30,6 @@ visualEstimateUI <- function(id){
         histogramPlotUI(ns("histogramPlot"))
       )
     )
-  )
 }
 
 
