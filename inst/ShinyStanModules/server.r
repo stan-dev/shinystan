@@ -1,4 +1,5 @@
 server <- function(input, output, session) {
+  source("MODULES/UTILS/plotOptions.r", local = TRUE)
   # home tab
   source("MODULES/HOME/homepage.r", local = TRUE)
   source("MODULES/HOME/warnings.r", local = TRUE)

@@ -22,7 +22,8 @@ treedepthUI <- function(id){
     ),
     plotOutput(ns("plot1")),
     hr(), 
-    checkboxInput(ns("report"), "Include in report?")
+    checkboxInput(ns("report"), "Include in report?"),
+    plotOptionsUI(ns("options"))
   )
 }
 
@@ -30,6 +31,8 @@ treedepthUI <- function(id){
 
 treedepth <- function(input, output, session){
     
+  theme <- callModule(plotOptions, "options")
+  
   chain <- reactive(input$diagnostic_chain)
   include <- reactive(input$report)
     
@@ -52,7 +55,7 @@ treedepth <- function(input, output, session){
         lp = data.frame(Iteration = rep(1:(shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter - shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup), 1),
                         Value = c(shinystan:::.sso_env$.SHINYSTAN_OBJECT@posterior_sample[(shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup + 1):shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter, chain,"log-posterior"]),
                         Chain = rep(chain, each = (shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter - shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup))) 
-        )
+        ) #+ theme_dark()#eval(parse(text = switch(1, "theme_default()", "theme_classic()")))
       } else {
         mcmc_nuts_treedepth(
         x = nuts_params(shinystan:::.sso_env$.SHINYSTAN_OBJECT@sampler_params %>%
@@ -62,18 +65,36 @@ treedepth <- function(input, output, session){
         lp = data.frame(Iteration = rep(1:(shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter - shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup), shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain),
                         Value = c(shinystan:::.sso_env$.SHINYSTAN_OBJECT@posterior_sample[(shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup + 1):shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter, ,"log-posterior"]),
                         Chain = rep(1:shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain, each = (shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter - shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup))) 
-        )
+        ) #+ theme_dark() #eval(parse(text = switch(1, "theme_default()", "theme_classic()")))
       }
       
     }  
   
   output$plot1 <- renderPlot({
-    plotOut(chain = chain())
+    # change plot theme based on selection for this plot, thereafter change back.
+    save_old <- bayesplot_theme_get()
+    bayesplot_theme_set(eval(parse(text = 
+                                     switch(theme(),
+                                            "bayesplot default" = "theme_default()", 
+                                            "classic" = "theme_classic()",
+                                            "dark" = "theme_dark()"))))
+    out <- plotOut(chain = chain()) 
+    bayesplot_theme_set(save_old)
+    out
   })
   
   return(reactive({
     if(include() == TRUE){
-      plotOut(chain = chain())
+      # customized plot options return without setting the options for the other plots
+      save_old <- bayesplot_theme_get()
+      bayesplot_theme_set(eval(parse(text = 
+                                       switch(theme(),
+                                              "bayesplot default" = "theme_default()", 
+                                              "classic" = "theme_classic()",
+                                              "dark" = "theme_dark()"))))
+      out <- plotOut(chain = chain()) 
+      bayesplot_theme_set(save_old)
+      out
     } else {
       NULL
     }
