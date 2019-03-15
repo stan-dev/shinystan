@@ -51,6 +51,25 @@ server <- function(input, output, session) {
     stopApp()
   )
   
+  # transformation options
+  transformation_choices <-
+    c(
+      "abs", "atanh",
+      cauchit = "pcauchy", "cloglog",
+      "exp", "expm1",
+      "identity", "inverse", inv_logit = "plogis",
+      "log", "log10", "log2", "log1p", logit = "qlogis",
+      probit = "pnorm",
+      "square", "sqrt"
+    )
+  
+  inverse <- function(x) 1/x
+  cloglog <- function(x) log(-log1p(-x))
+  square <- function(x) x^2
+  
+  
+  
+  
   # this is used to reference the HTML links to the correct page on the homepage
   # module. Need to find a way to actually incorporate this in the module and not
   # in the main server file.

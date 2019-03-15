@@ -1,18 +1,6 @@
 divergentScatterUI <- function(id){
   ns <- NS(id)
   
-  inverse <- function(x) 1/x
-  cloglog <- function(x) log(-log1p(-x))
-  square <- function(x) x^2
-  transformation_choices <- c(
-    "abs", "atanh",
-    cauchit = "pcauchy", "cloglog",
-    "exp", "expm1",
-    "identity", "inverse", inv_logit = "plogis",
-    "log", "log10", "log2", "log1p", logit = "qlogis",
-    probit = "pnorm", "square", "sqrt"
-  )
-  
   tagList(
     wellPanel(
       fluidRow(
@@ -29,27 +17,27 @@ divergentScatterUI <- function(id){
                )
         ),
         column(width = 4,
+               tags$head(tags$style(HTML("
+                                           .shiny-split-layout > div {
+                                           overflow: visible;
+                                           }
+                                           "))), # overflow of splitlayout didn't work, so this is a fix. 
                splitLayout(
-                 div(style = "width: 100px;",
+                 div(style = "width: 90%;",
                      selectInput(
                        inputId = ns("transformation"),
-                       label = h5("Transformx X"),
+                       label = h5("Transform X"),
                        choices = transformation_choices,
                        selected = "identity"
                      )),
-                 div(style = "width: 100px;",
+                 div(style = "width: 90%;",
                      selectInput(
                        inputId = ns("transformation2"),
                        label = h5("Transform Y") ,
                        choices = transformation_choices,
                        selected = "identity"
                      )
-                 ),
-                 tags$head(tags$style(HTML("
-                                           .shiny-split-layout > div {
-                                           overflow: visible;
-                                           }
-                                           "))) # overflow of splitlayout didn't work, so this is a fix. 
+                 )
                  )
         ),
         column(width = 4, align = "right",
@@ -74,7 +62,7 @@ divergentScatterUI <- function(id){
 
 
 divergentScatter <- function(input, output, session){
-  
+ 
   chain <- reactive(input$diagnostic_chain)
   param <- reactive(input$diagnostic_param)
   include <- reactive(input$report)

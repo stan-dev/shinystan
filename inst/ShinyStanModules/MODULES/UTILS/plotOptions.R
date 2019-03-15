@@ -18,8 +18,8 @@ plotOptions <- function(input, output, session){
   output$optionsPanel <- renderUI({
     tagList(
       
-      wellPanel(
-        splitLayout(
+      
+        splitLayout(align = "left",
         selectInput(session$ns("theme"), label = "Select Theme", 
                     choices = c("bayesplot default",
                                 "classic",
@@ -32,7 +32,7 @@ plotOptions <- function(input, output, session){
                                 "mix-blue-red"))
           
         )
-        )
+        
     )
   })
   
