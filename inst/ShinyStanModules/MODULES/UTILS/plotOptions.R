@@ -9,7 +9,10 @@ plotOptionsUI <- function(id){
   )
 }
 
-plotOptions <- function(input, output, session){
+plotOptions <- function(input, output, session, ...){
+  
+  input_names <- names(list(...))
+  # print(input_names)
   
   observe({
     toggle("optionsPanel", condition = input$showOptions)
@@ -18,21 +21,34 @@ plotOptions <- function(input, output, session){
   output$optionsPanel <- renderUI({
     tagList(
       
+      column(width = 6, 
+             splitLayout(align = "left",
+                         selectInput(session$ns("theme"), label = "Select Theme", 
+                                     choices = c("bayesplot default",
+                                                 "classic",
+                                                 "dark"),
+                                     selected = "bayesplot default"),
+                         selectInput(session$ns("color"), label = "Select Colors",
+                                     choices = c("blue", "brightblue", "gray",
+                                                 "darkgray", "green", "pink", "purple",
+                                                 "red", "teal", "yellow", "mix-blue-pink", 
+                                                 "mix-blue-red"))
+             )
+      ),
+      column(width = 6,
+             splitLayout(
+               if("divOptions" %in% input_names == TRUE){
+                 selectInput(session$ns("divColor"), label = "Select Divergent Color",
+                             choices = c("blue", "gray",
+                                         "darkgray", "green", "pink", "purple",
+                                         "red", "yellow"),
+                             selected = "red")
+               },
+               if("histOptions" %in% input_names == TRUE){
+                 NULL
+               }
+             ))
       
-        splitLayout(align = "left",
-        selectInput(session$ns("theme"), label = "Select Theme", 
-                    choices = c("bayesplot default",
-                                "classic",
-                                "dark"),
-                    selected = "bayesplot default"),
-        selectInput(session$ns("color"), label = "Select Colors",
-                    choices = c("blue", "brightblue", "gray",
-                                "darkgray", "green", "pink", "purple",
-                                "red", "teal", "yellow", "mix-blue-pink", 
-                                "mix-blue-red"))
-          
-        )
-        
     )
   })
   
@@ -40,6 +56,7 @@ plotOptions <- function(input, output, session){
     out <- list()
     out$theme <- ifelse(!is.null(input$theme), input$theme, "bayesplot default")
     out$color <- ifelse(!is.null(input$color), input$color, "blue")
+    out$divColor <- ifelse(!is.null(input$divColor), input$divColor, "red")
     out
   })
   

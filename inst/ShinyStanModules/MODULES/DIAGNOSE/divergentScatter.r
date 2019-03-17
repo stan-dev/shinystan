@@ -4,7 +4,7 @@ divergentScatterUI <- function(id){
   tagList(
     wellPanel(
       fluidRow(
-        column(width = 4, 
+        column(width = 6, 
                verticalLayout(
                selectizeInput(
                  inputId = ns("diagnostic_param"),
@@ -40,7 +40,7 @@ divergentScatterUI <- function(id){
                  )
                  )
         ),
-        column(width = 4, align = "right",
+        column(width = 2, align = "right",
                div(style = "width: 100px;",
                    numericInput(
                      ns("diagnostic_chain"),
@@ -52,9 +52,17 @@ divergentScatterUI <- function(id){
                    )
                )
         )
+      ),
+      fluidRow(
+        align = "right",
+        plotOptionsUI(ns("options"))
       )
     ),
     plotOutput(ns("plot1")),
+    checkboxInput(ns("showCaption"), "Show/Hide Caption"),
+    hidden(
+      uiOutput(ns("caption"))
+    ),
     hr(), 
     checkboxInput(ns("report"), "Include in report?")
   )
@@ -63,6 +71,8 @@ divergentScatterUI <- function(id){
 
 divergentScatter <- function(input, output, session){
  
+  visualOptions <- callModule(plotOptions, "options", divOptions = TRUE)
+  
   chain <- reactive(input$diagnostic_chain)
   param <- reactive(input$diagnostic_param)
   include <- reactive(input$report)
@@ -87,9 +97,8 @@ divergentScatter <- function(input, output, session){
   })
   
   
-  plotOut <- function(parameters, chain, transformations){
+  plotOut <- function(parameters, chain, transformations, div_color = "red"){
     
-    color_scheme_set("darkgray")
     validate(
       need(length(parameters) == 2, "Select two parameters.")
     )
@@ -113,28 +122,64 @@ divergentScatter <- function(input, output, session){
                       lapply(., as.matrix)) 
         
       },
-      np_style = scatter_style_np(div_color = "green", div_alpha = 0.8)
-    ) + labs(#title = "",
+      np_style = scatter_style_np(div_color = div_color, div_alpha = 0.8)
+    ) #+ labs(#title = "",
       #subtitle = "Generated via ShinyStan",
-      caption = paste0("Scatter plot of ", parameters[1]," and ", parameters[2],
-                       " with highlighted divergent transitions."))
+      # caption = paste0("Scatter plot of ", parameters[1]," and ", parameters[2],
+      #                 " with highlighted divergent transitions."))
     
     
   }
   
   output$plot1 <- renderPlot({
-    plotOut(parameters = param(), chain = chain(),
-            transformations = transform())
+    save_old_theme <- bayesplot_theme_get()
+    color_scheme_set(visualOptions()$color)
+    bayesplot_theme_set(eval(parse(text = 
+                                     switch(visualOptions()$theme,
+                                            "bayesplot default" = "theme_default()", 
+                                            "classic" = "theme_classic()",
+                                            "dark" = "theme_dark()"))))
+    out <- plotOut(parameters = param(), chain = chain(),
+                   transformations = transform(), div_color = visualOptions()$divColor)
+    bayesplot_theme_set(save_old_theme)
+    out
   })
+  
+  
+  observe({
+    toggle("caption", condition = input$showCaption)
+  })
+  
+  output$caption <- renderUI({
+    HTML(paste0("This is a plot of MCMC draws of <i>", param()[1], "</i> (x-axis) against <i>",
+                param()[2], "</i> (y-axis). The ", visualOptions()$divColor, 
+                " colored draws represent, if present, divergent transitions.",
+                " Divergent transitions can indicate problems for the validity of the results.",
+                " A good plot would show no divergent transitions. A bad plot would show ",
+                "divergent transitions in a systematic patern. ",
+                "For more information see ",
+                tags$a('https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup'), "."))
+  })
+  
   
   
   
   return(reactive({
     if(include() == TRUE){
-    plotOut(parameters = param(), chain = chain(),
-                           transformations = transform())
+      # customized plot options return without setting the options for the other plots
+      save_old_theme <- bayesplot_theme_get()
+      color_scheme_set(visualOptions()$color)
+      bayesplot_theme_set(eval(parse(text = 
+                                       switch(visualOptions()$theme,
+                                              "bayesplot default" = "theme_default()", 
+                                              "classic" = "theme_classic()",
+                                              "dark" = "theme_dark()"))))
+      out <- plotOut(parameters = param(), chain = chain(),
+                     transformations = transform(), div_color = visualOptions()$divColor)
+      bayesplot_theme_set(save_old_theme)
+      out
     } else {
-    NULL
+      NULL
     }
   }))
   
