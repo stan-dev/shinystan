@@ -75,11 +75,7 @@ divergentTransitions <- function(input, output, session){
   output$plot1 <- renderPlot({
     save_old_theme <- bayesplot_theme_get()
     color_scheme_set(visualOptions()$color)
-    bayesplot_theme_set(eval(parse(text = 
-                                     switch(visualOptions()$theme,
-                                            "bayesplot default" = "theme_default()", 
-                                            "classic" = "theme_classic()",
-                                            "dark" = "theme_dark()"))))
+    bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
     out <- plotOut(chain = chain()) 
     bayesplot_theme_set(save_old_theme)
     out
@@ -91,11 +87,7 @@ divergentTransitions <- function(input, output, session){
       # customized plot options return without setting the options for the other plots
       save_old_theme <- bayesplot_theme_get()
       color_scheme_set(visualOptions()$color)
-      bayesplot_theme_set(eval(parse(text = 
-                                       switch(visualOptions()$theme,
-                                              "bayesplot default" = "theme_default()", 
-                                              "classic" = "theme_classic()",
-                                              "dark" = "theme_dark()"))))
+      bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
       out <- plotOut(chain = chain()) 
       bayesplot_theme_set(save_old_theme)
       out

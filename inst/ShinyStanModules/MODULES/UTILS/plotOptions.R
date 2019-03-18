@@ -36,7 +36,7 @@ plotOptions <- function(input, output, session, ...){
              )
       ),
       column(width = 6,
-             splitLayout(
+             splitLayout(align = "left",
                if("divOptions" %in% input_names == TRUE){
                  selectInput(session$ns("divColor"), label = "Select Divergent Color",
                              choices = c("blue", "gray",

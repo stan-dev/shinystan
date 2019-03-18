@@ -39,6 +39,10 @@ autoCorrelationUI <- function(id){
                      )
                  )
         )
+      ),
+      fluidRow(
+        align = "right",
+        plotOptionsUI(ns("options"))
       )
     ),
     plotOutput(ns("plot1")),
@@ -50,6 +54,7 @@ autoCorrelationUI <- function(id){
 
 autoCorrelation <- function(input, output, session){
 
+  visualOptions <- callModule(plotOptions, "options")  
   chain <- reactive(input$diagnostic_chain)
   param <- reactive(input$diagnostic_param)
   lags <- reactive(input$diagnostic_lags)
@@ -67,7 +72,7 @@ autoCorrelation <- function(input, output, session){
   # create function to make the plot and call in renderplot and return
   # needed to return plots from module so that we can use them in report.
   plotOut <- function(chain, lags, parameters) {
-    color_scheme_set("blue")
+    
     validate(
       need(length(parameters) > 0, "Select at least one parameter."),
       need(is.na(chain) == FALSE, "Select chains"),
@@ -83,17 +88,29 @@ autoCorrelation <- function(input, output, session){
     )
   }
   
+  
   output$plot1 <- renderPlot({
-    plotOut(chain = chain(), lags = lags(), parameters = param())
+    # change plot theme based on selection for this plot, thereafter change back.
+    save_old_theme <- bayesplot_theme_get()
+    color_scheme_set(visualOptions()$color)
+    bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
+    out <- plotOut(chain = chain(), lags = lags(), parameters = param())
+    bayesplot_theme_set(save_old_theme)
+    out
   })
   
   return(reactive({
     if(include() == TRUE){
-      plotOut(chain = chain(), lags = lags(), parameters = param())
+      # customized plot options return without setting the options for the other plots
+      save_old_theme <- bayesplot_theme_get()
+      color_scheme_set(visualOptions()$color)
+      bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
+      out <- plotOut(chain = chain(), lags = lags(), parameters = param())
+      bayesplot_theme_set(save_old_theme)
+      out
     } else {
       NULL
     }
   }))
-  
-  
+
 }

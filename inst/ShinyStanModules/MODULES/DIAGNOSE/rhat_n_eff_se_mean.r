@@ -15,37 +15,6 @@ rhat_n_eff_se_meanUI <- function(id){
         column(width = 6,
                uiOutput(ns("conditionalSlider"))
         )
-        # splitLayout(
-        # sliderInput(
-        #   ns("rhat_threshold"),
-        #   withMathJax("\\(\\hat{R} \\text{ warning threshold}\\) "),
-        #   ticks = FALSE,
-        #   value = 1.1,
-        #   min = 1,
-        #   max = 1.2,
-        #   step = 0.01
-        # ),
-        #   sliderInput(
-        #   ns("n_eff_threshold"),
-        #   withMathJax("\\(n_{eff} \\text{ / } \\textit{N} \\text{ warning threshold}\\) "),
-        #   ticks = FALSE,
-        #   value = 10,
-        #   min = 0,
-        #   max = 100,
-        #   step = 5,
-        #   post = "%"
-        # ),
-        #   sliderInput(
-        #     ns("mcse_threshold"),
-        #     "\\(\\text{se}_{mean} \\text{ / } \\textit{sd} \\text{ warning threshold}\\) ",
-        #     ticks = FALSE,
-        #     value = 10,
-        #     min = 0,
-        #     max = 100,
-        #     step = 5,
-        #     post = "%"
-        #   )
-        # )
       )
     ),
     uiOutput(ns("conditionalUI"))

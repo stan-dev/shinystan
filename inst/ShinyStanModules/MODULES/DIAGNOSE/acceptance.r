@@ -18,6 +18,10 @@ acceptanceUI <- function(id){
                      )
                  )
         )
+      ),
+      fluidRow(
+        align = "right",
+        plotOptionsUI(ns("options"))
       )
     ),
     plotOutput(ns("plot1")),
@@ -29,6 +33,7 @@ acceptanceUI <- function(id){
 
 acceptance <- function(input, output, session){
   
+  visualOptions <- callModule(plotOptions, "options")  
   chain <- reactive(input$diagnostic_chain)
   include <- reactive(input$report)
   
@@ -39,8 +44,6 @@ acceptance <- function(input, output, session){
   })
   
   plotOut <- function(chain) {
-    
-    color_scheme_set("blue")
     
     if(chain != 0) {
       mcmc_nuts_acceptance(
@@ -66,12 +69,24 @@ acceptance <- function(input, output, session){
   }
   
   output$plot1 <- renderPlot({
-    plotOut(chain = chain())
+    # change plot theme based on selection for this plot, thereafter change back.
+    save_old_theme <- bayesplot_theme_get()
+    color_scheme_set(visualOptions()$color)
+    bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
+    out <- plotOut(chain = chain()) 
+    bayesplot_theme_set(save_old_theme)
+    out
   })
   
   return(reactive({
     if(include() == TRUE){
-      plotOut(chain = chain())
+      # customized plot options return without setting the options for the other plots
+      save_old_theme <- bayesplot_theme_get()
+      color_scheme_set(visualOptions()$color)
+      bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
+      out <- plotOut(chain = chain()) 
+      bayesplot_theme_set(save_old_theme)
+      out
     } else {
       NULL
     }

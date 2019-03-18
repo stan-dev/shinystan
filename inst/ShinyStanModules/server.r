@@ -67,7 +67,13 @@ server <- function(input, output, session) {
   cloglog <- function(x) log(-log1p(-x))
   square <- function(x) x^2
   
-  
+  # to reduce code in modules for selecting theme's in Options.
+  select_theme <- function(name){
+    switch(name,
+           "bayesplot default" = "theme_default()", 
+           "classic" = "theme_classic()",
+           "dark" = "theme_dark()")
+  }
   
   
   # this is used to reference the HTML links to the correct page on the homepage
