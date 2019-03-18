@@ -15,38 +15,22 @@ rhat_n_eff_se_meanUI <- function(id){
         column(width = 6,
                uiOutput(ns("conditionalSlider"))
         )
+      ),
+      fluidRow(align = "right",
+               uiOutput(ns("conditionalPlotOptions"))
       )
     ),
     uiOutput(ns("conditionalUI"))
-    # fluidRow(
-    #   column(width = 12,
-    #          splitLayout(
-    #            verticalLayout(
-    #              h4(withMathJax("\\(\\hat{R}\\)")),
-    #              textOutput(ns("rhat"))   
-    #            ),
-    #            verticalLayout(
-    #              h4(withMathJax("\\(n_{eff} / N\\)")),
-    #              textOutput(ns("n_eff"))
-    #            ),
-    #            verticalLayout(
-    #              h4(withMathJax("\\(mcse / sd\\)")),
-    #              uiOutput(ns("se_mean"))
-    #            )
-    #          )
-    #   )
-    # ),
-    # fluidRow(
-    #   column(width = 4, plotOutput(ns("rhatPlot"))),
-    #   column(width = 4, plotOutput(ns("n_effPlot"))),
-    #   column(width = 4, plotOutput(ns("se_meanPlot")))
-    # )
+    
   )
 }
 
 
 rhat_n_eff_se_mean <- function(input, output, session){
   
+  visualOptions_rhat <- callModule(plotOptions, "options_rhat")  
+  visualOptions_n_eff <- callModule(plotOptions, "options_n_eff")  
+  visualOptions_se_mean <- callModule(plotOptions, "options_se_mean")  
   stat <- reactive({input$selectStat})
   
   output$conditionalSlider <- renderUI({
@@ -104,14 +88,27 @@ rhat_n_eff_se_mean <- function(input, output, session){
     }
   })
   
+  output$conditionalPlotOptions <- renderUI({
+    if(stat() == "\\(\\hat{R}\\)"){
+      plotOptionsUI(session$ns("options_rhat"))
+    } else {
+      if(stat() == "\\(n_{eff}\\)"){
+        plotOptionsUI(session$ns("options_n_eff"))
+      } else {
+        if(stat() == "\\(\\text{se}_{mean} \\text{ / } \\textit{sd}\\)"){
+          plotOptionsUI(session$ns("options_se_mean"))
+        }
+      }
+    }
+  })
+  
+  
   # first plot functions than renderPlots using functions to enable pushing back plots out of module
   plotOut_rhat <- function(){
-    color_scheme_set("blue")
     mcmc_rhat_hist(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "Rhat"])
   }
   
   plotOut_n_eff <- function(){
-    color_scheme_set("blue")
     mcmc_neff_hist(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "n_eff"] / ((shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter - shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) * shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain))
   }
   
@@ -125,8 +122,6 @@ rhat_n_eff_se_mean <- function(input, output, session){
                                                          labels = c(expression(MC[se] / sd <= 0.1),
                                                                     expression(MC[se] / sd <= 0.5),
                                                                     expression(MC[se] / sd > 0.5)))))
-    
-    color_scheme_set("blue")
     ggplot(data = se_sd_table, mapping = aes_(x = ~value, color = ~rating, fill = ~rating)) +
       geom_histogram(size = 0.25, na.rm = TRUE) +
       labs(x = expression(MC[se] / sd),y = NULL) +
@@ -135,16 +130,32 @@ rhat_n_eff_se_mean <- function(input, output, session){
       theme(legend.position = "none")
   }
   
+  
   output$rhatPlot <- renderPlot({
-    plotOut_rhat()
+    save_old_theme <- bayesplot_theme_get()
+    color_scheme_set(visualOptions_rhat()$color)
+    bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_rhat()$theme)))) 
+    out <- plotOut_rhat()
+    bayesplot_theme_set(save_old_theme)
+    out
   })
   
   output$n_effPlot <- renderPlot({
-    plotOut_n_eff()
+    save_old_theme <- bayesplot_theme_get()
+    color_scheme_set(visualOptions_n_eff()$color)
+    bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_n_eff()$theme)))) 
+    out <- plotOut_n_eff()
+    bayesplot_theme_set(save_old_theme)
+    out
   })
   
   output$se_meanPlot <- renderPlot({
-    plotOut_se_mean()
+    save_old_theme <- bayesplot_theme_get()
+    color_scheme_set(visualOptions_se_mean()$color)
+    bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_se_mean()$theme)))) 
+    out <- plotOut_se_mean()
+    bayesplot_theme_set(save_old_theme)
+    out
   })
   
   # needed to get a FALSE value for including plot in report if the page 
@@ -169,11 +180,64 @@ rhat_n_eff_se_mean <- function(input, output, session){
     ifelse(any(!is.na(include_se_mean())), input$report_se_mean, FALSE)
   })
   
+  
+  output$rhat <- renderText({
+    
+    bad_rhat <- rownames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)[shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "Rhat"] > reactive(input$rhat_threshold)()]
+    bad_rhat <- bad_rhat[!is.na(bad_rhat)]
+    rhatWarning <- paste0("The following parameters have an Rhat value above ",
+                          reactive(input$rhat_threshold)(), ": ",
+                          paste(bad_rhat, collapse = ", "))
+    
+    if(length(bad_rhat) < 1){
+      paste0("No parameters have an Rhat value above ", reactive(input$rhat_threshold)(), ".")
+    } else {
+      rhatWarning
+    }
+  })
+  
+  output$n_eff <- renderText({
+    
+    bad_n_eff <- rownames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)[shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "n_eff"] / ((shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter- shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) * shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain) <
+                                                                            (reactive(input$n_eff_threshold)() / 100)]
+    bad_n_eff <- bad_n_eff[!is.na(bad_n_eff)]
+    n_effWarning <- paste0("The following parameters have an effective sample size less than ",
+                           reactive(input$n_eff_threshold)(), "% of the total sample size: ",
+                           paste(bad_n_eff, collapse = ", "))
+    
+    if(length(bad_n_eff) < 1){
+      paste0("No parameters have an effective sample size less than ",
+             reactive(input$n_eff_threshold)(), "% of the total sample size.")
+    } else {
+      n_effWarning
+    }
+  })
+  
+  
+  output$se_mean <- renderText({
+    
+    bad_se_mean <- rownames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)[shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "se_mean"] / shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "sd"] >
+                                                                              (reactive(input$mcse_threshold)() / 100)]
+    bad_se_mean <- bad_se_mean[!is.na(bad_se_mean)]
+    se_meanWarning <- paste0("The following parameters have a Monte Carlo standard error greater than ",
+                             reactive(input$mcse_threshold)(), "% of the posterior standard deviation: ",
+                             paste(bad_se_mean, collapse = ", "))
+    
+    if(length(bad_se_mean) < 1){
+      paste0("No parameters have a standard error greater than ",
+                  reactive(input$mcse_threshold)(), "% of the posterior standard deviation.")
+    } else {
+      se_meanWarning
+    }
+  })
+  
+  
   output$conditionalUI <- renderUI({
     if(stat() == "\\(\\hat{R}\\)"){
       tagList(
         withMathJax(),
         plotOutput(session$ns("rhatPlot")),
+        textOutput(session$ns("rhat")),
         hr(), 
         checkboxInput(session$ns("report_rhat"), "Include in report?", value = include_report_rhat())
       )
@@ -182,6 +246,7 @@ rhat_n_eff_se_mean <- function(input, output, session){
         tagList(
           withMathJax(),
           plotOutput(session$ns("n_effPlot")),
+          textOutput(session$ns("n_eff")),
           hr(), 
           checkboxInput(session$ns("report_n_eff"), "Include in report?", value = include_report_n_eff())
         )
@@ -190,6 +255,7 @@ rhat_n_eff_se_mean <- function(input, output, session){
           tagList(
             withMathJax(),
             plotOutput(session$ns("se_meanPlot")),
+            textOutput(session$ns("se_mean")),
             hr(), 
             checkboxInput(session$ns("report_se_mean"), "Include in report?", value = include_report_se_mean())
           )
@@ -198,77 +264,7 @@ rhat_n_eff_se_mean <- function(input, output, session){
     }
   })
   
-  
-  # 
-  # 
-  
-  
-  # 
-  # 
-  # output$rhat <- renderText({
-  #   
-  #   bad_rhat <- rownames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)[shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "Rhat"] > reactive(input$rhat_threshold)()]
-  #   bad_rhat <- bad_rhat[!is.na(bad_rhat)]
-  #   rhatWarning <- paste0("The following parameters have an Rhat value above ", 
-  #                         reactive(input$rhat_threshold)(), ":<br>",
-  #                         paste(bad_rhat, collapse = ", "))
-  #   
-  #   if(length(bad_rhat) < 1){
-  #     paste0("No parameters have an Rhat value above ", reactive(input$rhat_threshold)(), ".")
-  #   } else {
-  #     rhatWarning
-  #   }
-  # })
-  # 
-  # output$n_eff <- renderText({
-  #   
-  #   bad_n_eff <- rownames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)[shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "n_eff"] / ((shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter- shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) * shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain) < 
-  #                                        (reactive(input$n_eff_threshold)() / 100)]
-  #   bad_n_eff <- bad_n_eff[!is.na(bad_n_eff)]
-  #   n_effWarning <- paste0("The following parameters have an effective sample size less than ", 
-  #                          reactive(input$n_eff_threshold)(), "% of the total sample size:<br>",
-  #                          paste(bad_n_eff, collapse = ", "))
-  #   
-  #   if(length(bad_n_eff) < 1){
-  #     paste0("No parameters have an effective sample size less than ",
-  #                 reactive(input$n_eff_threshold)(), "% of the total sample size.")
-  #   } else {
-  #     n_effWarning
-  #   }
-  # })
-  # 
-  # 
-  # output$se_mean <- renderUI({
-  #   
-  #   bad_se_mean <- rownames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)[shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "se_mean"] / shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "sd"] > 
-  #                                          (reactive(input$mcse_threshold)() / 100)]
-  #   bad_se_mean <- bad_se_mean[!is.na(bad_se_mean)]
-  #   se_meanWarning <- paste0("The following parameters have a Monte Carlo standard error greater than ",
-  #                            reactive(input$mcse_threshold)(), "% of the posterior standard deviation:<br>",
-  #                            paste(bad_se_mean, collapse = ", "))
-  #   
-  #   if(length(bad_se_mean) < 1){
-  #     HTML(paste0("<div style='background-color:lightblue; color:black; 
-  #                 padding:5px; opacity:.3'>",
-  #                 "No parameters have a standard error greater than ", 
-  #                 reactive(input$mcse_threshold)(), "% of the posterior standard deviation.", 
-  #                 "</div>"))
-  #   } else {
-  #     HTML(paste0("<div style='background-color:red; color:white; 
-  #                 padding:5px; opacity:.3'>",
-  #                 se_meanWarning, "</div>"))
-  #   }
-  # })
-  # 
-  # return(reactive({
-  #   list("rhatPlot" = plotOut_rhat(),
-  #        "n_effPlot" = plotOut_n_eff(),
-  #        "se_meanPlot" = plotOut_se_mean())
-  # }))
-  # 
 
-  
-  
 # Did not find a functioning better system yet for creating the correct list output. Should exist....
   return(reactive({
 
@@ -281,7 +277,14 @@ rhat_n_eff_se_mean <- function(input, output, session){
     } else {
       if(include_report_rhat() == TRUE & include_report_n_eff() == FALSE & include_report_se_mean() == FALSE){
         list(
-          "rhatPlot" = plotOut_rhat(),
+          "rhatPlot" = {
+            save_old_theme <- bayesplot_theme_get()
+            color_scheme_set(visualOptions_rhat()$color)
+            bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_rhat()$theme)))) 
+            out <- plotOut_rhat()
+            bayesplot_theme_set(save_old_theme)
+            out
+          },
           "n_effPlot" = NULL,
           "se_meanPlot" = NULL
         )
@@ -289,7 +292,14 @@ rhat_n_eff_se_mean <- function(input, output, session){
         if(include_report_rhat() == FALSE & include_report_n_eff() == TRUE & include_report_se_mean() == FALSE){
           list(
             "rhatPlot" = NULL,
-            "n_effPlot" = plotOut_n_eff(),
+            "n_effPlot" = {
+              save_old_theme <- bayesplot_theme_get()
+              color_scheme_set(visualOptions_n_eff()$color)
+              bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_n_eff()$theme)))) 
+              out <- plotOut_n_eff()
+              bayesplot_theme_set(save_old_theme)
+              out
+            },
             "se_meanPlot" = NULL
           )
         } else {
@@ -297,35 +307,105 @@ rhat_n_eff_se_mean <- function(input, output, session){
             list(
               "rhatPlot" = NULL,
               "n_effPlot" = NULL,
-              "se_meanPlot" = plotOut_se_mean()
+              "se_meanPlot" = {
+                save_old_theme <- bayesplot_theme_get()
+                color_scheme_set(visualOptions_se_mean()$color)
+                bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_se_mean()$theme)))) 
+                out <- plotOut_se_mean()
+                bayesplot_theme_set(save_old_theme)
+                out
+              }
             )
           } else {
             if(include_report_rhat() == TRUE & include_report_n_eff() == TRUE & include_report_se_mean() == FALSE){
               list(
-                "rhatPlot" = plotOut_rhat(),
-                "n_effPlot" = plotOut_n_eff(),
+                "rhatPlot" = {
+                  save_old_theme <- bayesplot_theme_get()
+                  color_scheme_set(visualOptions_rhat()$color)
+                  bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_rhat()$theme)))) 
+                  out <- plotOut_rhat()
+                  bayesplot_theme_set(save_old_theme)
+                  out
+                },
+                "n_effPlot" = {
+                  save_old_theme <- bayesplot_theme_get()
+                  color_scheme_set(visualOptions_n_eff()$color)
+                  bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_n_eff()$theme)))) 
+                  out <- plotOut_n_eff()
+                  bayesplot_theme_set(save_old_theme)
+                  out
+                },
                 "se_meanPlot" = NULL
               )
             } else {
               if(include_report_rhat() == TRUE & include_report_n_eff() == FALSE & include_report_se_mean() == TRUE){
                 list(
-                  "rhatPlot" = plotOut_rhat(),
+                  "rhatPlot" = {
+                    save_old_theme <- bayesplot_theme_get()
+                    color_scheme_set(visualOptions_rhat()$color)
+                    bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_rhat()$theme)))) 
+                    out <- plotOut_rhat()
+                    bayesplot_theme_set(save_old_theme)
+                    out
+                  },
                   "n_effPlot" = NULL,
-                  "se_meanPlot" = plotOut_se_mean()
+                  "se_meanPlot" = {
+                    save_old_theme <- bayesplot_theme_get()
+                    color_scheme_set(visualOptions_se_mean()$color)
+                    bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_se_mean()$theme)))) 
+                    out <- plotOut_se_mean()
+                    bayesplot_theme_set(save_old_theme)
+                    out
+                  }
                 )
               } else {
                 if(include_report_rhat() == FALSE & include_report_n_eff() == TRUE & include_report_se_mean() == TRUE){
                   list(
                     "rhatPlot" = NULL,
-                    "n_effPlot" = plotOut_n_eff(),
-                    "se_meanPlot" = plotOut_se_mean()
+                    "n_effPlot" = {
+                      save_old_theme <- bayesplot_theme_get()
+                      color_scheme_set(visualOptions_n_eff()$color)
+                      bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_n_eff()$theme)))) 
+                      out <- plotOut_n_eff()
+                      bayesplot_theme_set(save_old_theme)
+                      out
+                    },
+                    "se_meanPlot" = {
+                      save_old_theme <- bayesplot_theme_get()
+                      color_scheme_set(visualOptions_se_mean()$color)
+                      bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_se_mean()$theme)))) 
+                      out <- plotOut_se_mean()
+                      bayesplot_theme_set(save_old_theme)
+                      out
+                    }
                   )
                 } else {
                   if( include_report_rhat() == TRUE & include_report_n_eff() == TRUE & include_report_se_mean() == TRUE){
                     list(
-                      "rhatPlot" = plotOut_rhat(),
-                      "n_effPlot" = plotOut_n_eff(),
-                      "se_meanPlot" = plotOut_se_mean()
+                      "rhatPlot" = {
+                        save_old_theme <- bayesplot_theme_get()
+                        color_scheme_set(visualOptions_rhat()$color)
+                        bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_rhat()$theme)))) 
+                        out <- plotOut_rhat()
+                        bayesplot_theme_set(save_old_theme)
+                        out
+                      },
+                      "n_effPlot" = {
+                        save_old_theme <- bayesplot_theme_get()
+                        color_scheme_set(visualOptions_n_eff()$color)
+                        bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_n_eff()$theme)))) 
+                        out <- plotOut_n_eff()
+                        bayesplot_theme_set(save_old_theme)
+                        out
+                      },
+                      "se_meanPlot" = {
+                        save_old_theme <- bayesplot_theme_get()
+                        color_scheme_set(visualOptions_se_mean()$color)
+                        bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_se_mean()$theme)))) 
+                        out <- plotOut_se_mean()
+                        bayesplot_theme_set(save_old_theme)
+                        out
+                      }
                     )
                   }
                   

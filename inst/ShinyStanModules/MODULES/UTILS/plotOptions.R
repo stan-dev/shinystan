@@ -27,22 +27,23 @@ plotOptions <- function(input, output, session, ...){
                                      choices = c("bayesplot default",
                                                  "classic",
                                                  "dark"),
-                                     selected = "bayesplot default"),
+                                     selected = input$theme),
                          selectInput(session$ns("color"), label = "Select Colors",
                                      choices = c("blue", "brightblue", "gray",
                                                  "darkgray", "green", "pink", "purple",
                                                  "red", "teal", "yellow", "mix-blue-pink", 
-                                                 "mix-blue-red"))
+                                                 "mix-blue-red"),
+                                     selected = input$color)
              )
       ),
       column(width = 6,
              splitLayout(align = "left",
                if("divOptions" %in% input_names == TRUE){
                  selectInput(session$ns("divColor"), label = "Select Divergent Color",
-                             choices = c("blue", "gray",
+                             choices = c("red", "blue", "gray",
                                          "darkgray", "green", "pink", "purple",
-                                         "red", "yellow"),
-                             selected = "red")
+                                         "yellow"),
+                             selected = input$divColor)
                },
                if("histOptions" %in% input_names == TRUE){
                  NULL
