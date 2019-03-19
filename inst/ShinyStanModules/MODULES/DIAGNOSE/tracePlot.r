@@ -29,6 +29,10 @@ tracePlotUI <- function(id){
                      )
                  )
         )
+      ),
+      fluidRow(
+        align = "right",
+        plotOptionsUI(ns("options"))
       )
     ),
     plotOutput(ns("plot1")),
@@ -41,6 +45,7 @@ tracePlotUI <- function(id){
 
 tracePlot <- function(input, output, session){
     
+  visualOptions <- callModule(plotOptions, "options", divOptions = TRUE)
   chain <- reactive(input$diagnostic_chain)
   param <- reactive(input$diagnostic_param)
   include <- reactive(input$report)
@@ -51,8 +56,7 @@ tracePlot <- function(input, output, session){
     paste("Chain", chain())
   })
   
-  plotOut <- function(parameters, chain) {
-    color_scheme_set("mix-blue-pink")
+  plotOut <- function(parameters, chain, div_color = "red"){
     validate(
       need(length(parameters) > 0, "Select at least one parameter.")
     )
@@ -72,28 +76,43 @@ tracePlot <- function(input, output, session){
                       lapply(., as.data.frame) %>%
                       lapply(., filter, row_number() > shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) %>%
                       lapply(., as.matrix))
-      }
+      },
+      np_style = scatter_style_np(div_color = div_color, div_size = .25)
       )} else {
         mcmc_trace( if(chain != 0) {
           shinystan:::.sso_env$.SHINYSTAN_OBJECT@posterior_sample[(1 + shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) : shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter, chain, ]
         } else {
           shinystan:::.sso_env$.SHINYSTAN_OBJECT@posterior_sample[(1 + shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) : shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter, , ]
-        }, pars = parameters) 
+        }, pars = parameters,
+        np_style = scatter_style_np(div_color = div_color, div_size = .25)) 
       }
     
   }
   
+  
+  
   output$plot1 <- renderPlot({
-    plotOut(parameters = param(), chain = chain())
+    # change plot theme based on selection for this plot, thereafter change back.
+    save_old_theme <- bayesplot_theme_get()
+    color_scheme_set(visualOptions()$color)
+    bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
+    out <- plotOut(parameters = param(), chain = chain(), div_color = visualOptions()$divColor)
+    bayesplot_theme_set(save_old_theme)
+    out
   })
   
   return(reactive({
     if(include() == TRUE){
-      plotOut(chain = chain(), parameters = param())
+      # customized plot options return without setting the options for the other plots
+      save_old_theme <- bayesplot_theme_get()
+      color_scheme_set(visualOptions()$color)
+      bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
+      out <- plotOut(parameters = param(), chain = chain(), div_color = visualOptions()$divColor)
+      bayesplot_theme_set(save_old_theme)
+      out
     } else {
       NULL
     }
   }))
-  
   
 }

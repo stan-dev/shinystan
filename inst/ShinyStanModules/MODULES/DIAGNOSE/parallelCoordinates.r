@@ -4,7 +4,7 @@ parallelCoordinatesUI <- function(id){
   tagList(
     wellPanel(
       fluidRow(
-        column(width = 4, 
+        column(width = 6, 
                verticalLayout(
                  selectizeInput(
                    inputId = ns("diagnostic_param"),
@@ -19,7 +19,7 @@ parallelCoordinatesUI <- function(id){
                br(),br(),
                actionButton(ns("generatePlot"), "Generate Parcoord Plot", class = "generatePlot")
         ),
-        column(width = 4, align = "right",
+        column(width = 2, align = "right",
                  div(style = "width: 100px;",
                      numericInput(
                        ns("diagnostic_chain"),
@@ -31,6 +31,10 @@ parallelCoordinatesUI <- function(id){
                      )
                  )
         )
+      ),
+      fluidRow(
+        align = "right",
+        plotOptionsUI(ns("options"))
       )
     ),
     uiOutput(ns("plotUI"))
@@ -40,6 +44,7 @@ parallelCoordinatesUI <- function(id){
 
 parallelCoordinates <- function(input, output, session){
   
+  visualOptions <- callModule(plotOptions, "options", divOptions = TRUE)
   chain <- reactive(input$diagnostic_chain)
   param <- reactive(input$diagnostic_param)
   
@@ -47,6 +52,10 @@ parallelCoordinates <- function(input, output, session){
   include <- reactive(input$report)
   include_report <- reactive({
     ifelse(!is.null(include()), include(), FALSE)
+  })
+  
+  visualOptions_reactive <- eventReactive(input$generatePlot, {
+    visualOptions()
   })
   
   param_reactive <- eventReactive(input$generatePlot, {
@@ -64,10 +73,12 @@ parallelCoordinates <- function(input, output, session){
     paste("Chain", chain())
   })
   
-  plotOut <- function(parameters, chain){
+  plotOut <- function(parameters, chain, div_color = "red"){
     
-      color_scheme_set("darkgray")
-      
+    validate(
+      need(length(parameters) > 1, "Select at least two parameters.")
+    )
+    
       if(chain != 0) {
         mcmc_parcoord(
           x = shinystan:::.sso_env$.SHINYSTAN_OBJECT@posterior_sample[(1 + shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) : shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter, chain, ],
@@ -75,7 +86,8 @@ parallelCoordinates <- function(input, output, session){
           np = nuts_params(list(shinystan:::.sso_env$.SHINYSTAN_OBJECT@sampler_params[[chain]]) %>%
                              lapply(., as.data.frame) %>%
                              lapply(., filter, row_number() > shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) %>%
-                             lapply(., as.matrix))
+                             lapply(., as.matrix)),
+          np_style = scatter_style_np(div_color = div_color, div_size = .25)
         )
       } else {
         mcmc_parcoord(
@@ -84,16 +96,22 @@ parallelCoordinates <- function(input, output, session){
           np = nuts_params(shinystan:::.sso_env$.SHINYSTAN_OBJECT@sampler_params %>%
                              lapply(., as.data.frame) %>%
                              lapply(., filter, row_number() > shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) %>%
-                             lapply(., as.matrix))
+                             lapply(., as.matrix)),
+          np_style = scatter_style_np(div_color = div_color, div_size = .25)
         )
       }
     
   }
   
-  
   observeEvent(input$generatePlot, {
     output$plot1 <- renderPlot({
-      plotOut(parameters = param_reactive(), chain = chain_reactive())
+      save_old_theme <- bayesplot_theme_get()
+      color_scheme_set(visualOptions_reactive()$color)
+      bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_reactive()$theme)))) 
+      out <- plotOut(parameters = param_reactive(), chain = chain_reactive(), 
+                     div_color = visualOptions_reactive()$divColor)
+      bayesplot_theme_set(save_old_theme)
+      out
     })
   })
   
@@ -109,7 +127,13 @@ parallelCoordinates <- function(input, output, session){
   
   return(reactive({
     if(include_report() == TRUE){
-      plotOut(parameters = param_reactive(), chain = chain_reactive())
+      save_old_theme <- bayesplot_theme_get()
+      color_scheme_set(visualOptions_reactive()$color)
+      bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_reactive()$theme)))) 
+      out <- plotOut(parameters = param_reactive(), chain = chain_reactive(), 
+                     div_color = visualOptions_reactive()$divColor)
+      bayesplot_theme_set(save_old_theme)
+      out
     } else {
       NULL
     }
