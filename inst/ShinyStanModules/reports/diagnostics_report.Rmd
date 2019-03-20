@@ -1,0 +1,27 @@
+---
+title: "ShinyStan Diagnostics Report"
+output: pdf_document
+params:
+  divergentScatterPlot: NA
+  pairsPlot: NA
+  parcoordPlot: NA 
+  divergentTransitionsPlot: NA
+  energyPlot: NA
+  treedepthPlot: NA
+  stepSizePlot: NA
+  acceptancePlot: NA
+  tracePlot: NA
+  rhatPlot: NA
+  n_effPlot: NA
+  se_meanPlot: NA
+  autoCorrelationPlot: NA
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# The `params` object is available in the document.
+lapply(params, print)
+```
