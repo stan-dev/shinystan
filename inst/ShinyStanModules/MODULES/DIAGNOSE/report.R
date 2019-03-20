@@ -48,9 +48,15 @@ report <- function(input, output, session, ggplotsList, ...) {
       # Copy the report file to a temporary directory before processing it, in
       # case we don't have write permissions to the current working dir (which
       # can happen when deployed).
-      tempReport <- file.path(tempdir(), "diagnostics_report.Rmd")
-      file.copy("reports/diagnostics_report.Rmd", tempReport, overwrite = TRUE)
+      tempDirectory <- tempdir()
+      tempReport <- file.path(tempDirectory, "diagnostics_report.Rmd")
+      tempStanFig <- file.path(tempDirectory, "stan_logo.png")
+      tempStanFig2 <- file.path(tempDirectory, "wide_ensemble.png")
       
+        
+      file.copy("reports/diagnostics_report.Rmd", tempReport, overwrite = TRUE)
+      file.copy('www/stan_logo.png', tempStanFig, overwrite = TRUE)   
+      file.copy('www/wide_ensemble.png', tempStanFig2, overwrite = TRUE)   
       # Set up parameters to pass to Rmd document
       params <- ggplotsList()
       

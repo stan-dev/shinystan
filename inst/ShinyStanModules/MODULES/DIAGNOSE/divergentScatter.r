@@ -146,15 +146,27 @@ divergentScatter <- function(input, output, session){
     toggle("caption", condition = input$showCaption)
   })
   
-  output$caption <- renderUI({
-    HTML(paste0("This is a plot of MCMC draws of <i>", param()[1], "</i> (x-axis) against <i>",
-                param()[2], "</i> (y-axis). The ", visualOptions()$divColor, 
+  
+  captionOut <- function(parameters, div_color){
+    HTML(paste0("This is a plot of MCMC draws of <i>", parameters[1], "</i> (x-axis) against <i>",
+                parameters[2], "</i> (y-axis). The ", div_color, 
                 " colored draws represent, if present, divergent transitions.",
                 " Divergent transitions can indicate problems for the validity of the results.",
                 " A good plot would show no divergent transitions. A bad plot would show ",
                 "divergent transitions in a systematic patern. ",
                 "For more information see ",
                 tags$a('https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup'), "."))
+  }
+  output$caption <- renderUI({
+    # HTML(paste0("This is a plot of MCMC draws of <i>", param()[1], "</i> (x-axis) against <i>",
+    #             param()[2], "</i> (y-axis). The ", visualOptions()$divColor, 
+    #             " colored draws represent, if present, divergent transitions.",
+    #             " Divergent transitions can indicate problems for the validity of the results.",
+    #             " A good plot would show no divergent transitions. A bad plot would show ",
+    #             "divergent transitions in a systematic patern. ",
+    #             "For more information see ",
+    #             tags$a('https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup'), "."))
+    captionOut(parameters = param(), div_color = visualOptions()$divColor)
   })
   
   
@@ -166,8 +178,9 @@ divergentScatter <- function(input, output, session){
       save_old_theme <- bayesplot_theme_get()
       color_scheme_set(visualOptions()$color)
       bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
-      out <- plotOut(parameters = param(), chain = chain(),
-                     transformations = transform(), div_color = visualOptions()$divColor)
+      out <- list(plot = plotOut(parameters = param(), chain = chain(),
+                                 transformations = transform(), div_color = visualOptions()$divColor),
+                  caption = captionOut(parameters = param(), div_color = visualOptions()$divColor))
       bayesplot_theme_set(save_old_theme)
       out
     } else {

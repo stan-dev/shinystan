@@ -21,7 +21,14 @@ params:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r}
-# The `params` object is available in the document.
-lapply(params, print)
+
+<!-- ![](./wide_ensemble.png) -->
+
+<!-- ![](./stan_logo.png) -->
+
+```{r, echo = FALSE, message = FALSE, eval = !is.null(params$divergentScatterPlot)}
+print(params$divergentScatterPlot$plot)
+shiny::HTML(params$divergentScatterPlot$caption)
 ```
+
+
