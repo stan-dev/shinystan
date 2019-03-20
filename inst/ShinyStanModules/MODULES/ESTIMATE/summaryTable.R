@@ -4,35 +4,27 @@ summaryTableUI <- function(id){
   tagList(
     wellPanel(
       fluidRow(
-        column(width = 3),
-        column(width = 4, h5("Parameter")),
-        column(width = 4, h5("Decimals"))
-      ),
-      fluidRow(
-        column(
-          width = 3),
-        column(
-          width = 4,
-          selectizeInput(
-            inputId = ns("diagnostic_param"),
-            label = NULL,
-            multiple = TRUE,
-            choices = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names,
-            selected = if(length(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names) > 9) shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[1:10] else shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names
-          )
-        ),
-        column(
-          width = 4,
-          div(style = "width: 100px;",
-              numericInput(
-                ns("sampler_digits"),
-                label = NULL,
-                value = 2,
-                min = 0,
-                max = 10,
-                step = 1
-              )
-          )
+        column(width = 6,
+               selectizeInput(
+                 inputId = ns("diagnostic_param"),
+                 label = h5("Parameter"),
+                 multiple = TRUE,
+                 choices = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names,
+                 selected = if(length(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names) > 9) shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[1:10] else shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names
+               )
+               ), 
+        column(width = 4),
+        column(width = 2, align = "right",
+               div(style = "width: 100px;",
+                   numericInput(
+                     ns("sampler_digits"),
+                     label = h5("Decimals"),
+                     value = 2,
+                     min = 0,
+                     max = 10,
+                     step = 1
+                   )
+               )
         )
       )
     ),

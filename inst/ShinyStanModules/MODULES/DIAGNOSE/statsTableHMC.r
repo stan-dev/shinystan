@@ -4,45 +4,38 @@ statsTableHMCUI <- function(id){
   tagList(
     wellPanel(
       fluidRow(
-        column(width = 3, h5("Warmup")),
-        column(width = 4, h5("Statistic")),
-        column(width = 4, h5("Decimals"))
-      ),
-      fluidRow(
-        column(
-          width = 3,
-          radioButtons(
-            ns("sampler_warmup"),
-            label = NULL,
-            choices = list(Omit = "omit", Include = "include"),
-            inline = TRUE
-          )
-        ),
-        column(
-          width = 4,
-          radioButtons(
-            ns("sampler_report"),
-            label = NULL,
-            choices = list(
-              Mean = "average",
-              SD = "sd",
-              Max = "maximum",
-              Min = "minimum"
-            ),
-            inline = TRUE
-          )
-        ),column(
-          width = 4,
-          div(style = "width: 100px;",
-          numericInput(
-            ns("sampler_digits"),
-            label = NULL,
-            value = 2,
-            min = 0,
-            max = 10,
-            step = 1
-          )
-          )
+        column(width = 6,
+               radioButtons(
+                 ns("sampler_report"),
+                 label = h5("Statistic"),
+                 choices = list(
+                   Mean = "average",
+                   SD = "sd",
+                   Max = "maximum",
+                   Min = "minimum"
+                 ),
+                 inline = TRUE
+               )
+               ), 
+        column(width = 4,
+               radioButtons(
+                 ns("sampler_warmup"),
+                 label = h5("Warmup"),
+                 choices = list(Omit = "omit", Include = "include"),
+                 inline = TRUE
+               )
+               ),
+        column(width = 2, align = "right",
+               div(style = "width: 100px;",
+                   numericInput(
+                     ns("sampler_digits"),
+                     label = h5("Decimals"),
+                     value = 2,
+                     min = 0,
+                     max = 10,
+                     step = 1
+                   )
+               )
         )
       )
     ),

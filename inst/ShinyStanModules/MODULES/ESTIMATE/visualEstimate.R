@@ -40,11 +40,12 @@ visualEstimate <- function(input, output, session){
   callModule(scatterPlot, "scatterPlot")
   callModule(densityPlot, "densityPlot")
   callModule(histogramPlot, "histogramPlot")
-  callModule(intervalsPlot, "intervalsPlot")
-  callModule(areasPlot, "areasPlot")
+  getIntervalsPlot <- callModule(intervalsPlot, "intervalsPlot")
+  getAreasPlot <- callModule(areasPlot, "areasPlot")
  
   return(reactive({
-    list("areas" = NULL,
+    list("intervalsPlot" = getIntervalsPlot(),
+         "areasPlot" = getAreasPlot(),
          "density" = NULL)
     }))
   

@@ -4,7 +4,7 @@ autoCorrelationUI <- function(id){
   tagList(
     wellPanel(
       fluidRow(
-        column(width = 4, 
+        column(width = 6, 
                verticalLayout(
                  selectizeInput(
                    inputId = ns("diagnostic_param"),
@@ -27,7 +27,7 @@ autoCorrelationUI <- function(id){
                    )
                )
         ),
-        column(width = 4, align = "right",
+        column(width = 2, align = "right",
                  div(style = "width: 100px;",
                      numericInput(
                        ns("diagnostic_chain"),

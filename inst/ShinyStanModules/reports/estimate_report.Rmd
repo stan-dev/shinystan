@@ -2,6 +2,7 @@
 title: "ShinyStan Estimate Report"
 output: pdf_document
 params:
+  intervalsPlot: NA
   areasPlot: NA
   densityPlot: NA
 ---
@@ -9,6 +10,15 @@ params:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+```{r, echo = FALSE, message = FALSE, eval = !is.null(params$intervalsPlot)}
+print(params$intervalsPlot$intervalsPlot)
+```
+
+```{r, echo = FALSE, message = FALSE, eval = !is.null(params$areasPlot)}
+print(params$areasPlot$areasPlot)
+```
+
 
 
 ![](./wide_ensemble.png)

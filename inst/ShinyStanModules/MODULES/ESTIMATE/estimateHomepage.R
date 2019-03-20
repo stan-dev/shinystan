@@ -14,13 +14,14 @@ estimate <- function(input, output, session){
   getVisualPlots <- callModule(visualEstimate, "visualEstimate")
   callModule(numericalEstimate, "numericalEstimate")
   
-  getDiagnosePlots <- reactive({
-    list("areasPlot" = getVisualPlots()["areas"],
+  getEstimatePlots <- reactive({
+    list("intervalsPlot" = getVisualPlots()["intervalsPlot"],
+         "areasPlot" = getVisualPlots()["areasPlot"],
          "densityPlot" = getVisualPlots()["density"]
     )
   })
   
-  callModule(report, "report", ggplotsList = getDiagnosePlots, reportType = "estimateReport")
+  callModule(report, "report", ggplotsList = getEstimatePlots, reportType = "estimateReport")
   
   
   output$estimateHomepage <- renderUI({
