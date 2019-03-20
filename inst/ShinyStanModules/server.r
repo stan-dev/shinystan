@@ -1,5 +1,8 @@
 server <- function(input, output, session) {
+  # utilities
   source("MODULES/UTILS/plotOptions.r", local = TRUE)
+  source("MODULES/UTILS/report.r", local = TRUE)
+  
   # home tab
   source("MODULES/HOME/homepage.r", local = TRUE)
   source("MODULES/HOME/warnings.r", local = TRUE)
@@ -22,8 +25,6 @@ server <- function(input, output, session) {
   
   source("MODULES/DIAGNOSE/statsTableHMC.r", local = TRUE)
   source("MODULES/DIAGNOSE/rhat_n_eff_se_mean_stats.r", local = TRUE)
-  
-  source("MODULES/DIAGNOSE/report.r", local = TRUE)
   
   # estimate tab
   source("MODULES/ESTIMATE/estimateHomepage.r", local = TRUE)

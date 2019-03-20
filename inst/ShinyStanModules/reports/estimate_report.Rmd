@@ -1,0 +1,19 @@
+---
+title: "ShinyStan Estimate Report"
+output: pdf_document
+params:
+  areasPlot: NA
+  densityPlot: NA
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+![](./wide_ensemble.png)
+
+![](./stan_logo.png)
+
+
+

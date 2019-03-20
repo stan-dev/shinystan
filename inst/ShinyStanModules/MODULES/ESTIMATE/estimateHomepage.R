@@ -20,7 +20,7 @@ estimate <- function(input, output, session){
     )
   })
   
-  callModule(report, "report", ggplotsList = getDiagnosePlots)
+  callModule(report, "report", ggplotsList = getDiagnosePlots, reportType = "estimateReport")
   
   
   output$estimateHomepage <- renderUI({

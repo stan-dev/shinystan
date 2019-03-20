@@ -47,7 +47,7 @@ diagnose <- function(input, output, session){
     })
     
     
-    callModule(report, "report", ggplotsList = getDiagnosePlots)
+    callModule(report, "report", ggplotsList = getDiagnosePlots, reportType = "diagnoseReport")
     }
   
   if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_method == "sampling" & shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_algorithm != "NUTS"){

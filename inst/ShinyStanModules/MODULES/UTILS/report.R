@@ -27,7 +27,7 @@ reportUI <- function(id) {
   
 }
 
-report <- function(input, output, session, ggplotsList, ...) {
+report <- function(input, output, session, ggplotsList, reportType, ...) {
   
   # input_names <- names(list(...))
   # print(input_names)
@@ -49,12 +49,14 @@ report <- function(input, output, session, ggplotsList, ...) {
       # case we don't have write permissions to the current working dir (which
       # can happen when deployed).
       tempDirectory <- tempdir()
-      tempReport <- file.path(tempDirectory, "diagnostics_report.Rmd")
+      if(reportType == "diagnoseReport") tempReport <- file.path(tempDirectory, "diagnostics_report.Rmd")
+      if(reportType == "estimateReport") tempReport <- file.path(tempDirectory, "estimate_report.Rmd")
       tempStanFig <- file.path(tempDirectory, "stan_logo.png")
       tempStanFig2 <- file.path(tempDirectory, "wide_ensemble.png")
       
         
-      file.copy("reports/diagnostics_report.Rmd", tempReport, overwrite = TRUE)
+      if(reportType == "diagnoseReport") file.copy("reports/diagnostics_report.Rmd", tempReport, overwrite = TRUE)
+      if(reportType == "estimateReport") file.copy("reports/estimate_report.Rmd", tempReport, overwrite = TRUE)
       file.copy('www/stan_logo.png', tempStanFig, overwrite = TRUE)   
       file.copy('www/wide_ensemble.png', tempStanFig2, overwrite = TRUE)   
       # Set up parameters to pass to Rmd document
