@@ -3,70 +3,64 @@ scatterPlotUI <- function(id){
   tagList(
     wellPanel(
       fluidRow(
-        column(width = 3),
-        column(width = 4, h5("Parameter")),
-        column(width = 4, h5("Transformation"))
+        column(width = 6, 
+               verticalLayout(
+                 selectizeInput(
+                   inputId = ns("diagnostic_param"),
+                   label = h5("Parameter"),
+                   multiple = TRUE,
+                   choices = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names,
+                   selected = c(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[1],shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[which(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names == "log-posterior")]),
+                   options = list(maxItems = 2)
+                 )
+               )
+        ),
+        column(width = 4,
+               tags$head(tags$style(HTML("
+                                         .shiny-split-layout > div {
+                                         overflow: visible;
+                                         }
+                                         "))), # overflow of splitlayout didn't work, so this is a fix. 
+               splitLayout(
+                 div(style = "width: 90%;",
+                     selectInput(
+                       inputId = ns("transformation"),
+                       label = h5("Transform X"),
+                       choices = transformation_choices,
+                       selected = "identity"
+                     )),
+                 div(style = "width: 90%;",
+                     selectInput(
+                       inputId = ns("transformation2"),
+                       label = h5("Transform Y") ,
+                       choices = transformation_choices,
+                       selected = "identity"
+                     )
+                 )
+               )
+        ),
+        column(width = 2, align = "right"
+        )
       ),
       fluidRow(
-        column(width = 3),
-        column(
-          width = 4,
-          selectizeInput(
-            inputId = ns("diagnostic_param"),
-            label = NULL,
-            multiple = TRUE,
-            choices = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names,
-            selected = c(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[1],shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[which(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names == "log-posterior")]),
-            options = list(maxItems = 2)
-          )
-        ),
-        column(
-          width = 4,
-          uiOutput(ns("transform"))
-        )
+        align = "right",
+        plotOptionsUI(ns("options"))
       )
     ),
-    plotOutput(ns("plot1"))
+    plotOutput(ns("plot1")),
+    hr(), 
+    checkboxInput(ns("report"), "Include in report?")
   )
 }
 
 
 scatterPlot <- function(input, output, session){
   
-  param <- reactive(input$diagnostic_param)
   
-  output$transform <- renderUI({
-    
-    validate(
-      need(length(param()) == 2, "Select two parameters.")
-    )
-    inverse <- function(x) 1/x
-    cloglog <- function(x) log(-log1p(-x))
-    square <- function(x) x^2
-    
-    transformation_choices <- c(
-      "abs", "atanh",
-      cauchit = "pcauchy", "cloglog",
-      "exp", "expm1",
-      "identity", "inverse", inv_logit = "plogis",
-      "log", "log10", "log2", "log1p", logit = "qlogis",
-      probit = "pnorm", "square", "sqrt"
-    )
-    fluidRow(
-      selectInput(
-        inputId = session$ns("transformation"),
-        label = NULL,
-        choices = transformation_choices,
-        selected = "identity"
-      ),
-      selectInput(
-        inputId = session$ns("transformation2"),
-        label = NULL,
-        choices = transformation_choices,
-        selected = "identity"
-      )
-    )
-  })
+  visualOptions <- callModule(plotOptions, "options")
+  
+  param <- reactive(input$diagnostic_param)
+  include <- reactive(input$report)
   
   transform1 <- reactive({input$transformation})
   transform2 <- reactive({input$transformation2})
@@ -80,18 +74,41 @@ scatterPlot <- function(input, output, session){
     out
   })
   
-  
-  
-  output$plot1 <- renderPlot({
+  plotOut <- function(parameters, chain, transformations){
     
-    color_scheme_set("darkgray")
     validate(
-      need(length(param()) == 2, "Select two parameters.")
+      need(length(parameters) == 2, "Select two parameters.")
     )
     mcmc_scatter(
       shinystan:::.sso_env$.SHINYSTAN_OBJECT@posterior_sample[(1 + shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) : shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter, , ],
-      pars = param(),
-      transformations = transform()
-    )
+      pars = parameters,
+      transformations = transformations
+    ) 
+  }
+  
+  output$plot1 <- renderPlot({
+    save_old_theme <- bayesplot_theme_get()
+    color_scheme_set(visualOptions()$color)
+    bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
+    out <- plotOut(parameters = param(),
+                   transformations = transform())
+    bayesplot_theme_set(save_old_theme)
+    out
   })
+  
+  return(reactive({
+    if(include() == TRUE){
+      # customized plot options return without setting the options for the other plots
+      save_old_theme <- bayesplot_theme_get()
+      color_scheme_set(visualOptions()$color)
+      bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
+      out <- plotOut(parameters = param(), 
+                     transformations = transform())
+      bayesplot_theme_set(save_old_theme)
+      out
+    } else {
+      NULL
+    }
+  }))
+  
 }

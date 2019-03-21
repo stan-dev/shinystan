@@ -4,7 +4,9 @@ output: pdf_document
 params:
   intervalsPlot: NA
   areasPlot: NA
+  scatterPlot: NA
   densityPlot: NA
+  histogramPlot: NA
 ---
 
 ```{r setup, include=FALSE}
@@ -19,11 +21,22 @@ print(params$intervalsPlot$intervalsPlot)
 print(params$areasPlot$areasPlot)
 ```
 
+```{r, echo = FALSE, message = FALSE, eval = !is.null(params$scatterPlot)}
+print(params$scatterPlot$scatterPlot)
+```
+
+```{r, echo = FALSE, message = FALSE, eval = !is.null(params$densityPlot)}
+print(params$densityPlot$densityPlot)
+```
+
+```{r, echo = FALSE, message = FALSE, eval = !is.null(params$histogramPlot)}
+print(params$histogramPlot$histogramPlot)
+```
 
 
-![](./wide_ensemble.png)
+<!-- ![](./wide_ensemble.png) -->
 
-![](./stan_logo.png)
+<!-- ![](./stan_logo.png) -->
 
 
 

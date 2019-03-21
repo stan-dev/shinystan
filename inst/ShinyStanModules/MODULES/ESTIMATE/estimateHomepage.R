@@ -17,7 +17,9 @@ estimate <- function(input, output, session){
   getEstimatePlots <- reactive({
     list("intervalsPlot" = getVisualPlots()["intervalsPlot"],
          "areasPlot" = getVisualPlots()["areasPlot"],
-         "densityPlot" = getVisualPlots()["density"]
+         "scatterPlot" = getVisualPlots()["scatterPlot"],
+         "densityPlot" = getVisualPlots()["densityPlot"],
+         "histogramPlot" = getVisualPlots()["histogramPlot"]
     )
   })
   
