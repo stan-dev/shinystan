@@ -71,11 +71,17 @@ divergentScatterUI <- function(id){
 
 divergentScatter <- function(input, output, session){
  
-  visualOptions <- callModule(plotOptions, "options", divOptions = TRUE)
+  visualOptions <- callModule(plotOptions, "options", 
+                              divOptions = TRUE, alphaOptions = TRUE,
+                              alphaDivOptions = TRUE)
   
   chain <- reactive(input$diagnostic_chain)
   param <- reactive(input$diagnostic_param)
   include <- reactive(input$report)
+  
+  observe({
+    toggle("caption", condition = input$showCaption)
+  })
   
   transform1 <- reactive({input$transformation})
   transform2 <- reactive({input$transformation2})
@@ -97,7 +103,8 @@ divergentScatter <- function(input, output, session){
   })
   
   
-  plotOut <- function(parameters, chain, transformations, div_color = "red"){
+  plotOut <- function(parameters, chain, transformations, div_color = "red",
+                      opacity = 0.8, opacityDiv = 0.8){
     
     validate(
       need(length(parameters) == 2, "Select two parameters.")
@@ -110,6 +117,7 @@ divergentScatter <- function(input, output, session){
       },
       pars = parameters,
       transformations = transformations,
+      alpha = opacity,
       np = if(chain != 0) {
         nuts_params(list(shinystan:::.sso_env$.SHINYSTAN_OBJECT@sampler_params[[chain]]) %>%
                       lapply(., as.data.frame) %>%
@@ -122,7 +130,7 @@ divergentScatter <- function(input, output, session){
                       lapply(., as.matrix)) 
         
       },
-      np_style = scatter_style_np(div_color = div_color, div_alpha = 0.8)
+      np_style = scatter_style_np(div_color = div_color, div_alpha = opacityDiv)
     ) #+ labs(#title = "",
       #subtitle = "Generated via ShinyStan",
       # caption = paste0("Scatter plot of ", parameters[1]," and ", parameters[2],
@@ -135,15 +143,11 @@ divergentScatter <- function(input, output, session){
     save_old_theme <- bayesplot_theme_get()
     color_scheme_set(visualOptions()$color)
     bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
-    out <- plotOut(parameters = param(), chain = chain(),
-                   transformations = transform(), div_color = visualOptions()$divColor)
+    out <- plotOut(parameters = param(), chain = chain(), opacity = visualOptions()$alpha,
+                   transformations = transform(), div_color = visualOptions()$divColor,
+                   opacityDiv = visualOptions()$alphaDiv)
     bayesplot_theme_set(save_old_theme)
     out
-  })
-  
-  
-  observe({
-    toggle("caption", condition = input$showCaption)
   })
   
   
@@ -158,14 +162,6 @@ divergentScatter <- function(input, output, session){
                 tags$a('https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup'), "."))
   }
   output$caption <- renderUI({
-    # HTML(paste0("This is a plot of MCMC draws of <i>", param()[1], "</i> (x-axis) against <i>",
-    #             param()[2], "</i> (y-axis). The ", visualOptions()$divColor, 
-    #             " colored draws represent, if present, divergent transitions.",
-    #             " Divergent transitions can indicate problems for the validity of the results.",
-    #             " A good plot would show no divergent transitions. A bad plot would show ",
-    #             "divergent transitions in a systematic patern. ",
-    #             "For more information see ",
-    #             tags$a('https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup'), "."))
     captionOut(parameters = param(), div_color = visualOptions()$divColor)
   })
   
@@ -178,8 +174,9 @@ divergentScatter <- function(input, output, session){
       save_old_theme <- bayesplot_theme_get()
       color_scheme_set(visualOptions()$color)
       bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
-      out <- list(plot = plotOut(parameters = param(), chain = chain(),
-                                 transformations = transform(), div_color = visualOptions()$divColor),
+      out <- list(plot = plotOut(parameters = param(), chain = chain(), opacity = visualOptions()$alpha,
+                                 transformations = transform(), div_color = visualOptions()$divColor,
+                                 opacityDiv = visualOptions()$alphaDiv),
                   caption = captionOut(parameters = param(), div_color = visualOptions()$divColor))
       bayesplot_theme_set(save_old_theme)
       out

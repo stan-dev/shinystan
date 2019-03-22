@@ -25,6 +25,10 @@ stepSizeUI <- function(id){
       )
     ),
     plotOutput(ns("plot1")),
+    checkboxInput(ns("showCaption"), "Show/Hide Caption"),
+    hidden(
+      uiOutput(ns("caption"))
+    ),
     hr(), 
     checkboxInput(ns("report"), "Include in report?")
   )
@@ -39,6 +43,10 @@ stepSize <- function(input, output, session){
   chain <- reactive(input$diagnostic_chain)
   include <- reactive(input$report)
     
+  observe({
+    toggle("caption", condition = input$showCaption)
+  })
+  
     output$diagnostic_chain_text <- renderText({
       if (chain() == 0)
         return("All chains")
@@ -80,13 +88,31 @@ stepSize <- function(input, output, session){
       out
     })
     
+    
+    captionOut <- function(){
+      HTML(paste0("These are plots of the <i> integrator step size per chain</i> (x-axis)",
+                  " against the <i> log-posterior </i> (y-axis top panel) and against the",
+                  " <i> acceptance statistic </i> (y-axis bottom panel) of the sampling algorithm.",
+                  " If the step size is too large, the integrator will be inaccurate and too many proposals will be rejected.",
+                  " If the step size is too small, the many small steps lead to long simulation times per interval.",
+                  " Thus the goal is to balance the acceptance rate between these extremes.",
+                  " Good plots will show full exploration of the log-posterior and moderate to high acceptance rates",
+                  " for all chains and step sizes.", " Bad plots might show incomplete exploration of the log-posterior",
+                  " and lower acceptance rates for larger step sizes."))
+    }
+    output$caption <- renderUI({
+      captionOut()
+    })
+    
+    
     return(reactive({
       if(include() == TRUE){
         # customized plot options return without setting the options for the other plots
         save_old_theme <- bayesplot_theme_get()
         color_scheme_set(visualOptions()$color)
         bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
-        out <- plotOut(chain = chain()) 
+        out <- list(plot = plotOut(chain = chain()), 
+                    caption = captionOut())
         bayesplot_theme_set(save_old_theme)
         out
       } else {

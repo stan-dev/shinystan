@@ -79,12 +79,27 @@ plotOptions <- function(input, output, session, ...){
                                                    "classic",
                                                    "dark"),
                                        selected = input$theme),
+                           verticalLayout(
                            selectInput(session$ns("color"), label = h5("Select Colors"),
                                        choices = c("blue", "brightblue", "gray",
                                                    "darkgray", "green", "pink", "purple",
                                                    "red", "teal", "yellow", "mix-blue-pink", 
                                                    "mix-blue-red"),
-                                       selected = input$color)
+                                       selected = input$color),
+                           if("alphaOptions" %in% input_names == TRUE){
+                             div(style = "width: 90%;",
+                                 sliderInput(
+                                   inputId = session$ns("alpha"),
+                                   label = h5("Opacity"),
+                                   width = "90%",
+                                   ticks = FALSE,
+                                   min = 0,
+                                   max = 1,
+                                   value = opacity(),
+                                   step = 0.1
+                                 ))
+                           } 
+                           )
                )
              }
       ),
@@ -99,6 +114,19 @@ plotOptions <- function(input, output, session, ...){
                                                    "yellow"),
                                        selected = input$divColor)
                          },
+                         if("alphaDivOptions" %in% input_names == TRUE) {
+                           div(style = "width: 90%;",
+                               sliderInput(
+                                 inputId = session$ns("alphaDiv"),
+                                 label = h5("Opacity Divergences"),
+                                 width = "90%",
+                                 ticks = FALSE,
+                                 min = 0.1,
+                                 max = 1,
+                                 value = opacityDiv(),
+                                 step = 0.1
+                               ))
+                         },
                          if("intervalOptions" %in% input_names == TRUE){
                            radioButtons(
                              inputId = session$ns("param_plot_point_est"),
@@ -108,12 +136,8 @@ plotOptions <- function(input, output, session, ...){
                              inline = TRUE
                            )
                          }
-                         ))
-                         ,
-                         if("histOptions" %in% input_names == TRUE){
-                           NULL
-                         } else {
-                           if("areasOptions" %in% input_names == TRUE){
+                         )),
+                         if("areasOptions" %in% input_names == TRUE){
                              radioButtons(
                                inputId = session$ns("areas_ridges"),
                                label = h5("Plot Type"),
@@ -122,8 +146,7 @@ plotOptions <- function(input, output, session, ...){
                                inline = TRUE
                              )
                            }
-                         }
-             ))
+                         ))
       
     )
   })
@@ -132,6 +155,14 @@ plotOptions <- function(input, output, session, ...){
   outer_ci <- reactive({
     if(is.null(input$param_plot_ci_level_outer)) 95 else input$param_plot_ci_level_outer
   })
+  opacity <- reactive({
+    if(is.null(input$alpha)) 0.8 else input$alpha
+  })
+  opacityDiv <- reactive({
+    if(is.null(input$alphaDiv)) 0.8 else input$alphaDiv
+  })
+  
+  
   
   plotTheme <- reactive({
     out <- list()
@@ -142,6 +173,8 @@ plotOptions <- function(input, output, session, ...){
     out$outer_ci <- ifelse(!is.null(input$param_plot_ci_level_outer), input$param_plot_ci_level_outer, 95)
     out$point_est <- ifelse(!is.null(input$param_plot_point_est), input$param_plot_point_est, "Median")
     out$areas_ridges <- ifelse(!is.null(input$areas_ridges), input$areas_ridges, "Areas")
+    out$alpha <- ifelse(!is.null(input$alpha), input$alpha, 0.8)
+    out$alphaDiv <- ifelse(!is.null(input$alphaDiv), input$alphaDiv, 0.8)
     out
   })
   
