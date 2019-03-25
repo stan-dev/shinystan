@@ -25,6 +25,10 @@ acceptanceUI <- function(id){
       )
     ),
     plotOutput(ns("plot1")),
+    checkboxInput(ns("showCaption"), "Show/Hide Caption"),
+    hidden(
+      uiOutput(ns("caption"))
+    ),
     hr(), 
     checkboxInput(ns("report"), "Include in report?")
   )
@@ -36,6 +40,10 @@ acceptance <- function(input, output, session){
   visualOptions <- callModule(plotOptions, "options")  
   chain <- reactive(input$diagnostic_chain)
   include <- reactive(input$report)
+  
+  observe({
+    toggle("caption", condition = input$showCaption)
+  })
   
   output$diagnostic_chain_text <- renderText({
     if (chain() == 0)
@@ -78,13 +86,30 @@ acceptance <- function(input, output, session){
     out
   })
   
+  captionOut <- function(){
+    HTML(paste0("These are plots of the <i> acceptance statistic</i> (top leftpanel),",
+                " the <i> log-posterior </i> (top right panel), and, the <i> acceptance statistic</i> ",
+                "(x-axis bottom panel) against the <i> log-posterior </i> (y-axis bottom panel) for ",
+                tolower(if (chain() == 0) {"All chains"} else {paste("Chain", chain())}), ".",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                " "))
+  }
+  output$caption <- renderUI({
+    captionOut()
+  })
+  
   return(reactive({
     if(include() == TRUE){
       # customized plot options return without setting the options for the other plots
       save_old_theme <- bayesplot_theme_get()
       color_scheme_set(visualOptions()$color)
       bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
-      out <- plotOut(chain = chain()) 
+      out <- list(plot = plotOut(chain = chain()), 
+                  caption = captionOut())
       bayesplot_theme_set(save_old_theme)
       out
     } else {

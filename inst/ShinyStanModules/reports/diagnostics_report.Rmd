@@ -33,13 +33,29 @@ shiny::HTML(params$divergentScatterPlot$caption)
 
 <!-- pairsPlot: NA -->
 
-<!--   parcoordPlot: NA  -->
 
-<!--   divergentTransitionsPlot: NA -->
+```{r, echo = FALSE, message = FALSE, eval = !is.null(params$parcoordPlot)}
+print(params$parcoordPlot$plot)
+shiny::HTML(params$parcoordPlot$caption)
+```
 
-<!--   energyPlot: NA -->
 
-<!--   treedepthPlot: NA -->
+```{r, echo = FALSE, message = FALSE, eval = !is.null(params$divergentTransitionsPlot)}
+print(params$divergentTransitionsPlot$plot)
+shiny::HTML(params$divergentTransitionsPlot$caption)
+```
+
+
+```{r, echo = FALSE, message = FALSE, eval = !is.null(params$energyPlot)}
+print(params$energyPlot$plot)
+shiny::HTML(params$energyPlot$caption)
+```
+
+
+```{r, echo = FALSE, message = FALSE, eval = !is.null(params$treedepthPlot)}
+print(params$treedepthPlot$plot)
+shiny::HTML(params$treedepthPlot$caption)
+```
 
   
 ```{r, echo = FALSE, message = FALSE, eval = !is.null(params$stepSizePlot)}
@@ -47,7 +63,11 @@ print(params$stepSizePlot$plot)
 shiny::HTML(params$stepSizePlot$caption)
 ```
 
-  <!-- acceptancePlot: NA -->
+
+```{r, echo = FALSE, message = FALSE, eval = !is.null(params$acceptancePlot)}
+print(params$acceptancePlot$plot)
+shiny::HTML(params$acceptancePlot$caption)
+```
   
   <!-- tracePlot: NA -->
   

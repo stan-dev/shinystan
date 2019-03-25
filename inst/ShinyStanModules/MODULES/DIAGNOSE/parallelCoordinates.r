@@ -48,6 +48,10 @@ parallelCoordinates <- function(input, output, session){
   chain <- reactive(input$diagnostic_chain)
   param <- reactive(input$diagnostic_param)
   
+  observe({
+    toggle("caption", condition = input$showCaption)
+  })
+  
   # structure needed to get FALSE for report inclusion if variable is logical(0)
   include <- reactive(input$report)
   include_report <- reactive({
@@ -119,19 +123,43 @@ parallelCoordinates <- function(input, output, session){
     output$plotUI <-   renderUI({
       tagList(
         plotOutput(session$ns("plot1")),
+        checkboxInput(session$ns("showCaption"), "Show/Hide Caption"),
+        hidden(
+          uiOutput(session$ns("caption"))
+        ),
         hr(), 
         checkboxInput(session$ns("report"), "Include in report?", value = include())
       )
     })
   })
   
+  captionOut <- function(parameters, div_color){
+    HTML(paste0("This is a parallel coordinates plot of MCMC draws of <i>", 
+                paste(parameters[1:(length(parameters)-1)], collapse = ", "),
+                "</i> and <i>", parameters[length(parameters)],"</i>.",
+                " Each set of connected line segments represents a single MCMC draw.",
+                " The ", div_color, " colored draws represent, if present, divergent transitions.",
+                " Divergent transitions can indicate problems for the validity of the results.",
+                " A good plot would show no divergent transitions. A bad plot would show ",
+                "divergent transitions in a systematic patern. ",
+                "For more information see ",
+                tags$a('https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup'), " or ",
+                tags$a('http://discourse.mc-stan.org/t/concentration-of-divergences/1590/21'), "."))
+  }
+  output$caption <- renderUI({
+    captionOut(parameters = param(), div_color = visualOptions()$divColor)
+  })
+  
+  
   return(reactive({
     if(include_report() == TRUE){
       save_old_theme <- bayesplot_theme_get()
       color_scheme_set(visualOptions_reactive()$color)
       bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_reactive()$theme)))) 
-      out <- plotOut(parameters = param_reactive(), chain = chain_reactive(), 
-                     div_color = visualOptions_reactive()$divColor)
+      out <- list(plot = plotOut(parameters = param_reactive(), chain = chain_reactive(), 
+                                 div_color = visualOptions_reactive()$divColor),
+                  caption = captionOut(parameters = param(), div_color = visualOptions()$divColor))
+      
       bayesplot_theme_set(save_old_theme)
       out
     } else {
