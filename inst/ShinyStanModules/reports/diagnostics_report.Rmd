@@ -10,11 +10,11 @@ params:
   treedepthPlot: NA
   stepSizePlot: NA
   acceptancePlot: NA
+  autoCorrelationPlot: NA
   tracePlot: NA
   rhatPlot: NA
   n_effPlot: NA
   se_meanPlot: NA
-  autoCorrelationPlot: NA
 ---
 
 ```{r setup, include=FALSE}
@@ -31,7 +31,11 @@ print(params$divergentScatterPlot$plot)
 shiny::HTML(params$divergentScatterPlot$caption)
 ```
 
-<!-- pairsPlot: NA -->
+
+```{r, echo = FALSE, message = FALSE, eval = !is.null(params$pairsPlot)}
+print(params$pairsPlot$plot)
+shiny::HTML(params$pairsPlot$caption)
+```
 
 
 ```{r, echo = FALSE, message = FALSE, eval = !is.null(params$parcoordPlot)}
@@ -69,13 +73,21 @@ print(params$acceptancePlot$plot)
 shiny::HTML(params$acceptancePlot$caption)
 ```
   
-  <!-- tracePlot: NA -->
+
+```{r, echo = FALSE, message = FALSE, eval = !is.null(params$autoCorrelationPlot)}
+print(params$autoCorrelationPlot$plot)
+shiny::HTML(params$autoCorrelationPlot$caption)
+```
+
+  
+```{r, echo = FALSE, message = FALSE, eval = !is.null(params$tracePlot)}
+print(params$tracePlot$plot)
+shiny::HTML(params$tracePlot$caption)
+```
   
   <!-- rhatPlot: NA -->
   
   <!-- n_effPlot: NA -->
   
   <!-- se_meanPlot: NA -->
-  
-  <!-- autoCorrelationPlot: NA -->
 

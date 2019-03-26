@@ -46,6 +46,10 @@ autoCorrelationUI <- function(id){
       )
     ),
     plotOutput(ns("plot1")),
+    checkboxInput(ns("showCaption"), "Show/Hide Caption"),
+    hidden(
+      uiOutput(ns("caption"))
+    ),
     hr(), 
     checkboxInput(ns("report"), "Include in report?")
   )
@@ -59,6 +63,10 @@ autoCorrelation <- function(input, output, session){
   param <- reactive(input$diagnostic_param)
   lags <- reactive(input$diagnostic_lags)
   include <- reactive(input$report)
+  
+  observe({
+    toggle("caption", condition = input$showCaption)
+  })
   
   output$diagnostic_chain_text <- renderText({
     validate(
@@ -99,13 +107,32 @@ autoCorrelation <- function(input, output, session){
     out
   })
   
+  captionOut <- function(parameters){
+    HTML(paste0(if(length(parameters) == 1 & chain() != 0) {"This is an autocorrelation plot of <i>"} else {"These are autocorrelation plots of <i>"}, 
+                paste(parameters[1:(length(parameters)-1)], collapse = ", "),
+                if(length(parameters) > 1) {"</i> and <i>"}, 
+                if(length(parameters) > 1) {parameters[length(parameters)]},"</i>",
+                " for ", tolower(if (chain() == 0) {"All chains"} else {paste("Chain", chain())}), ".",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                " "))
+  }
+  output$caption <- renderUI({
+    captionOut(parameters = param())
+  })
+  
+  
   return(reactive({
     if(include() == TRUE){
       # customized plot options return without setting the options for the other plots
       save_old_theme <- bayesplot_theme_get()
       color_scheme_set(visualOptions()$color)
       bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
-      out <- plotOut(chain = chain(), lags = lags(), parameters = param())
+      out <- list(plot = plotOut(chain = chain(), lags = lags(), parameters = param()), 
+                  caption = captionOut(parameters = param()))
       bayesplot_theme_set(save_old_theme)
       out
     } else {

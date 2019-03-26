@@ -159,7 +159,6 @@ parallelCoordinates <- function(input, output, session){
       out <- list(plot = plotOut(parameters = param_reactive(), chain = chain_reactive(), 
                                  div_color = visualOptions_reactive()$divColor),
                   caption = captionOut(parameters = param(), div_color = visualOptions()$divColor))
-      
       bayesplot_theme_set(save_old_theme)
       out
     } else {

@@ -36,6 +36,10 @@ tracePlotUI <- function(id){
       )
     ),
     plotOutput(ns("plot1")),
+    checkboxInput(ns("showCaption"), "Show/Hide Caption"),
+    hidden(
+      uiOutput(ns("caption"))
+    ),
     hr(), 
     checkboxInput(ns("report"), "Include in report?")
   )
@@ -49,6 +53,11 @@ tracePlot <- function(input, output, session){
   chain <- reactive(input$diagnostic_chain)
   param <- reactive(input$diagnostic_param)
   include <- reactive(input$report)
+  
+  observe({
+    toggle("caption", condition = input$showCaption)
+  })
+  
   
   output$diagnostic_chain_text <- renderText({
     if (chain() == 0)
@@ -101,13 +110,31 @@ tracePlot <- function(input, output, session){
     out
   })
   
+  captionOut <- function(parameters){
+    HTML(paste0(if(length(parameters) == 1 & chain() != 0) {"This is an autocorrelation plot of <i>"} else {"These are autocorrelation plots of <i>"}, 
+                paste(parameters[1:(length(parameters)-1)], collapse = ", "),
+                if(length(parameters) > 1) {"</i> and <i>"}, 
+                if(length(parameters) > 1) {parameters[length(parameters)]},"</i>",
+                " for ", tolower(if (chain() == 0) {"All chains"} else {paste("Chain", chain())}), ".",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                " "))
+  }
+  output$caption <- renderUI({
+    captionOut(parameters = param())
+  })
+  
   return(reactive({
     if(include() == TRUE){
       # customized plot options return without setting the options for the other plots
       save_old_theme <- bayesplot_theme_get()
       color_scheme_set(visualOptions()$color)
       bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
-      out <- plotOut(parameters = param(), chain = chain(), div_color = visualOptions()$divColor)
+      out <- list(plot = plotOut(parameters = param(), chain = chain(), div_color = visualOptions()$divColor), 
+                  caption = captionOut(parameters = param()))
       bayesplot_theme_set(save_old_theme)
       out
     } else {
