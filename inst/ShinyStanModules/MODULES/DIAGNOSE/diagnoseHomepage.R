@@ -39,11 +39,11 @@ diagnose <- function(input, output, session){
            "treedepthPlot" = getTreedepthPlot(),
            "stepSizePlot" = getStepSizePlot(),
            "acceptancePlot" = getAcceptancePlot(),
+           "autoCorrelationPlot" = getAutoCorrelationPlot(),
            "tracePlot" = getTracePlot(),
            "rhatPlot" = getRhatNeffSEmeanPlots()["rhatPlot"],
            "n_effPlot" = getRhatNeffSEmeanPlots()["n_effPlot"],
-           "se_meanPlot" = getRhatNeffSEmeanPlots()["se_meanPlot"],
-           "autoCorrelationPlot" = getAutoCorrelationPlot())
+           "se_meanPlot" = getRhatNeffSEmeanPlots()["se_meanPlot"])
     })
     
     

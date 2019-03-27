@@ -33,6 +33,16 @@ rhat_n_eff_se_mean <- function(input, output, session){
   visualOptions_se_mean <- callModule(plotOptions, "options_se_mean")  
   stat <- reactive({input$selectStat})
   
+  observe({
+    toggle("caption_rhat", condition = input$showCaption_rhat)
+  })
+  observe({
+    toggle("caption_n_eff", condition = input$showCaption_n_eff)
+  })
+  observe({
+    toggle("caption_se_mean", condition = input$showCaption_se_mean)
+  })
+  
   output$conditionalSlider <- renderUI({
     if(stat() == "\\(\\hat{R}\\)"){
       tagList(
@@ -238,6 +248,10 @@ rhat_n_eff_se_mean <- function(input, output, session){
         withMathJax(),
         plotOutput(session$ns("rhatPlot")),
         textOutput(session$ns("rhat")),
+        checkboxInput(session$ns("showCaption_rhat"), "Show/Hide Caption"),
+        hidden(
+          uiOutput(session$ns("caption_rhat"))
+        ),
         hr(), 
         checkboxInput(session$ns("report_rhat"), "Include in report?", value = include_report_rhat())
       )
@@ -247,6 +261,10 @@ rhat_n_eff_se_mean <- function(input, output, session){
           withMathJax(),
           plotOutput(session$ns("n_effPlot")),
           textOutput(session$ns("n_eff")),
+          checkboxInput(session$ns("showCaption_n_eff"), "Show/Hide Caption"),
+          hidden(
+            uiOutput(session$ns("caption_n_eff"))
+          ),
           hr(), 
           checkboxInput(session$ns("report_n_eff"), "Include in report?", value = include_report_n_eff())
         )
@@ -256,6 +274,10 @@ rhat_n_eff_se_mean <- function(input, output, session){
             withMathJax(),
             plotOutput(session$ns("se_meanPlot")),
             textOutput(session$ns("se_mean")),
+            checkboxInput(session$ns("showCaption_se_mean"), "Show/Hide Caption"),
+            hidden(
+              uiOutput(session$ns("caption_se_mean"))
+            ),
             hr(), 
             checkboxInput(session$ns("report_se_mean"), "Include in report?", value = include_report_se_mean())
           )
@@ -263,6 +285,34 @@ rhat_n_eff_se_mean <- function(input, output, session){
       }
     }
   })
+  
+  
+  captionOut_rhat <- function(){
+    HTML(paste0("These are plots ...",
+                " ",
+                " .1."))
+  }
+  captionOut_n_eff <- function(){
+    HTML(paste0("These are plots ...",
+                " ",
+                " .2."))
+  }
+  captionOut_se_mean <- function(){
+    HTML(paste0("These are plots ...",
+                " ",
+                " .3."))
+  }
+  
+  output$caption_rhat <- renderUI({
+    captionOut_rhat()
+  })
+  output$caption_n_eff <- renderUI({
+    captionOut_n_eff()
+  })
+  output$caption_se_mean <- renderUI({
+    captionOut_se_mean()
+  })
+  
   
 
 # Did not find a functioning better system yet for creating the correct list output. Should exist....
@@ -281,7 +331,8 @@ rhat_n_eff_se_mean <- function(input, output, session){
             save_old_theme <- bayesplot_theme_get()
             color_scheme_set(visualOptions_rhat()$color)
             bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_rhat()$theme)))) 
-            out <- plotOut_rhat()
+            out <- list(plot = plotOut_rhat(), 
+                        caption = captionOut_rhat())
             bayesplot_theme_set(save_old_theme)
             out
           },
@@ -296,7 +347,8 @@ rhat_n_eff_se_mean <- function(input, output, session){
               save_old_theme <- bayesplot_theme_get()
               color_scheme_set(visualOptions_n_eff()$color)
               bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_n_eff()$theme)))) 
-              out <- plotOut_n_eff()
+              out <- list(plot = plotOut_n_eff(), 
+                          caption = captionOut_n_eff())
               bayesplot_theme_set(save_old_theme)
               out
             },
@@ -311,7 +363,8 @@ rhat_n_eff_se_mean <- function(input, output, session){
                 save_old_theme <- bayesplot_theme_get()
                 color_scheme_set(visualOptions_se_mean()$color)
                 bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_se_mean()$theme)))) 
-                out <- plotOut_se_mean()
+                out <- list(plot = plotOut_se_mean(), 
+                            caption = captionOut_se_mean())
                 bayesplot_theme_set(save_old_theme)
                 out
               }
@@ -323,7 +376,8 @@ rhat_n_eff_se_mean <- function(input, output, session){
                   save_old_theme <- bayesplot_theme_get()
                   color_scheme_set(visualOptions_rhat()$color)
                   bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_rhat()$theme)))) 
-                  out <- plotOut_rhat()
+                  out <- list(plot = plotOut_rhat(), 
+                              caption = captionOut_rhat())
                   bayesplot_theme_set(save_old_theme)
                   out
                 },
@@ -331,7 +385,8 @@ rhat_n_eff_se_mean <- function(input, output, session){
                   save_old_theme <- bayesplot_theme_get()
                   color_scheme_set(visualOptions_n_eff()$color)
                   bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_n_eff()$theme)))) 
-                  out <- plotOut_n_eff()
+                  out <- list(plot = plotOut_n_eff(), 
+                              caption = captionOut_n_eff())
                   bayesplot_theme_set(save_old_theme)
                   out
                 },
@@ -344,7 +399,8 @@ rhat_n_eff_se_mean <- function(input, output, session){
                     save_old_theme <- bayesplot_theme_get()
                     color_scheme_set(visualOptions_rhat()$color)
                     bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_rhat()$theme)))) 
-                    out <- plotOut_rhat()
+                    out <- list(plot = plotOut_rhat(), 
+                                caption = captionOut_rhat())
                     bayesplot_theme_set(save_old_theme)
                     out
                   },
@@ -353,7 +409,8 @@ rhat_n_eff_se_mean <- function(input, output, session){
                     save_old_theme <- bayesplot_theme_get()
                     color_scheme_set(visualOptions_se_mean()$color)
                     bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_se_mean()$theme)))) 
-                    out <- plotOut_se_mean()
+                    out <- list(plot = plotOut_se_mean(), 
+                                caption = captionOut_se_mean())
                     bayesplot_theme_set(save_old_theme)
                     out
                   }
@@ -366,7 +423,8 @@ rhat_n_eff_se_mean <- function(input, output, session){
                       save_old_theme <- bayesplot_theme_get()
                       color_scheme_set(visualOptions_n_eff()$color)
                       bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_n_eff()$theme)))) 
-                      out <- plotOut_n_eff()
+                      out <- list(plot = plotOut_n_eff(), 
+                                  caption = captionOut_n_eff())
                       bayesplot_theme_set(save_old_theme)
                       out
                     },
@@ -374,7 +432,8 @@ rhat_n_eff_se_mean <- function(input, output, session){
                       save_old_theme <- bayesplot_theme_get()
                       color_scheme_set(visualOptions_se_mean()$color)
                       bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_se_mean()$theme)))) 
-                      out <- plotOut_se_mean()
+                      out <- list(plot = plotOut_se_mean(), 
+                                  caption = captionOut_se_mean())
                       bayesplot_theme_set(save_old_theme)
                       out
                     }
@@ -386,7 +445,8 @@ rhat_n_eff_se_mean <- function(input, output, session){
                         save_old_theme <- bayesplot_theme_get()
                         color_scheme_set(visualOptions_rhat()$color)
                         bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_rhat()$theme)))) 
-                        out <- plotOut_rhat()
+                        out <- list(plot = plotOut_rhat(), 
+                                    caption = captionOut_rhat())
                         bayesplot_theme_set(save_old_theme)
                         out
                       },
@@ -394,7 +454,8 @@ rhat_n_eff_se_mean <- function(input, output, session){
                         save_old_theme <- bayesplot_theme_get()
                         color_scheme_set(visualOptions_n_eff()$color)
                         bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_n_eff()$theme)))) 
-                        out <- plotOut_n_eff()
+                        out <- list(plot = plotOut_n_eff(), 
+                                    caption = captionOut_n_eff())
                         bayesplot_theme_set(save_old_theme)
                         out
                       },
@@ -402,7 +463,8 @@ rhat_n_eff_se_mean <- function(input, output, session){
                         save_old_theme <- bayesplot_theme_get()
                         color_scheme_set(visualOptions_se_mean()$color)
                         bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_se_mean()$theme)))) 
-                        out <- plotOut_se_mean()
+                        out <- list(plot = plotOut_se_mean(), 
+                                    caption = captionOut_se_mean())
                         bayesplot_theme_set(save_old_theme)
                         out
                       }

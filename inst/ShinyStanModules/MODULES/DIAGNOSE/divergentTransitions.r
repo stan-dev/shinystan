@@ -95,12 +95,14 @@ divergentTransitions <- function(input, output, session){
                 " against the <i> log-posterior </i> (y-axis top panel) and against the",
                 " <i> acceptance statistic </i> (y-axis bottom panel) of the sampling algorithm for ",
                 tolower(if (chain() == 0) {"All chains"} else {paste("Chain", chain())}), ".",
-                " ",
-                " ",
-                " ",
-                " ",
-                " ",
-                " "))
+                " Divergent transitions can indicate problems for the validity of the results.",
+                " A good plot would show no divergent transitions.",
+                " If the divergent transitions show the same patern as the non divergent transitions,",
+                " this could indicate that the divergent transitions are false positives.",
+                " A bad plot would shows systematic differences between the divergent transitions and",
+                " non-divergent transitions.",
+                "For more information see ",
+                tags$a('https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup'), "."))
   }
   output$caption <- renderUI({
     captionOut()

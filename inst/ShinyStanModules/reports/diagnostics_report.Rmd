@@ -85,9 +85,18 @@ print(params$tracePlot$plot)
 shiny::HTML(params$tracePlot$caption)
 ```
   
-  <!-- rhatPlot: NA -->
+```{r, echo = FALSE, message = FALSE, eval = !is.null(params$rhatPlot$rhatPlot)}
+print(params$rhatPlot$rhatPlot$plot)
+shiny::HTML(params$rhatPlot$rhatPlot$caption)
+```
   
-  <!-- n_effPlot: NA -->
+```{r, echo = FALSE, message = FALSE, eval = !is.null(params$n_effPlot$n_effPlot)}
+print(params$n_effPlot$n_effPlot$plot)
+shiny::HTML(params$n_effPlot$n_effPlot$caption)
+```
   
-  <!-- se_meanPlot: NA -->
+```{r, echo = FALSE, message = FALSE, eval = !is.null(params$se_meanPlot$se_meanPlot)}
+print(params$se_meanPlot$se_meanPlot$plot)
+shiny::HTML(params$se_meanPlot$se_meanPlot$caption)
+```
 
