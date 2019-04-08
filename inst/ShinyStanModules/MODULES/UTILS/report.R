@@ -67,7 +67,8 @@ report <- function(input, output, session, ggplotsList, reportType, ...) {
       # from the code in this app).
       rmarkdown::render(tempReport, output_file = file,
                         params = params,
-                        envir = new.env(parent = globalenv())
+                        envir = new.env(parent = globalenv()),
+                        quiet = TRUE
       )
     }
   )
