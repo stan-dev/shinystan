@@ -27,7 +27,9 @@
 #'   \code{TRUE} by setting the global option \code{options(shinystan.rstudio =
 #'   TRUE)}.
 #' @param quiet Should output from Shiny to the R console be suppressed when
-#'   possible? Default is \code{TRUE}.
+#'   possible? The default is \code{TRUE}. Users can change the default to
+#'   \code{FALSE} by setting the global option \code{options(shinystan.quiet =
+#'   FALSE)}.
 #' @param ... Optional arguments passed to \code{\link[shiny]{runApp}}.
 #' 
 #' @return The \code{launch_shinystan} function is used for the side effect of 
@@ -87,8 +89,8 @@ launch_shinystan <- function(object, ...) {
 launch_shinystan.default <-
   function(object,
            ...,
-           rstudio = getOption("shinystan.rstudio"), 
-           quiet = TRUE) {
+           rstudio = getOption("shinystan.rstudio", FALSE), 
+           quiet = getOption("shinystan.quiet", TRUE)) {
     if (!is.shinystan(object) && 
         !is.stanfit(object) && 
         !is.stanreg(object)) {
@@ -106,8 +108,8 @@ launch_shinystan.default <-
 launch_shinystan.shinystan <-
   function(object,
            ...,
-           rstudio = getOption("shinystan.rstudio"), 
-           quiet = TRUE) {
+           rstudio = getOption("shinystan.rstudio", FALSE), 
+           quiet = getOption("shinystan.quiet", TRUE)) {
     sso_check(object)
     message("\nLaunching ShinyStan interface... ",
             "for large models this  may take some time.")
@@ -142,8 +144,8 @@ launch_shinystan.shinystan <-
 #' }
 #'
 launch_shinystan_demo <- function(demo_name = "eight_schools",
-                                  rstudio = getOption("shinystan.rstudio"),
-                                  quiet = TRUE,
+                                  rstudio = getOption("shinystan.rstudio", FALSE),
+                                  quiet = getOption("shinystan.quiet", TRUE),
                                   ...) {
   demo_name <- match.arg(demo_name)
   data(list = demo_name, package = "shinystan", envir = environment())

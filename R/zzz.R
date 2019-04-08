@@ -21,7 +21,8 @@
 .onLoad <- function(libname, pkgname) {
   op <- options()
   op.shinystan <- list(
-    shinystan.rstudio = FALSE
+    shinystan.rstudio = FALSE,
+    shinystan.quiet = TRUE
   )
   set_ops <- !(names(op.shinystan) %in% names(op))
   if (any(set_ops)) options(op.shinystan[set_ops])

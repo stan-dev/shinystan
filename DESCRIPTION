@@ -24,7 +24,7 @@ Description: A graphical user interface for interactive Markov chain Monte
     programs written in any programming language (and has extended 
     functionality for 'Stan' models fit using the 'rstan' and 'rstanarm' 
     packages).
-URL: http://mc-stan.org/, http://discourse.mc-stan.org
+URL: https://mc-stan.org/, https://discourse.mc-stan.org
 BugReports: https://github.com/stan-dev/shinystan/issues/
 License: GPL (>=3)
 Depends:

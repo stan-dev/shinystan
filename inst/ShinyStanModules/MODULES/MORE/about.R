@@ -29,17 +29,18 @@ aboutUI <- function(id){
         href = "http://mc-stan.org/"
       ),
       br(),br(),
-      h6("Author"),
-      helpText(style = "font-size: 12px;", "Jonah Gabry"),
+      h6("Authors"),
+      helpText(style = "font-size: 12px;", "Jonah Gabry & Duco Veen"),
       br(),
       h6(style = "font-size: 12px;", "Contributors"),
       helpText(style = "font-size: 12px;", 
                HTML("Michael Andreae<br/>
-Michael Betancourt<br/>
+                Michael Betancourt<br/>
                 Bob Carpenter<br/>
                 Yuanjun Gao<br/>
                 Andrew Gelman<br/>
                 Ben Goodrich<br/>
+                Lauren Kennedy<br/>
                 Daniel Lee<br/>
                 Dongying Song<br/>
                 Rob Trangucci ")),
