@@ -43,8 +43,7 @@ server <- function(input, output, session) {
   source("MODULES/MORE/about.r", local = TRUE)
   source("MODULES/MORE/modelCode.r", local = TRUE)
   source("MODULES/MORE/help.r", local = TRUE)
-  source("MODULES/MORE/glossary.r", local = TRUE)
-  
+
   # internal functions or events that are required for general use.
   # save and close button
   observeEvent(
@@ -102,7 +101,6 @@ server <- function(input, output, session) {
   callModule(about, "about")
   callModule(modelCode, "modelCode")
   callModule(help, "help")
-  callModule(glossary, "glossary")
   
 }
 

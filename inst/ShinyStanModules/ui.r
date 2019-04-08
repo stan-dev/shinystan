@@ -42,7 +42,6 @@ source("MODULES/ESTIMATE/summaryTable.r", local = TRUE)
 source("MODULES/MORE/about.r", local = TRUE)
 source("MODULES/MORE/modelCode.r", local = TRUE)
 source("MODULES/MORE/help.r", local = TRUE)
-source("MODULES/MORE/glossary.r", local = TRUE)
 
 # Begin shinyUI -----------------------------------------------------------
 # _________________________________________________________________________
@@ -98,11 +97,6 @@ tagList(
       tabPanel(
         title = "Model Code",
         modelCodeUI("modelCode")
-      ),
-      #### glossary ####
-      tabPanel(
-        title = "Glossary",
-        glossaryUI("glossary")
       ),
       #### about ####
       tabPanel(

@@ -44,7 +44,7 @@ homepageUI <- function(id){
   </a>
   
   <a id = 'toc_more' href='#cl-effect-9'>
-    <span>More</span><span>Model Code, <span>Glossary & Help</span>
+    <span>More</span><span>Model Code, <span>Help & About</span>
     </span>
   </a>
   
