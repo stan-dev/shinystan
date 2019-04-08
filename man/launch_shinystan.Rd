@@ -9,10 +9,10 @@
 launch_shinystan(object, ...)
 
 \method{launch_shinystan}{default}(object, ...,
-  rstudio = getOption("shinystan.rstudio"))
+  rstudio = getOption("shinystan.rstudio"), quiet = TRUE)
 
 \method{launch_shinystan}{shinystan}(object, ...,
-  rstudio = getOption("shinystan.rstudio"))
+  rstudio = getOption("shinystan.rstudio"), quiet = TRUE)
 }
 \arguments{
 \item{object}{The object to use. For the default method this can be an object
@@ -27,6 +27,8 @@ is to launch the app in the user's default web browser rather than the
 pop-up Viewer provided by 'RStudio'. Users can change the default to
 \code{TRUE} by setting the global option \code{options(shinystan.rstudio =
 TRUE)}.}
+
+\item{quiet}{Should output from Shiny to the R console be suppressed? Default is \code{TRUE}.}
 }
 \value{
 The \code{launch_shinystan} function is used for the side effect of 

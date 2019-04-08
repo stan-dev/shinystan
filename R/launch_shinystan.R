@@ -26,6 +26,8 @@
 #'   pop-up Viewer provided by 'RStudio'. Users can change the default to
 #'   \code{TRUE} by setting the global option \code{options(shinystan.rstudio =
 #'   TRUE)}.
+#' @param quiet Should output from Shiny to the R console be suppressed when
+#'   possible? Default is \code{TRUE}.
 #' @param ... Optional arguments passed to \code{\link[shiny]{runApp}}.
 #' 
 #' @return The \code{launch_shinystan} function is used for the side effect of 
@@ -85,7 +87,8 @@ launch_shinystan <- function(object, ...) {
 launch_shinystan.default <-
   function(object,
            ...,
-           rstudio = getOption("shinystan.rstudio")) {
+           rstudio = getOption("shinystan.rstudio"), 
+           quiet = TRUE) {
     if (!is.shinystan(object) && 
         !is.stanfit(object) && 
         !is.stanreg(object)) {
@@ -95,7 +98,7 @@ launch_shinystan.default <-
     object <- as.shinystan(object)
     message("\nLaunching ShinyStan interface... ",
             "for large models this  may take some time.")
-    invisible(launch(object, rstudio, ...))
+    invisible(launch(object, rstudio, quiet, ...))
   }
 
 #' @rdname launch_shinystan
@@ -103,11 +106,12 @@ launch_shinystan.default <-
 launch_shinystan.shinystan <-
   function(object,
            ...,
-           rstudio = getOption("shinystan.rstudio")) {
+           rstudio = getOption("shinystan.rstudio"), 
+           quiet = TRUE) {
     sso_check(object)
     message("\nLaunching ShinyStan interface... ",
             "for large models this  may take some time.")
-    invisible(launch(object, rstudio, ...))
+    invisible(launch(object, rstudio, quiet, ...))
   }
 
 
@@ -139,22 +143,30 @@ launch_shinystan.shinystan <-
 #'
 launch_shinystan_demo <- function(demo_name = "eight_schools",
                                   rstudio = getOption("shinystan.rstudio"),
+                                  quiet = TRUE,
                                   ...) {
   demo_name <- match.arg(demo_name)
   data(list = demo_name, package = "shinystan", envir = environment())
-  invisible(launch(get(demo_name, inherits = FALSE), rstudio = rstudio, ...))
+  invisible(launch(
+    get(demo_name, inherits = FALSE),
+    rstudio = rstudio,
+    quiet = quiet,
+    ...
+  ))
 }
 
-# Internal launch function 
-# @param sso shinystan object
-# @param rstudio launch in rstudio viewer instead of web browser? 
-# @param ... passed to shiny::runApp
-launch <- function(sso, rstudio = FALSE, ...) {
+
+# internal ----------------------------------------------------------------
+launch <- function(sso, rstudio = FALSE, quiet = TRUE,...) {
   launch.browser <- if (!rstudio) 
     TRUE else getOption("shiny.launch.browser", interactive())
   
   .sso_env$.SHINYSTAN_OBJECT <- sso  # see zzz.R for .sso_env
   on.exit(.sso_env$.SHINYSTAN_OBJECT <- NULL, add = TRUE)
-  shiny::runApp(system.file("ShinyStanModules", package = "shinystan"), 
-                launch.browser = launch.browser, ...)
+  shiny::runApp(
+    appDir = system.file("ShinyStanModules", package = "shinystan"), 
+    launch.browser = launch.browser, 
+    quiet = quiet,
+    ...
+  )
 }

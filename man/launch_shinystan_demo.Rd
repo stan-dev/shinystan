@@ -6,7 +6,7 @@
 \title{'ShinyStan' demo}
 \usage{
 launch_shinystan_demo(demo_name = "eight_schools",
-  rstudio = getOption("shinystan.rstudio"), ...)
+  rstudio = getOption("shinystan.rstudio"), quiet = TRUE, ...)
 }
 \arguments{
 \item{demo_name}{The name of the demo. Currently \code{"eight_schools"} is 
@@ -22,6 +22,8 @@ is to launch the app in the user's default web browser rather than the
 pop-up Viewer provided by 'RStudio'. Users can change the default to
 \code{TRUE} by setting the global option \code{options(shinystan.rstudio =
 TRUE)}.}
+
+\item{quiet}{Should output from Shiny to the R console be suppressed? Default is \code{TRUE}.}
 
 \item{...}{Optional arguments passed to \code{\link[shiny]{runApp}}.}
 }
