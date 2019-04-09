@@ -8,6 +8,11 @@ numericalEstimateUI <- function(id){
         title = "Posterior Summary Statistics",
         id = ns("summaryStats"),
         summaryTableUI(ns("summaryTable"))
+      ),
+      tabPanel(
+        title = "Generate LaTeX table",
+        id = ns("LaTeX"),
+        summaryTableLatexUI(ns("latexTable"))
       )
     )
   
@@ -18,5 +23,5 @@ numericalEstimateUI <- function(id){
 
 numericalEstimate <- function(input, output, session){
   callModule(summaryTable, "summaryTable")
-  
+  callModule(summaryTableLatex, "latexTable")
 }

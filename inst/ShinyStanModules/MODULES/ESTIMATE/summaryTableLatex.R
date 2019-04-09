@@ -1,4 +1,4 @@
-summaryTableUI <- function(id){
+summaryTableLatexUI <- function(id){
   # for internal namespace structure
   ns <- NS(id)
   tagList(
@@ -13,7 +13,8 @@ summaryTableUI <- function(id){
                  selected = if(length(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names) > 9) shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[1:10] else shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names
                )
         ), 
-        column(width = 4),
+        column(width = 4,
+               textInput(ns("tex_caption"), label = h5("Caption"))),
         column(width = 2, align = "right",
                div(style = "width: 100px;",
                    numericInput(
@@ -60,19 +61,50 @@ summaryTableUI <- function(id){
                )     
         ), 
         column(width = 4),
-        column(width = 2, align = "right")
+        column(width = 2, align = "right",
+               checkboxGroupInput(
+                 ns("tex_pkgs"),
+                 h5("Packages"),
+                 choices = c("Booktabs", "Longtable"),
+                 selected = NULL,
+                 inline = FALSE
+               ))
       )
     ),
-    DT::dataTableOutput(ns("summaryTable"))
+    verbatimTextOutput(ns("summaryLatexTable"))
   )
 }
 
 
-summaryTable <- function(input, output, session){
+summaryTableLatex <- function(input, output, session){
   
   param <- reactive(input$diagnostic_param)
   digits <- reactive(input$sampler_digits)
   selectedSummaries <- reactive(input$tex_columns)
+  
+
+  summary_stats_latex <- reactive({
+    
+    xt <- xtable::xtable(summaryStats(), 
+                         caption = input$tex_caption)
+    
+    xtable::print.xtable(
+      xt,
+      booktabs = "Booktabs" %in% input$tex_pkgs,
+      tabular.environment = ifelse("Longtable" %in% input$tex_pkgs, "longtable", "tabular"),
+      include.rownames = TRUE
+    )
+  })
+  
+  output$summaryLatexTable <- renderPrint({
+    validate(
+      need(length(param()) > 0, "Select at least one parameter."),
+      need(length(input$tex_columns) > 0, "Select at least one summary.")
+    )
+    
+    summary_stats_latex()
+  })
+  
   
   summaryStats <- reactive({
     
@@ -85,25 +117,6 @@ summaryTable <- function(input, output, session){
     out <- formatC(round(out, digits()), format = 'f', digits = digits())
     out
     
-  })
-  
-  output$summaryTable <- DT::renderDataTable({
-    validate(
-      need(length(param()) > 0, "Select at least one parameter."),
-      need(length(input$tex_columns) > 0, "Select at least one summary.")
-    )
-    DT::datatable({
-      summaryStats() 
-    }, options = list(
-      processing = TRUE,
-      deferRender = TRUE,
-      scrollX = TRUE,
-      scrollY = "200px",
-      scrollCollapse = TRUE,
-      paging = FALSE,
-      searching = FALSE,
-      info = FALSE
-    ))
   })
   
   

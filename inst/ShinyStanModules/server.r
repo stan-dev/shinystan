@@ -38,6 +38,7 @@ server <- function(input, output, session) {
   
   source("MODULES/ESTIMATE/numericalEstimate.r", local = TRUE)
   source("MODULES/ESTIMATE/summaryTable.r", local = TRUE)
+  source("MODULES/ESTIMATE/summaryTableLatex.r", local = TRUE)
   
   # more tab
   source("MODULES/MORE/about.r", local = TRUE)
