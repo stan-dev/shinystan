@@ -147,7 +147,7 @@ rhat_n_eff_se_mean <- function(input, output, session){
     bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_rhat()$theme)))) 
     out <- plotOut_rhat()
     bayesplot_theme_set(save_old_theme)
-    out
+    suppressMessages(print(out)) # hide 'bins = 30' message ggplot
   })
   
   output$n_effPlot <- renderPlot({
@@ -156,7 +156,7 @@ rhat_n_eff_se_mean <- function(input, output, session){
     bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_n_eff()$theme)))) 
     out <- plotOut_n_eff()
     bayesplot_theme_set(save_old_theme)
-    out
+    suppressMessages(print(out)) # hide 'bins = 30' message ggplot
   })
   
   output$se_meanPlot <- renderPlot({
@@ -165,7 +165,7 @@ rhat_n_eff_se_mean <- function(input, output, session){
     bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_se_mean()$theme)))) 
     out <- plotOut_se_mean()
     bayesplot_theme_set(save_old_theme)
-    out
+    suppressMessages(print(out)) # hide 'bins = 30' message ggplot
   })
   
   # needed to get a FALSE value for including plot in report if the page 
@@ -480,17 +480,6 @@ rhat_n_eff_se_mean <- function(input, output, session){
       }
     }
 
-    # list(
-    #   "rhatPlot" = ifelse(include_report_rhat() == TRUE, plotOut_rhat(), NULL),
-    #   "n_effPlot" = ifelse(include_report_n_eff() == TRUE, plotOut_n_eff(), NULL),
-    #   "se_meanPlot" = ifelse(include_report_se_mean() == TRUE, plotOut_se_mean(), NULL)
-    # )
-    # list(
-    #   if(include_report_rhat() == TRUE) {"rhatPlot" = plotOut_rhat()} else {"rhatPlot" = NULL},
-    #   if(include_report_n_eff() == TRUE) {"n_effPlot" = plotOut_n_eff()} else {"n_effPlot" = NULL},
-    #   if(include_report_se_mean() == TRUE) {"se_meanPlot" = plotOut_se_mean()} else {"se_meanPlot" = NULL}
-    # )
-    
     
   }))
   

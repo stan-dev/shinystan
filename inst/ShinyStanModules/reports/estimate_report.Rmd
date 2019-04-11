@@ -30,7 +30,7 @@ print(params$densityPlot$densityPlot)
 ```
 
 ```{r, echo = FALSE, message = FALSE, eval = !is.null(params$histogramPlot)}
-print(params$histogramPlot$histogramPlot)
+suppressMessages(print(params$histogramPlot$histogramPlot))
 ```
 
 

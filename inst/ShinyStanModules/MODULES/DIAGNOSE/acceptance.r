@@ -52,8 +52,8 @@ acceptance <- function(input, output, session){
   })
   
   plotOut <- function(chain) {
-    
-    if(chain != 0) {
+    suppressMessages(
+      if(chain != 0) {
       mcmc_nuts_acceptance(
         x = nuts_params(list(shinystan:::.sso_env$.SHINYSTAN_OBJECT@sampler_params[[chain]]) %>%
                           lapply(., as.data.frame) %>%
@@ -74,6 +74,7 @@ acceptance <- function(input, output, session){
                         Chain = rep(1:shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain, each = (shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter - shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup))) 
       )
     }
+    )
   }
   
   output$plot1 <- renderPlot({
@@ -83,7 +84,7 @@ acceptance <- function(input, output, session){
     bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
     out <- plotOut(chain = chain()) 
     bayesplot_theme_set(save_old_theme)
-    out
+    suppressMessages(print(out)) # hide 'bins = 30' message ggplot
   })
   
   captionOut <- function(){

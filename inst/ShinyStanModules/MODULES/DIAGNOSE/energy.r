@@ -78,7 +78,7 @@ energy <- function(input, output, session){
     bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
     out <- plotOut(chain = chain()) 
     bayesplot_theme_set(save_old_theme)
-    out
+    suppressMessages(print(out)) # hide 'bins = 30' message ggplot
   })
   
   captionOut <- function(){

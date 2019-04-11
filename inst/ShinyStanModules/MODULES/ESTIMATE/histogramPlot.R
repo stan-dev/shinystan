@@ -14,22 +14,7 @@ histogramPlotUI <- function(id){
                  )
                )
         ),
-        column(width = 4,
-               tags$head(tags$style(HTML("
-                                         .shiny-split-layout > div {
-                                         overflow: visible;
-                                         }
-                                         "))), # overflow of splitlayout didn't work, so this is a fix. 
-               splitLayout(
-                 div(style = "width: 90%;",
-                     selectInput(
-                       inputId = ns("transformation"),
-                       label = h5("Transform X"),
-                       choices = transformation_choices,
-                       selected = "identity"
-                     ))
-               )
-        ),
+        column(width = 4),
         column(width = 2, align = "right"
         )
       ),
@@ -52,22 +37,15 @@ histogramPlot <- function(input, output, session){
   param <- reactive(input$diagnostic_param)
   include <- reactive(input$report)
   
-  transform <- reactive({
-    validate(
-      need(is.null(input$transformation) == FALSE, "")
-    )
-    input$transformation
-  })
-  
-  plotOut <- function(parameters, chain, transformations){
+  plotOut <- function(parameters, chain){
     
     validate(
       need(length(param()) > 0, "Select at least one parameter.")
     )
+    
     mcmc_hist(
       shinystan:::.sso_env$.SHINYSTAN_OBJECT@posterior_sample[(1 + shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) : shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter, , ],
-      pars = parameters,
-      transformations = transformations
+      pars = parameters
     )
   }
   
@@ -75,10 +53,9 @@ histogramPlot <- function(input, output, session){
     save_old_theme <- bayesplot_theme_get()
     color_scheme_set(visualOptions()$color)
     bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
-    out <- plotOut(parameters = param(),
-                   transformations = transform())
+    out <- plotOut(parameters = param())
     bayesplot_theme_set(save_old_theme)
-    out
+    suppressMessages(print(out)) # hide 'bins = 30' message ggplot
   })
   
   return(reactive({
@@ -87,8 +64,7 @@ histogramPlot <- function(input, output, session){
       save_old_theme <- bayesplot_theme_get()
       color_scheme_set(visualOptions()$color)
       bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
-      out <- plotOut(parameters = param(), 
-                     transformations = transform())
+      out <- plotOut(parameters = param())
       bayesplot_theme_set(save_old_theme)
       out
     } else {

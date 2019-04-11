@@ -51,7 +51,7 @@ shiny::HTML(params$divergentTransitionsPlot$caption)
 
 
 ```{r, echo = FALSE, message = FALSE, eval = !is.null(params$energyPlot)}
-print(params$energyPlot$plot)
+suppressMessages(print(params$energyPlot$plot))
 shiny::HTML(params$energyPlot$caption)
 ```
 
@@ -69,7 +69,7 @@ shiny::HTML(params$stepSizePlot$caption)
 
 
 ```{r, echo = FALSE, message = FALSE, eval = !is.null(params$acceptancePlot)}
-print(params$acceptancePlot$plot)
+suppressMessages(print(params$acceptancePlot$plot))
 shiny::HTML(params$acceptancePlot$caption)
 ```
   
@@ -86,17 +86,17 @@ shiny::HTML(params$tracePlot$caption)
 ```
   
 ```{r, echo = FALSE, message = FALSE, eval = !is.null(params$rhatPlot$rhatPlot)}
-print(params$rhatPlot$rhatPlot$plot)
+suppressMessages(print(params$rhatPlot$rhatPlot$plot))
 shiny::HTML(params$rhatPlot$rhatPlot$caption)
 ```
   
 ```{r, echo = FALSE, message = FALSE, eval = !is.null(params$n_effPlot$n_effPlot)}
-print(params$n_effPlot$n_effPlot$plot)
+suppressMessages(print(params$n_effPlot$n_effPlot$plot))
 shiny::HTML(params$n_effPlot$n_effPlot$caption)
 ```
   
 ```{r, echo = FALSE, message = FALSE, eval = !is.null(params$se_meanPlot$se_meanPlot)}
-print(params$se_meanPlot$se_meanPlot$plot)
+suppressMessages(print(params$se_meanPlot$se_meanPlot$plot))
 shiny::HTML(params$se_meanPlot$se_meanPlot$caption)
 ```
 

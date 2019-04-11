@@ -46,7 +46,6 @@ summaryTableUI <- function(id){
                    )
                  } else {
                    c("Posterior mean" = "mean",
-                     "Monte Carlo error" = "se_mean",
                      "Posterior standard deviation" = "sd",
                      "Quantile: 2.5%" = "2.5%",
                      "Quantile: 25%" = "25%",
