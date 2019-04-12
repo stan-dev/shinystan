@@ -99,7 +99,7 @@ plotOptions <- function(input, output, session, ...){
                                    ticks = FALSE,
                                    min = 0,
                                    max = 1,
-                                   value = opacity(),
+                                   value = opacity_debounce(),
                                    step = 0.1
                                  ))
                            } 
@@ -127,7 +127,7 @@ plotOptions <- function(input, output, session, ...){
                                  ticks = FALSE,
                                  min = 0.1,
                                  max = 1,
-                                 value = opacityDiv(),
+                                 value = opacityDiv_debounce(),
                                  step = 0.1
                                ))
                          },
@@ -162,10 +162,11 @@ plotOptions <- function(input, output, session, ...){
   opacity <- reactive({
     if(is.null(input$alpha)) 0.8 else input$alpha
   })
+  opacity_debounce <- debounce(opacity, 500)
   opacityDiv <- reactive({
     if(is.null(input$alphaDiv)) 0.8 else input$alphaDiv
   })
-  
+  opacityDiv_debounce <- debounce(opacityDiv, 500)
   
   
   plotTheme <- reactive({

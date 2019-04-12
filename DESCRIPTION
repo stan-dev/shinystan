@@ -1,7 +1,7 @@
 Package: shinystan
 Title: Interactive Visual and Numerical Diagnostics and Posterior Analysis for
     Bayesian Models
-Version: 2.5.0
+Version: 3.0.0
 Date: 2018-04-29
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jsg2201@columbia.edu"),
       person("Duco", "Veen", role = "aut", email = "ducoveen@gmail.com"),
@@ -31,7 +31,7 @@ Depends:
     R (>= 3.1.0),
     shiny (>= 1.0.3)
 Imports:
-    bayesplot (>= 1.5.0),
+    bayesplot (>= 1.6.0.9000),
     colourpicker,
     DT (>= 0.2),
     dygraphs (>= 1.1.1.2),
