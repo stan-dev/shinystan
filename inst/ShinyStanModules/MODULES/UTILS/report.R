@@ -33,17 +33,17 @@ report <- function(input, output, session, ggplotsList, reportType, ...) {
   # print(input_names)
   
   output$downloadPlot <- downloadHandler(
-    filename = 'test.pdf',
+    filename = 'shinystanPlots.pdf',
     content = function(file) {
       # ggsave(file, gridExtra::arrangeGrob(grobs = downloadSelection()))
       pdf(file)
-      lapply(ggplotsList(), print)
+      suppressMessages(lapply(ggplotsList(), capture.output))
       dev.off()
     })
   
   output$downloadPDFreport <- downloadHandler(
     # For PDF output, change this to "report.pdf"
-    filename = "report.pdf",
+    filename = "shinystanReport.pdf",
     content = function(file) {
       # Copy the report file to a temporary directory before processing it, in
       # case we don't have write permissions to the current working dir (which
@@ -74,7 +74,7 @@ report <- function(input, output, session, ggplotsList, reportType, ...) {
   )
   
   output$downloadRDS <- downloadHandler(
-    filename = 'test.rds',
+    filename = 'shinystan.rds',
     content = function(file) {
       saveRDS(ggplotsList(), file)
     })  

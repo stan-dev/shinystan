@@ -48,6 +48,10 @@ scatterPlotUI <- function(id){
       )
     ),
     plotOutput(ns("plot1")),
+    checkboxInput(ns("showCaption"), "Show/Hide Caption"),
+    hidden(
+      uiOutput(ns("caption"))
+    ),
     hr(), 
     checkboxInput(ns("report"), "Include in report?")
   )
@@ -61,6 +65,10 @@ scatterPlot <- function(input, output, session){
   
   param <- reactive(input$diagnostic_param)
   include <- reactive(input$report)
+  
+  observe({
+    toggle("caption", condition = input$showCaption)
+  })
   
   transform1 <- reactive({input$transformation})
   transform2 <- reactive({input$transformation2})
@@ -96,14 +104,28 @@ scatterPlot <- function(input, output, session){
     out
   })
   
+  captionOut <- function(){
+    HTML(paste0("Scatter plot..",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                " "))
+  }
+  output$caption <- renderUI({
+    captionOut()
+  })
+  
   return(reactive({
     if(include() == TRUE){
       # customized plot options return without setting the options for the other plots
       save_old_theme <- bayesplot_theme_get()
       color_scheme_set(visualOptions()$color)
       bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
-      out <- plotOut(parameters = param(), 
-                     transformations = transform())
+      out <- list(plot = plotOut(parameters = param(), 
+                     transformations = transform()),
+                  caption = captionOut())
       bayesplot_theme_set(save_old_theme)
       out
     } else {

@@ -24,6 +24,10 @@ densityPlotUI <- function(id){
       )
       ),
     plotOutput(ns("plot1")),
+    checkboxInput(ns("showCaption"), "Show/Hide Caption"),
+    hidden(
+      uiOutput(ns("caption"))
+    ),
     hr(), 
     checkboxInput(ns("report"), "Include in report?")
   )
@@ -37,6 +41,10 @@ densityPlot <- function(input, output, session){
   
   param <- reactive(input$diagnostic_param)
   include <- reactive(input$report)
+  
+  observe({
+    toggle("caption", condition = input$showCaption)
+  })
   
   plotOut <- function(parameters, chain){
     
@@ -58,13 +66,27 @@ densityPlot <- function(input, output, session){
     out
   })
   
+  captionOut <- function(){
+    HTML(paste0("Density plots..",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                " "))
+  }
+  output$caption <- renderUI({
+    captionOut()
+  })
+  
   return(reactive({
     if(include() == TRUE){
       # customized plot options return without setting the options for the other plots
       save_old_theme <- bayesplot_theme_get()
       color_scheme_set(visualOptions()$color)
       bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
-      out <- plotOut(parameters = param())
+      out <- list(plot = plotOut(parameters = param()),
+                  caption = captionOut())
       bayesplot_theme_set(save_old_theme)
       out
     } else {

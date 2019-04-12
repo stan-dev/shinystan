@@ -24,6 +24,10 @@ histogramPlotUI <- function(id){
       )
     ),
     plotOutput(ns("plot1")),
+    checkboxInput(ns("showCaption"), "Show/Hide Caption"),
+    hidden(
+      uiOutput(ns("caption"))
+    ),
     hr(), 
     checkboxInput(ns("report"), "Include in report?")
   )
@@ -36,6 +40,10 @@ histogramPlot <- function(input, output, session){
   
   param <- reactive(input$diagnostic_param)
   include <- reactive(input$report)
+  
+  observe({
+    toggle("caption", condition = input$showCaption)
+  })
   
   plotOut <- function(parameters, chain){
     
@@ -58,13 +66,28 @@ histogramPlot <- function(input, output, session){
     suppressMessages(print(out)) # hide 'bins = 30' message ggplot
   })
   
+  captionOut <- function(){
+    HTML(paste0("Histogram plot..",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                " "))
+  }
+  output$caption <- renderUI({
+    captionOut()
+  })
+  
+  
   return(reactive({
     if(include() == TRUE){
       # customized plot options return without setting the options for the other plots
       save_old_theme <- bayesplot_theme_get()
       color_scheme_set(visualOptions()$color)
       bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
-      out <- plotOut(parameters = param())
+      out <- list(plot = plotOut(parameters = param()),
+                  caption = captionOut())
       bayesplot_theme_set(save_old_theme)
       out
     } else {

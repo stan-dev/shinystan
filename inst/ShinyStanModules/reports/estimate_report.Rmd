@@ -13,24 +13,30 @@ params:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r, echo = FALSE, message = FALSE, eval = !is.null(params$intervalsPlot)}
-print(params$intervalsPlot$intervalsPlot)
+```{r, echo = FALSE, message = FALSE, eval = !is.null(params$intervalsPlot$intervalsPlot)}
+print(params$intervalsPlot$intervalsPlot$plot)
+shiny::HTML(params$intervalsPlot$intervalsPlot$caption)
+
 ```
 
-```{r, echo = FALSE, message = FALSE, eval = !is.null(params$areasPlot)}
-print(params$areasPlot$areasPlot)
+```{r, echo = FALSE, message = FALSE, eval = !is.null(params$areasPlot$areasPlot)}
+print(params$areasPlot$areasPlot$plot)
+shiny::HTML(params$areasPlot$areasPlot$caption)
 ```
 
-```{r, echo = FALSE, message = FALSE, eval = !is.null(params$scatterPlot)}
-print(params$scatterPlot$scatterPlot)
+```{r, echo = FALSE, message = FALSE, eval = !is.null(params$scatterPlot$scatterPlot)}
+print(params$scatterPlot$scatterPlot$plot)
+shiny::HTML(params$scatterPlot$scatterPlot$caption)
 ```
 
-```{r, echo = FALSE, message = FALSE, eval = !is.null(params$densityPlot)}
-print(params$densityPlot$densityPlot)
+```{r, echo = FALSE, message = FALSE, eval = !is.null(params$densityPlot$densityPlot)}
+print(params$densityPlot$densityPlot$plot)
+shiny::HTML(params$densityPlot$densityPlot$caption)
 ```
 
-```{r, echo = FALSE, message = FALSE, eval = !is.null(params$histogramPlot)}
-suppressMessages(print(params$histogramPlot$histogramPlot))
+```{r, echo = FALSE, message = FALSE, eval = !is.null(params$histogramPlot$histogramPlot)}
+suppressMessages(print(params$histogramPlot$histogramPlot$plot))
+shiny::HTML(params$histogramPlot$histogramPlot$caption)
 ```
 
 

@@ -72,8 +72,12 @@ server <- function(input, output, session) {
   select_theme <- function(name){
     switch(name,
            "bayesplot default" = "theme_default()", 
-           "classic" = "theme_classic()",
-           "dark" = "theme_dark()")
+           "light" = "theme_light()",
+           "gray" = "theme_gray()",
+           "dark" = "theme_dark()",
+           "minimal" = "theme_minimal()",
+           "linedraw" = "theme_linedraw()",
+           "classic" = "theme_classic()")
   }
   
   
