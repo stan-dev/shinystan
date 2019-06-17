@@ -10,7 +10,11 @@ rhat_n_eff_se_mean_statsUI <- function(id){
                  label = h5("Parameter"),
                  multiple = TRUE,
                  choices = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names,
-                 selected = if(length(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names) > 9) shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[1:10] else shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names
+                 selected = if(length(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names) > 10) {
+                   shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[order(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "n_eff"])[1:10]]
+                 }  else {
+                   shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[order(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "n_eff"])]
+                 } 
                )
         ), 
         column(width = 4),
@@ -61,13 +65,14 @@ rhat_n_eff_se_mean_stats <- function(input, output, session){
     DT::datatable({
       MCMCtable() 
     }, options = list(
+      order = list(2, 'asc'),
       processing = TRUE,
       deferRender = TRUE,
       scrollX = TRUE,
       scrollY = "200px",
       scrollCollapse = TRUE,
       paging = FALSE,
-      searching = FALSE,
+      searching = TRUE,
       info = FALSE
     ))
   })

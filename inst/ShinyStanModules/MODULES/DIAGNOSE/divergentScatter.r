@@ -11,7 +11,15 @@ divergentScatterUI <- function(id){
                  label = h5("Parameter"),
                  multiple = TRUE,
                  choices = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names,
-                 selected = c(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[1],shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[which(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names == "log-posterior")]),
+                 selected = if(order(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "n_eff"])[1] == which(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names == "log-posterior")){
+                   c(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[order(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "n_eff"])[2]],
+                      shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[which(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names == "log-posterior")])
+                 } else {
+                   c(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[order(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "n_eff"])[2]],
+                     shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[which(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names == "log-posterior")])
+                 },
+                   
+                   
                  options = list(maxItems = 2)
                )
                )

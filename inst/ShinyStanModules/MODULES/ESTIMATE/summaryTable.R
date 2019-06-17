@@ -100,7 +100,7 @@ summaryTable <- function(input, output, session){
       scrollY = "200px",
       scrollCollapse = TRUE,
       paging = FALSE,
-      searching = FALSE,
+      searching = TRUE,
       info = FALSE
     ))
   })
