@@ -11,7 +11,7 @@ autoCorrelationUI <- function(id){
                    label = h5("Parameter"),
                    multiple = TRUE,
                    choices = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names,
-                   selected = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[1]
+                   selected = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[order(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "n_eff"])[1:2]]
                  )
                )
         ),

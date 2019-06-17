@@ -11,7 +11,11 @@ pairsUI <- function(id){
                    label = h5("Parameter"),
                    multiple = TRUE,
                    choices = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names,
-                   selected = if(length(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names) > 3) shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[1:4] else shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names
+                   selected = if(length(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names) > 4) {
+                     shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[order(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "n_eff"])[1:4]]
+                   }  else {
+                     shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[order(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "n_eff"])]
+                   } 
                  )
                )
         ),
