@@ -12,6 +12,7 @@ params:
   acceptancePlot: NA
   autoCorrelationPlot: NA
   tracePlot: NA
+  rankPlot: NA
   rhatPlot: NA
   n_effPlot: NA
   se_meanPlot: NA
@@ -83,6 +84,11 @@ shiny::HTML(params$autoCorrelationPlot$caption)
 ```{r, echo = FALSE, message = FALSE, eval = !is.null(params$tracePlot)}
 print(params$tracePlot$plot)
 shiny::HTML(params$tracePlot$caption)
+```
+
+```{r, echo = FALSE, message = FALSE, eval = !is.null(params$rankPlot)}
+print(params$rankPlot$plot)
+shiny::HTML(params$rankPlot$caption)
 ```
   
 ```{r, echo = FALSE, message = FALSE, eval = !is.null(params$rhatPlot$rhatPlot)}

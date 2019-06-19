@@ -24,6 +24,7 @@ diagnose <- function(input, output, session){
     getAcceptancePlot <- callModule(acceptance, "acceptance")
     
     getTracePlot <- callModule(tracePlot, "tracePlot")  
+    getRankPlot <- callModule(rankPlot, "rankPlot")  
     getRhatNeffSEmeanPlots <- callModule(rhat_n_eff_se_mean, "rhat_n_eff_se_mean")
     getAutoCorrelationPlot <- callModule(autoCorrelation, "autoCorrelation")
     
@@ -41,6 +42,7 @@ diagnose <- function(input, output, session){
            "acceptancePlot" = getAcceptancePlot(),
            "autoCorrelationPlot" = getAutoCorrelationPlot(),
            "tracePlot" = getTracePlot(),
+           "rankPlot" = getRankPlot(),
            "rhatPlot" = getRhatNeffSEmeanPlots()["rhatPlot"],
            "n_effPlot" = getRhatNeffSEmeanPlots()["n_effPlot"],
            "se_meanPlot" = getRhatNeffSEmeanPlots()["se_meanPlot"])
@@ -52,6 +54,7 @@ diagnose <- function(input, output, session){
   
   if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_method == "sampling" & shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_algorithm != "NUTS"){
     getTracePlot <- callModule(tracePlot, "tracePlot")  
+    getRankPlot <- callModule(rankPlot, "rankPlot")  
     getRhatNeffSEmeanPlots <- callModule(rhat_n_eff_se_mean, "rhat_n_eff_se_mean")
     callModule(autoCorrelation, "autoCorrelation")
     
@@ -125,6 +128,11 @@ diagnose <- function(input, output, session){
           tracePlotUI(session$ns("tracePlot"))
         ),
         tabPanel(
+          title = "Rank Plots",
+          id = session$ns("rankTab"),
+          rankPlotUI(session$ns("rankPlot"))
+        ),
+        tabPanel(
           title = withMathJax("\\(\\hat{R}, \\text{ } n_{eff}, \\text{ se}_{mean}\\)"),
           id = session$ns("rhat_n_eff_se_meanTab"),
           value = "rhat_neff_se_mean_plot_tab",
@@ -180,6 +188,11 @@ diagnose <- function(input, output, session){
           title = "Trace Plots",
           id = session$ns("traceTab"),
           tracePlotUI(session$ns("tracePlot"))
+        ),
+        tabPanel(
+          title = "Rank Plots",
+          id = session$ns("rankTab"),
+          tracePlotUI(session$ns("rankPlot"))
         ),
         tabPanel(
           title = withMathJax("\\(\\hat{R}, \\text{ } n_{eff}, \\text{ se}_{mean}\\)"),

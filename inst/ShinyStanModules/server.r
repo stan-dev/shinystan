@@ -20,6 +20,7 @@ server <- function(input, output, session) {
   source("MODULES/DIAGNOSE/acceptance.r", local = TRUE)
   
   source("MODULES/DIAGNOSE/tracePlot.r", local = TRUE)
+  source("MODULES/DIAGNOSE/rankPlot.r", local = TRUE)
   source("MODULES/DIAGNOSE/rhat_n_eff_se_mean.r", local = TRUE)
   source("MODULES/DIAGNOSE/autoCorrelation.r", local = TRUE)
   
