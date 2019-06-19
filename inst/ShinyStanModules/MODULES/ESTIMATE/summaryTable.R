@@ -9,7 +9,7 @@ summaryTableUI <- function(id){
                  inputId = ns("diagnostic_param"),
                  label = h5("Parameter"),
                  multiple = TRUE,
-                 choices = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names,
+                 choices = .make_param_list_with_groups(shinystan:::.sso_env$.SHINYSTAN_OBJECT),
                  selected = if(length(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names) > 9) shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[1:10] else shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names
                )
         ), 
@@ -69,7 +69,8 @@ summaryTableUI <- function(id){
 
 summaryTable <- function(input, output, session){
   
-  param <- reactive(input$diagnostic_param)
+  param <- reactive(unique(.update_params_with_groups(params = input$diagnostic_param,
+                                                      all_param_names = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names)))
   digits <- reactive(input$sampler_digits)
   selectedSummaries <- reactive(input$tex_columns)
   
@@ -97,7 +98,7 @@ summaryTable <- function(input, output, session){
       processing = TRUE,
       deferRender = TRUE,
       scrollX = TRUE,
-      scrollY = "200px",
+      scrollY = "300px",
       scrollCollapse = TRUE,
       paging = FALSE,
       searching = TRUE,

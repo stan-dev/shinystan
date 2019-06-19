@@ -8,7 +8,7 @@ areasPlotUI <- function(id){
                  inputId = ns("diagnostic_param"),
                  label = h5("Parameter"),
                  multiple = TRUE,
-                 choices = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names,
+                 choices = .make_param_list_with_groups(shinystan:::.sso_env$.SHINYSTAN_OBJECT),
                  selected = if(length(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names) > 9) shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[1:10] else shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names
                )
         ), 
@@ -35,7 +35,9 @@ areasPlot <- function(input, output, session){
   visualOptions <- callModule(plotOptions, "options", estimatePlots = TRUE,
                               intervalOptions = TRUE, areasOptions = TRUE)
   
-  param <- reactive(input$diagnostic_param)
+  param <- reactive(unique(.update_params_with_groups(params = input$diagnostic_param,
+                                                      all_param_names = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names)))
+  
   include <- reactive(input$report)
   
   observe({

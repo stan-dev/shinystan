@@ -9,7 +9,7 @@ rhat_n_eff_se_mean_statsUI <- function(id){
                  inputId = ns("diagnostic_param"),
                  label = h5("Parameter"),
                  multiple = TRUE,
-                 choices = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names,
+                 choices = .make_param_list_with_groups(shinystan:::.sso_env$.SHINYSTAN_OBJECT),
                  selected = if(length(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names) > 10) {
                    shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[order(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "n_eff"])[1:10]]
                  }  else {
@@ -42,7 +42,9 @@ rhat_n_eff_se_mean_statsUI <- function(id){
 
 rhat_n_eff_se_mean_stats <- function(input, output, session){
   
-  param <- reactive(input$diagnostic_param)
+  param <- reactive(unique(.update_params_with_groups(params = input$diagnostic_param,
+                                                      all_param_names = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names)))
+  
   digits <- reactive(input$sampler_digits)
   
   MCMCtable <- reactive({
@@ -69,7 +71,7 @@ rhat_n_eff_se_mean_stats <- function(input, output, session){
       processing = TRUE,
       deferRender = TRUE,
       scrollX = TRUE,
-      scrollY = "200px",
+      scrollY = "300px",
       scrollCollapse = TRUE,
       paging = FALSE,
       searching = TRUE,

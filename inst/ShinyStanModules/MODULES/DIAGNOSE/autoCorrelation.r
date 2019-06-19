@@ -10,7 +10,7 @@ autoCorrelationUI <- function(id){
                    inputId = ns("diagnostic_param"),
                    label = h5("Parameter"),
                    multiple = TRUE,
-                   choices = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names,
+                   choices = .make_param_list_with_groups(shinystan:::.sso_env$.SHINYSTAN_OBJECT),
                    selected = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[order(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "n_eff"])[1:2]]
                  )
                )
@@ -60,7 +60,8 @@ autoCorrelation <- function(input, output, session){
 
   visualOptions <- callModule(plotOptions, "options")  
   chain <- reactive(input$diagnostic_chain)
-  param <- reactive(input$diagnostic_param)
+  param <- reactive(unique(.update_params_with_groups(params = input$diagnostic_param,
+                                               all_param_names = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names)))
   lags <- reactive(input$diagnostic_lags)
   include <- reactive(input$report)
   

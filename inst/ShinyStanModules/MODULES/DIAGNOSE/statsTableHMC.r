@@ -115,7 +115,7 @@ statsTableHMC <- function(input, output, session){
       processing = TRUE,
       deferRender = TRUE,
       scrollX = TRUE,
-      scrollY = "200px",
+      scrollY = "300px",
       scrollCollapse = TRUE,
       paging = FALSE,
       searching = FALSE,

@@ -10,7 +10,7 @@ pairsUI <- function(id){
                    inputId = ns("diagnostic_param"),
                    label = h5("Parameter"),
                    multiple = TRUE,
-                   choices = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names,
+                   choices = .make_param_list_with_groups(shinystan:::.sso_env$.SHINYSTAN_OBJECT),
                    selected = if(length(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names) > 4) {
                      shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[order(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "n_eff"])[1:4]]
                    }  else {
@@ -50,7 +50,8 @@ pairs <- function(input, output, session){
   
   visualOptions <- callModule(plotOptions, "options", divOptions = TRUE)
   chain <- reactive(input$diagnostic_chain)
-  param <- reactive(input$diagnostic_param)
+  param <- reactive(unique(.update_params_with_groups(params = input$diagnostic_param,
+                                                      all_param_names = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names)))
   
   observe({
     toggle("caption", condition = input$showCaption)

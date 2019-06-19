@@ -10,7 +10,7 @@ divergentScatterUI <- function(id){
                  inputId = ns("diagnostic_param"),
                  label = h5("Parameter"),
                  multiple = TRUE,
-                 choices = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names,
+                 choices = .make_param_list(shinystan:::.sso_env$.SHINYSTAN_OBJECT),
                  selected = if(order(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "n_eff"])[1] == which(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names == "log-posterior")){
                    c(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[order(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "n_eff"])[2]],
                       shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[which(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names == "log-posterior")])

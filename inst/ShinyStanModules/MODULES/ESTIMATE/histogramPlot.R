@@ -9,7 +9,7 @@ histogramPlotUI <- function(id){
                    inputId = ns("diagnostic_param"),
                    label = h5("Parameters"),
                    multiple = TRUE,
-                   choices = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names,
+                   choices = .make_param_list_with_groups(shinystan:::.sso_env$.SHINYSTAN_OBJECT),
                    selected = c(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names[1])
                  )
                )
@@ -38,7 +38,9 @@ histogramPlot <- function(input, output, session){
   
   visualOptions <- callModule(plotOptions, "options")
   
-  param <- reactive(input$diagnostic_param)
+  param <- reactive(unique(.update_params_with_groups(params = input$diagnostic_param,
+                                                      all_param_names = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names)))
+  
   include <- reactive(input$report)
   
   observe({
