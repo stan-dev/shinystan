@@ -33,8 +33,12 @@ plotOptions <- function(input, output, session, ...){
                            verticalLayout(
                              selectInput(session$ns("theme"), label = h5("Select Theme"), 
                                          choices = c("bayesplot default",
-                                                     "classic",
-                                                     "dark"),
+                                                     "light",
+                                                     "gray",
+                                                     "dark",
+                                                     "minimal",
+                                                     "linedraw",
+                                                     "classic"),
                                          selected = input$theme),
                              if("intervalOptions" %in% input_names == TRUE) {
                                sliderInput(
@@ -53,10 +57,12 @@ plotOptions <- function(input, output, session, ...){
                            div(style = "width: 90%;",
                            verticalLayout(
                              selectInput(session$ns("color"), label = h5("Select Colors"),
-                                         choices = c("blue", "brightblue", "gray",
-                                                     "darkgray", "green", "pink", "purple",
-                                                     "red", "teal", "yellow", "mix-blue-pink", 
-                                                     "mix-blue-red"),
+                                         choices = list("Bayesplot Options" = c("blue", "brightblue", "gray",
+                                                                                "darkgray", "green", "pink", "purple",
+                                                                                "red", "teal", "yellow", "mix-blue-pink",
+                                                                                "mix-blue-red"),
+                                                        "Colorblind Friendly" = c("viridis", "viridisA", "viridisB",
+                                                                                  "viridisC", "viridisD", "viridisE")),
                                          selected = input$color),
                              if("intervalOptions" %in% input_names == TRUE) {
                                  sliderInput(
@@ -85,10 +91,12 @@ plotOptions <- function(input, output, session, ...){
                                        selected = input$theme),
                            verticalLayout(
                            selectInput(session$ns("color"), label = h5("Select Colors"),
-                                       choices = c("blue", "brightblue", "gray",
-                                                   "darkgray", "green", "pink", "purple",
-                                                   "red", "teal", "yellow", "mix-blue-pink", 
-                                                   "mix-blue-red"),
+                                       choices = list("Bayesplot Options" = c("blue", "brightblue", "gray",
+                                                                              "darkgray", "green", "pink", "purple",
+                                                                              "red", "teal", "yellow", "mix-blue-pink",
+                                                                              "mix-blue-red"),
+                                                      "Colorblind Friendly" = c("viridis", "viridisA", "viridisB",
+                                                                                "viridisC", "viridisD", "viridisE")),
                                        selected = input$color),
                            if("alphaOptions" %in% input_names == TRUE){
                              div(style = "width: 90%;",
