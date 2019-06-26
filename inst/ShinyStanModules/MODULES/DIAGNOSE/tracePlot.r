@@ -51,8 +51,10 @@ tracePlot <- function(input, output, session){
     
   visualOptions <- callModule(plotOptions, "options", divOptions = TRUE)
   chain <- reactive(input$diagnostic_chain)
-  param <- reactive(unique(.update_params_with_groups(params = input$diagnostic_param,
-                                                      all_param_names = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names)))
+  param <- debounce(reactive(unique(.update_params_with_groups(params = input$diagnostic_param,
+                                                               all_param_names = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names))),
+                    500)
+  
   include <- reactive(input$report)
   
   observe({

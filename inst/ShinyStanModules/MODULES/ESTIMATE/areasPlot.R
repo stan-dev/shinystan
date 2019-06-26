@@ -35,8 +35,9 @@ areasPlot <- function(input, output, session){
   visualOptions <- callModule(plotOptions, "options", estimatePlots = TRUE,
                               intervalOptions = TRUE, areasOptions = TRUE)
   
-  param <- reactive(unique(.update_params_with_groups(params = input$diagnostic_param,
-                                                      all_param_names = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names)))
+  param <- debounce(reactive(unique(.update_params_with_groups(params = input$diagnostic_param,
+                                                               all_param_names = shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names))),
+                    500)
   
   include <- reactive(input$report)
   

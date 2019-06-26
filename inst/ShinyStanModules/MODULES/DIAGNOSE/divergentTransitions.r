@@ -101,7 +101,7 @@ divergentTransitions <- function(input, output, session){
                 " this could indicate that the divergent transitions are false positives.",
                 " A bad plot would shows systematic differences between the divergent transitions and",
                 " non-divergent transitions.",
-                "For more information see ",
+                " For more information see ",
                 tags$a('https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup'), "."))
   }
   output$caption <- renderUI({

@@ -95,12 +95,16 @@ treedepth <- function(input, output, session){
                 " against the <i> log-posterior </i> (y-axis top left panel) and against the",
                 " <i> acceptance statistic </i> (y-axis top right panel) of the sampling algorithm for ",
                 tolower(if (chain() == 0) {"All chains"} else {paste("Chain", chain())}), ".",
-                " ",
-                " ",
-                " ",
-                " ",
-                " ",
-                " "))
+                " In these plots information is given concerning the efficiency of the sampling algorithm.",
+                " Zero treedepth can indicate extreme curvature and poorly-chosen step size.",
+                " Treedepth equal to the maximum treedepth might be a sign of poor adaptation or of ",
+                " a difficult posterior from which to sample.",
+                " The former can be resolved by increasing the warmup time, ",
+                " the latter might be mitigated by reparametrization.",
+                " For more information see ",
+                tags$a('https://mc-stan.org/misc/warnings.html#maximum-treedepth-exceeded'),
+                " or ", 
+                tags$a('https://mc-stan.org/docs/2_19/reference-manual/hmc-algorithm-parameters.html'), "."))
   }
   output$caption <- renderUI({
     captionOut()
