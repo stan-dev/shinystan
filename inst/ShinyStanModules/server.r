@@ -57,17 +57,14 @@ server <- function(input, output, session) {
   transformation_choices <-
     c(
       "abs", "atanh",
-      cauchit = "pcauchy", "cloglog",
+      cauchit = "pcauchy", cloglog = ".cloglog",
       "exp", "expm1",
-      "identity", "inverse", inv_logit = "plogis",
+      "identity", inverse = ".inverse", inv_logit = "plogis",
       "log", "log10", "log2", "log1p", logit = "qlogis",
       probit = "pnorm",
-      "square", "sqrt"
+      square = ".square", "sqrt"
     )
   
-  inverse <- function(x) 1/x
-  cloglog <- function(x) log(-log1p(-x))
-  square <- function(x) x^2
   
   # to reduce code in modules for selecting theme's in Options.
   select_theme <- function(name){
