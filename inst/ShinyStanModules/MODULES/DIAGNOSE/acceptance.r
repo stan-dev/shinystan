@@ -92,13 +92,17 @@ acceptance <- function(input, output, session){
                 " the <i> log-posterior </i> (top right panel), and, the <i> acceptance statistic</i> ",
                 "(x-axis bottom panel) against the <i> log-posterior </i> (y-axis bottom panel) for ",
                 tolower(if (chain() == 0) {"All chains"} else {paste("Chain", chain())}), ".",
-                " ",
-                " ",
-                " ",
-                " ",
-                " ",
-                " "))
+                " The vertical lines indicate the mean (solid line) and median (dashed line).",
+                " A bad plot would show a relationship between the acceptance statistic and the log-posterior.",
+                " This might be indicative of poor exploration of parts of the posterior which might be might",
+                " be mitigated by reparametrization or adaptation of the step size.",
+                " If many proposals are rejected the integrator step size might be too large and the posterior might not be fully explored.",
+                " If the acceptance rate is very high this might be indicative of inefficient sampling.",
+                " The target Metropolis acceptance rate can be set with the <i> adapt_delta </i> control option.",
+                " For more information see ",
+                tags$a('https://mc-stan.org/docs/2_19/reference-manual/hmc-algorithm-parameters.html'), "."))
   }
+  
   output$caption <- renderUI({
     captionOut()
   })

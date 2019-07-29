@@ -115,12 +115,10 @@ autoCorrelation <- function(input, output, session){
                 if(length(parameters) > 1) {"</i> and <i>"}, 
                 if(length(parameters) > 1) {parameters[length(parameters)]},"</i>",
                 " for ", tolower(if (chain() == 0) {"All chains"} else {paste("Chain", chain())}), ".",
-                " ",
-                " ",
-                " ",
-                " ",
-                " ",
-                " "))
+                " The autocorrelation expresses the dependence between the samples of a Monte Carlo simulation.",
+                " With higher dependence between the draws, more samples are needed to obtain the same effective sample size.",
+                " High autocorrelation can sometimes be remedied by reparametrization of the model."
+                ))
   }
   output$caption <- renderUI({
     captionOut(parameters = param())

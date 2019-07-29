@@ -114,17 +114,20 @@ tracePlot <- function(input, output, session){
   })
   
   captionOut <- function(parameters){
-    HTML(paste0(if(length(parameters) == 1 & chain() != 0) {"This is an autocorrelation plot of <i>"} else {"These are autocorrelation plots of <i>"}, 
+    HTML(paste0(if(length(parameters) == 1 & chain() != 0) {"This is a trace plot of <i>"} else {"These are trace plots of <i>"}, 
                 paste(parameters[1:(length(parameters)-1)], collapse = ", "),
                 if(length(parameters) > 1) {"</i> and <i>"}, 
                 if(length(parameters) > 1) {parameters[length(parameters)]},"</i>",
                 " for ", tolower(if (chain() == 0) {"All chains"} else {paste("Chain", chain())}), ".",
-                " ",
-                " ",
-                " ",
-                " ",
-                " ",
-                " "))
+                " Trace plots provide a visual way to inspect sampling behavior and assess mixing across chains.",
+                " The iteration number (x-axis) is plotted against the parameter value at that iteration (y-axis).",
+                " Divergent transitions are marked on the x-axis.",
+                " A good plot shows chains that move swiftly through the parameter space and all chains that explore",
+                " the same parameter space without any divergent transitions. A bad plot shows chains exploring different parts",
+                " of the parameter space, this is a sign of non-convergence. If there are divergent transitions,",
+                " looking at the parameter value related to these iterations might provide information about the part of the ",
+                " parameter space that is difficult to sample from. Slowly moving chains are indicative of high autocorrelation",
+                " or small integrator step size, both of which relate to ineffective sampling and lower effective sample sizes for the parameter."))
   }
   output$caption <- renderUI({
     captionOut(parameters = param())

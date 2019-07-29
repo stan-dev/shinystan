@@ -288,19 +288,34 @@ rhat_n_eff_se_mean <- function(input, output, session){
   
   
   captionOut_rhat <- function(){
-    HTML(paste0("These are plots ...",
-                " ",
-                " .1."))
+    HTML(paste0("This is a histogram of split R-hat values for all the paramters in the model.",
+                " Before Stan calculating the potential-scale-reduction statistic R-hat, each chain is split into two halves.",
+                " This provides an additional means to detect non-stationarity in the individual chains. ",
+                " R-hat vales are used to assess convergence and traditionally R-hat values above 1.1 were considered signs of bad convergence.",
+                " For more information see ",
+                tags$a('https://mc-stan.org/docs/2_19/reference-manual/notation-for-samples-chains-and-draws.html'),
+                " or see Vehtari et al. (2019) for recent developments related to the R-hat statistic. ", 
+                " Note that part of these recent developments are recommendations to only use the posterior sample if R-hat is below 1.01."))
   }
   captionOut_n_eff <- function(){
-    HTML(paste0("These are plots ...",
-                " ",
-                " .2."))
+    HTML(paste0("This is a histogram of the effective sample size devided by the total number of itterations for all parameters in the model.",
+                " If parameters have a very low ratio of effective sample size per itteration this can be indicative",
+                " of a difficult posterior from which to sample for those parameters.",
+                " The efficiency of the sampling can sometimes be increased by means of reparametrization of the model."
+                ))
   }
   captionOut_se_mean <- function(){
-    HTML(paste0("These are plots ...",
-                " ",
-                " .3."))
+    HTML(paste0("This is a histogram of the ratio of the Monte Carlo standard error of the mean to the posterior standard deviation for the estimated parameters.",
+                " The Monte Carlo standard error is related to the accuracy of simulation. The smaller the standard error the closer",
+                " the esimate for the parameter is expected to be to the true value.", 
+                " The standard deviation is related to the uncertainty we have about the parameter value itself.",
+                " We want our simulation uncertainty to be small in comparison to our uncertainty about the parameter itself.",
+                " If we are very sure about the parameter and the standard deviation is small, we need many monte carlo itterations",
+                " to ensure small standard errors of our estimates.",
+                " However, if our posterior standard deviation itself is large, we do not need the same accuracy, hence fewer monte carlo samples are sufficient.",
+                " For more information see for instance ",
+                tags$a('https://statmodeling.stat.columbia.edu/2007/04/02/markov_chain_mo/')
+                ))
   }
   
   output$caption_rhat <- renderUI({

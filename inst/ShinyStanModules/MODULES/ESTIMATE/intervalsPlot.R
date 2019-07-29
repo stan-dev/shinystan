@@ -71,17 +71,19 @@ intervalsPlot <- function(input, output, session){
   })
   
   
-  captionOut <- function(){
-    HTML(paste0("Interval plots..",
-                " ",
-                " ",
-                " ",
-                " ",
-                " ",
-                " "))
+  captionOut <- function(parameters){
+    HTML(paste0(if(length(parameters) == 1) {"This is a interval plot of <i>"} else {"These are interval plots of <i>"}, 
+                paste(parameters[1:(length(parameters)-1)], collapse = ", "),
+                if(length(parameters) > 1) {"</i> and <i>"}, 
+                if(length(parameters) > 1) {parameters[length(parameters)]},"</i>", ".",
+                " The outer edges denote the ", visualOptions()$outer_ci, "% credibility interval.", 
+                " The inner edges denote the ", visualOptions()$inner_ci, "% credibility interval.", 
+                if(visualOptions()$point_est != "None") {paste0(" The point estimate denotes the posterior ",
+                                                                tolower(visualOptions()$point_est), ".")}
+                ))
   }
   output$caption <- renderUI({
-    captionOut()
+    captionOut(parameters = param())
   })
   
   
@@ -93,7 +95,7 @@ intervalsPlot <- function(input, output, session){
       color_scheme_set(visualOptions()$color)
       bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
       out <- list(plot = plotOut(parameters = param()),
-                  caption = captionOut())
+                  caption = captionOut(patameters = param()))
       bayesplot_theme_set(save_old_theme)
       out
     } else {
