@@ -69,19 +69,16 @@ histogramPlot <- function(input, output, session){
     suppressMessages(print(out)) # hide 'bins = 30' message ggplot
   })
   
-  captionOut <- function(){
-    HTML(paste0("Histogram plot..",
-                " ",
-                " ",
-                " ",
-                " ",
-                " ",
-                " "))
+  captionOut <- function(parameters){
+    HTML(paste0(if(length(parameters) == 1) {"This is a histogram plot of <i>"} else {"These are histogram plots of <i>"}, 
+                paste(parameters[1:(length(parameters)-1)], collapse = ", "),
+                if(length(parameters) > 1) {"</i> and <i>"}, 
+                if(length(parameters) > 1) {parameters[length(parameters)]},"</i>", "."
+    ))
   }
   output$caption <- renderUI({
-    captionOut()
+    captionOut(parameters = param())
   })
-  
   
   return(reactive({
     if(include() == TRUE){
@@ -90,7 +87,7 @@ histogramPlot <- function(input, output, session){
       color_scheme_set(visualOptions()$color)
       bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
       out <- list(plot = plotOut(parameters = param()),
-                  caption = captionOut())
+                  caption = captionOut(parameters = param()))
       bayesplot_theme_set(save_old_theme)
       out
     } else {

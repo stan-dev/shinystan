@@ -68,17 +68,15 @@ densityPlot <- function(input, output, session){
     out
   })
   
-  captionOut <- function(){
-    HTML(paste0("Density plots..",
-                " ",
-                " ",
-                " ",
-                " ",
-                " ",
-                " "))
+  captionOut <- function(parameters){
+    HTML(paste0(if(length(parameters) == 1) {"This is a density plot of <i>"} else {"These are density plots of <i>"}, 
+                paste(parameters[1:(length(parameters)-1)], collapse = ", "),
+                if(length(parameters) > 1) {"</i> and <i>"}, 
+                if(length(parameters) > 1) {parameters[length(parameters)]},"</i>", "."
+                ))
   }
   output$caption <- renderUI({
-    captionOut()
+    captionOut(parameters = param())
   })
   
   return(reactive({
@@ -88,7 +86,7 @@ densityPlot <- function(input, output, session){
       color_scheme_set(visualOptions()$color)
       bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
       out <- list(plot = plotOut(parameters = param()),
-                  caption = captionOut())
+                  caption = captionOut(parameters = param()))
       bayesplot_theme_set(save_old_theme)
       out
     } else {

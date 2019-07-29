@@ -104,17 +104,12 @@ scatterPlot <- function(input, output, session){
     out
   })
   
-  captionOut <- function(){
-    HTML(paste0("Scatter plot..",
-                " ",
-                " ",
-                " ",
-                " ",
-                " ",
-                " "))
+  captionOut <- function(parameters){
+    HTML(paste0("This is a plot of MCMC draws of <i>", parameters[1], "</i> (x-axis) against <i>",
+                parameters[2], "</i> (y-axis)."))
   }
   output$caption <- renderUI({
-    captionOut()
+    captionOut(parameters = param())
   })
   
   return(reactive({
@@ -125,7 +120,7 @@ scatterPlot <- function(input, output, session){
       bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
       out <- list(plot = plotOut(parameters = param(), 
                      transformations = transform()),
-                  caption = captionOut())
+                  caption = captionOut(parameters = param()))
       bayesplot_theme_set(save_old_theme)
       out
     } else {

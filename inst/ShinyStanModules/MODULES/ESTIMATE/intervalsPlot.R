@@ -82,6 +82,7 @@ intervalsPlot <- function(input, output, session){
                                                                 tolower(visualOptions()$point_est), ".")}
                 ))
   }
+  
   output$caption <- renderUI({
     captionOut(parameters = param())
   })
@@ -95,7 +96,7 @@ intervalsPlot <- function(input, output, session){
       color_scheme_set(visualOptions()$color)
       bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
       out <- list(plot = plotOut(parameters = param()),
-                  caption = captionOut(patameters = param()))
+                  caption = captionOut(parameters = param()))
       bayesplot_theme_set(save_old_theme)
       out
     } else {

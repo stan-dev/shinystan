@@ -79,17 +79,20 @@ areasPlot <- function(input, output, session){
     out
   })
   
-  captionOut <- function(){
-    HTML(paste0("areas/ridges plot..",
-                " ",
-                " ",
-                " ",
-                " ",
-                " ",
-                " "))
+  captionOut <- function(parameters){
+    HTML(paste0(if(length(parameters) == 1) {"This is a area plot of <i>"} else {"These are area plots of <i>"}, 
+                paste(parameters[1:(length(parameters)-1)], collapse = ", "),
+                if(length(parameters) > 1) {"</i> and <i>"}, 
+                if(length(parameters) > 1) {parameters[length(parameters)]},"</i>", ".",
+                " The outer edges denote the ", visualOptions()$outer_ci, "% credibility interval.", 
+                " The inner edges denote the ", visualOptions()$inner_ci, "% credibility interval.", 
+                if(visualOptions()$point_est != "None") {paste0(" The point estimate denotes the posterior ",
+                                                                tolower(visualOptions()$point_est), ".")}
+    ))
   }
+  
   output$caption <- renderUI({
-    captionOut()
+    captionOut(parameters = param())
   })
   
   
@@ -101,7 +104,7 @@ areasPlot <- function(input, output, session){
       bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
       out <- list(plot = plotOut(parameters = param(), 
                                  plotType = visualOptions()$areas_ridges),
-                  caption = captionOut())
+                  caption = captionOut(parameters = param()))
       bayesplot_theme_set(save_old_theme)
       out
     } else {

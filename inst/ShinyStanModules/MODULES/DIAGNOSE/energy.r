@@ -82,14 +82,26 @@ energy <- function(input, output, session){
   })
   
   captionOut <- function(){
-    HTML(paste0("These are plots of .... for ",
+    
+    HTML(paste0("These are plots of the overlaid histograms of the marginal energy distribution (",
+                " \\(\\pi_E\\)", ")",
+                " and the energy transition distribution (", 
+                " \\(\\pi_{\\Delta E}\\)", 
+                ") for ", 
                 tolower(if (chain() == 0) {"All chains"} else {paste("Chain", chain())}), ".",
-                " ",
-                " ",
-                " ",
-                " ",
-                " ",
-                " "))
+                " A good plot shows histograms that look well-matched, indicating that the ",
+                " Hamiltonian Monte Carlo should perform robustly.",
+                " The closer ", " \\(\\pi_{\\Delta E}\\)", " is to ", " \\(\\pi_E\\)", 
+                " the faster the random walk explores the energies and the smaller the autocorrelations will be in the chain.",
+                " If ", " \\(\\pi_{\\Delta E}\\)", " is narrower than ", " \\(\\pi_E\\)",
+                " the random walk is less effective and autocorrelations will be larger. Additionally",
+                " the chain may not be able to completely explore the tails of the target distribution.",
+                " See Betancourt 'A conceptual introduction to Hamiltonian Monte Carlo'",
+                " and Betancourt 'Diagnosing suboptimal cotangent disintegrations in Hamiltonian Monte Carlo'",
+                " for the general theory behind the energy plots.", withMathJax()
+                ))
+    
+  
   }
   
   output$caption <- renderUI({
