@@ -1,0 +1,123 @@
+---
+title: "ShinyStan Automated Diagnostics Report"
+output:
+  html_document: 
+    toc: TRUE
+  pdf_document: 
+    toc: TRUE
+  word_document: 
+    toc: TRUE
+date: "`r format(Sys.time(), '%d %B %Y, %H:%M')`"
+fontsize: 11pt
+---
+
+
+```{r global_options, include=FALSE}
+library(dplyr)
+library(bayesplot)
+
+knitr::opts_chunk$set(echo=FALSE, warning=FALSE, message=FALSE)
+showplots <- FALSE
+
+ # # To make listed parameter overviews
+ #  .make_param_list <- function(object) {
+ #    param_names <- slot(object, "param_names")
+ #    param_dims <- slot(object, "param_dims")
+ #    param_groups <- names(param_dims)
+ #    choices <- list()
+ #    ll <- length(param_dims)
+ #    choices[seq_len(ll)] <- ""
+ #    names(choices) <- param_groups
+ #    for(i in seq_len(ll)) {
+ #      if (length(param_dims[[i]]) == 0) {
+ #        choices[[i]] <- list(param_groups[i])
+ #      }
+ #      else {
+ #        temp <- paste0(param_groups[i],"\\[")
+ #        choices[[i]] <- param_names[grep(temp, param_names)]
+ #      }
+ #    }
+ #    choices
+ #  }
+
+lowest_eff <- order(sso@summary[, "n_eff"]) %>%
+  sso@param_names[.] 
+
+lowest_eff <- lowest_eff[-which(lowest_eff == "log-posterior")]
+
+if(n_param > length(lowest_eff)) n_param <- length(lowest_eff)
+
+```
+
+# Warnings
+
+```{r}
+
+divergences <- sum(nuts_params(sso@sampler_params %>%
+                   lapply(., as.data.frame) %>%
+                   lapply(., filter, row_number() > sso@n_warmup) %>%
+                   lapply(., as.matrix), 
+                   pars = "divergent__")[, 3]) != 0
+
+
+
+if(divergences) {
+  lapply(sso@sampler_params, "[", , "divergent__") %>%
+    lapply(., as.data.frame) %>%
+    lapply(., filter, row_number() > sso@n_warmup) %>%
+    lapply(., function (x) x > 0 ) %>% lapply(., sum) %>% 
+    unlist(.) %>% sum(.) %>%
+    paste0(., " of ", (sso@n_iter-sso@n_warmup) * sso@n_chain,
+           " iterations ended with a divergence (",
+           round((. / ((sso@n_iter-sso@n_warmup) * sso@n_chain)) * 100, 1),
+           "%).")
+} else {
+  print(paste0("Non of the ", (sso@n_iter-sso@n_warmup) * sso@n_chain, 
+               "iterations ended with a divergent transition."))
+}
+
+
+
+```
+
+
+
+# Numerical diagnostics
+
+
+```{r}
+round(sso@summary, 2)[c("log-posterior", lowest_eff[1:n_param]), c("n_eff", "Rhat",
+                                                                   "mean", "se_mean", "sd")]
+
+```
+
+
+# Visual diagnostics
+
+## Scatter plots
+
+
+
+These are scatter plots your `r n_param` worst performing paramters in terms of `n_eff`, plotted against  `log-posterior`. The red dots, if present, indicate divergent transitions.
+
+```{r diverget_scatter}
+
+for(i in 1:n_param) {
+  parameters <- c(lowest_eff[i], "log-posterior")
+  print(mcmc_scatter(
+    sso@posterior_sample[(1 + sso@n_warmup) : sso@n_iter, , ],
+    pars = parameters,
+    alpha = .7,
+    np = nuts_params(sso@sampler_params %>%
+                    lapply(., as.data.frame) %>%
+                    lapply(., filter, row_number() > sso@n_warmup) %>%
+                    lapply(., as.matrix)),
+    np_style = scatter_style_np(div_color = "red", div_alpha = .7)
+  ))
+}
+
+```
+
+
+
+
