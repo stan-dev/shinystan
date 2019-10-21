@@ -1,4 +1,4 @@
-generate_report <- function (sso, n_param = 1, output_format = "html_document", view = TRUE) {
+generate_report <- function (sso, n_param = 3, output_format = "html_document", view = TRUE) {
   if(class(sso) != "shinystan") stop("Object is not of class 'shinystan'.")
   path <- rmarkdown::render(input = system.file("ShinyStanModules/reports/report_function.Rmd",
                                                 package = "shinystan"), 
