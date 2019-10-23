@@ -18,10 +18,13 @@
 #' 
 #' @export
 #' @template args-sso
-#' @param n_param On how many parameters do you want the report to be? 
+#' @param n_param On how many parameters do you want the report to be? To
+#'    print the report for all parameters put 'n_param = Inf`. 
 #' @param output_format What type of report would you like? The options are
 #'   'html_document', 'pdf_document' and 'word_document'.
 #' @param view Do you want to open the report after it is generated?
+#' @param report_type What type of report would you like? The options are
+#'   'diagnose' and 'estimate'.
 #'   
 #' @return A report is generated and the path where it is stored is printed.
 #' 
@@ -32,11 +35,19 @@
 #' }
 #' 
 
-generate_report <- function (sso, n_param = 3, output_format = "html_document", view = TRUE) {
+generate_report <- function (sso, n_param = 3, output_format = "html_document", 
+                             view = TRUE, report_type = "diagnose") {
   if(class(sso) != "shinystan") stop("Object is not of class 'shinystan'.")
-  path <- rmarkdown::render(input = system.file("ShinyStanModules/reports/report_function.Rmd",
-                                                package = "shinystan"), 
-                            output_format = output_format, output_dir = getwd())
+  if(report_type == "diagnose"){
+    path <- rmarkdown::render(input = system.file("ShinyStanModules/reports/report_function.Rmd",
+                                                  package = "shinystan"), 
+                              output_format = output_format, output_dir = getwd())  
+  }
+  if(report_type == "estimate") {
+    path <- rmarkdown::render(input = system.file("ShinyStanModules/reports/report_function_estimates.Rmd",
+                                                  package = "shinystan"), 
+                              output_format = output_format, output_dir = getwd())
+  }
   message("File saved to ", path)
   if (view) {
     system2("open", shQuote(path))

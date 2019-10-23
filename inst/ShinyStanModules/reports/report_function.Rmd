@@ -185,7 +185,7 @@ mcmc_nuts_acceptance(
 These are scatter plots of the `r n_param` worst performing paramters in terms of `n_eff`, plotted against  `log-posterior`. The red dots, if present, indicate divergent transitions. Divergent transitions can indicate problems for the validity of the results. A good plot would show no divergent transitions. A bad plot would show divergent transitions in a systematic patern. For more information see [https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup](https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup).
 
 
-```{r diverget_scatter_plot}
+```{r diverget_scatter_plot, out.width = '45%', fig.show = 'hold'}
 
 for(i in 1:n_param) {
   parameters <- c(lowest_eff[i], "log-posterior")
@@ -208,7 +208,7 @@ for(i in 1:n_param) {
 
 These are autocorrelation plots of the `r n_param` worst performing paramters in terms of `n_eff`. The autocorrelation expresses the dependence between the samples of a Monte Carlo simulation. With higher dependence between the draws, more samples are needed to obtain the same effective sample size. High autocorrelation can sometimes be remedied by reparametrization of the model.
 
-```{r autocorrelation_plot}
+```{r autocorrelation_plot, out.width = '45%', fig.show = 'hold'}
 
 for(i in 1:n_param) {
   parameters <- c(lowest_eff[i])
@@ -230,7 +230,7 @@ for(i in 1:n_param) {
 These are trace plots of the `r n_param` worst performing paramters in terms of `n_eff`, for all chains. Trace plots provide a visual way to inspect sampling behavior and assess mixing across chains. The iteration number (x-axis) is plotted against the parameter value at that iteration (y-axis). Divergent transitions are marked on the x-axis. A good plot shows chains that move swiftly through the parameter space and all chains that explore the same parameter space without any divergent transitions. A bad plot shows chains exploring different parts of the parameter space, this is a sign of non-convergence. If there are divergent transitions, looking at the parameter value related to these iterations might provide information about the part of the parameter space that is difficult to sample from. Slowly moving chains are indicative of high autocorrelation or small integrator step size, both of which relate to ineffective sampling and lower effective sample sizes for the parameter.
 
 
-```{r trace_plot}
+```{r trace_plot, out.width = '45%', fig.show = 'hold'}
 
 for(i in 1:n_param) {
   parameters <- c(lowest_eff[i])

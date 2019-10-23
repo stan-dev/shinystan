@@ -1,0 +1,195 @@
+---
+title: "ShinyStan Automated Estimates Report"
+output:
+  html_document: 
+    toc: TRUE
+  pdf_document: 
+    toc: TRUE
+  word_document: 
+    toc: TRUE
+date: "`r format(Sys.time(), '%d %B %Y, %H:%M')`"
+fontsize: 11pt
+---
+
+
+```{r global_options, include=FALSE}
+library(dplyr)
+library(bayesplot)
+
+knitr::opts_chunk$set(echo=FALSE, warning=FALSE, message=FALSE)
+showplots <- FALSE
+
+# To make listed parameter overviews
+.make_param_list <- function(object) {
+  param_names <- slot(object, "param_names")
+  param_dims <- slot(object, "param_dims")
+  param_groups <- names(param_dims)
+  choices <- list()
+  ll <- length(param_dims)
+  choices[seq_len(ll)] <- ""
+  names(choices) <- param_groups
+  for(i in seq_len(ll)) {
+    if (length(param_dims[[i]]) == 0) {
+      choices[[i]] <- list(param_groups[i])
+    }
+    else {
+      temp <- paste0(param_groups[i],"\\[")
+      choices[[i]] <- param_names[grep(temp, param_names)]
+    }
+  }
+  choices
+}
+
+
+.make_param_list_with_groups <- function(object, sort_j = FALSE) {
+  param_names <- slot(object, "param_names")
+  param_dims <- slot(object, "param_dims")
+  param_groups <- names(param_dims)
+  ll <- length(param_dims)
+  LL <- sapply(seq_len(ll), function(i) length(param_dims[[i]]))
+  choices <- list()
+  choices[seq_len(ll)] <- ""
+  names(choices) <- param_groups
+  for(i in seq_len(ll)) {
+    if (LL[i] == 0) {
+      choices[[i]] <- list(param_groups[i])
+    } else {
+      group <- param_groups[i]
+      temp <- paste0("^",group,"\\[")
+      ch <- param_names[grep(temp, param_names)]
+      
+      #       toggle row/column major sorting so e.g. "beta[1,1], beta[1,2],
+      #       beta[2,1], beta[2,2]" instead of "beta[1,1], beta[2,1], beta[1,2],
+      #       beta[2,2]"
+      if (sort_j == TRUE & LL[i] > 1)
+        ch <- gtools::mixedsort(ch)
+      
+      ch_out <- c(paste0(group,"_as_shinystan_group"), ch)
+      names(ch_out) <- c(paste("ALL (remaining)", group), ch)
+      choices[[i]] <- ch_out
+    }
+  }
+  
+  choices
+}
+
+
+lowest_eff <- order(sso@summary[, "n_eff"]) %>%
+  sso@param_names[.] 
+
+lowest_eff <- lowest_eff[-which(lowest_eff == "log-posterior")]
+
+if(n_param > length(lowest_eff)) n_param <- length(lowest_eff)
+
+```
+
+# Warnings
+
+```{r}
+
+divergences <- sum(nuts_params(sso@sampler_params %>%
+                                 lapply(., as.data.frame) %>%
+                                 lapply(., filter, row_number() > sso@n_warmup) %>%
+                                 lapply(., as.matrix), 
+                               pars = "divergent__")[, 3]) != 0
+
+
+
+if(divergences) {
+  lapply(sso@sampler_params, "[", , "divergent__") %>%
+    lapply(., as.data.frame) %>%
+    lapply(., filter, row_number() > sso@n_warmup) %>%
+    lapply(., function (x) x > 0 ) %>% lapply(., sum) %>% 
+    unlist(.) %>% sum(.) %>%
+    paste0(., " of ", (sso@n_iter-sso@n_warmup) * sso@n_chain,
+           " iterations ended with a divergence (",
+           round((. / ((sso@n_iter-sso@n_warmup) * sso@n_chain)) * 100, 1),
+           "%).")
+} else {
+  print(paste0("Non of the ", (sso@n_iter-sso@n_warmup) * sso@n_chain, 
+               "iterations ended with a divergent transition."))
+}
+
+
+
+```
+
+
+
+# Visual Estimates
+
+## Density
+
+These are density plots of the `r n_param` worst performing paramters in terms of `n_eff`.
+
+```{r density_plots, out.width = '45%', fig.show = 'hold'}
+for(i in 1:n_param) {
+  print(mcmc_dens(
+    sso@posterior_sample[(1 + sso@n_warmup) : sso@n_iter, , ],
+    pars = lowest_eff[i]
+  ))
+}
+``` 
+
+## Histogram
+
+These are histogram plots of the `r n_param` worst performing paramters in terms of `n_eff`.
+
+```{r histogram_plots, out.width = '45%', fig.show = 'hold'}
+for(i in 1:n_param) {
+  print(mcmc_hist(
+    sso@posterior_sample[(1 + sso@n_warmup) : sso@n_iter, , ],
+    pars = lowest_eff[i]
+  ))
+}
+``` 
+
+
+## Interval
+
+
+These are interval plots of the `r n_param` worst performing paramters in terms of `n_eff`. The plots are split by parameter groups. The entire group is printed if one of the parameters is included in the worst performing parameters. The point represents median value, the inner edge the 50\% CI and the outer the 95\% CI. 
+
+```{r interval_plots, out.width = '45%', fig.show = 'hold'}
+
+for(i in 1:length(.make_param_list_with_groups(sso))){
+  if(any(.make_param_list_with_groups(sso)[[i]] %in% lowest_eff)){
+    parameters <- as.character(.make_param_list_with_groups(sso)[[i]][.make_param_list_with_groups(sso)[[i]] %in% sso@param_names])
+    print(mcmc_intervals(
+      sso@posterior_sample[(1 + sso@n_warmup) : sso@n_iter, , ],
+      pars = parameters,
+      point_est = "median",
+      prob = .50,
+      prob_outer = .95
+    ))
+  }
+}
+
+``` 
+
+
+## Areas
+
+
+These are areas plots of the `r n_param` worst performing paramters in terms of `n_eff`. The plots are split by parameter groups. The entire group is printed if one of the parameters is included in the worst performing parameters. The point represents median value, the inner edge the 50\% CI and the outer the 95\% CI. 
+
+```{r areas_plots, out.width = '45%', fig.show = 'hold'}
+
+for(i in 1:length(.make_param_list_with_groups(sso))){
+  if(any(.make_param_list_with_groups(sso)[[i]] %in% lowest_eff)){
+    parameters <- as.character(.make_param_list_with_groups(sso)[[i]][.make_param_list_with_groups(sso)[[i]] %in% sso@param_names])
+    print(mcmc_areas(
+      sso@posterior_sample[(1 + sso@n_warmup) : sso@n_iter, , ],
+      pars = parameters,
+      point_est = "median",
+      prob = .50,
+      prob_outer = .95
+    ))
+  }
+}
+
+``` 
+
+
+
+
