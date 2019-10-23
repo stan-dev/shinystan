@@ -38,15 +38,18 @@
 generate_report <- function (sso, n_param = 3, output_format = "html_document", 
                              view = TRUE, report_type = "diagnose") {
   if(class(sso) != "shinystan") stop("Object is not of class 'shinystan'.")
+  
   if(report_type == "diagnose"){
     path <- rmarkdown::render(input = system.file("ShinyStanModules/reports/report_function.Rmd",
                                                   package = "shinystan"), 
-                              output_format = output_format, output_dir = getwd())  
+                              output_format = output_format, 
+                              output_file = "ShinyStan_diagnostics_report")  
   }
   if(report_type == "estimate") {
     path <- rmarkdown::render(input = system.file("ShinyStanModules/reports/report_function_estimates.Rmd",
                                                   package = "shinystan"), 
-                              output_format = output_format, output_dir = getwd())
+                              output_format = output_format, 
+                              output_file = "ShinyStan_estimates_report")
   }
   message("File saved to ", path)
   if (view) {

@@ -72,8 +72,8 @@ if(divergences) {
            round((. / ((sso@n_iter-sso@n_warmup) * sso@n_chain)) * 100, 1),
            "%).")
 } else {
-  print(paste0("Non of the ", (sso@n_iter-sso@n_warmup) * sso@n_chain, 
-               "iterations ended with a divergent transition."))
+  print(paste0("None of the ", (sso@n_iter-sso@n_warmup) * sso@n_chain, 
+               " iterations ended with a divergent transition."))
 }
 
 
