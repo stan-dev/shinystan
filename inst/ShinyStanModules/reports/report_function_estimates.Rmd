@@ -3,6 +3,9 @@ title: "ShinyStan Automated Estimates Report"
 output:
   html_document: 
     toc: TRUE
+    toc_float: 
+      collapsed: FALSE
+      depth: 3
   pdf_document: 
     toc: TRUE
   word_document: 
@@ -74,12 +77,21 @@ showplots <- FALSE
 }
 
 
-lowest_eff <- order(sso@summary[, "n_eff"]) %>%
-  sso@param_names[.] 
+nopars <- missing(pars) | is.null(pars)
 
-lowest_eff <- lowest_eff[-which(lowest_eff == "log-posterior")]
+if(nopars){
+  selected_parameters <- order(sso@summary[, "n_eff"]) %>%
+    sso@param_names[.] 
+  
+  selected_parameters <- selected_parameters[-which(selected_parameters == "log-posterior")]
+  
+  if(n_param == "all") n_param <- length(selected_parameters)
+  if(n_param > length(selected_parameters)) n_param <- length(selected_parameters)
+} else {
+  selected_parameters <- pars
+  n_param <- length(pars)
+}
 
-if(n_param > length(lowest_eff)) n_param <- length(lowest_eff)
 
 ```
 
@@ -114,46 +126,50 @@ if(divergences) {
 
 ```
 
-
+\newpage
 
 # Visual Estimates
 
 ## Density
 
-These are density plots of the `r n_param` worst performing paramters in terms of `n_eff`.
+These are density plots of `r if(nopars == FALSE){selected_parameters}``r if(nopars){paste0("the ", n_param, " worst performing parameters in terms of n_eff")}`.
 
 ```{r density_plots, out.width = '45%', fig.show = 'hold'}
 for(i in 1:n_param) {
   print(mcmc_dens(
     sso@posterior_sample[(1 + sso@n_warmup) : sso@n_iter, , ],
-    pars = lowest_eff[i]
+    pars = selected_parameters[i]
   ))
 }
 ``` 
 
+\newpage
+
 ## Histogram
 
-These are histogram plots of the `r n_param` worst performing paramters in terms of `n_eff`.
+These are histogram plots `r if(nopars == FALSE){selected_parameters}``r if(nopars){paste0("the ", n_param, " worst performing parameters in terms of n_eff")}`.
 
 ```{r histogram_plots, out.width = '45%', fig.show = 'hold'}
 for(i in 1:n_param) {
   print(mcmc_hist(
     sso@posterior_sample[(1 + sso@n_warmup) : sso@n_iter, , ],
-    pars = lowest_eff[i]
+    pars = selected_parameters[i]
   ))
 }
 ``` 
 
 
+\newpage
+
 ## Interval
 
 
-These are interval plots of the `r n_param` worst performing paramters in terms of `n_eff`. The plots are split by parameter groups. The entire group is printed if one of the parameters is included in the worst performing parameters. The point represents median value, the inner edge the 50\% CI and the outer the 95\% CI. 
+These are interval plots of `r if(nopars == FALSE){selected_parameters}``r if(nopars){paste0("the ", n_param, " worst performing parameters in terms of n_eff")}`. The plots are split by parameter groups. The entire group is printed if one of the parameters is included in the worst performing parameters. The point represents median value, the inner edge the 50\% CI and the outer the 95\% CI. 
 
 ```{r interval_plots, out.width = '45%', fig.show = 'hold'}
 
 for(i in 1:length(.make_param_list_with_groups(sso))){
-  if(any(.make_param_list_with_groups(sso)[[i]] %in% lowest_eff)){
+  if(any(.make_param_list_with_groups(sso)[[i]] %in% selected_parameters)){
     parameters <- as.character(.make_param_list_with_groups(sso)[[i]][.make_param_list_with_groups(sso)[[i]] %in% sso@param_names])
     print(mcmc_intervals(
       sso@posterior_sample[(1 + sso@n_warmup) : sso@n_iter, , ],
@@ -167,16 +183,17 @@ for(i in 1:length(.make_param_list_with_groups(sso))){
 
 ``` 
 
+\newpage
 
 ## Areas
 
 
-These are areas plots of the `r n_param` worst performing paramters in terms of `n_eff`. The plots are split by parameter groups. The entire group is printed if one of the parameters is included in the worst performing parameters. The point represents median value, the inner edge the 50\% CI and the outer the 95\% CI. 
+These are areas plots of `r if(nopars == FALSE){selected_parameters}``r if(nopars){paste0("the ", n_param, " worst performing parameters in terms of n_eff")}`. The plots are split by parameter groups. The entire group is printed if one of the parameters is included in the worst performing parameters. The point represents median value, the inner edge the 50\% CI and the outer the 95\% CI. 
 
 ```{r areas_plots, out.width = '45%', fig.show = 'hold'}
 
 for(i in 1:length(.make_param_list_with_groups(sso))){
-  if(any(.make_param_list_with_groups(sso)[[i]] %in% lowest_eff)){
+  if(any(.make_param_list_with_groups(sso)[[i]] %in% selected_parameters)){
     parameters <- as.character(.make_param_list_with_groups(sso)[[i]][.make_param_list_with_groups(sso)[[i]] %in% sso@param_names])
     print(mcmc_areas(
       sso@posterior_sample[(1 + sso@n_warmup) : sso@n_iter, , ],

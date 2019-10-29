@@ -100,7 +100,7 @@ acceptance <- function(input, output, session){
                 " If the acceptance rate is very high this might be indicative of inefficient sampling.",
                 " The target Metropolis acceptance rate can be set with the <i> adapt_delta </i> control option.",
                 " For more information see ",
-                tags$a('https://mc-stan.org/docs/2_19/reference-manual/hmc-algorithm-parameters.html'), "."))
+                tags$a('https://mc-stan.org/docs/reference-manual/hmc-algorithm-parameters.html'), "."))
   }
   
   output$caption <- renderUI({

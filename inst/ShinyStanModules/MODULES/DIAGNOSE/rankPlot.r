@@ -91,7 +91,7 @@ rankPlot <- function(input, output, session){
                 " the chains mix together in terms of ranking.",
                 " An ideal plot would show the rankings mixing",
                 " or overlapping in a uniform distribution.",
-                " See Vehtari et al. (2019) for details."))
+                " See <a href = 'https://arxiv.org/abs/1903.08008'>Vehtari et al. (2019)</a> for details."))
   }
   output$caption <- renderUI({
     captionOut(parameters = param())

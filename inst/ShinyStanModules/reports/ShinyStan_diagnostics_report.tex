@@ -1,0 +1,330 @@
+\documentclass[11pt,]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={ShinyStan Automated Diagnostics Report},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\providecommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{ShinyStan Automated Diagnostics Report}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{}
+    \preauthor{}\postauthor{}
+      \predate{\centering\large\emph}
+  \postdate{\par}
+    \date{29 October 2019, 16:10}
+
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\hypertarget{warnings}{%
+\section{Warnings}\label{warnings}}
+
+\begin{verbatim}
+## [1] "65 of 4000 iterations ended with a divergence (1.6%)."
+\end{verbatim}
+
+\newpage
+
+\hypertarget{numerical-diagnostics}{%
+\section{Numerical diagnostics}\label{numerical-diagnostics}}
+
+\begin{verbatim}
+##                 n_eff Rhat   mean se_mean   sd
+## log-posterior  261.50 1.02 -19.02    0.30 4.88
+## tau            536.96 1.01   7.86    0.25 5.78
+## theta[7]       989.39 1.00  11.48    0.22 6.96
+## theta[1]      1022.31 1.00  12.46    0.27 8.67
+## mu            1029.55 1.00   8.36    0.17 5.43
+## theta[5]      1351.81 1.00   4.66    0.17 6.39
+## theta[6]      1744.92 1.00   6.10    0.17 7.06
+## theta[2]      1840.22 1.00   8.08    0.16 6.70
+## theta[3]      2002.39 1.00   6.17    0.19 8.35
+## theta[8]      2051.05 1.00   8.92    0.18 8.33
+## theta[4]      2051.77 1.00   7.95    0.15 6.77
+\end{verbatim}
+
+\newpage
+
+\hypertarget{visual-diagnostics}{%
+\section{Visual diagnostics}\label{visual-diagnostics}}
+
+\hypertarget{divergence-information}{%
+\subsection{Divergence Information}\label{divergence-information}}
+
+These are plots of the \emph{divergent transition status} (x-axis)
+against the \emph{log-posterior} (y-axis top panel) and against the
+\emph{acceptance statistic} (y-axis bottom panel) of the sampling
+algorithm for all chains. Divergent transitions can indicate problems
+for the validity of the results. A good plot would show no divergent
+transitions. If the divergent transitions show the same patern as the
+non divergent transitions, this could indicate that the divergent
+transitions are false positives. A bad plot would shows systematic
+differences between the divergent transitions and non-divergent
+transitions. For more information see
+\url{https://mc-stan.org/misc/warnings.html\#divergent-transitions-after-warmup}.
+
+\includegraphics{ShinyStan_diagnostics_report_files/figure-latex/divergence_transition_plot-1.pdf}
+
+\newpage
+
+\hypertarget{energy}{%
+\subsection{Energy}\label{energy}}
+
+These are plots of the overlaid histograms of the marginal energy
+distribution (\(\pi_E\)) and the energy transition distribution
+(\(\pi_{\Delta E}\)) for all chains. A good plot shows histograms that
+look well-matched indicating that the Hamiltonian Monte Carlo should
+perform robustly. The closer \(\pi_{\Delta E}\) is to \(\pi_E\) the
+faster the random walk explores the energies and the smaller the
+autocorrelations will be in the chain. If \(\pi_{\Delta E}\) is narrower
+than \(\pi_E\) the random walk is less effective and autocorrelations
+will be larger. Additionally the chain may not be able to completely
+explore the tails of the target distribution. See Betancourt
+\href{https://arxiv.org/abs/1701.02434}{`A conceptual introduction to
+Hamiltonian Monte Carlo'} and Betancourt
+\href{https://arxiv.org/abs/1604.00695}{`Diagnosing suboptimal cotangent
+disintegrations in Hamiltonian Monte Carlo'} for the general theory
+behind the energy plots.
+
+\includegraphics{ShinyStan_diagnostics_report_files/figure-latex/energy_plot-1.pdf}
+
+\newpage
+
+\hypertarget{treedepth-information}{%
+\subsection{Treedepth Information}\label{treedepth-information}}
+
+These are plots of the \emph{treedepth} (x-axis) against the
+\emph{log-posterior} (y-axis top left panel) and against the
+\emph{acceptance statistic} (y-axis top right panel) of the sampling
+algorithm for all chains. In these plots information is given concerning
+the efficiency of the sampling algorithm. Zero treedepth can indicate
+extreme curvature and poorly-chosen step size. Treedepth equal to the
+maximum treedepth might be a sign of poor adaptation or of a difficult
+posterior from which to sample. The former can be resolved by increasing
+the warmup time, the latter might be mitigated by reparametrization. For
+more information see
+\url{https://mc-stan.org/misc/warnings.html\#maximum-treedepth-exceeded}
+or
+\href{https://mc-stan.org/docs/2_19/reference-manual/hmc-algorithm-parameters.html}{https://mc-stan.org/docs/reference-manual/hmc-algorithm-parameters.html}.
+
+\includegraphics{ShinyStan_diagnostics_report_files/figure-latex/treedepth_plot-1.pdf}
+
+\newpage
+
+\hypertarget{step-size-information}{%
+\subsection{Step Size Information}\label{step-size-information}}
+
+These are plots of the \emph{integrator step size per chain} (x-axis)
+against the \emph{log-posterior} (y-axis top panel) and against the
+\emph{acceptance statistic} (y-axis bottom panel) of the sampling
+algorithm. If the step size is too large, the integrator will be
+inaccurate and too many proposals will be rejected. If the step size is
+too small, the many small steps lead to long simulation times per
+interval. Thus the goal is to balance the acceptance rate between these
+extremes. Good plots will show full exploration of the log-posterior and
+moderate to high acceptance rates for all chains and step sizes. Bad
+plots might show incomplete exploration of the log-posterior and lower
+acceptance rates for larger step sizes.
+
+\includegraphics{ShinyStan_diagnostics_report_files/figure-latex/stepsize_plot-1.pdf}
+
+\newpage
+
+\hypertarget{acceptance-information}{%
+\subsection{Acceptance Information}\label{acceptance-information}}
+
+These are plots of the \emph{acceptance statistic} (top leftpanel), the
+\emph{log-posterior} (top right panel), and, the \emph{acceptance
+statistic} (x-axis bottom panel) against the \emph{log-posterior}
+(y-axis bottom panel) for all chains. The vertical lines indicate the
+mean (solid line) and median (dashed line). A bad plot would show a
+relationship between the acceptance statistic and the log-posterior.
+This might be indicative of poor exploration of parts of the posterior
+which might be might be mitigated by reparametrization or adaptation of
+the step size. If many proposals are rejected the integrator step size
+might be too large and the posterior might not be fully explored. If the
+acceptance rate is very high this might be indicative of inefficient
+sampling. The target Metropolis acceptance rate can be set with the
+\texttt{adapt\_delta} control option. For more information see
+\url{https://mc-stan.org/docs/reference-manual/hmc-algorithm-parameters.html}.
+
+\includegraphics{ShinyStan_diagnostics_report_files/figure-latex/acceptance_plot-1.pdf}
+
+\newpage
+
+\hypertarget{scatter-plots}{%
+\subsection{Scatter plots}\label{scatter-plots}}
+
+These are scatter plots of the 10 worst performing parameters in terms
+of n\_eff, plotted against \texttt{log-posterior}. The red dots, if
+present, indicate divergent transitions. Divergent transitions can
+indicate problems for the validity of the results. A good plot would
+show no divergent transitions. A bad plot would show divergent
+transitions in a systematic patern. For more information see
+\url{https://mc-stan.org/misc/warnings.html\#divergent-transitions-after-warmup}.
+
+\includegraphics[width=0.45\linewidth]{ShinyStan_diagnostics_report_files/figure-latex/diverget_scatter_plot-1}
+\includegraphics[width=0.45\linewidth]{ShinyStan_diagnostics_report_files/figure-latex/diverget_scatter_plot-2}
+\includegraphics[width=0.45\linewidth]{ShinyStan_diagnostics_report_files/figure-latex/diverget_scatter_plot-3}
+\includegraphics[width=0.45\linewidth]{ShinyStan_diagnostics_report_files/figure-latex/diverget_scatter_plot-4}
+\includegraphics[width=0.45\linewidth]{ShinyStan_diagnostics_report_files/figure-latex/diverget_scatter_plot-5}
+\includegraphics[width=0.45\linewidth]{ShinyStan_diagnostics_report_files/figure-latex/diverget_scatter_plot-6}
+\includegraphics[width=0.45\linewidth]{ShinyStan_diagnostics_report_files/figure-latex/diverget_scatter_plot-7}
+\includegraphics[width=0.45\linewidth]{ShinyStan_diagnostics_report_files/figure-latex/diverget_scatter_plot-8}
+\includegraphics[width=0.45\linewidth]{ShinyStan_diagnostics_report_files/figure-latex/diverget_scatter_plot-9}
+\includegraphics[width=0.45\linewidth]{ShinyStan_diagnostics_report_files/figure-latex/diverget_scatter_plot-10}
+
+\newpage
+
+\hypertarget{autocorrelation}{%
+\subsection{Autocorrelation}\label{autocorrelation}}
+
+These are autocorrelation plots of the 10 worst performing parameters in
+terms of n\_eff. The autocorrelation expresses the dependence between
+the samples of a Monte Carlo simulation. With higher dependence between
+the draws, more samples are needed to obtain the same effective sample
+size. High autocorrelation can sometimes be remedied by
+reparametrization of the model.
+
+\includegraphics[width=0.45\linewidth]{ShinyStan_diagnostics_report_files/figure-latex/autocorrelation_plot-1}
+\includegraphics[width=0.45\linewidth]{ShinyStan_diagnostics_report_files/figure-latex/autocorrelation_plot-2}
+\includegraphics[width=0.45\linewidth]{ShinyStan_diagnostics_report_files/figure-latex/autocorrelation_plot-3}
+\includegraphics[width=0.45\linewidth]{ShinyStan_diagnostics_report_files/figure-latex/autocorrelation_plot-4}
+\includegraphics[width=0.45\linewidth]{ShinyStan_diagnostics_report_files/figure-latex/autocorrelation_plot-5}
+\includegraphics[width=0.45\linewidth]{ShinyStan_diagnostics_report_files/figure-latex/autocorrelation_plot-6}
+\includegraphics[width=0.45\linewidth]{ShinyStan_diagnostics_report_files/figure-latex/autocorrelation_plot-7}
+\includegraphics[width=0.45\linewidth]{ShinyStan_diagnostics_report_files/figure-latex/autocorrelation_plot-8}
+\includegraphics[width=0.45\linewidth]{ShinyStan_diagnostics_report_files/figure-latex/autocorrelation_plot-9}
+\includegraphics[width=0.45\linewidth]{ShinyStan_diagnostics_report_files/figure-latex/autocorrelation_plot-10}
+
+\newpage
+
+\hypertarget{trance-plots}{%
+\subsection{Trance Plots}\label{trance-plots}}
+
+These are trace plots of the 10 worst performing parameters in terms of
+n\_eff, for all chains. Trace plots provide a visual way to inspect
+sampling behavior and assess mixing across chains. The iteration number
+(x-axis) is plotted against the parameter value at that iteration
+(y-axis). Divergent transitions are marked on the x-axis. A good plot
+shows chains that move swiftly through the parameter space and all
+chains that explore the same parameter space without any divergent
+transitions. A bad plot shows chains exploring different parts of the
+parameter space, this is a sign of non-convergence. If there are
+divergent transitions, looking at the parameter value related to these
+iterations might provide information about the part of the parameter
+space that is difficult to sample from. Slowly moving chains are
+indicative of high autocorrelation or small integrator step size, both
+of which relate to ineffective sampling and lower effective sample sizes
+for the parameter.
+
+\includegraphics[width=0.45\linewidth]{ShinyStan_diagnostics_report_files/figure-latex/trace_plot-1}
+\includegraphics[width=0.45\linewidth]{ShinyStan_diagnostics_report_files/figure-latex/trace_plot-2}
+\includegraphics[width=0.45\linewidth]{ShinyStan_diagnostics_report_files/figure-latex/trace_plot-3}
+\includegraphics[width=0.45\linewidth]{ShinyStan_diagnostics_report_files/figure-latex/trace_plot-4}
+\includegraphics[width=0.45\linewidth]{ShinyStan_diagnostics_report_files/figure-latex/trace_plot-5}
+\includegraphics[width=0.45\linewidth]{ShinyStan_diagnostics_report_files/figure-latex/trace_plot-6}
+\includegraphics[width=0.45\linewidth]{ShinyStan_diagnostics_report_files/figure-latex/trace_plot-7}
+\includegraphics[width=0.45\linewidth]{ShinyStan_diagnostics_report_files/figure-latex/trace_plot-8}
+\includegraphics[width=0.45\linewidth]{ShinyStan_diagnostics_report_files/figure-latex/trace_plot-9}
+\includegraphics[width=0.45\linewidth]{ShinyStan_diagnostics_report_files/figure-latex/trace_plot-10}
+
+\newpage
+
+\hypertarget{rank-plots}{%
+\subsection{Rank Plots}\label{rank-plots}}
+
+These are rank plots of the 10 worst performing parameters in terms of
+n\_eff, for all chains. Rank histograms visualize how the values from
+the chains mix together in terms of ranking. An ideal plot would show
+the rankings mixing or overlapping in a uniform distribution. See
+\href{https://arxiv.org/abs/1903.08008}{Vehtari et al.~(2019)} for
+details.
+
+\includegraphics{ShinyStan_diagnostics_report_files/figure-latex/rank_plot-1.pdf}
+\includegraphics{ShinyStan_diagnostics_report_files/figure-latex/rank_plot-2.pdf}
+\includegraphics{ShinyStan_diagnostics_report_files/figure-latex/rank_plot-3.pdf}
+\includegraphics{ShinyStan_diagnostics_report_files/figure-latex/rank_plot-4.pdf}
+\includegraphics{ShinyStan_diagnostics_report_files/figure-latex/rank_plot-5.pdf}
+\includegraphics{ShinyStan_diagnostics_report_files/figure-latex/rank_plot-6.pdf}
+\includegraphics{ShinyStan_diagnostics_report_files/figure-latex/rank_plot-7.pdf}
+\includegraphics{ShinyStan_diagnostics_report_files/figure-latex/rank_plot-8.pdf}
+\includegraphics{ShinyStan_diagnostics_report_files/figure-latex/rank_plot-9.pdf}
+\includegraphics{ShinyStan_diagnostics_report_files/figure-latex/rank_plot-10.pdf}
+
+
+\end{document}

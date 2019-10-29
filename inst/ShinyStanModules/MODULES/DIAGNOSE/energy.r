@@ -96,8 +96,8 @@ energy <- function(input, output, session){
                 " If ", " \\(\\pi_{\\Delta E}\\)", " is narrower than ", " \\(\\pi_E\\)",
                 " the random walk is less effective and autocorrelations will be larger. Additionally",
                 " the chain may not be able to completely explore the tails of the target distribution.",
-                " See Betancourt 'A conceptual introduction to Hamiltonian Monte Carlo'",
-                " and Betancourt 'Diagnosing suboptimal cotangent disintegrations in Hamiltonian Monte Carlo'",
+                " See Betancourt <a href = https://arxiv.org/abs/1701.02434>'A conceptual introduction to Hamiltonian Monte Carlo'</a>",
+                " and Betancourt <a href = 'https://arxiv.org/abs/1604.00695'>'Diagnosing suboptimal cotangent disintegrations in Hamiltonian Monte Carlo'</a>",
                 " for the general theory behind the energy plots.", withMathJax()
                 ))
     

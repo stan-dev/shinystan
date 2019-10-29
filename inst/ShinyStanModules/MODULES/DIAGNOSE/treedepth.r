@@ -104,7 +104,7 @@ treedepth <- function(input, output, session){
                 " For more information see ",
                 tags$a('https://mc-stan.org/misc/warnings.html#maximum-treedepth-exceeded'),
                 " or ", 
-                tags$a('https://mc-stan.org/docs/2_19/reference-manual/hmc-algorithm-parameters.html'), "."))
+                tags$a('https://mc-stan.org/docs/reference-manual/hmc-algorithm-parameters.html'), "."))
   }
   output$caption <- renderUI({
     captionOut()

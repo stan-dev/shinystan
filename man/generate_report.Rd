@@ -4,14 +4,20 @@
 \alias{generate_report}
 \title{Generate a report with diagnostics for a shinystan object}
 \usage{
-generate_report(sso, n_param = 3, output_format = "html_document",
-  view = TRUE, report_type = "diagnose")
+generate_report(sso, n_param = 3, pars = NULL,
+  output_format = "html_document", view = TRUE,
+  report_type = "diagnose")
 }
 \arguments{
 \item{sso}{A \code{\link[=as.shinystan]{shinystan object}}.}
 
 \item{n_param}{On how many parameters do you want the report to be? To
-print the report for all parameters put 'n_param = Inf`.}
+print the report for all parameters put 'n_param = Inf` or
+n_param = "all"`.}
+
+\item{pars}{An optional character vector of parameter names. If no names are 
+specified the n_param count will be used. Arguments passed to pars take
+precedence over the n_param argument.}
 
 \item{output_format}{What type of report would you like? The options are
 'html_document', 'pdf_document' and 'word_document'.}
@@ -19,7 +25,7 @@ print the report for all parameters put 'n_param = Inf`.}
 \item{view}{Do you want to open the report after it is generated?}
 
 \item{report_type}{What type of report would you like? The options are
-'diagnose' and 'estimate'.}
+'diagnose', 'estimate' and 'both'. The default is 'diagnose'.}
 }
 \value{
 A report is generated and the path where it is stored is printed.

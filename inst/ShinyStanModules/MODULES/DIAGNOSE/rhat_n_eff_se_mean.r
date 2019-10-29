@@ -293,8 +293,8 @@ rhat_n_eff_se_mean <- function(input, output, session){
                 " This provides an additional means to detect non-stationarity in the individual chains. ",
                 " R-hat vales are used to assess convergence and traditionally R-hat values above 1.1 were considered signs of bad convergence.",
                 " For more information see ",
-                tags$a('https://mc-stan.org/docs/2_19/reference-manual/notation-for-samples-chains-and-draws.html'),
-                " or see Vehtari et al. (2019) for recent developments related to the R-hat statistic. ", 
+                tags$a('https://mc-stan.org/docs/reference-manual/notation-for-samples-chains-and-draws.html'),
+                " or see <a href = 'https://arxiv.org/abs/1903.08008'>Vehtari et al. (2019)</a> for recent developments related to the R-hat statistic. ", 
                 " Note that part of these recent developments are recommendations to only use the posterior sample if R-hat is below 1.01."))
   }
   captionOut_n_eff <- function(){

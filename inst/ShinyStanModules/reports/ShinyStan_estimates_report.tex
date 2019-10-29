@@ -1,0 +1,172 @@
+\documentclass[11pt,]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={ShinyStan Automated Estimates Report},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\providecommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{ShinyStan Automated Estimates Report}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{}
+    \preauthor{}\postauthor{}
+      \predate{\centering\large\emph}
+  \postdate{\par}
+    \date{29 October 2019, 16:11}
+
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\hypertarget{warnings}{%
+\section{Warnings}\label{warnings}}
+
+\begin{verbatim}
+## [1] "65 of 4000 iterations ended with a divergence (1.6%)."
+\end{verbatim}
+
+\newpage
+
+\hypertarget{visual-estimates}{%
+\section{Visual Estimates}\label{visual-estimates}}
+
+\hypertarget{density}{%
+\subsection{Density}\label{density}}
+
+These are density plots of the 10 worst performing parameters in terms
+of n\_eff.
+
+\includegraphics[width=0.45\linewidth]{ShinyStan_estimates_report_files/figure-latex/density_plots-1}
+\includegraphics[width=0.45\linewidth]{ShinyStan_estimates_report_files/figure-latex/density_plots-2}
+\includegraphics[width=0.45\linewidth]{ShinyStan_estimates_report_files/figure-latex/density_plots-3}
+\includegraphics[width=0.45\linewidth]{ShinyStan_estimates_report_files/figure-latex/density_plots-4}
+\includegraphics[width=0.45\linewidth]{ShinyStan_estimates_report_files/figure-latex/density_plots-5}
+\includegraphics[width=0.45\linewidth]{ShinyStan_estimates_report_files/figure-latex/density_plots-6}
+\includegraphics[width=0.45\linewidth]{ShinyStan_estimates_report_files/figure-latex/density_plots-7}
+\includegraphics[width=0.45\linewidth]{ShinyStan_estimates_report_files/figure-latex/density_plots-8}
+\includegraphics[width=0.45\linewidth]{ShinyStan_estimates_report_files/figure-latex/density_plots-9}
+\includegraphics[width=0.45\linewidth]{ShinyStan_estimates_report_files/figure-latex/density_plots-10}
+
+\newpage
+
+\hypertarget{histogram}{%
+\subsection{Histogram}\label{histogram}}
+
+These are histogram plots the 10 worst performing parameters in terms of
+n\_eff.
+
+\includegraphics[width=0.45\linewidth]{ShinyStan_estimates_report_files/figure-latex/histogram_plots-1}
+\includegraphics[width=0.45\linewidth]{ShinyStan_estimates_report_files/figure-latex/histogram_plots-2}
+\includegraphics[width=0.45\linewidth]{ShinyStan_estimates_report_files/figure-latex/histogram_plots-3}
+\includegraphics[width=0.45\linewidth]{ShinyStan_estimates_report_files/figure-latex/histogram_plots-4}
+\includegraphics[width=0.45\linewidth]{ShinyStan_estimates_report_files/figure-latex/histogram_plots-5}
+\includegraphics[width=0.45\linewidth]{ShinyStan_estimates_report_files/figure-latex/histogram_plots-6}
+\includegraphics[width=0.45\linewidth]{ShinyStan_estimates_report_files/figure-latex/histogram_plots-7}
+\includegraphics[width=0.45\linewidth]{ShinyStan_estimates_report_files/figure-latex/histogram_plots-8}
+\includegraphics[width=0.45\linewidth]{ShinyStan_estimates_report_files/figure-latex/histogram_plots-9}
+\includegraphics[width=0.45\linewidth]{ShinyStan_estimates_report_files/figure-latex/histogram_plots-10}
+
+\newpage
+
+\hypertarget{interval}{%
+\subsection{Interval}\label{interval}}
+
+These are interval plots of the 10 worst performing parameters in terms
+of n\_eff. The plots are split by parameter groups. The entire group is
+printed if one of the parameters is included in the worst performing
+parameters. The point represents median value, the inner edge the 50\%
+CI and the outer the 95\% CI.
+
+\includegraphics[width=0.45\linewidth]{ShinyStan_estimates_report_files/figure-latex/interval_plots-1}
+\includegraphics[width=0.45\linewidth]{ShinyStan_estimates_report_files/figure-latex/interval_plots-2}
+\includegraphics[width=0.45\linewidth]{ShinyStan_estimates_report_files/figure-latex/interval_plots-3}
+
+\newpage
+
+\hypertarget{areas}{%
+\subsection{Areas}\label{areas}}
+
+These are areas plots of the 10 worst performing parameters in terms of
+n\_eff. The plots are split by parameter groups. The entire group is
+printed if one of the parameters is included in the worst performing
+parameters. The point represents median value, the inner edge the 50\%
+CI and the outer the 95\% CI.
+
+\includegraphics[width=0.45\linewidth]{ShinyStan_estimates_report_files/figure-latex/areas_plots-1}
+\includegraphics[width=0.45\linewidth]{ShinyStan_estimates_report_files/figure-latex/areas_plots-2}
+\includegraphics[width=0.45\linewidth]{ShinyStan_estimates_report_files/figure-latex/areas_plots-3}
+
+
+\end{document}
