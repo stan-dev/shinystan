@@ -72,7 +72,7 @@ tracePlot <- function(input, output, session){
     validate(
       need(length(parameters) > 0, "Select at least one parameter.")
     )
-    if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_method == "sampling"){
+    if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@stan_method == "sampling"){
       mcmc_trace( if(chain != 0) {
         shinystan:::.sso_env$.SHINYSTAN_OBJECT@posterior_sample[(1 + shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) : shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter, chain, ]
       } else {

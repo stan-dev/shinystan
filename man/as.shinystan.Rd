@@ -17,22 +17,23 @@ is.shinystan(X)
 
 \S4method{as.shinystan}{array}(X, model_name = "unnamed model",
   warmup = 0, burnin = 0, param_dims = list(), model_code = NULL,
-  note = NULL, sampler_params = NULL, algorithm = NULL,
-  max_treedepth = NULL, ...)
+  note = NULL, sampler_params = NULL, stan_used = FALSE,
+  stan_method = "", stan_algorithm = "", max_treedepth = 0, ...)
 
 \S4method{as.shinystan}{list}(X, model_name = "unnamed model",
   warmup = 0, burnin = 0, param_dims = list(), model_code = NULL,
-  note = NULL, sampler_params = NULL, algorithm = NULL,
-  max_treedepth = NULL, ...)
+  note = NULL, sampler_params = NULL, stan_used = FALSE,
+  stan_method = "", stan_algorithm = "", max_treedepth = 0, ...)
 
 \S4method{as.shinystan}{mcmc.list}(X, model_name = "unnamed model",
   warmup = 0, burnin = 0, param_dims = list(), model_code = NULL,
-  note = NULL, ...)
+  note = NULL, stan_used = FALSE, stan_method = "",
+  stan_algorithm = "", max_treedepth = 0, ...)
 
 \S4method{as.shinystan}{stanfit}(X, pars, model_name = X@model_name,
   note = NULL, ...)
 
-\S4method{as.shinystan}{stanreg}(X, ppd = TRUE, seed = 1234,
+\S4method{as.shinystan}{stanreg}(X, ppd = FALSE, seed = 1234,
   model_name = NULL, note = NULL, ...)
 }
 \arguments{
@@ -67,17 +68,22 @@ object.}
 'ShinyStan' GUI (stored in \code{user_model_info} slot of the
 \code{shinystan} object).}
 
-\item{sampler_params, algorithm, max_treedepth}{Rarely used and never 
-necessary. If using the \code{as.shinystan} method for arrays or lists, 
+\item{sampler_params, stan_used, stan_method, stan_algorithm, max_treedepth}{Rarely used and never necessary. 
+If using the \code{as.shinystan} method for arrays or lists, 
 these arguments can be used to manually provide information that is 
 automatically retrieved from a stanfit object when using the 
 \code{as.shinystan} method for stanfit objects. If specified, 
 \code{sampler_params} must have the same structure as an object returned by
 \code{\link[rstan]{get_sampler_params}} (\pkg{rstan}), which is a list of 
-matrices, with one matrix per chain. \code{algorithm}, if specified, must 
-be either \code{"NUTS"} or \code{"HMC"} (static HMC). If \code{algorithm}
-is \code{"NUTS"} then \code{max_treedepth} (an integer indicating the
-maximum allowed treedepth when the model was fit) must also be provided.}
+matrices, with one matrix per chain. \code{stan_used}, is a logical indicator
+whether or not stan was used which defaults to \code{FALSE} for the array 
+and list methods. \code{stan_method}, is specified, indicates
+which stan method is used, options are \code{"sampling"} or 
+\code{"variational"}. \code{stan_algorithm}, if specified, must 
+be either \code{"NUTS"} or \code{"HMC"} (static HMC). 
+If \code{stan_algorithm} is \code{"NUTS"} then \code{max_treedepth} 
+(an integer indicating the maximum allowed treedepth when the 
+model was fit) must also be provided.}
 
 \item{pars}{For stanfit objects (\pkg{rstan}), an optional character vector 
 specifying which parameters should be included in the \code{shinystan}
@@ -85,10 +91,10 @@ object.}
 
 \item{ppd}{For \code{stanreg} objects (\pkg{rstanarm}), \code{ppd} 
 (logical) indicates whether to draw from the posterior predictive 
-distribution before launching the app. The default is \code{TRUE}, 
-although for very large objects it can be convenient to set it to 
-\code{FALSE} as drawing from the posterior predictive distribution can be 
-time consuming. If \code{ppd} is \code{TRUE} then graphical posterior
+distribution before launching the app. The default is \code{FALSE}.
+Drawing from the posterior predictive distribution can be 
+time consuming for large models. 
+If \code{ppd} is \code{TRUE} then graphical posterior
 predictive checks are available when 'ShinyStan' is launched.}
 
 \item{seed}{Passed to \code{\link[rstanarm]{pp_check}} (\pkg{rstanarm}) if 

@@ -38,7 +38,17 @@ models only).}
 \item{\code{model_code}}{(\code{"character"}) Model code to display on the
 \strong{Model Code} page in the 'ShinyStan' GUI.}
 
-\item{\code{misc}}{(\code{"list"}) Miscellaneous, for internal use.}
+\item{\code{stan_used}}{(\code{"logical"}) Logical indicator if stan was used.}
+
+\item{\code{stan_method}}{(\code{"character"}) If stan was used, which method.}
+
+\item{\code{stan_algorithm}}{(\code{"character"}) If stan was used, which algorithm.}
+
+\item{\code{sso_version}}{(\code{"character"}) What version of shinystan was used
+to create the shinystan object.}
+
+\item{\code{misc}}{(\code{"list"}) Miscellaneous, for internal use. Will be 
+removed in future releases.}
 }}
 
 \references{

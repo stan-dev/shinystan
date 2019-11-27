@@ -33,7 +33,7 @@ summaryTableLatexUI <- function(id){
                checkboxGroupInput(
                  ns("tex_columns"),
                  label = h5("Columns"),
-                 choices = if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_method == "sampling"){
+                 choices = if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@stan_method == "sampling"){
                    c("Posterior mean" = "mean",
                      "Monte Carlo error" = "se_mean",
                      "Posterior standard deviation" = "sd",

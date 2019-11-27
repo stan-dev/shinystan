@@ -3,16 +3,14 @@ warningsUI <- function (id) {
   
   fluidRow(
     wellPanel(id = "warningTab",
-              
-              if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_method == "sampling" & shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_algorithm == "NUTS") uiOutput(ns("divergence")),
-              if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_method == "sampling" & shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_algorithm == "NUTS") uiOutput(ns("treedepth")),
-              if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_method == "sampling" & shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_algorithm == "NUTS") uiOutput(ns("energy")),
-              if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_method == "sampling") uiOutput(ns("n_eff")),
-              if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_method == "sampling") uiOutput(ns("se_mean")),
-              if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@misc$stan_method == "sampling") uiOutput(ns("rhat"))
+              if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@stan_used == TRUE & shinystan:::.sso_env$.SHINYSTAN_OBJECT@stan_method == "sampling" & shinystan:::.sso_env$.SHINYSTAN_OBJECT@stan_algorithm == "NUTS") uiOutput(ns("divergence")),
+              if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@stan_used == TRUE & shinystan:::.sso_env$.SHINYSTAN_OBJECT@stan_method == "sampling" & shinystan:::.sso_env$.SHINYSTAN_OBJECT@stan_algorithm == "NUTS") uiOutput(ns("treedepth")),
+              if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@stan_used == TRUE & shinystan:::.sso_env$.SHINYSTAN_OBJECT@stan_method == "sampling" & shinystan:::.sso_env$.SHINYSTAN_OBJECT@stan_algorithm == "NUTS") uiOutput(ns("energy")),
+              if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@stan_used == TRUE & shinystan:::.sso_env$.SHINYSTAN_OBJECT@stan_method == "sampling") uiOutput(ns("n_eff")),
+              if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@stan_used == TRUE & shinystan:::.sso_env$.SHINYSTAN_OBJECT@stan_method == "sampling") uiOutput(ns("se_mean")),
+              if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@stan_used == TRUE & shinystan:::.sso_env$.SHINYSTAN_OBJECT@stan_method == "sampling") uiOutput(ns("rhat"))
     )
   )
-  
 }
 
 warnings <- function (input, output, session) {
@@ -48,7 +46,9 @@ warnings <- function (input, output, session) {
   
   output$treedepth <- renderUI({
     ns <- session$ns
-    
+
+    validate(need(shinystan:::.sso_env$.SHINYSTAN_OBJECT@stan_used == TRUE, "No maximum treedepth to be checked."))
+
     check_treedepth <- lapply(shinystan:::.sso_env$.SHINYSTAN_OBJECT@sampler_params, "[", , "treedepth__") %>%
       lapply(., as.data.frame) %>%
       lapply(., filter, row_number() > shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) %>%

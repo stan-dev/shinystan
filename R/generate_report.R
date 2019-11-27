@@ -35,8 +35,8 @@
 #' @examples
 #'  \dontrun{
 #' # Using example shinystan object 'eight_schools'
-#' generate_report(eight_schools)
-#' }
+#' generate_report(eight_schools, report_type = "both")
+#' 
 #' 
 
 generate_report <- function (sso, n_param = 3, pars = NULL, output_format = "html_document", 

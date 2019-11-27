@@ -33,7 +33,13 @@
 #'   \strong{Notepad} page in the 'ShinyStan' GUI.
 #' @slot model_code (\code{"character"}) Model code to display on the
 #'   \strong{Model Code} page in the 'ShinyStan' GUI.
-#' @slot misc (\code{"list"}) Miscellaneous, for internal use.
+#' @slot stan_used (\code{"logical"}) Logical indicator if stan was used.
+#' @slot stan_method (\code{"character"}) If stan was used, which method.
+#' @slot stan_algorithm (\code{"character"}) If stan was used, which algorithm.
+#' @slot sso_version (\code{"character"}) What version of shinystan was used
+#'   to create the shinystan object.
+#' @slot misc (\code{"list"}) Miscellaneous, for internal use. Will be 
+#'   removed in future releases.
 #' 
 #' @template seealso-as.shinystan
 #' @template seealso-drop_parameters
@@ -57,6 +63,10 @@ shinystan <- setClass(
     n_warmup         = "numeric",
     user_model_info  = "character",
     model_code       = "character",
+    stan_used        = "logical",
+    stan_method      = "character",
+    stan_algorithm   = "character",
+    sso_version      = "character",
     misc             = "list"
   ),
   prototype = list(
@@ -71,6 +81,10 @@ shinystan <- setClass(
     n_warmup = 0,
     user_model_info = "Use this space to store notes about your model",
     model_code = "Use this space to store your model code",
+    stan_used = FALSE,
+    stan_method = "unknown",
+    stan_algorithm = "unknown",
+    sso_version = as.character(utils::packageVersion("shinystan")),
     misc = list(sso_version = utils::packageVersion("shinystan"))
   )
 )
@@ -144,17 +158,23 @@ is.shinystan <- function(X) inherits(X, "shinystan")
 #' @param note Optionally, text to display on the \strong{Notepad} page in the 
 #'   'ShinyStan' GUI (stored in \code{user_model_info} slot of the
 #'   \code{shinystan} object).
-#' @param sampler_params,algorithm,max_treedepth Rarely used and never 
-#'   necessary. If using the \code{as.shinystan} method for arrays or lists, 
+#' @param sampler_params,stan_used,stan_method,stan_algorithm,max_treedepth 
+#'   Rarely used and never necessary. 
+#'   If using the \code{as.shinystan} method for arrays or lists, 
 #'   these arguments can be used to manually provide information that is 
 #'   automatically retrieved from a stanfit object when using the 
 #'   \code{as.shinystan} method for stanfit objects. If specified, 
 #'   \code{sampler_params} must have the same structure as an object returned by
 #'   \code{\link[rstan]{get_sampler_params}} (\pkg{rstan}), which is a list of 
-#'   matrices, with one matrix per chain. \code{algorithm}, if specified, must 
-#'   be either \code{"NUTS"} or \code{"HMC"} (static HMC). If \code{algorithm}
-#'   is \code{"NUTS"} then \code{max_treedepth} (an integer indicating the
-#'   maximum allowed treedepth when the model was fit) must also be provided.
+#'   matrices, with one matrix per chain. \code{stan_used}, is a logical indicator
+#'   whether or not stan was used which defaults to \code{FALSE} for the array 
+#'   and list methods. \code{stan_method}, is specified, indicates
+#'   which stan method is used, options are \code{"sampling"} or 
+#'   \code{"variational"}. \code{stan_algorithm}, if specified, must 
+#'   be either \code{"NUTS"} or \code{"HMC"} (static HMC). 
+#'   If \code{stan_algorithm} is \code{"NUTS"} then \code{max_treedepth} 
+#'   (an integer indicating the maximum allowed treedepth when the 
+#'   model was fit) must also be provided.
 #'   
 #' @examples  
 #' \dontrun{
@@ -172,8 +192,10 @@ setMethod(
                         model_code = NULL,
                         note = NULL,
                         sampler_params = NULL, 
-                        algorithm = NULL,
-                        max_treedepth = NULL,
+                        stan_used = FALSE,
+                        stan_method = "",
+                        stan_algorithm = "",
+                        max_treedepth = 0,
                         ...) {
     validate_model_code(model_code)
     is3D <- isTRUE(length(dim(X)) == 3)
@@ -193,7 +215,7 @@ setMethod(
       sampler_params, 
       n_chain = ncol(X), 
       n_iter = nrow(X), 
-      algorithm = algorithm
+      stan_algorithm = algorithm
     )
     
     n_warmup <- .deprecate_burnin(burnin, warmup)
@@ -203,6 +225,9 @@ setMethod(
       param_dims = .set_param_dims(param_dims, param_names),
       posterior_sample = X,
       sampler_params = sp,
+      stan_used = stan_used,
+      stan_method = stan_method,
+      stan_algorithm = stan_algorithm,
       summary = shinystan_monitor(X, warmup = n_warmup),
       n_chain = ncol(X),
       n_iter = nrow(X),
@@ -210,17 +235,17 @@ setMethod(
     )
     
     if (!is.null(sampler_params)) {
-      if (is.null(algorithm)) {
-        stop("If 'sampler_params' is specified then 'algorithm' can't be NULL.")
+      if (is.null(stan_algorithm)) {
+        stop("If 'sampler_params' is specified then 'stan_algorithm' can't be NULL.")
       } else {
-        algorithm <- match.arg(algorithm, choices = c("HMC", "NUTS"))
+        algorithm <- match.arg(stan_algorithm, choices = c("HMC", "NUTS"))
         if (algorithm == "NUTS" && is.null(max_treedepth))
           stop("If 'algorithm' is 'NUTS' then 'max_treedepth' must be provided.")
       }
       slot(sso, "misc") <- list(
         max_td = max_treedepth,
         stan_method = "sampling",
-        stan_algorithm = algorithm,
+        stan_algorithm = stan_algorithm,
         sso_version = utils::packageVersion("shinystan")
       )
     }
@@ -258,7 +283,7 @@ setMethod(
   function(x,
            n_chain,
            n_iter,
-           algorithm = c("NUTS", "HMC")) {
+           stan_algorithm = c("NUTS", "HMC")) {
     if (is.null(x))
       return(list(NA))
     
@@ -276,7 +301,7 @@ setMethod(
         stop("All matrices in 'sampler_params' must have the same column names.")
     }
     
-    alg <- match.arg(algorithm)
+    alg <- match.arg(stan_algorithm)
     if (alg == "NUTS") {
       nuts_nms <-
         c(
@@ -352,8 +377,10 @@ setMethod(
                         model_code = NULL,
                         note = NULL,
                         sampler_params = NULL, 
-                        algorithm = NULL, 
-                        max_treedepth = NULL,
+                        stan_used = FALSE,
+                        stan_method = "",
+                        stan_algorithm = "",
+                        max_treedepth = 0,
                         ...) {
     validate_model_code(model_code)
     if (!length(X))
@@ -413,7 +440,9 @@ setMethod(
       model_code = model_code,
       note = note,
       sampler_params = sampler_params,
-      algorithm = algorithm,
+      stan_used = stan_used,
+      stan_method = stan_method,
+      stan_algorithm = stan_algorithm,
       max_treedepth = max_treedepth,
       ...
     )
@@ -435,6 +464,10 @@ setMethod(
                         param_dims = list(),
                         model_code = NULL,
                         note = NULL,
+                        stan_used = FALSE,
+                        stan_method = "",
+                        stan_algorithm = "",
+                        max_treedepth = 0,
                         ...) {
     check_suggests("coda")
     validate_model_code(model_code)
@@ -481,8 +514,13 @@ setMethod(
       summary = shinystan_monitor(posterior, warmup = burnin),
       n_chain = ncol(posterior),
       n_iter = nrow(posterior),
-      n_warmup = burnin
+      n_warmup = burnin,
+      stan_used = stan_used,
+      stan_method = stan_method,
+      stan_algorithm = stan_algorithm,
+      max_treedepth = max_treedepth
     )
+    
     if (!is.null(note))
       sso <- suppressMessages(notes(sso, note = note, replace = TRUE))
     if (!is.null(model_code))
@@ -570,6 +608,9 @@ setMethod(
       n_iter = nrow(posterior),
       n_warmup = .rstan_warmup(X),
       model_code = rstan::get_stancode(X),
+      stan_used = TRUE,
+      stan_method = .stan_method(X),
+      stan_algorithm = .stan_algorithm(X),
       misc = list(
         max_td = .rstan_max_treedepth(X),
         stan_method = .stan_method(X),
@@ -577,6 +618,7 @@ setMethod(
         sso_version = utils::packageVersion("shinystan")
       )
     )
+    
     sso <- .rename_scalar(sso, oldname = "lp__", newname = "log-posterior")
     if (!is.null(note))
       sso <- suppressMessages(notes(sso, note, replace = TRUE))
@@ -731,10 +773,10 @@ setOldClass("stanreg")
 #'   
 #' @param ppd For \code{stanreg} objects (\pkg{rstanarm}), \code{ppd} 
 #'   (logical) indicates whether to draw from the posterior predictive 
-#'   distribution before launching the app. The default is \code{TRUE}, 
-#'   although for very large objects it can be convenient to set it to 
-#'   \code{FALSE} as drawing from the posterior predictive distribution can be 
-#'   time consuming. If \code{ppd} is \code{TRUE} then graphical posterior
+#'   distribution before launching the app. The default is \code{FALSE}.
+#'   Drawing from the posterior predictive distribution can be 
+#'   time consuming for large models. 
+#'   If \code{ppd} is \code{TRUE} then graphical posterior
 #'   predictive checks are available when 'ShinyStan' is launched.
 #' @param seed Passed to \code{\link[rstanarm]{pp_check}} (\pkg{rstanarm}) if 
 #'   \code{ppd} is \code{TRUE}.
@@ -754,7 +796,7 @@ setMethod(
   "as.shinystan",
   signature = "stanreg",
   definition = function(X,
-                        ppd = TRUE,
+                        ppd = FALSE,
                         seed = 1234,
                         model_name = NULL,
                         note = NULL,
