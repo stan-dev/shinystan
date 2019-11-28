@@ -30,6 +30,7 @@
 #'   possible? The default is \code{TRUE}. Users can change the default to
 #'   \code{FALSE} by setting the global option \code{options(shinystan.quiet =
 #'   FALSE)}.
+#' @param old_version Should version 2.5.0 be used? Defaults to \code{FALSE}.
 #' @param ... Optional arguments passed to \code{\link[shiny]{runApp}}.
 #' 
 #' @return The \code{launch_shinystan} function is used for the side effect of 
@@ -159,16 +160,28 @@ launch_shinystan_demo <- function(demo_name = "eight_schools",
 
 
 # internal ----------------------------------------------------------------
-launch <- function(sso, rstudio = FALSE, quiet = TRUE,...) {
+launch <- function(sso, rstudio = FALSE, quiet = TRUE, old_version = FALSE,...) {
   launch.browser <- if (!rstudio) 
     TRUE else getOption("shiny.launch.browser", interactive())
   
+  if(!is.logical(old_version)) stop("Argument 'old_version' needs to be logical.")
+  
   .sso_env$.SHINYSTAN_OBJECT <- sso  # see zzz.R for .sso_env
   on.exit(.sso_env$.SHINYSTAN_OBJECT <- NULL, add = TRUE)
-  shiny::runApp(
-    appDir = system.file("ShinyStanModules", package = "shinystan"), 
-    launch.browser = launch.browser, 
-    quiet = quiet,
-    ...
-  )
+  if(old_version == FALSE) {
+    shiny::runApp(
+      appDir = system.file("ShinyStanModules", package = "shinystan"), 
+      launch.browser = launch.browser, 
+      quiet = quiet,
+      ...
+    )
+  }
+  if(old_version == TRUE) {
+    shiny::runApp(
+      appDir = system.file("ShinyStan", package = "shinystan"), 
+      launch.browser = launch.browser, 
+      quiet = quiet,
+      ...
+    )
+  }
 }

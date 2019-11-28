@@ -35,9 +35,46 @@ The report displays diagnostics information about the worst parameters in
 your model, based on effective sample size.
 }
 \examples{
- \dontrun{
+\dontrun{
 # Using example shinystan object 'eight_schools'
-generate_report(eight_schools)
+generate_report(eight_schools, report_type = "both")
+
+######################
+### stanfit object ###
+######################
+library("rstan")
+fit <- stan_demo("eight_schools")
+sso <- as.shinystan(fit, model_name = "example")
+generate_report(sso, pars = c("tau", "mu", "theta[1]"), 
+                output_format = "word_document")
+# to change figure visualization use bayesplot::bayesplot_theme_set()
+bayesplot::bayesplot_theme_set(theme_dark())
+generate_report(sso, pars = c("tau", "mu", "theta[1]"))
+
+ 
+######################
+### stanreg object  ##
+######################
+
+library("rstanarm")
+example("example_model")
+sso <- as.shinystan(example_model)
+generate_report(sso)
+
+
+######################
+### brms object    ###
+######################
+
+library(brms)
+bprior1 <- prior(student_t(5,0,10), class = b) +
+  prior(cauchy(0,2), class = sd)
+  fit1 <- brm(count ~ zAge + zBase * Trt + (1|patient),
+              data = epilepsy, family = poisson(), prior = bprior1)
+sso <- as.shinystan(fit1$fit)
+generate_report(sso, n_param = 5)
+
+
 }
 
 }

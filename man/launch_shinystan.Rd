@@ -34,6 +34,8 @@ TRUE)}.}
 possible? The default is \code{TRUE}. Users can change the default to
 \code{FALSE} by setting the global option \code{options(shinystan.quiet =
 FALSE)}.}
+
+\item{old_version}{Should version 2.5.0 be used? Defaults to \code{FALSE}.}
 }
 \value{
 The \code{launch_shinystan} function is used for the side effect of 

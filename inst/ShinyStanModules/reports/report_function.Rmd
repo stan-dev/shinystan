@@ -19,9 +19,12 @@ fontsize: 11pt
 library(dplyr)
 library(bayesplot)
 
-knitr::opts_chunk$set(echo=FALSE, warning=FALSE, message=FALSE)
+knitr::opts_chunk$set(echo=FALSE, warning=FALSE, message=FALSE, comment = "  ")
 showplots <- FALSE
 
+printf <- function(msg = "%5.3f", ...) {
+  cat(sprintf(msg, ...))
+}
 
 nopars <- missing(pars) | is.null(pars)
 
@@ -272,3 +275,10 @@ for(i in 1:n_param) {
 
 ```
 
+\newpage
+
+# Model Code
+
+```{r model_code}
+printf(sso@model_code)
+```
