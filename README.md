@@ -36,6 +36,15 @@ if (!require("devtools")) {
 devtools::install_github("stan-dev/shinystan", build_vignettes = TRUE)
 ```
 
+* Install the alpha test of version 3.0 from GitHub (requires [devtools](https://github.com/r-lib/devtools) package):
+
+```r
+if (!require("devtools")) {
+  install.packages("devtools")
+}
+devtools::install_github("stan-dev/shinystan", ref = "v3-alpha", build_vignettes = TRUE)
+```
+
 ### Demo
 
 After installing run
@@ -44,10 +53,6 @@ After installing run
 library("shinystan")
 launch_shinystan_demo()
 ```
-
-### Screenshots
-
-<img src=https://github.com/stan-dev/shinystan/blob/master/images/home.png width=19% /><img src=https://github.com/stan-dev/shinystan/blob/master/images/explore.png width=24.5% /><img src=https://github.com/stan-dev/shinystan/blob/master/images/diagnose.png width=24.5% />
 
 ### About ShinyStan
 
@@ -66,19 +71,6 @@ ShinyStan is powered by RStudio's Shiny web application framework and works with
 the output of MCMC programs written in any programming language (and has extended
 functionality for models fit using [RStan](http://mc-stan.org/interfaces/rstan.html)
 and the No-U-Turn sampler).
-
-#### Saving and deploying (sharing)
-
-The **shinystan** package allows you to store the basic components of an entire
-project (code, posterior samples, graphs, tables, notes) in a single object.
-Users can save many of the plots as ggplot2 objects for further customization
-and easy integration in reports or post-processing for publication.
-
-**shinystan** also provides the `deploy_shinystan` function,
-which lets you easily deploy your own ShinyStan apps online using RStudio's
-[ShinyApps](https://www.shinyapps.io) service for any of
-your models. Each of your apps (each of your models) will have a unique url
-and is compatible with Safari, Firefox, Chrome, and most other browsers.
 
 
 ### Licensing
