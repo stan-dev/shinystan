@@ -8,13 +8,19 @@
 \usage{
 launch_shinystan(object, ...)
 
-\method{launch_shinystan}{default}(object, ...,
+\method{launch_shinystan}{default}(
+  object,
+  ...,
   rstudio = getOption("shinystan.rstudio", FALSE),
-  quiet = getOption("shinystan.quiet", TRUE))
+  quiet = getOption("shinystan.quiet", TRUE)
+)
 
-\method{launch_shinystan}{shinystan}(object, ...,
+\method{launch_shinystan}{shinystan}(
+  object,
+  ...,
   rstudio = getOption("shinystan.rstudio", FALSE),
-  quiet = getOption("shinystan.quiet", TRUE))
+  quiet = getOption("shinystan.quiet", TRUE)
+)
 }
 \arguments{
 \item{object}{The object to use. For the default method this can be an object

@@ -45,7 +45,7 @@ In \code{...}, the arguments \code{ppcheck_data} and
 }
 \examples{
 \dontrun{
-# For this example assume sso is the name of the \\code{shinystan} object for
+# For this example assume sso is the name of the \code{shinystan} object for
 # the model you want to use. Assume also that you want to name your app
 # 'my-model' and that your shinyapps.io username is 'username'.
 

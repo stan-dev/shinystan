@@ -4,9 +4,14 @@
 \alias{generate_report}
 \title{Generate a report with diagnostics for a shinystan object}
 \usage{
-generate_report(sso, n_param = 3, pars = NULL,
-  output_format = "html_document", view = TRUE,
-  report_type = "diagnose")
+generate_report(
+  sso,
+  n_param = 3,
+  pars = NULL,
+  output_format = "html_document",
+  view = TRUE,
+  report_type = "diagnose"
+)
 }
 \arguments{
 \item{sso}{A \code{\link[=as.shinystan]{shinystan object}}.}
