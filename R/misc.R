@@ -36,6 +36,7 @@ sso_check <- function(sso) {
 
 is.stanfit <- function(x) inherits(x, "stanfit")
 is.stanreg <- function(x) inherits(x, "stanreg")
+is.blavaan <- function(x) inherits(x, "blavaan")
 
 
 # check for suggested (not required) packages

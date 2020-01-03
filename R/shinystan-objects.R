@@ -911,7 +911,7 @@ setMethod(
 }
 
 
-# as.shinystan (stanreg) -------------------------------------------------
+# as.shinystan (stanjm) -------------------------------------------------
 setOldClass("stanjm")
 #' @describeIn as.shinystan Create a \code{shinystan} object from a
 #'   \code{stanjm} object (\pkg{\link[rstanarm]{rstanarm}}).
@@ -975,6 +975,114 @@ setMethod(
     # if (isTRUE(ppd))
     #   slot(sso, "misc")[["pp_check_plots"]] <- .rstanarm_pp_checks(X, seed)
     # 
+    return(sso)
+  }
+)
+
+
+# as.shinystan (stanmvreg) -------------------------------------------------
+setOldClass("stanmvreg")
+#' @describeIn as.shinystan Create a \code{shinystan} object from a
+#'   \code{stanmvreg} object (\pkg{\link[rstanarm]{rstanarm}}).
+#'   
+#' @param ppd For \code{stanmvreg} objects (\pkg{rstanarm}).
+#'   \code{ppd} is currently unavailable for this type of object.
+#'   
+#' @examples
+#' \dontrun{
+#' ######################
+#' ### stanmvreg object #
+#' ######################
+#' library(rstanarm)
+#' pbcLong$ybern <- as.integer(pbcLong$logBili >= mean(pbcLong$logBili))
+#' f2 <- stan_mvmer(
+#'         formula = list(
+#'         ybern ~ year + (1 | id), 
+#'         albumin ~ sex + year + (year | id)),
+#'         data = pbcLong,
+#'         family = list(binomial, gaussian),
+#'         chains = 1, cores = 1, seed = 12345, iter = 1000)
+#'               
+#' sso  <- as.shinystan(f2)
+#' launch_shinystan(sso)
+#' }
+#'
+setMethod(
+  "as.shinystan",
+  signature = "stanmvreg",
+  definition = function(X,
+                        ppd = FALSE,
+                        seed = 1234,
+                        model_name = NULL,
+                        note = NULL,
+                        ...) {
+    check_suggests("rstanarm")
+    sso <- as.shinystan(X$stanfit, ...)
+    
+    mname <- if (!is.null(model_name))
+      model_name else paste0("rstanarm model (", sso@model_name, ")")
+    sso <- suppressMessages(model_name(sso, mname))
+    
+    if (!is.null(note))
+      sso <- suppressMessages(notes(sso, note, replace = TRUE))
+    
+    param_names <- slot(sso, "param_names")
+    sel <- grep(":_NEW_", dimnames(slot(sso, "posterior_sample"))[[3L]], 
+                fixed = TRUE)
+    if (length(sel)) {
+      param_names <- param_names[-sel]
+      slot(sso, "posterior_sample") <- 
+        slot(sso, "posterior_sample")[, , -sel, drop = FALSE]
+      slot(sso, "summary")  <- 
+        slot(sso, "summary")[-sel, , drop = FALSE]
+    }
+    param_dims <- rep(list(numeric(0)), length(param_names))
+    names(param_dims) <- param_names
+    
+    slot(sso, "param_names") <- param_names
+    slot(sso, "param_dims") <- param_dims
+    slot(sso, "misc")[["stanmvreg"]] <- TRUE
+    # if (isTRUE(ppd))
+    #   slot(sso, "misc")[["pp_check_plots"]] <- .rstanarm_pp_checks(X, seed)
+    # 
+    return(sso)
+  }
+)
+
+
+
+# as.shinystan (blavaan) -------------------------------------------------
+setOldClass("blavaan")
+#' @describeIn as.shinystan Create a \code{shinystan} object from a
+#'   \code{blavaan} object (\pkg{\link[blavaan]{blavaan}}).
+#'   
+#' @examples
+#' \dontrun{
+#' ######################
+#' ### stanmvreg object #
+#' ######################
+#' library(blavaan)
+#' hsm <- " visual =~ x1 + x2 + x3 "
+#' fit <- bcfa(hsm, data=HolzingerSwineford1939, burnin=500, sample=1000, 
+#'             target='stanclassic', test = F,
+#'             n.chains = 1)
+#'             
+#' sso  <- as.shinystan(fit)
+#' launch_shinystan(sso)
+#' }
+#'
+setMethod(
+  "as.shinystan",
+  signature = "blavaan",
+  definition = function(X,
+                        ...) {
+    if(X@call$target == "stanclassic" | X@call$target == "stan"){
+      sso <- as.shinystan(X@external$mcmcout, ...)
+    }
+    if(X@call$target == "jags") {
+      sso <- as.shinystan(X@external$mcmcout$mcmc, ...)
+    }
+    
     return(sso)
   }
 )

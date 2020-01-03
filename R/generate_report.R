@@ -80,8 +80,8 @@ generate_report <- function (sso, n_param = 3, pars = NULL, output_format = "htm
                              view = TRUE, report_type = "diagnose") {
   if(class(sso) != "shinystan") stop("Object is not of class 'shinystan'.")
   if(sso@stan_used == FALSE) stop("Currently only available for stan related objects.")
-  if(sso@stan_algorithm == "variational" & report_type == "diagnose"){
-     stop("Currently no diagnostics available for variational inference.")
+  if(sso@stan_algorithm == "variational" | sso@stan_algorithm == "fullrank"){
+     stop("Currently no reports available for variational inference.")
   } 
   if(is.null(pars) == FALSE & class(pars) != "character") stop("pars should be a character vector.")
   if(is.null(pars) == FALSE & all(pars %in% sso@param_names) == FALSE) stop("Invalid parameters in pars.")

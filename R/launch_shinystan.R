@@ -94,7 +94,8 @@ launch_shinystan.default <-
            quiet = getOption("shinystan.quiet", TRUE)) {
     if (!is.shinystan(object) && 
         !is.stanfit(object) && 
-        !is.stanreg(object)) {
+        !is.stanreg(object) &&
+        !is.blavaan(object)) {
       stop("object not compatible with 'launch_shinystan'. ",
            "Try converting to a shinystan object first using 'as.shinystan'.")
     }
