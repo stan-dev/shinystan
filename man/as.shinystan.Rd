@@ -9,6 +9,8 @@
 \alias{as.shinystan,stanfit-method}
 \alias{as.shinystan,stanreg-method}
 \alias{as.shinystan,stanjm-method}
+\alias{as.shinystan,stanmvreg-method}
+\alias{as.shinystan,blavaan-method}
 \title{Create and test \code{shinystan} objects}
 \usage{
 as.shinystan(X, ...)
@@ -67,6 +69,10 @@ is.shinystan(X)
 \S4method{as.shinystan}{stanreg}(X, ppd = FALSE, seed = 1234, model_name = NULL, note = NULL, ...)
 
 \S4method{as.shinystan}{stanjm}(X, ppd = FALSE, seed = 1234, model_name = NULL, note = NULL, ...)
+
+\S4method{as.shinystan}{stanmvreg}(X, ppd = FALSE, seed = 1234, model_name = NULL, note = NULL, ...)
+
+\S4method{as.shinystan}{blavaan}(X, ...)
 }
 \arguments{
 \item{X}{For \code{as.shinystan}, an object to be converted to a
@@ -121,7 +127,7 @@ model was fit) must also be provided.}
 specifying which parameters should be included in the \code{shinystan}
 object.}
 
-\item{ppd}{For \code{stanjm} objects (\pkg{rstanarm}).
+\item{ppd}{For \code{stanmvreg} objects (\pkg{rstanarm}).
 \code{ppd} is currently unavailable for this type of object.}
 
 \item{seed}{Passed to \code{\link[rstanarm]{pp_check}} (\pkg{rstanarm}) if 
@@ -171,6 +177,12 @@ taken automatically from the \code{stanfit} object.
 
 \item \code{as.shinystan,stanjm-method}: Create a \code{shinystan} object from a
 \code{stanjm} object (\pkg{\link[rstanarm]{rstanarm}}).
+
+\item \code{as.shinystan,stanmvreg-method}: Create a \code{shinystan} object from a
+\code{stanmvreg} object (\pkg{\link[rstanarm]{rstanarm}}).
+
+\item \code{as.shinystan,blavaan-method}: Create a \code{shinystan} object from a
+\code{blavaan} object (\pkg{\link[blavaan]{blavaan}}).
 }}
 
 \examples{
@@ -222,7 +234,7 @@ launch_shinystan(sso)
 
 \dontrun{
 ######################
-### stanreg object ###
+### stanjm object ###
 ######################
 library(rstanarm)
 f1 <- stan_jm(formulaLong = logBili ~ year + (1 | id),
@@ -234,6 +246,38 @@ f1 <- stan_jm(formulaLong = logBili ~ year + (1 | id),
               chains = 1, cores = 1, seed = 12345, iter = 1000)
               
 sso  <- as.shinystan(f1)
+launch_shinystan(sso)
+}
+
+\dontrun{
+######################
+### stanmvreg object #
+######################
+library(rstanarm)
+pbcLong$ybern <- as.integer(pbcLong$logBili >= mean(pbcLong$logBili))
+f2 <- stan_mvmer(
+        formula = list(
+        ybern ~ year + (1 | id), 
+        albumin ~ sex + year + (year | id)),
+        data = pbcLong,
+        family = list(binomial, gaussian),
+        chains = 1, cores = 1, seed = 12345, iter = 1000)
+              
+sso  <- as.shinystan(f2)
+launch_shinystan(sso)
+}
+
+\dontrun{
+######################
+### stanmvreg object #
+######################
+library(blavaan)
+hsm <- " visual =~ x1 + x2 + x3 "
+fit <- bcfa(hsm, data=HolzingerSwineford1939, burnin=500, sample=1000, 
+            target='stanclassic', test = F,
+            n.chains = 1)
+            
+sso  <- as.shinystan(fit)
 launch_shinystan(sso)
 }
 
