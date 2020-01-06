@@ -1,5 +1,5 @@
 # utilities
-source("MODULES/UTILS/plotOptions.r", local = TRUE)
+source("MODULES/UTILS/plotOptions.R", local = TRUE)
 source("MODULES/UTILS/report.r", local = TRUE)
 
 # home tab
