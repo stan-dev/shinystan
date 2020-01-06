@@ -218,6 +218,9 @@ for(i in 1:length(.make_param_list_with_groups(sso))){
 # Model Code
 
 ```{r model_code}
-printf(sso@model_code)
+if(object.size(sso@model_code) < 8000){
+  printf(sso@model_code)
+} else {
+  print(sso@model_code)
+}
 ```
-

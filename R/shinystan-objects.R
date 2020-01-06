@@ -1059,7 +1059,7 @@ setOldClass("blavaan")
 #' @examples
 #' \dontrun{
 #' ######################
-#' ### stanmvreg object #
+#' ### blavaan object ###
 #' ######################
 #' library(blavaan)
 #' hsm <- " visual =~ x1 + x2 + x3 "
@@ -1076,10 +1076,10 @@ setMethod(
   signature = "blavaan",
   definition = function(X,
                         ...) {
-    if(X@call$target == "stanclassic" | X@call$target == "stan"){
+    if(X@Options$target == "stanclassic" | X@Options$target == "stan"){
       sso <- as.shinystan(X@external$mcmcout, ...)
     }
-    if(X@call$target == "jags") {
+    if(X@Options$target == "jags") {
       sso <- as.shinystan(X@external$mcmcout$mcmc, ...)
     }
     
