@@ -18,7 +18,8 @@
 #' 
 #' @export
 #' @param object The object to use. For the default method this can be an object
-#'   of class \code{"shinystan"}, \code{"stanfit"}, or \code{"stanreg"}. To use
+#'   of class \code{"shinystan"}, \code{"stanfit"}, \code{"stanreg"}, 
+#'   \code{"mcmc.list"} or \code{"blavaan"}. To use
 #'   other types of objects first create a shinystan object using
 #'   \code{\link{as.shinystan}}.
 #' @param rstudio Only relevant for 'RStudio' users. The default (\code{FALSE})
@@ -95,6 +96,7 @@ launch_shinystan.default <-
     if (!is.shinystan(object) && 
         !is.stanfit(object) && 
         !is.stanreg(object) &&
+        !is.mcmclist(object) &&
         !is.blavaan(object)) {
       stop("object not compatible with 'launch_shinystan'. ",
            "Try converting to a shinystan object first using 'as.shinystan'.")

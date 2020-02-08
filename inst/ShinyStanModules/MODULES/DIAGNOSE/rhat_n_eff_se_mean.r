@@ -52,7 +52,7 @@ rhat_n_eff_se_mean <- function(input, output, session){
           session$ns("rhat_threshold"),
           "\\(\\hat{R} \\text{ warning threshold}\\)",
           ticks = FALSE,
-          value = 1.1,
+          value = 1.01,
           min = 1,
           max = 1.2,
           step = 0.01,
@@ -248,7 +248,7 @@ rhat_n_eff_se_mean <- function(input, output, session){
         withMathJax(),
         plotOutput(session$ns("rhatPlot")),
         textOutput(session$ns("rhat")),
-        checkboxInput(session$ns("showCaption_rhat"), "Show/Hide Caption"),
+        checkboxInput(session$ns("showCaption_rhat"), "Show Caption", value = TRUE),
         hidden(
           uiOutput(session$ns("caption_rhat"))
         ),
@@ -261,7 +261,7 @@ rhat_n_eff_se_mean <- function(input, output, session){
           withMathJax(),
           plotOutput(session$ns("n_effPlot")),
           textOutput(session$ns("n_eff")),
-          checkboxInput(session$ns("showCaption_n_eff"), "Show/Hide Caption"),
+          checkboxInput(session$ns("showCaption_n_eff"), "Show Caption", value = TRUE),
           hidden(
             uiOutput(session$ns("caption_n_eff"))
           ),
@@ -274,7 +274,7 @@ rhat_n_eff_se_mean <- function(input, output, session){
             withMathJax(),
             plotOutput(session$ns("se_meanPlot")),
             textOutput(session$ns("se_mean")),
-            checkboxInput(session$ns("showCaption_se_mean"), "Show/Hide Caption"),
+            checkboxInput(session$ns("showCaption_se_mean"), "Show Caption", value = TRUE),
             hidden(
               uiOutput(session$ns("caption_se_mean"))
             ),

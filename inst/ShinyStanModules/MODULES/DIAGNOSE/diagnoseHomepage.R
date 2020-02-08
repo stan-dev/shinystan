@@ -124,11 +124,6 @@ diagnose <- function(input, output, session){
               autoCorrelationUI(session$ns("autoCorrelation"))
             ),
             tabPanel(
-              title = "Trace Plots",
-              id = session$ns("traceTab"),
-              tracePlotUI(session$ns("tracePlot"))
-            ),
-            tabPanel(
               title = "Rank Plots",
               id = session$ns("rankTab"),
               rankPlotUI(session$ns("rankPlot"))
@@ -138,6 +133,11 @@ diagnose <- function(input, output, session){
               id = session$ns("rhat_n_eff_se_meanTab"),
               value = "rhat_neff_se_mean_plot_tab",
               rhat_n_eff_se_meanUI(session$ns("rhat_n_eff_se_mean"))
+            ),
+            tabPanel(
+              title = "Trace Plots",
+              id = session$ns("traceTab"),
+              tracePlotUI(session$ns("tracePlot"))
             )
           )
         ),
@@ -186,11 +186,6 @@ diagnose <- function(input, output, session){
               autoCorrelationUI(session$ns("autoCorrelation"))
             ),
             tabPanel(
-              title = "Trace Plots",
-              id = session$ns("traceTab"),
-              tracePlotUI(session$ns("tracePlot"))
-            ),
-            tabPanel(
               title = "Rank Plots",
               id = session$ns("rankTab"),
               rankPlotUI(session$ns("rankPlot"))
@@ -200,6 +195,11 @@ diagnose <- function(input, output, session){
               value = "rhat_neff_se_mean_plot_tab",
               id = session$ns("rhat_n_eff_se_meanTab"),
               rhat_n_eff_se_meanUI(session$ns("rhat_n_eff_se_mean"))
+            ),
+            tabPanel(
+              title = "Trace Plots",
+              id = session$ns("traceTab"),
+              tracePlotUI(session$ns("tracePlot"))
             )
           )
         ),

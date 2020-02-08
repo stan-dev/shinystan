@@ -143,10 +143,10 @@ warnings <- function (input, output, session) {
   
   output$rhat <- renderUI({
     
-    bad_rhat <- rownames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)[shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "Rhat"] > 1.1]
+    bad_rhat <- rownames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)[shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "Rhat"] > 1.01]
     bad_rhat <- bad_rhat[!is.na(bad_rhat)]
     rhatWarning <- paste(length(bad_rhat), 
-                         "parameters have an Rhat value above 1.1.")
+                         "parameters have an Rhat value above 1.01.")
     
     if(length(bad_rhat) < 1){
       

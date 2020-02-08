@@ -24,7 +24,8 @@ launch_shinystan(object, ...)
 }
 \arguments{
 \item{object}{The object to use. For the default method this can be an object
-of class \code{"shinystan"}, \code{"stanfit"}, or \code{"stanreg"}. To use
+of class \code{"shinystan"}, \code{"stanfit"}, \code{"stanreg"}, 
+\code{"mcmc.list"} or \code{"blavaan"}. To use
 other types of objects first create a shinystan object using
 \code{\link{as.shinystan}}.}
 

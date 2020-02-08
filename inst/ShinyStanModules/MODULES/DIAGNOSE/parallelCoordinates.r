@@ -128,7 +128,7 @@ parallelCoordinates <- function(input, output, session){
     output$plotUI <-   renderUI({
       tagList(
         plotOutput(session$ns("plot1")),
-        checkboxInput(session$ns("showCaption"), "Show/Hide Caption"),
+        checkboxInput(session$ns("showCaption"), "Show Caption", value = TRUE),
         hidden(
           uiOutput(session$ns("caption"))
         ),

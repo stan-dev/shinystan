@@ -52,11 +52,12 @@ rhat_n_eff_se_mean_stats <- function(input, output, session){
     out[, 2] <- out[, 2] / ((shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter - shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) * shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain)
     out[, 3] <- out[, 3] / out[, 4]
     out <- out[param(), 1:3]
+    out <- cbind(out, as.matrix(rstan::monitor(print = F, shinystan:::.sso_env$.SHINYSTAN_OBJECT@posterior_sample))[, c("n_eff", "Bulk_ESS", "Tail_ESS")][param(), ])
     if(length(param()) == 1) out <- matrix(out, nrow = 1); rownames(out) <- param()
-    colnames(out) <- c("Rhat", "n_eff / N", "se_mean / sd")
-    out <- formatC(round(out, input$sampler_digits),
-                   format = 'f', digits = digits())
+    colnames(out) <- c("Rhat", "n_eff / N", "se_mean / sd", "n_eff", "Bulk_ESS", "Tail_ESS")
+    out <- round(out, digits())
     out
+    
   })
   
   

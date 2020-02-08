@@ -269,7 +269,7 @@ launch_shinystan(sso)
 
 \dontrun{
 ######################
-### stanmvreg object #
+### blavaan object ###
 ######################
 library(blavaan)
 hsm <- " visual =~ x1 + x2 + x3 "

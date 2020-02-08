@@ -517,8 +517,7 @@ setMethod(
       n_warmup = burnin,
       stan_used = stan_used,
       stan_method = stan_method,
-      stan_algorithm = stan_algorithm,
-      max_treedepth = max_treedepth
+      stan_algorithm = stan_algorithm
     )
     
     if (!is.null(note))

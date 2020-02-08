@@ -67,7 +67,7 @@ divergentScatterUI <- function(id){
       )
     ),
     plotOutput(ns("plot1")),
-    checkboxInput(ns("showCaption"), "Show/Hide Caption"),
+    checkboxInput(ns("showCaption"), "Show Caption", value = TRUE),
     hidden(
       uiOutput(ns("caption"))
     ),
