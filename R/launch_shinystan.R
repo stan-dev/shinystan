@@ -92,7 +92,8 @@ launch_shinystan.default <-
   function(object,
            ...,
            rstudio = getOption("shinystan.rstudio", FALSE), 
-           quiet = getOption("shinystan.quiet", TRUE)) {
+           quiet = getOption("shinystan.quiet", TRUE),
+           old_version = getOption("shinystan.old_version", FALSE)) {
     if (!is.shinystan(object) && 
         !is.stanfit(object) && 
         !is.stanreg(object) &&

@@ -56,7 +56,8 @@ areasPlot <- function(input, output, session){
         pars = parameters,
         point_est = tolower(visualOptions()$point_est),
         prob = visualOptions()$inner_ci / 100,
-        prob_outer = visualOptions()$outer_ci / 100
+        prob_outer = visualOptions()$outer_ci / 100,
+        area_method = visualOptions()$areas_type
       )
     }
     if(plotType == "Ridges"){

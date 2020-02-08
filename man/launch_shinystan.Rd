@@ -12,7 +12,8 @@ launch_shinystan(object, ...)
   object,
   ...,
   rstudio = getOption("shinystan.rstudio", FALSE),
-  quiet = getOption("shinystan.quiet", TRUE)
+  quiet = getOption("shinystan.quiet", TRUE),
+  old_version = getOption("shinystan.old_version", FALSE)
 )
 
 \method{launch_shinystan}{shinystan}(

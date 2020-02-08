@@ -28,7 +28,7 @@ URL: https://mc-stan.org/, https://discourse.mc-stan.org
 BugReports: https://github.com/stan-dev/shinystan/issues/
 License: GPL (>=3)
 Depends:
-    R (>= 3.1.0),
+    R (>= 3.5.0),
     shiny (>= 1.0.3)
 Imports:
     bayesplot (>= 1.6.0.9000),

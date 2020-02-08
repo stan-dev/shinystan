@@ -147,6 +147,15 @@ plotOptions <- function(input, output, session, ...){
                              selected = input$param_plot_point_est,
                              inline = TRUE
                            )
+                         },
+                         if("areasOptions" %in% input_names == TRUE & areas_ridges() == "Areas" ){
+                           radioButtons(
+                             inputId = session$ns("areas_type"),
+                             label = h5("Areas Type"),
+                             choices = c("equal area", "equal height", "scaled height"),
+                             selected = "equal area",
+                             inline = TRUE
+                           )
                          }
                          )),
                          if("areasOptions" %in% input_names == TRUE){
@@ -176,6 +185,15 @@ plotOptions <- function(input, output, session, ...){
   })
   opacityDiv_debounce <- debounce(opacityDiv, 500)
   
+  areas_type <- reactive({
+    if(is.null(input$areas_type)) "equal area" else input$areas_type
+  })
+  
+  areas_ridges <- reactive({
+    if(is.null(input$areas_ridges)) "Areas" else input$areas_ridges
+  })
+  
+  
   
   plotTheme <- reactive({
     out <- list()
@@ -186,6 +204,7 @@ plotOptions <- function(input, output, session, ...){
     out$outer_ci <- ifelse(!is.null(input$param_plot_ci_level_outer), input$param_plot_ci_level_outer, 95)
     out$point_est <- ifelse(!is.null(input$param_plot_point_est), input$param_plot_point_est, "Median")
     out$areas_ridges <- ifelse(!is.null(input$areas_ridges), input$areas_ridges, "Areas")
+    out$areas_type <- ifelse(!is.null(input$areas_type), input$areas_type, "equal area")
     out$alpha <- ifelse(!is.null(input$alpha), input$alpha, 0.8)
     out$alphaDiv <- ifelse(!is.null(input$alphaDiv), input$alphaDiv, 0.8)
     out
