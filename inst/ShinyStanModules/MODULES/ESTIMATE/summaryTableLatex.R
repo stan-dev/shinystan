@@ -35,15 +35,23 @@ summaryTableLatexUI <- function(id){
                  label = h5("Columns"),
                  choices = if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@stan_method == "sampling"){
                    c("Posterior mean" = "mean",
-                     "Monte Carlo error" = "se_mean",
-                     "Posterior standard deviation" = "sd",
+                     "Monte Carlo error (MCSE) for mean" = "se_mean",
+                     "Posterior standard deviation (sd)" = "sd",
                      "Quantile: 2.5%" = "2.5%",
                      "Quantile: 25%" = "25%",
                      "Quantile: 50%" = "50%",
                      "Quantile: 75%" = "75%",
                      "Quantile: 97.5%" = "97.5%",
-                     "Effective sample size" = "n_eff",
-                     "Rhat"
+                     "Effective sample size (ESS)" = "n_eff",
+                     "Bulk ESS" = "Bulk_ESS",
+                     "Tail ESS" = "Tail_ESS",
+                     "Rhat" = "Rhat",
+                     "MCSE sd" = "MCSE_SD",
+                     "MCSE Q2.5" = "MCSE_Q2.5",
+                     "MCSE Q25" = "MCSE_Q25",
+                     "MCSE Q50" = "MCSE_Q50",
+                     "MCSE Q75" = "MCSE_Q75",
+                     "MCSE Q97.5" = "MCSE_Q97.5"
                    )
                  } else {
                    c("Posterior mean" = "mean",
@@ -85,7 +93,7 @@ summaryTableLatex <- function(input, output, session){
 
   summary_stats_latex <- reactive({
     
-    xt <- xtable::xtable(summaryStats(), 
+    xt <- xtable::xtable(summaryStats(), digits = digits(),
                          caption = input$tex_caption)
     
     xtable::print.xtable(
@@ -108,13 +116,12 @@ summaryTableLatex <- function(input, output, session){
   
   summaryStats <- reactive({
     
-    select.columns <- c(which(colnames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary) %in% input$tex_columns))
+    select.columns <- c(which(colnames(as.matrix(rstan::monitor(print = F, shinystan:::.sso_env$.SHINYSTAN_OBJECT@posterior_sample))) %in% input$tex_columns))
     
-    out <- shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[param(), select.columns]
-    out <- matrix(out, nrow = length(param()))
+    out <- as.matrix(rstan::monitor(print = F, (shinystan:::.sso_env$.SHINYSTAN_OBJECT@posterior_sample)))
+    out <- out[param(), select.columns]
     rownames(out) <- param()
-    colnames(out) <- colnames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)[select.columns]
-    out <- formatC(round(out, digits()), format = 'f', digits = digits())
+    out <- round(out, digits())
     out
     
   })

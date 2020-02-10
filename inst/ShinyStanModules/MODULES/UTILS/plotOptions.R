@@ -140,14 +140,18 @@ plotOptions <- function(input, output, session, ...){
                                ))
                          },
                          if("intervalOptions" %in% input_names == TRUE){
-                           radioButtons(
-                             inputId = session$ns("param_plot_point_est"),
-                             label = h5("Point Estimate"),
-                             choices = c("Median", "Mean", "None"),
-                             selected = input$param_plot_point_est,
-                             inline = TRUE
-                           )
-                         },
+                           if(areas_ridges() == "Ridges"){
+                             
+                           } else {
+                             radioButtons(
+                               inputId = session$ns("param_plot_point_est"),
+                               label = h5("Point Estimate"),
+                               choices = c("Median", "Mean", "None"),
+                               selected = input$param_plot_point_est,
+                               inline = TRUE
+                             ) 
+                           }
+                           },
                          if("areasOptions" %in% input_names == TRUE & areas_ridges() == "Areas" ){
                            radioButtons(
                              inputId = session$ns("areas_type"),
