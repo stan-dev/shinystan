@@ -33,7 +33,16 @@ summaryTableLatexUI <- function(id){
                checkboxGroupInput(
                  ns("tex_columns"),
                  label = h5("Columns"),
-                 choices = if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@stan_method == "sampling"){
+                 choices = if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@stan_method == "variational"){
+                   c("Posterior mean" = "mean",
+                     "Posterior standard deviation" = "sd",
+                     "Quantile: 2.5%" = "2.5%",
+                     "Quantile: 25%" = "25%",
+                     "Quantile: 50%" = "50%",
+                     "Quantile: 75%" = "75%",
+                     "Quantile: 97.5%" = "97.5%"
+                   )
+                 } else {
                    c("Posterior mean" = "mean",
                      "Monte Carlo error (MCSE) for mean" = "se_mean",
                      "Posterior standard deviation (sd)" = "sd",
@@ -52,15 +61,6 @@ summaryTableLatexUI <- function(id){
                      "MCSE Q50" = "MCSE_Q50",
                      "MCSE Q75" = "MCSE_Q75",
                      "MCSE Q97.5" = "MCSE_Q97.5"
-                   )
-                 } else {
-                   c("Posterior mean" = "mean",
-                     "Posterior standard deviation" = "sd",
-                     "Quantile: 2.5%" = "2.5%",
-                     "Quantile: 25%" = "25%",
-                     "Quantile: 50%" = "50%",
-                     "Quantile: 75%" = "75%",
-                     "Quantile: 97.5%" = "97.5%"
                    )
                  },
                  selected = c("mean", "sd", "2.5%", "50%", "97.5%"),
