@@ -1,0 +1,116 @@
+---
+title: "ShinyStan Automated Diagnostics Report"
+output:
+  html_document: 
+    toc: TRUE
+    toc_float: 
+      collapsed: FALSE
+      depth: 3
+  pdf_document: 
+    toc: TRUE
+  word_document: 
+    toc: TRUE
+date: "`r format(Sys.time(), '%d %B %Y, %H:%M')`"
+fontsize: 11pt
+---
+
+
+```{r global_options, include=FALSE}
+library(dplyr)
+library(bayesplot)
+
+knitr::opts_chunk$set(echo=FALSE, warning=FALSE, message=FALSE, comment = "  ")
+showplots <- FALSE
+
+printf <- function(msg = "%5.3f", ...) {
+  cat(sprintf(msg, ...))
+}
+
+nopars <- missing(pars) | is.null(pars)
+
+if(nopars){
+  selected_parameters <- order(sso@summary[, "n_eff"]) %>%
+    sso@param_names[.] 
+  
+  if(n_param == "all") n_param <- length(selected_parameters)
+  if(n_param > length(selected_parameters)) n_param <- length(selected_parameters)
+} else {
+  selected_parameters <- pars
+  n_param <- length(pars)
+}
+
+
+```
+
+# Numerical diagnostics
+
+
+```{r diagnostics_table}
+round(sso@summary, 2)[c(selected_parameters[1:n_param]), c("n_eff", "Rhat",
+                                                                   "mean", "se_mean", "sd")]
+
+```
+
+\newpage
+
+# Visual diagnostics
+
+## Autocorrelation
+
+These are autocorrelation plots of `r if(nopars == FALSE){selected_parameters}``r if(nopars){paste0("the ", n_param, " worst performing parameters in terms of n_eff")}`. The autocorrelation expresses the dependence between the samples of a Monte Carlo simulation. With higher dependence between the draws, more samples are needed to obtain the same effective sample size. High autocorrelation can sometimes be remedied by reparametrization of the model.
+
+```{r autocorrelation_plot, out.width = '45%', fig.show = 'hold'}
+
+for(i in 1:n_param) {
+  parameters <- c(selected_parameters[i])
+  print(
+    mcmc_acf_bar( sso@posterior_sample[(1 + sso@n_warmup) : sso@n_iter, , ], 
+              pars = parameters,
+              lags = 20
+    )
+  )
+}
+
+```
+
+
+\newpage
+
+## Trance Plots
+
+These are trace plots of `r if(nopars == FALSE){selected_parameters}``r if(nopars){paste0("the ", n_param, " worst performing parameters in terms of n_eff")}`, for all chains. Trace plots provide a visual way to inspect sampling behavior and assess mixing across chains. The iteration number (x-axis) is plotted against the parameter value at that iteration (y-axis). Divergent transitions are marked on the x-axis. A good plot shows chains that move swiftly through the parameter space and all chains that explore the same parameter space without any divergent transitions. A bad plot shows chains exploring different parts of the parameter space, this is a sign of non-convergence. If there are divergent transitions, looking at the parameter value related to these iterations might provide information about the part of the parameter space that is difficult to sample from. Slowly moving chains are indicative of high autocorrelation or small integrator step size, both of which relate to ineffective sampling and lower effective sample sizes for the parameter.
+
+
+```{r trace_plot, out.width = '45%', fig.show = 'hold'}
+
+for(i in 1:n_param) {
+  parameters <- c(selected_parameters[i])
+  print(
+    mcmc_trace( 
+      sso@posterior_sample[(1 + sso@n_warmup) : sso@n_iter, , ], 
+      pars = parameters)
+    )
+}
+
+```
+
+\newpage
+
+## Rank Plots
+
+These are rank plots of `r if(nopars == FALSE){selected_parameters}``r if(nopars){paste0("the ", n_param, " worst performing parameters in terms of n_eff")}`, for all chains. Rank histograms visualize how the values from the chains mix together in terms of ranking. An ideal plot would show the rankings mixing or overlapping in a uniform distribution. See [Vehtari et al. (2019)](https://arxiv.org/abs/1903.08008) for details.
+
+```{r rank_plot, fig.height = 3, fig.show = 'hold'}
+
+for(i in 1:n_param) {
+  parameters <- c(selected_parameters[i])
+  print(
+    mcmc_rank_hist( 
+      sso@posterior_sample[(1 + sso@n_warmup) : sso@n_iter, , ], 
+      pars = parameters
+    ) 
+  )
+}
+
+```
+

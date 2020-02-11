@@ -11,10 +11,12 @@
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-#' Generate a report with diagnostics for a shinystan object
+#' Generate a report for a shinystan object. 
 #' 
-#' The report displays diagnostics information about the worst parameters in 
-#' your model, based on effective sample size.
+#' The report displays either diagnostics information or estimation results.
+#' By default the report informs you about the worst parameters in 
+#' your model, based on effective sample size. You can choose specific 
+#' parameters using the \code{pars} argument.
 #' 
 #' @export
 #' @template args-sso
@@ -72,6 +74,16 @@
 #' sso <- as.shinystan(fit1$fit)
 #' generate_report(sso, n_param = 5)
 #' 
+#' ######################
+#' ### mcmc.list object #
+#' ######################
+#' 
+#' library(rjags)
+#' data(LINE)
+#' LINE$recompile()
+#' LINE.out <- coda.samples(LINE, c("alpha","beta","sigma"), n.iter=1000)
+#' sso <- shinystan::as.shinystan(LINE.out)
+#' generate_report(sso)
 #' 
 #' }
 #' 
@@ -79,7 +91,6 @@
 generate_report <- function (sso, n_param = 3, pars = NULL, output_format = "html_document", 
                              view = TRUE, report_type = "diagnose") {
   if(class(sso) != "shinystan") stop("Object is not of class 'shinystan'.")
-  if(sso@stan_used == FALSE) stop("Currently only available for stan related objects.")
   if(sso@stan_algorithm == "variational" | sso@stan_algorithm == "fullrank"){
      stop("Currently no reports available for variational inference.")
   } 
@@ -87,27 +98,50 @@ generate_report <- function (sso, n_param = 3, pars = NULL, output_format = "htm
   if(is.null(pars) == FALSE & all(pars %in% sso@param_names) == FALSE) stop("Invalid parameters in pars.")
   if(report_type %in% c("estimate", "diagnose", "both") == FALSE) stop("Invalid input for report_type.")
   
-  if(report_type == "diagnose"){
-    path <- rmarkdown::render(input = system.file("ShinyStanModules/reports/report_function.Rmd",
+  if(report_type == "diagnose" & sso@stan_used == TRUE){
+    path <- rmarkdown::render(input = system.file("ShinyStanModules/reports/generate_report_diagnostics.Rmd",
                                                   package = "shinystan"), 
                               output_format = output_format, 
                               output_file = "ShinyStan_diagnostics_report")  
   }
-  if(report_type == "estimate") {
-    path <- rmarkdown::render(input = system.file("ShinyStanModules/reports/report_function_estimates.Rmd",
+  if(report_type == "diagnose" & sso@stan_used == FALSE){
+    path <- rmarkdown::render(input = system.file("ShinyStanModules/reports/generate_report_diagnostics_mcmc.Rmd",
+                                                  package = "shinystan"), 
+                              output_format = output_format, 
+                              output_file = "ShinyStan_diagnostics_report")  
+  }
+  
+  if(report_type == "estimate" & sso@stan_used == TRUE) {
+    path <- rmarkdown::render(input = system.file("ShinyStanModules/reports/generate_report_estimates.Rmd",
                                                   package = "shinystan"), 
                               output_format = output_format, 
                               output_file = "ShinyStan_estimates_report")
   }
-  if(report_type == "both") {
-    path1 <- rmarkdown::render(input = system.file("ShinyStanModules/reports/report_function.Rmd",
-                                                  package = "shinystan"), 
-                              output_format = output_format, 
-                              output_file = "ShinyStan_diagnostics_report")  
-    path2 <- rmarkdown::render(input = system.file("ShinyStanModules/reports/report_function_estimates.Rmd",
+  if(report_type == "estimate" & sso@stan_used == FALSE) {
+    path <- rmarkdown::render(input = system.file("ShinyStanModules/reports/generate_report_estimates_mcmc.Rmd",
                                                   package = "shinystan"), 
                               output_format = output_format, 
                               output_file = "ShinyStan_estimates_report")
+  }
+  if(report_type == "both" & sso@stan_used == TRUE) {
+    path1 <- rmarkdown::render(input = system.file("ShinyStanModules/reports/generate_report_diagnostics.Rmd",
+                                                  package = "shinystan"), 
+                              output_format = output_format, 
+                              output_file = "ShinyStan_diagnostics_report")  
+    path2 <- rmarkdown::render(input = system.file("ShinyStanModules/reports/generate_report_estimates.Rmd",
+                                                  package = "shinystan"), 
+                              output_format = output_format, 
+                              output_file = "ShinyStan_estimates_report")
+  }
+  if(report_type == "both" & sso@stan_used == FALSE) {
+    path1 <- rmarkdown::render(input = system.file("ShinyStanModules/reports/generate_report_diagnostics_mcmc.Rmd",
+                                                   package = "shinystan"), 
+                               output_format = output_format, 
+                               output_file = "ShinyStan_diagnostics_report")  
+    path2 <- rmarkdown::render(input = system.file("ShinyStanModules/reports/generate_report_estimates_mcmc.Rmd",
+                                                   package = "shinystan"), 
+                               output_format = output_format, 
+                               output_file = "ShinyStan_estimates_report")
   }
   
   if(report_type == "diagnose" | report_type == "estimate"){

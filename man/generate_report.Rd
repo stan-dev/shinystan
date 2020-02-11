@@ -2,7 +2,7 @@
 % Please edit documentation in R/generate_report.R
 \name{generate_report}
 \alias{generate_report}
-\title{Generate a report with diagnostics for a shinystan object}
+\title{Generate a report for a shinystan object.}
 \usage{
 generate_report(
   sso,
@@ -36,8 +36,10 @@ precedence over the n_param argument.}
 A report is generated and the path where it is stored is printed.
 }
 \description{
-The report displays diagnostics information about the worst parameters in 
-your model, based on effective sample size.
+The report displays either diagnostics information or estimation results.
+By default the report informs you about the worst parameters in 
+your model, based on effective sample size. You can choose specific 
+parameters using the \code{pars} argument.
 }
 \examples{
 \dontrun{
@@ -79,6 +81,16 @@ bprior1 <- prior(student_t(5,0,10), class = b) +
 sso <- as.shinystan(fit1$fit)
 generate_report(sso, n_param = 5)
 
+######################
+### mcmc.list object #
+######################
+
+library(rjags)
+data(LINE)
+LINE$recompile()
+LINE.out <- coda.samples(LINE, c("alpha","beta","sigma"), n.iter=1000)
+sso <- shinystan::as.shinystan(LINE.out)
+generate_report(sso)
 
 }
 
