@@ -198,12 +198,12 @@ rhat_n_eff_se_mean <- function(input, output, session){
     
     bad_rhat <- rownames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)[shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "Rhat"] > rhat_threshold()]
     bad_rhat <- bad_rhat[!is.na(bad_rhat)]
-    rhatWarning <- paste0("The following parameters have an Rhat value above ",
+    rhatWarning <- paste0("The following variables have an Rhat value above ",
                           rhat_threshold(), ": ",
                           paste(bad_rhat, collapse = ", "))
     
     if(length(bad_rhat) < 1){
-      paste0("No parameters have an Rhat value above ", rhat_threshold(), ".")
+      paste0("No variables have an Rhat value above ", rhat_threshold(), ".")
     } else {
       rhatWarning
     }
@@ -214,12 +214,12 @@ rhat_n_eff_se_mean <- function(input, output, session){
     bad_n_eff <- rownames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)[shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "n_eff"] / ((shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter- shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) * shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain) <
                                                                             (n_eff_threshold() / 100)]
     bad_n_eff <- bad_n_eff[!is.na(bad_n_eff)]
-    n_effWarning <- paste0("The following parameters have an effective sample size less than ",
+    n_effWarning <- paste0("The following variables have an effective sample size for estimating the posterior mean less than ",
                            n_eff_threshold(), "% of the total sample size: ",
                            paste(bad_n_eff, collapse = ", "))
     
     if(length(bad_n_eff) < 1){
-      paste0("No parameters have an effective sample size less than ",
+      paste0("No variables have an effective sample size for estimating the posterior mean less than ",
              n_eff_threshold(), "% of the total sample size.")
     } else {
       n_effWarning
@@ -232,12 +232,12 @@ rhat_n_eff_se_mean <- function(input, output, session){
     bad_se_mean <- rownames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)[shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "se_mean"] / shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "sd"] >
                                                                               (semean_threshold() / 100)]
     bad_se_mean <- bad_se_mean[!is.na(bad_se_mean)]
-    se_meanWarning <- paste0("The following parameters have a Monte Carlo standard error greater than ",
+    se_meanWarning <- paste0("The following variables have a Monte Carlo standard error greater than ",
                              semean_threshold(), "% of the posterior standard deviation: ",
                              paste(bad_se_mean, collapse = ", "))
     
     if(length(bad_se_mean) < 1){
-      paste0("No parameters have a standard error greater than ",
+      paste0("No variables have a standard error greater than ",
                   semean_threshold(), "% of the posterior standard deviation.")
     } else {
       se_meanWarning
@@ -285,7 +285,7 @@ rhat_n_eff_se_mean <- function(input, output, session){
   
   
   captionOut_rhat <- function(){
-    HTML(paste0("This is a histogram of split R-hat values for all the parameters in the model.",
+    HTML(paste0("This is a histogram of split R-hat values for all the variables in the model.",
                 " Before Stan calculating the potential-scale-reduction statistic R-hat, each chain is split into two halves.",
                 " This provides an additional means to detect non-stationarity in the individual chains. ",
                 " R-hat values are used to assess convergence and traditionally R-hat values above 1.1 were considered signs of bad convergence.",
@@ -295,14 +295,14 @@ rhat_n_eff_se_mean <- function(input, output, session){
                 " Note that part of these recent developments are recommendations to only use the posterior sample if R-hat is below 1.01."))
   }
   captionOut_n_eff <- function(){
-    HTML(paste0("This is a histogram of the effective sample size devided by the total number of itterations for all parameters in the model.",
-                " If parameters have a very low ratio of effective sample size per itteration this can be indicative",
-                " of a difficult posterior from which to sample for those parameters.",
+    HTML(paste0("This is a histogram of the effective sample size devided by the total number of itterations for all variables in the model.",
+                " If variables have a very low ratio of effective sample size per itteration this can be indicative",
+                " of a difficult posterior from which to sample for those variables.",
                 " The efficiency of the sampling can sometimes be increased by means of reparametrization of the model."
                 ))
   }
   captionOut_se_mean <- function(){
-    HTML(paste0("This is a histogram of the ratio of the Monte Carlo standard error of the mean to the posterior standard deviation for the estimated parameters.",
+    HTML(paste0("This is a histogram of the ratio of the Monte Carlo standard error of the mean to the posterior standard deviation for the estimated variables.",
                 " The Monte Carlo standard error is related to the accuracy of simulation. The smaller the standard error the closer",
                 " the esimate for the parameter is expected to be to the true value.", 
                 " The standard deviation is related to the uncertainty we have about the parameter value itself.",

@@ -52,7 +52,7 @@ helpUI <- function(id) {
               p(
                 "The", code("drop_parameters"), "function in the", 
                 strong("shinystan"), "R package will allow you to reduce the size", 
-                "of a shinystan object by removing parameters.", 
+                "of a shinystan object by removing parameters or variables.", 
                 "See", code("help('drop_parameters', 'shinystan')"), 
                 "for the documentation."
               ),
@@ -64,19 +64,6 @@ helpUI <- function(id) {
                 "If ShinyStan takes a long time to launch for your",
                 "model then it can help to first create a",
                 "shinystan object using the", code("as.shinystan"), "function.",
-                "Alternatively, the first time you launch",
-                "ShinyStan using a stanfit object, a shinystan",
-                "object will be returned if you assign the value of",
-                code("launch_shinystan"),
-                "to a name, e.g."
-              ),
-              p(code("sso <- launch_shinystan(stanfit)")),
-              p("rather than just"),
-              p(code("launch_shinystan(stanfit)")),
-              p(
-                "The next time you launch ShinyStan for the same",
-                "model you can launch it using", code("sso"), "rather than",
-                code("stanfit"), "and it should be quicker to launch.",
                 "If it is still too slow then dropping some large parameters", 
                 "from the shinystan object is the best solution."
               )

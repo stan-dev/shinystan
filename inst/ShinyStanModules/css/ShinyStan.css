@@ -200,7 +200,7 @@ color: white;
 }
 
 .navbar .nav li a{ 
-  transition-delay: 0.1s;
+  transition-delay: .1s;
   font-weight: lighter;
   margin-bottom: 0;
   padding: 7px;
@@ -212,13 +212,14 @@ color: white;
 }
 */
 
+/*
 .navbar .nav li a:hover, a:active{ 
-  /*background: #191919;*/
+  background: #191919;
   color: white;
   border-radius: 3px 3px 3px 3px;
   box-shadow: 0 0 1px #ffffff inset;
 }
-
+*/
 
 /***********************/
 
@@ -240,13 +241,13 @@ a:link {
     color: #006DCC;
 }
 a:visited { /* visited link */
-    color: #590815;
+    color: #006DCC;
 }
 a:hover { /* mouse over link */
-    color: #590815; 
+    color: #006DCC; 
 }
 a:active { /* selected link */
-    color: #590815;
+    color: #006DCC;
 }
 
 .well {

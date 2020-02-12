@@ -111,7 +111,7 @@ warnings <- function (input, output, session) {
     bad_n_eff <- rownames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)[shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "n_eff"] / ((shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter- shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) * shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain) < .1]
     bad_n_eff <- bad_n_eff[!is.na(bad_n_eff)]
     n_effWarning <- paste(length(bad_n_eff), 
-                          "parameters have an effective sample size less than 10% of the total sample size.")
+                          "variables have an effective sample size less than 10% of the total sample size.")
     
     if(length(bad_n_eff) < 1){
       
@@ -129,7 +129,7 @@ warnings <- function (input, output, session) {
     bad_se_mean <- rownames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)[shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "se_mean"] / shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "sd"] > .1]
     bad_se_mean <- bad_se_mean[!is.na(bad_se_mean)]
     se_meanWarning <- paste(length(bad_se_mean), 
-                            "parameters have a Monte Carlo standard error greater than 10% of the posterior standard deviation.")
+                            "variables have a Monte Carlo standard error greater than 10% of the posterior standard deviation.")
     
     if(length(bad_se_mean) < 1){
       
@@ -146,7 +146,7 @@ warnings <- function (input, output, session) {
     bad_rhat <- rownames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)[shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "Rhat"] > 1.01]
     bad_rhat <- bad_rhat[!is.na(bad_rhat)]
     rhatWarning <- paste(length(bad_rhat), 
-                         "parameters have an Rhat value above 1.01.")
+                         "variables have an Rhat value above 1.01.")
     
     if(length(bad_rhat) < 1){
       

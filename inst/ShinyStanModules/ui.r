@@ -74,7 +74,7 @@ tagList(
     
     #### HOME ####
     tabPanel(
-      title = strong(style = "color: #B2011D;", "ShinyStan"),
+      title = strong("ShinyStan"), #strong(style = "color: #B2011D;", "ShinyStan"),
       value = "home",
       homepageUI("homepage")
     ),
