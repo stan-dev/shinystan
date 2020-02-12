@@ -32,6 +32,9 @@ rhat_n_eff_se_mean <- function(input, output, session){
   visualOptions_n_eff <- callModule(plotOptions, "options_n_eff")  
   visualOptions_se_mean <- callModule(plotOptions, "options_se_mean")  
   stat <- reactive({input$selectStat})
+  n_eff_threshold <- reactive({input$n_eff_threshold})
+  rhat_threshold <- reactive({input$rhat_threshold})
+  semean_threshold <- reactive({input$mcse_threshold})
   
   observe({
     toggle("caption_rhat", condition = input$showCaption_rhat)
@@ -193,14 +196,14 @@ rhat_n_eff_se_mean <- function(input, output, session){
   
   output$rhat <- renderText({
     
-    bad_rhat <- rownames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)[shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "Rhat"] > reactive(input$rhat_threshold)()]
+    bad_rhat <- rownames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)[shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "Rhat"] > rhat_threshold()]
     bad_rhat <- bad_rhat[!is.na(bad_rhat)]
     rhatWarning <- paste0("The following parameters have an Rhat value above ",
-                          reactive(input$rhat_threshold)(), ": ",
+                          rhat_threshold(), ": ",
                           paste(bad_rhat, collapse = ", "))
     
     if(length(bad_rhat) < 1){
-      paste0("No parameters have an Rhat value above ", reactive(input$rhat_threshold)(), ".")
+      paste0("No parameters have an Rhat value above ", rhat_threshold(), ".")
     } else {
       rhatWarning
     }
@@ -209,15 +212,15 @@ rhat_n_eff_se_mean <- function(input, output, session){
   output$n_eff <- renderText({
     
     bad_n_eff <- rownames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)[shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "n_eff"] / ((shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter- shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) * shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain) <
-                                                                            (reactive(input$n_eff_threshold)() / 100)]
+                                                                            (n_eff_threshold() / 100)]
     bad_n_eff <- bad_n_eff[!is.na(bad_n_eff)]
     n_effWarning <- paste0("The following parameters have an effective sample size less than ",
-                           reactive(input$n_eff_threshold)(), "% of the total sample size: ",
+                           n_eff_threshold(), "% of the total sample size: ",
                            paste(bad_n_eff, collapse = ", "))
     
     if(length(bad_n_eff) < 1){
       paste0("No parameters have an effective sample size less than ",
-             reactive(input$n_eff_threshold)(), "% of the total sample size.")
+             n_eff_threshold(), "% of the total sample size.")
     } else {
       n_effWarning
     }
@@ -227,15 +230,15 @@ rhat_n_eff_se_mean <- function(input, output, session){
   output$se_mean <- renderText({
     
     bad_se_mean <- rownames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)[shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "se_mean"] / shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "sd"] >
-                                                                              (reactive(input$mcse_threshold)() / 100)]
+                                                                              (semean_threshold() / 100)]
     bad_se_mean <- bad_se_mean[!is.na(bad_se_mean)]
     se_meanWarning <- paste0("The following parameters have a Monte Carlo standard error greater than ",
-                             reactive(input$mcse_threshold)(), "% of the posterior standard deviation: ",
+                             semean_threshold(), "% of the posterior standard deviation: ",
                              paste(bad_se_mean, collapse = ", "))
     
     if(length(bad_se_mean) < 1){
       paste0("No parameters have a standard error greater than ",
-                  reactive(input$mcse_threshold)(), "% of the posterior standard deviation.")
+                  semean_threshold(), "% of the posterior standard deviation.")
     } else {
       se_meanWarning
     }
@@ -249,9 +252,7 @@ rhat_n_eff_se_mean <- function(input, output, session){
         plotOutput(session$ns("rhatPlot")),
         textOutput(session$ns("rhat")),
         checkboxInput(session$ns("showCaption_rhat"), "Show Caption", value = TRUE),
-        hidden(
-          uiOutput(session$ns("caption_rhat"))
-        ),
+        uiOutput(session$ns("caption_rhat")),
         hr(), 
         checkboxInput(session$ns("report_rhat"), "Include in report?", value = include_report_rhat())
       )
@@ -262,9 +263,7 @@ rhat_n_eff_se_mean <- function(input, output, session){
           plotOutput(session$ns("n_effPlot")),
           textOutput(session$ns("n_eff")),
           checkboxInput(session$ns("showCaption_n_eff"), "Show Caption", value = TRUE),
-          hidden(
-            uiOutput(session$ns("caption_n_eff"))
-          ),
+          uiOutput(session$ns("caption_n_eff")),
           hr(), 
           checkboxInput(session$ns("report_n_eff"), "Include in report?", value = include_report_n_eff())
         )
@@ -275,9 +274,7 @@ rhat_n_eff_se_mean <- function(input, output, session){
             plotOutput(session$ns("se_meanPlot")),
             textOutput(session$ns("se_mean")),
             checkboxInput(session$ns("showCaption_se_mean"), "Show Caption", value = TRUE),
-            hidden(
-              uiOutput(session$ns("caption_se_mean"))
-            ),
+            uiOutput(session$ns("caption_se_mean")),
             hr(), 
             checkboxInput(session$ns("report_se_mean"), "Include in report?", value = include_report_se_mean())
           )
@@ -288,10 +285,10 @@ rhat_n_eff_se_mean <- function(input, output, session){
   
   
   captionOut_rhat <- function(){
-    HTML(paste0("This is a histogram of split R-hat values for all the paramters in the model.",
+    HTML(paste0("This is a histogram of split R-hat values for all the parameters in the model.",
                 " Before Stan calculating the potential-scale-reduction statistic R-hat, each chain is split into two halves.",
                 " This provides an additional means to detect non-stationarity in the individual chains. ",
-                " R-hat vales are used to assess convergence and traditionally R-hat values above 1.1 were considered signs of bad convergence.",
+                " R-hat values are used to assess convergence and traditionally R-hat values above 1.1 were considered signs of bad convergence.",
                 " For more information see ",
                 tags$a('https://mc-stan.org/docs/reference-manual/notation-for-samples-chains-and-draws.html'),
                 " or see <a href = 'https://arxiv.org/abs/1903.08008'>Vehtari et al. (2019)</a> for recent developments related to the R-hat statistic. ", 

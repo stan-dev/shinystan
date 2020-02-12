@@ -97,7 +97,7 @@ divergentTransitions <- function(input, output, session){
                 tolower(if (chain() == 0) {"All chains"} else {paste("Chain", chain())}), ".",
                 " Divergent transitions can indicate problems for the validity of the results.",
                 " A good plot would show no divergent transitions.",
-                " If the divergent transitions show the same patern as the non divergent transitions,",
+                " If the divergent transitions show the same pattern as the non divergent transitions,",
                 " this could indicate that the divergent transitions are false positives.",
                 " A bad plot would shows systematic differences between the divergent transitions and",
                 " non-divergent transitions.",

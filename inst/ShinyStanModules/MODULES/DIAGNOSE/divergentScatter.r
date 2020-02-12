@@ -165,7 +165,7 @@ divergentScatter <- function(input, output, session){
                 " colored draws represent, if present, divergent transitions.",
                 " Divergent transitions can indicate problems for the validity of the results.",
                 " A good plot would show no divergent transitions. A bad plot would show ",
-                "divergent transitions in a systematic patern. ",
+                "divergent transitions in a systematic pattern. ",
                 "For more information see ",
                 tags$a('https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup'), "."))
   }
