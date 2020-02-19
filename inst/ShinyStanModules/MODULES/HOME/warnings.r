@@ -111,7 +111,7 @@ warnings <- function (input, output, session) {
     bad_n_eff <- rownames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)[shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "n_eff"] / ((shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter- shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) * shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain) < .1]
     bad_n_eff <- bad_n_eff[!is.na(bad_n_eff)]
     n_effWarning <- paste(length(bad_n_eff), 
-                          "variables have an effective sample size less than 10% of the total sample size.")
+                          "variables have an effective sample size, for estimating the posterior mean, less than 10% of the total sample size.")
     
     if(length(bad_n_eff) < 1){
       

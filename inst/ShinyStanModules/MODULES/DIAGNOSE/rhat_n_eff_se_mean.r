@@ -214,7 +214,7 @@ rhat_n_eff_se_mean <- function(input, output, session){
     bad_n_eff <- rownames(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)[shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "n_eff"] / ((shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_iter- shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_warmup) * shinystan:::.sso_env$.SHINYSTAN_OBJECT@n_chain) <
                                                                             (n_eff_threshold() / 100)]
     bad_n_eff <- bad_n_eff[!is.na(bad_n_eff)]
-    n_effWarning <- paste0("The following variables have an effective sample size for estimating the posterior mean less than ",
+    n_effWarning <- paste0("The following variables have an effective sample size, for estimating the posterior mean, less than ",
                            n_eff_threshold(), "% of the total sample size: ",
                            paste(bad_n_eff, collapse = ", "))
     
