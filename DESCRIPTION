@@ -31,7 +31,7 @@ Depends:
     R (>= 3.5.0),
     shiny (>= 1.0.3)
 Imports:
-    bayesplot (>= 1.6.0.9000),
+    bayesplot (>= 1.7.1),
     colourpicker,
     DT (>= 0.2),
     dygraphs (>= 1.1.1.2),
@@ -42,7 +42,7 @@ Imports:
     methods,
     reshape2,
     rsconnect (>= 0.4.2),
-    rstan (>= 2.17.1),
+    rstan (>= 2.19.2),
     stats,
     shinyjs (>= 0.6.0),
     shinythemes (>= 1.0.1),

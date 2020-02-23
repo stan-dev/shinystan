@@ -129,9 +129,7 @@ parallelCoordinates <- function(input, output, session){
       tagList(
         plotOutput(session$ns("plot1")),
         checkboxInput(session$ns("showCaption"), "Show Caption", value = TRUE),
-        hidden(
-          uiOutput(session$ns("caption"))
-        ),
+        uiOutput(session$ns("caption")),
         hr(), 
         checkboxInput(session$ns("report"), "Include in report?", value = include())
       )
