@@ -41,6 +41,7 @@ Imports:
     markdown (>= 0.7.4),
     methods,
     reshape2,
+    rlang (>= 0.3.0),
     rsconnect (>= 0.4.2),
     rstan (>= 2.19.2),
     stats,

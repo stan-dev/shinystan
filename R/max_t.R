@@ -1,6 +1,11 @@
 # Copyright (C) 2012, 2013, 2014, 2015, 2016, 2017, 2018 Trustees of Columbia University
 # Copyright (C) 2018, 2019 Aki Vehtari, Paul Bürkner
-# See LICENSE.md for more details
+# 
+# Compute Geyer's initial positive sequence length for shinystan objects.
+# From posterior package:
+# https://github.com/jgabry/posterior/blob/4ac3054d029f5ddb6fadf1ef972344d195f530de/R/convergence.R
+# Small adjustments made to get .max_t and .max_t_sso functions by Duco Veen.
+
 
 # internal ----------------------------------------------------------------
 #' To test is things are constant

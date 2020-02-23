@@ -126,21 +126,23 @@ rhat_n_eff_se_mean <- function(input, output, session){
   }
   
   plotOut_se_mean <- function(){
-    se_sd_table <- tibble(diagnostic = rep("se_sd_ratio", length(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names)),
-                          parameter = as.factor(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names),
-                          value = shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "se_mean"] / shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "sd"],
-                          rating = cut(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "se_mean"] / shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "sd"], breaks = c(Inf, 0.5, 0.1, 0),
-                                       labels = c("low", "ok", "high")),
-                          description = as.character(cut(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "se_mean"] / shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "sd"], breaks = c(Inf, 0.5, 0.1, 0),
-                                                         labels = c(expression(MC[se] / sd <= 0.1),
-                                                                    expression(MC[se] / sd <= 0.5),
-                                                                    expression(MC[se] / sd > 0.5)))))
-    ggplot(data = se_sd_table, mapping = aes_(x = ~value, color = ~rating, fill = ~rating)) +
-      geom_histogram(size = 0.25, na.rm = TRUE) +
-      labs(x = expression(MC[se] / sd),y = NULL) +
-      bayesplot:::dont_expand_y_axis(c(0.005, 0)) + bayesplot_theme_get() +
-      yaxis_title(FALSE) + yaxis_text(FALSE) + yaxis_ticks(FALSE) +
-      theme(legend.position = "none")
+    # se_sd_table <- tibble(diagnostic = rep("se_sd_ratio", length(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names)),
+    #                       parameter = as.factor(shinystan:::.sso_env$.SHINYSTAN_OBJECT@param_names),
+    #                       value = shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "se_mean"] / shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "sd"],
+    #                       rating = cut(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "se_mean"] / shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "sd"], breaks = c(Inf, 0.5, 0.1, 0),
+    #                                    labels = c("low", "ok", "high")),
+    #                       description = as.character(cut(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "se_mean"] / shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "sd"], breaks = c(Inf, 0.5, 0.1, 0),
+    #                                                      labels = c(expression(MC[se] / sd <= 0.1),
+    #                                                                 expression(MC[se] / sd <= 0.5),
+    #                                                                 expression(MC[se] / sd > 0.5)))))
+    # ggplot(data = se_sd_table, mapping = aes_(x = ~value, color = ~rating, fill = ~rating)) +
+    #   geom_histogram(size = 0.25, na.rm = TRUE) +
+    #   labs(x = expression(MC[se] / sd),y = NULL) +
+    #   bayesplot:::dont_expand_y_axis(c(0.005, 0)) + bayesplot_theme_get() +
+    #   yaxis_title(FALSE) + yaxis_text(FALSE) + yaxis_ticks(FALSE) +
+    #   theme(legend.position = "none")
+    shinystan:::mcmc_mcse_hist(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "se_mean"] / shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[, "sd"])
+    
   }
   
   
