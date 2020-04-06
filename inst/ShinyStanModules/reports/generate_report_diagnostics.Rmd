@@ -26,21 +26,6 @@ printf <- function(msg = "%5.3f", ...) {
   cat(sprintf(msg, ...))
 }
 
-nopars <- missing(pars) | is.null(pars)
-
-if(nopars){
-  selected_parameters <- order(sso@summary[, "n_eff"]) %>%
-    sso@param_names[.] 
-  
-  selected_parameters <- selected_parameters[-which(selected_parameters == "log-posterior")]
-  
-  if(n_param == "all") n_param <- length(selected_parameters)
-  if(n_param > length(selected_parameters)) n_param <- length(selected_parameters)
-} else {
-  selected_parameters <- pars
-  n_param <- length(pars)
-}
-
 
 ```
 
@@ -230,7 +215,7 @@ for(i in 1:n_param) {
 
 \newpage
 
-## Trance Plots
+## Trace Plots
 
 These are trace plots of `r if(nopars == FALSE){selected_parameters}``r if(nopars){paste0("the ", n_param, " worst performing parameters in terms of n_eff")}`, for all chains. Trace plots provide a visual way to inspect sampling behavior and assess mixing across chains. The iteration number (x-axis) is plotted against the parameter value at that iteration (y-axis). Divergent transitions are marked on the x-axis. A good plot shows chains that move swiftly through the parameter space and all chains that explore the same parameter space without any divergent transitions. A bad plot shows chains exploring different parts of the parameter space, this is a sign of non-convergence. If there are divergent transitions, looking at the parameter value related to these iterations might provide information about the part of the parameter space that is difficult to sample from. Slowly moving chains are indicative of high autocorrelation or small integrator step size, both of which relate to ineffective sampling and lower effective sample sizes for the parameter.
 

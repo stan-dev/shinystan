@@ -82,18 +82,6 @@ printf <- function(msg = "%5.3f", ...) {
 }
 
 
-nopars <- missing(pars) | is.null(pars)
-
-if(nopars){
-  selected_parameters <- order(sso@summary[, "n_eff"]) %>%
-    sso@param_names[.] 
-  
-  if(n_param == "all") n_param <- length(selected_parameters)
-  if(n_param > length(selected_parameters)) n_param <- length(selected_parameters)
-} else {
-  selected_parameters <- pars
-  n_param <- length(pars)
-}
 
 
 ```

@@ -166,7 +166,7 @@ launch_shinystan_demo <- function(demo_name = "eight_schools",
 # internal ----------------------------------------------------------------
 launch <- function(sso, rstudio = FALSE, quiet = TRUE, old_version = FALSE,...) {
   launch.browser <- if (!rstudio) 
-    TRUE else getOption("shiny.launch.browser", interactive())
+    getOption("shiny.launch.browser", TRUE) else getOption("shiny.launch.browser", interactive())
   
   if(!is.logical(old_version)) stop("Argument 'old_version' needs to be logical.")
   

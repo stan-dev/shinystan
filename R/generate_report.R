@@ -98,6 +98,24 @@ generate_report <- function (sso, n_param = 3, pars = NULL, output_format = "htm
   if(is.null(pars) == FALSE & all(pars %in% sso@param_names) == FALSE) stop("Invalid parameters in pars.")
   if(report_type %in% c("estimate", "diagnose", "both") == FALSE) stop("Invalid input for report_type.")
   
+  
+  nopars <- missing(pars) | is.null(pars)
+  
+  if(nopars){
+    selected_parameters <- order(sso@summary[, "n_eff"]) %>%
+      sso@param_names[.] 
+    
+    selected_parameters <- selected_parameters[-which(selected_parameters == "log-posterior")]
+    
+    if(n_param == "all") n_param <- length(selected_parameters)
+    if(n_param > length(selected_parameters)) n_param <- length(selected_parameters)
+  } else {
+    selected_parameters <- pars
+    n_param <- length(pars)
+  }
+  
+  sso <- drop_parameters(sso, pars = selected_parameters[-c(1:n_param)])
+  
   if(report_type == "diagnose" & sso@stan_used == TRUE){
     path <- rmarkdown::render(input = system.file("ShinyStanModules/reports/generate_report_diagnostics.Rmd",
                                                   package = "shinystan"), 
