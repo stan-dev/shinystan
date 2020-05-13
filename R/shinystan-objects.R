@@ -158,7 +158,7 @@ is.shinystan <- function(X) inherits(X, "shinystan")
 #' @param note Optionally, text to display on the \strong{Notepad} page in the 
 #'   'ShinyStan' GUI (stored in \code{user_model_info} slot of the
 #'   \code{shinystan} object).
-#' @param sampler_params,stan_used,stan_method,stan_algorithm,max_treedepth 
+#' @param sampler_params,stan_used,stan_method,stan_algorithm,max_treedepth,summary 
 #'   Rarely used and never necessary. 
 #'   If using the \code{as.shinystan} method for arrays or lists, 
 #'   these arguments can be used to manually provide information that is 
@@ -174,7 +174,9 @@ is.shinystan <- function(X) inherits(X, "shinystan")
 #'   be either \code{"NUTS"} or \code{"HMC"} (static HMC). 
 #'   If \code{stan_algorithm} is \code{"NUTS"} then \code{max_treedepth} 
 #'   (an integer indicating the maximum allowed treedepth when the 
-#'   model was fit) must also be provided.
+#'   model was fit) must also be provided. \code{summary} is the monitor
+#'   output from \link{rstan::monitor} which if provided skips internal
+#'   calculations of this object.
 #'   
 #' @examples  
 #' \dontrun{
@@ -191,7 +193,8 @@ setMethod(
                         param_dims = list(),
                         model_code = NULL,
                         note = NULL,
-                        sampler_params = NULL, 
+                        sampler_params = NULL,
+                        summary = NULL,
                         stan_used = FALSE,
                         stan_method = "",
                         stan_algorithm = "",
@@ -219,6 +222,14 @@ setMethod(
     )
     
     n_warmup <- .deprecate_burnin(burnin, warmup)
+    if(is.null(summary)){
+      summary <- shinystan_monitor(X, warmup = n_warmup)
+    } else {
+      if(class(summary)[1]!='simsummary'){
+        stop("summary not a valid object from rstan::monitor; fix or specify as NULL")
+      }
+      summary <- as.matrix(summary)[,1:10]
+    }
     sso <- shinystan(
       model_name = model_name,
       param_names = param_names,
