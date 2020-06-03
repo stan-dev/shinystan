@@ -175,8 +175,8 @@ is.shinystan <- function(X) inherits(X, "shinystan")
 #'   If \code{stan_algorithm} is \code{"NUTS"} then \code{max_treedepth} 
 #'   (an integer indicating the maximum allowed treedepth when the 
 #'   model was fit) must also be provided. \code{summary} is the monitor
-#'   output from \link{rstan::monitor} which if provided skips internal
-#'   calculations of this object.
+#'   output from the \code{monitor} function from \pkg{rstan} which if provided 
+#'   skips internal calculations of this object.
 #'   
 #' @examples  
 #' \dontrun{

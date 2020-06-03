@@ -102,8 +102,7 @@ generate_report <- function (sso, n_param = 3, pars = NULL, output_format = "htm
   nopars <- missing(pars) | is.null(pars)
   
   if(nopars){
-    selected_parameters <- order(sso@summary[, "n_eff"]) %>%
-      sso@param_names[.] 
+    selected_parameters <- sso@param_names[order(sso@summary[, "n_eff"])] 
     
     selected_parameters <- selected_parameters[-which(selected_parameters == "log-posterior")]
     

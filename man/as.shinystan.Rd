@@ -26,6 +26,7 @@ is.shinystan(X)
   model_code = NULL,
   note = NULL,
   sampler_params = NULL,
+  summary = NULL,
   stan_used = FALSE,
   stan_method = "",
   stan_algorithm = "",
@@ -106,7 +107,7 @@ object.}
 'ShinyStan' GUI (stored in \code{user_model_info} slot of the
 \code{shinystan} object).}
 
-\item{sampler_params, stan_used, stan_method, stan_algorithm, max_treedepth}{Rarely used and never necessary. 
+\item{sampler_params, stan_used, stan_method, stan_algorithm, max_treedepth, summary}{Rarely used and never necessary. 
 If using the \code{as.shinystan} method for arrays or lists, 
 these arguments can be used to manually provide information that is 
 automatically retrieved from a stanfit object when using the 
@@ -121,7 +122,9 @@ which stan method is used, options are \code{"sampling"} or
 be either \code{"NUTS"} or \code{"HMC"} (static HMC). 
 If \code{stan_algorithm} is \code{"NUTS"} then \code{max_treedepth} 
 (an integer indicating the maximum allowed treedepth when the 
-model was fit) must also be provided.}
+model was fit) must also be provided. \code{summary} is the monitor
+output from the \code{monitor} function from \pkg{rstan} which if provided 
+skips internal calculations of this object.}
 
 \item{pars}{For stanfit objects (\pkg{rstan}), an optional character vector 
 specifying which parameters should be included in the \code{shinystan}
