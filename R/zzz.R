@@ -14,8 +14,9 @@
 
 .onAttach <- function(...) {
   ver <- utils::packageVersion("shinystan")
-  msg <- paste0("\nThis is shinystan version ", ver,"\n")
-  packageStartupMessage(msg)
+  packageStartupMessage("- This is shinystan version ", ver)
+  packageStartupMessage("- To use version 2 instead of version 3", 
+                        " set old_version=TRUE in launch_shinystan()")
 }
 
 .onLoad <- function(libname, pkgname) {
