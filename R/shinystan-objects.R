@@ -24,6 +24,8 @@
 #' @slot param_dims (\code{"list"}) Parameter dimensions.
 #' @slot posterior_sample (\code{"array"}) MCMC sample.
 #' @slot summary (\code{"matrix"}) Summary stats for \code{posterior_sample}.
+#' @slot monitor_summary (\code{"data.frame"}) Summary stats obtained using
+#'   \code{monitor} function from \pkg{rstan}.
 #' @slot sampler_params (\code{"list"}) Sampler parameters (for certain Stan
 #'   models only).
 #' @slot n_chain (\code{"integer"}) Number of chains.
@@ -57,6 +59,7 @@ shinystan <- setClass(
     param_dims       = "list",
     posterior_sample = "array",
     summary          = "matrix",
+    monitor_summary  = "data.frame", 
     sampler_params   = "list",
     n_chain          = "numeric",
     n_iter           = "numeric",
@@ -75,6 +78,7 @@ shinystan <- setClass(
     param_dims = list(),
     posterior_sample = array(NA, c(1, 1)),
     summary = matrix(NA, nr = 1, nc =1),
+    monitor_summary = data.frame(NA),
     sampler_params = list(NA),
     n_chain = 0,
     n_iter = 0,
@@ -230,6 +234,7 @@ setMethod(
       }
       summary <- as.matrix(summary)[,1:10]
     }
+    
     sso <- shinystan(
       model_name = model_name,
       param_names = param_names,
@@ -240,6 +245,7 @@ setMethod(
       stan_method = stan_method,
       stan_algorithm = stan_algorithm,
       summary = shinystan_monitor(X, warmup = n_warmup),
+      monitor_summary = data.frame(rstan::monitor(X, print = FALSE)),
       n_chain = ncol(X),
       n_iter = nrow(X),
       n_warmup = n_warmup
@@ -523,6 +529,7 @@ setMethod(
       param_dims = .set_param_dims(param_dims, param_names),
       posterior_sample = posterior,
       summary = shinystan_monitor(posterior, warmup = burnin),
+      monitor_summary = data.frame(rstan::monitor(posterior, print = FALSE)),
       n_chain = ncol(posterior),
       n_iter = nrow(posterior),
       n_warmup = burnin,
@@ -613,6 +620,7 @@ setMethod(
       param_dims = param_dims,
       posterior_sample = posterior,
       summary = .rstan_summary(X, pars = pars),
+      monitor_summary = data.frame(rstan::monitor(posterior, print = FALSE)),
       sampler_params = .rstan_sampler_params(X),
       n_chain = ncol(X),
       n_iter = nrow(posterior),

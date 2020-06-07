@@ -23,6 +23,9 @@ See \code{\link{as.shinystan}} for documentation on creating
 
 \item{\code{summary}}{(\code{"matrix"}) Summary stats for \code{posterior_sample}.}
 
+\item{\code{monitor_summary}}{(\code{"data.frame"}) Summary stats obtained using
+\code{monitor} function from \pkg{rstan}.}
+
 \item{\code{sampler_params}}{(\code{"list"}) Sampler parameters (for certain Stan
 models only).}
 
