@@ -29,7 +29,7 @@ summaryTableUI <- function(id){
       ),
       fluidRow(
         column(width = 6, align = "left",
-               checkboxGroupInput(
+               selectizeInput(
                  ns("tex_columns"),
                  label = h5("Columns"),
                  choices = if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@stan_method == "variational"){
@@ -45,11 +45,11 @@ summaryTableUI <- function(id){
                    c("Posterior mean" = "mean",
                      "Monte Carlo error (MCSE) for mean" = "se_mean",
                      "Posterior standard deviation (sd)" = "sd",
-                     "Quantile: 2.5%" = "2.5%",
-                     "Quantile: 25%" = "25%",
-                     "Quantile: 50%" = "50%",
-                     "Quantile: 75%" = "75%",
-                     "Quantile: 97.5%" = "97.5%",
+                     "Quantile: 2.5%" = "X2.5.",
+                     "Quantile: 25%" = "X25.",
+                     "Quantile: 50%" = "X50.",
+                     "Quantile: 75%" = "X75.",
+                     "Quantile: 97.5%" = "X97.5.",
                      "Effective sample size (ESS)" = "n_eff",
                      "Bulk ESS" = "Bulk_ESS",
                      "Tail ESS" = "Tail_ESS",
@@ -63,7 +63,7 @@ summaryTableUI <- function(id){
                      )
                  },
                  selected = c("mean", "sd", "2.5%", "50%", "97.5%"),
-                 inline = TRUE
+                 multiple = TRUE
                )     
         ), 
         column(width = 4),
@@ -84,13 +84,20 @@ summaryTable <- function(input, output, session){
   
   summaryStats <- reactive({
     
-    select.columns <- c(which(colnames(as.matrix(rstan::monitor(print = F, shinystan:::.sso_env$.SHINYSTAN_OBJECT@posterior_sample))) %in% input$tex_columns))
+    if(shinystan:::.sso_env$.SHINYSTAN_OBJECT@stan_method == "variational"){
+      select.columns <- c(which(colnames(as.matrix(shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary)) %in% input$tex_columns))
+      out <- shinystan:::.sso_env$.SHINYSTAN_OBJECT@summary[param(), select.columns, drop = FALSE]
+      rownames(out) <- param()
+      out <- round(out, digits())
+      out
+    } else {
+      select.columns <- c(which(colnames(as.matrix(shinystan:::.sso_env$.SHINYSTAN_OBJECT@monitor_summary)) %in% input$tex_columns))
+      out <- shinystan:::.sso_env$.SHINYSTAN_OBJECT@monitor_summary[param(), select.columns, drop = FALSE]
+      rownames(out) <- param()
+      out <- round(out, digits())
+      out
+    }
     
-    out <- as.matrix(rstan::monitor(print = F, (shinystan:::.sso_env$.SHINYSTAN_OBJECT@posterior_sample)))
-    out <- out[param(), select.columns]
-    rownames(out) <- param()
-    out <- round(out, digits())
-    out
     
   })
   
