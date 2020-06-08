@@ -271,6 +271,7 @@ setMethod(
     if (!is.null(model_code))
       sso <- suppressMessages(model_code(sso, code = model_code))
     sso <- .rename_scalar(sso, oldname = "lp__", newname = "log-posterior")
+    sso <- .remane_monitor_summary_columns(sso)
     
     return(sso)
   }
@@ -638,6 +639,7 @@ setMethod(
     )
     
     sso <- .rename_scalar(sso, oldname = "lp__", newname = "log-posterior")
+    sso <- .remane_monitor_summary_columns(sso)
     if (!is.null(note))
       sso <- suppressMessages(notes(sso, note, replace = TRUE))
 
@@ -657,6 +659,17 @@ setMethod(
     dimnames(sso@posterior_sample)$parameters[p] <-
     names(sso@param_dims)[which(names(sso@param_dims) == oldname)] <- 
     rownames(sso@summary)[p] <- newname
+    rownames(sso@monitor_summary)[p] <- newname
+  return(sso)
+}
+
+# rename monitor_summary column names
+.remane_monitor_summary_columns <- function(sso,
+                                            oldnames = c("X2.5.", "X25.", "X50.", "X75.", "X97.5."),
+                                            newnames = c("2.5%", "25%", "50%", "75%", "97.5%")) {
+  for(i in 1:length(oldnames)){
+    names(sso@monitor_summary)[which(names(sso@monitor_summary) == oldnames[i])] <- newnames[i]
+  }
   return(sso)
 }
 

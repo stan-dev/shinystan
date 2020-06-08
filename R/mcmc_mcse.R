@@ -58,7 +58,10 @@ diagnostic_factor.mcse_ratio <- function(x, breaks = c(0.05, 0.1)) {
 }
 
 diagnostic_data_frame <- function(x) {
-  x <- auto_name(sort(x))
+  # x <- auto_name(sort(x))
+    # quick fix getting right diagnostic factor because of class drop
+    # at auto_name(sort(x))
+  x <- structure(auto_name(sort(x)), class = c("mcse_ratio", "numeric"))
   stopifnot(!anyDuplicated(names(x)))
   diagnostic <- class(x)[1]
   
