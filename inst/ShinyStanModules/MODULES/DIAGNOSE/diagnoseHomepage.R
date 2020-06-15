@@ -49,7 +49,7 @@ diagnose <- function(input, output, session){
     })
     
     
-    callModule(report, "report", ggplotsList = getDiagnosePlots, reportType = "diagnoseReport")
+    callModule(report, "report", ggplotsList = getDiagnosePlots, reportType = "diagnose")
   }
   
   if((shinystan:::.sso_env$.SHINYSTAN_OBJECT@stan_method == "sampling" & shinystan:::.sso_env$.SHINYSTAN_OBJECT@stan_algorithm != "NUTS") |
@@ -162,8 +162,7 @@ diagnose <- function(input, output, session){
         ),
         tabPanel(
           title = "Report",
-          reportUI(session$ns("report")
-          )
+          reportUI(session$ns("report"))
         )
       )
     )

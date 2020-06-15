@@ -26,6 +26,8 @@ source("MODULES/DIAGNOSE/autoCorrelation.r", local = TRUE)
 source("MODULES/DIAGNOSE/statsTableHMC.r", local = TRUE)
 source("MODULES/DIAGNOSE/rhat_n_eff_se_mean_stats.r", local = TRUE)
 
+# source("MODULES/DIAGNOSE/diagnosticReport.r", local = TRUE)
+
 # estimate tab
 source("MODULES/ESTIMATE/estimateHomepage.R", local = TRUE)
 

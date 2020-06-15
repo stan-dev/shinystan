@@ -16,6 +16,26 @@ fontsize: 11pt
 
 
 ```{r global_options, include=FALSE}
+# Within the function generate_report the shinystan object (sso) is prepared for this markdown file.
+# The following can be used to prepare the sso for use with this markdown file.
+# nopars is a logical value that describes if the pars argument has been used.
+#
+# if(nopars){
+#   selected_parameters <- sso@param_names[order(sso@summary[, "n_eff"])] 
+#   selected_parameters <- selected_parameters[-which(selected_parameters == "log-posterior")]
+#   
+#   if(n_param == "all") n_param <- length(selected_parameters)
+#   if(n_param > length(selected_parameters)) n_param <- length(selected_parameters)
+#   sso <- drop_parameters(sso, pars = selected_parameters[-c(1:n_param)])
+# } else {
+#   selected_parameters <- sso@param_names[order(sso@summary[, "n_eff"])] 
+#   selected_parameters <- selected_parameters[-which(selected_parameters == "log-posterior")]
+#   selected_parameters <- c(pars, selected_parameters[-which(selected_parameters %in% pars)])
+#   n_param <- length(pars)
+#   sso <- drop_parameters(sso, pars = selected_parameters[-which(selected_parameters %in% pars)])
+# }
+# 
+
 library(dplyr)
 library(bayesplot)
 
@@ -68,7 +88,6 @@ if(divergences) {
 ```{r diagnostics_table}
 round(sso@summary, 2)[c("log-posterior", selected_parameters[1:n_param]), c("n_eff", "Rhat",
                                                                    "mean", "se_mean", "sd")]
-
 ```
 
 \newpage

@@ -92,7 +92,7 @@ generate_report <- function (sso, n_param = 3, pars = NULL, output_format = "htm
                              view = TRUE, report_type = "diagnose") {
   if(class(sso) != "shinystan") stop("Object is not of class 'shinystan'.")
   if(sso@stan_algorithm == "variational" | sso@stan_algorithm == "fullrank"){
-     stop("Currently no reports available for variational inference.")
+    stop("Currently no reports available for variational inference.")
   } 
   if(is.null(pars) == FALSE & class(pars) != "character") stop("pars should be a character vector.")
   if(is.null(pars) == FALSE & all(pars %in% sso@param_names) == FALSE) stop("Invalid parameters in pars.")
@@ -103,17 +103,20 @@ generate_report <- function (sso, n_param = 3, pars = NULL, output_format = "htm
   
   if(nopars){
     selected_parameters <- sso@param_names[order(sso@summary[, "n_eff"])] 
-    
     selected_parameters <- selected_parameters[-which(selected_parameters == "log-posterior")]
     
     if(n_param == "all") n_param <- length(selected_parameters)
     if(n_param > length(selected_parameters)) n_param <- length(selected_parameters)
+    sso <- drop_parameters(sso, pars = selected_parameters[-c(1:n_param)])
   } else {
-    selected_parameters <- pars
+    selected_parameters <- sso@param_names[order(sso@summary[, "n_eff"])] 
+    selected_parameters <- selected_parameters[-which(selected_parameters == "log-posterior")]
+    selected_parameters <- c(pars, selected_parameters[-which(selected_parameters %in% pars)])
     n_param <- length(pars)
+    sso <- drop_parameters(sso, pars = selected_parameters[-which(selected_parameters %in% pars)])
   }
   
-  sso <- drop_parameters(sso, pars = selected_parameters[-c(1:n_param)])
+  
   
   if(report_type == "diagnose" & sso@stan_used == TRUE){
     path <- rmarkdown::render(input = system.file("ShinyStanModules/reports/generate_report_diagnostics.Rmd",
@@ -142,13 +145,13 @@ generate_report <- function (sso, n_param = 3, pars = NULL, output_format = "htm
   }
   if(report_type == "both" & sso@stan_used == TRUE) {
     path1 <- rmarkdown::render(input = system.file("ShinyStanModules/reports/generate_report_diagnostics.Rmd",
-                                                  package = "shinystan"), 
-                              output_format = output_format, 
-                              output_file = "ShinyStan_diagnostics_report")  
+                                                   package = "shinystan"), 
+                               output_format = output_format, 
+                               output_file = "ShinyStan_diagnostics_report")  
     path2 <- rmarkdown::render(input = system.file("ShinyStanModules/reports/generate_report_estimates.Rmd",
-                                                  package = "shinystan"), 
-                              output_format = output_format, 
-                              output_file = "ShinyStan_estimates_report")
+                                                   package = "shinystan"), 
+                               output_format = output_format, 
+                               output_file = "ShinyStan_estimates_report")
   }
   if(report_type == "both" & sso@stan_used == FALSE) {
     path1 <- rmarkdown::render(input = system.file("ShinyStanModules/reports/generate_report_diagnostics_mcmc.Rmd",
@@ -165,7 +168,7 @@ generate_report <- function (sso, n_param = 3, pars = NULL, output_format = "htm
     message("File saved to ", path)
     if (view) {
       system2("open", shQuote(path))
-  }
+    }
   }
   
   if(report_type == "both"){
