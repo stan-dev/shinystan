@@ -131,7 +131,9 @@ pairs <- function(input, output, session){
         checkboxInput(session$ns("showCaption"), "Show Caption", value = TRUE),
         uiOutput(session$ns("caption")),
         hr(), 
-        checkboxInput(session$ns("report"), "Include in report?", value = include())
+        # checkboxInput(session$ns("report"), "Include in report?", value = include())
+        downloadButton(session$ns('downloadPlot'), 'Download Plot', class = "downloadReport"),
+        downloadButton(session$ns('downloadRDS'), 'Download RDS', class = "downloadReport")
       )
     })
   })
@@ -153,6 +155,33 @@ pairs <- function(input, output, session){
     captionOut(parameters = param(), div_color = visualOptions()$divColor)
   })
   
+  output$downloadPlot <- downloadHandler(
+    filename = 'pairsPlot.pdf',
+    content = function(file) {
+      # ggsave(file, gridExtra::arrangeGrob(grobs = downloadSelection()))
+      pdf(file)
+      save_old_theme <- bayesplot_theme_get()
+      color_scheme_set(visualOptions_reactive()$color)
+      bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_reactive()$theme)))) 
+      out <- plotOut(parameters = param_reactive(), chain = chain_reactive(), 
+                     div_color = visualOptions_reactive()$divColor)
+      bayesplot_theme_set(save_old_theme)
+      print(out)
+      dev.off()
+    })
+  
+  
+  output$downloadRDS <- downloadHandler(
+    filename = 'pairsPlot.rds',
+    content = function(file) {
+      save_old_theme <- bayesplot_theme_get()
+      color_scheme_set(visualOptions_reactive()$color)
+      bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_reactive()$theme)))) 
+      out <- plotOut(parameters = param_reactive(), chain = chain_reactive(), 
+                     div_color = visualOptions_reactive()$divColor)
+      bayesplot_theme_set(save_old_theme)
+      saveRDS(out, file)
+    })  
   
   return(reactive({
     if(include_report() == TRUE){

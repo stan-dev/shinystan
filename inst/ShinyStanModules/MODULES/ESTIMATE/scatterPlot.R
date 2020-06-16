@@ -53,7 +53,9 @@ scatterPlotUI <- function(id){
       uiOutput(ns("caption"))
     ),
     hr(), 
-    checkboxInput(ns("report"), "Include in report?")
+    # checkboxInput(ns("report"), "Include in report?")
+    downloadButton(ns('downloadPlot'), 'Download Plot', class = "downloadReport"),
+    downloadButton(ns('downloadRDS'), 'Download RDS', class = "downloadReport")
   )
 }
 
@@ -111,6 +113,34 @@ scatterPlot <- function(input, output, session){
   output$caption <- renderUI({
     captionOut(parameters = param())
   })
+  
+  output$downloadPlot <- downloadHandler(
+    filename = 'scatterPlot.pdf',
+    content = function(file) {
+      # ggsave(file, gridExtra::arrangeGrob(grobs = downloadSelection()))
+      pdf(file)
+      save_old_theme <- bayesplot_theme_get()
+      color_scheme_set(visualOptions()$color)
+      bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
+      out <- plotOut(parameters = param(),
+                     transformations = transform())
+      bayesplot_theme_set(save_old_theme)
+      print(out)
+      dev.off()
+    })
+  
+  
+  output$downloadRDS <- downloadHandler(
+    filename = 'scatterPlot.rds',
+    content = function(file) {
+      save_old_theme <- bayesplot_theme_get()
+      color_scheme_set(visualOptions()$color)
+      bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
+      out <- plotOut(parameters = param(),
+                     transformations = transform())
+      bayesplot_theme_set(save_old_theme)
+      saveRDS(out, file)
+    })  
   
   return(reactive({
     if(include() == TRUE){

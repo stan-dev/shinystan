@@ -30,7 +30,9 @@ acceptanceUI <- function(id){
       uiOutput(ns("caption"))
     ),
     hr(), 
-    checkboxInput(ns("report"), "Include in report?")
+    # checkboxInput(ns("report"), "Include in report?")
+    downloadButton(ns('downloadPlot'), 'Download Plot', class = "downloadReport"),
+    downloadButton(ns('downloadRDS'), 'Download RDS', class = "downloadReport")
   )
 }
 
@@ -106,6 +108,33 @@ acceptance <- function(input, output, session){
   output$caption <- renderUI({
     captionOut()
   })
+  
+  output$downloadPlot <- downloadHandler(
+    filename = 'acceptancePlot.pdf',
+    content = function(file) {
+      # ggsave(file, gridExtra::arrangeGrob(grobs = downloadSelection()))
+      pdf(file)
+      save_old_theme <- bayesplot_theme_get()
+      color_scheme_set(visualOptions()$color)
+      bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
+      out <- plotOut(chain = chain()) 
+      bayesplot_theme_set(save_old_theme)
+      print(out) # hide 'bins = 30' message ggplot
+      dev.off()
+    })
+  
+  
+  output$downloadRDS <- downloadHandler(
+    filename = 'acceptancePlot.rds',
+    content = function(file) {
+      save_old_theme <- bayesplot_theme_get()
+      color_scheme_set(visualOptions()$color)
+      bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
+      out <- plotOut(chain = chain()) 
+      bayesplot_theme_set(save_old_theme)
+      saveRDS(out, file)
+    })  
+  
   
   return(reactive({
     if(include() == TRUE){

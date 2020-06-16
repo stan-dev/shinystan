@@ -256,7 +256,9 @@ rhat_n_eff_se_mean <- function(input, output, session){
         checkboxInput(session$ns("showCaption_rhat"), "Show Caption", value = TRUE),
         uiOutput(session$ns("caption_rhat")),
         hr(), 
-        checkboxInput(session$ns("report_rhat"), "Include in report?", value = include_report_rhat())
+        # checkboxInput(session$ns("report_rhat"), "Include in report?", value = include_report_rhat())
+        downloadButton(session$ns('downloadPlot_rhat'), 'Download Plot', class = "downloadReport"),
+        downloadButton(session$ns('downloadRDS_rhat'), 'Download RDS', class = "downloadReport")
       )
     } else {
       if(stat() == "\\(n_{eff}\\)"){
@@ -267,7 +269,9 @@ rhat_n_eff_se_mean <- function(input, output, session){
           checkboxInput(session$ns("showCaption_n_eff"), "Show Caption", value = TRUE),
           uiOutput(session$ns("caption_n_eff")),
           hr(), 
-          checkboxInput(session$ns("report_n_eff"), "Include in report?", value = include_report_n_eff())
+          # checkboxInput(session$ns("report_n_eff"), "Include in report?", value = include_report_n_eff())
+          downloadButton(session$ns('downloadPlot_n_eff'), 'Download Plot', class = "downloadReport"),
+          downloadButton(session$ns('downloadRDS_n_eff'), 'Download RDS', class = "downloadReport")
         )
       } else {
         if(stat() == "\\(\\text{se}_{mean} \\text{ / } \\textit{sd}\\)"){
@@ -278,7 +282,9 @@ rhat_n_eff_se_mean <- function(input, output, session){
             checkboxInput(session$ns("showCaption_se_mean"), "Show Caption", value = TRUE),
             uiOutput(session$ns("caption_se_mean")),
             hr(), 
-            checkboxInput(session$ns("report_se_mean"), "Include in report?", value = include_report_se_mean())
+            # checkboxInput(session$ns("report_se_mean"), "Include in report?", value = include_report_se_mean())
+            downloadButton(session$ns('downloadPlot_se_mean'), 'Download Plot', class = "downloadReport"),
+            downloadButton(session$ns('downloadRDS_se_mean'), 'Download RDS', class = "downloadReport")
           )
         }
       }
@@ -328,6 +334,83 @@ rhat_n_eff_se_mean <- function(input, output, session){
   })
   
   
+  output$downloadPlot_rhat <- downloadHandler(
+    filename = 'rhatPlot.pdf',
+    content = function(file) {
+      # ggsave(file, gridExtra::arrangeGrob(grobs = downloadSelection()))
+      pdf(file)
+      save_old_theme <- bayesplot_theme_get()
+      color_scheme_set(visualOptions_rhat()$color)
+      bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_rhat()$theme)))) 
+      out <- plotOut_rhat()
+      bayesplot_theme_set(save_old_theme)
+      print(out)
+      dev.off()
+    })
+  
+  
+  output$downloadRDS_rhat <- downloadHandler(
+    filename = 'rhatPlot.rds',
+    content = function(file) {
+      save_old_theme <- bayesplot_theme_get()
+      color_scheme_set(visualOptions_rhat()$color)
+      bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_rhat()$theme)))) 
+      out <- plotOut_rhat()
+      bayesplot_theme_set(save_old_theme)
+      saveRDS(out, file)
+    })  
+  
+  output$downloadPlot_n_eff <- downloadHandler(
+    filename = 'n_effPlot.pdf',
+    content = function(file) {
+      # ggsave(file, gridExtra::arrangeGrob(grobs = downloadSelection()))
+      pdf(file)
+      save_old_theme <- bayesplot_theme_get()
+      color_scheme_set(visualOptions_n_eff()$color)
+      bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_n_eff()$theme)))) 
+      out <- plotOut_n_eff()
+      bayesplot_theme_set(save_old_theme)
+      print(out)
+      dev.off()
+    })
+  
+  
+  output$downloadRDS_n_eff <- downloadHandler(
+    filename = 'n_effPlot.rds',
+    content = function(file) {
+      save_old_theme <- bayesplot_theme_get()
+      color_scheme_set(visualOptions_n_eff()$color)
+      bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_n_eff()$theme)))) 
+      out <- plotOut_n_eff()
+      bayesplot_theme_set(save_old_theme)
+      saveRDS(out, file)
+    })  
+  
+  output$downloadPlot_se_mean <- downloadHandler(
+    filename = 'se_meanPlot.pdf',
+    content = function(file) {
+      # ggsave(file, gridExtra::arrangeGrob(grobs = downloadSelection()))
+      pdf(file)
+      save_old_theme <- bayesplot_theme_get()
+      color_scheme_set(visualOptions_se_mean()$color)
+      bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_se_mean()$theme)))) 
+      out <- plotOut_se_mean()
+      bayesplot_theme_set(save_old_theme)
+      print(out)
+      dev.off()
+    })
+  
+  
+  output$downloadRDS_se_mean <- downloadHandler(
+    filename = 'se_meanPlot.rds',
+    content = function(file) {
+      save_old_theme <- bayesplot_theme_get()
+      color_scheme_set(visualOptions_se_mean()$color)
+      bayesplot_theme_set(eval(parse(text = select_theme(visualOptions_se_mean()$theme)))) 
+      out <- plotOut_se_mean()
+      bayesplot_theme_set(save_old_theme)
+      saveRDS(out, file)
+    })  
 
 # Did not find a functioning better system yet for creating the correct list output. Should exist....
   return(reactive({

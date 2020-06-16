@@ -26,7 +26,9 @@ intervalsPlotUI <- function(id){
       uiOutput(ns("caption"))
     ),
     hr(), 
-    checkboxInput(ns("report"), "Include in report?")
+    # checkboxInput(ns("report"), "Include in report?")
+    downloadButton(ns('downloadPlot'), 'Download Plot', class = "downloadReport"),
+    downloadButton(ns('downloadRDS'), 'Download RDS', class = "downloadReport")
   )
 }
 
@@ -72,22 +74,51 @@ intervalsPlot <- function(input, output, session){
   
   
   captionOut <- function(parameters){
-    HTML(paste0(if(length(parameters) == 1) {"This is a interval plot of <i>"} else {"These are interval plots of <i>"}, 
-                paste(parameters[1:(length(parameters)-1)], collapse = ", "),
-                if(length(parameters) > 1) {"</i> and <i>"}, 
-                if(length(parameters) > 1) {parameters[length(parameters)]},"</i>", ".",
-                " The outer edges denote the ", visualOptions()$outer_ci, "% credibility interval.", 
+    # HTML(paste0(if(length(parameters) == 1) {"This is an interval plot of <i>"} else {"These are interval plots of <i>"}, 
+    #             paste(parameters[1:(length(parameters)-1)], collapse = ", "),
+    #             if(length(parameters) > 1) {"</i> and <i>"}, 
+    #             if(length(parameters) > 1) {parameters[length(parameters)]},"</i>", ".",
+    #             " The outer edges denote the ", visualOptions()$outer_ci, "% credibility interval.", 
+    #             " The inner edges denote the ", visualOptions()$inner_ci, "% credibility interval.", 
+    #             if(visualOptions()$point_est != "None") {paste0(" The point estimate denotes the posterior ",
+    #                                                             tolower(visualOptions()$point_est), ".")}
+    #             ))
+    HTML(paste0("This is an interval plot. The outer edges denote the ", 
+                visualOptions()$outer_ci, "% credibility interval.",
                 " The inner edges denote the ", visualOptions()$inner_ci, "% credibility interval.", 
                 if(visualOptions()$point_est != "None") {paste0(" The point estimate denotes the posterior ",
-                                                                tolower(visualOptions()$point_est), ".")}
-                ))
+                                                                tolower(visualOptions()$point_est), ".")}))
   }
   
   output$caption <- renderUI({
     captionOut(parameters = param())
   })
   
+  output$downloadPlot <- downloadHandler(
+    filename = 'intervalsPlot.pdf',
+    content = function(file) {
+      # ggsave(file, gridExtra::arrangeGrob(grobs = downloadSelection()))
+      pdf(file)
+      save_old_theme <- bayesplot_theme_get()
+      color_scheme_set(visualOptions()$color)
+      bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
+      out <- plotOut(parameters = param())
+      bayesplot_theme_set(save_old_theme)
+      print(out)
+      dev.off()
+    })
   
+  
+  output$downloadRDS <- downloadHandler(
+    filename = 'intervalsPlot.rds',
+    content = function(file) {
+      save_old_theme <- bayesplot_theme_get()
+      color_scheme_set(visualOptions()$color)
+      bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
+      out <- plotOut(parameters = param())
+      bayesplot_theme_set(save_old_theme)
+      saveRDS(out, file)
+    })  
   
   return(reactive({
     if(include() == TRUE){

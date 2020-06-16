@@ -72,7 +72,9 @@ divergentScatterUI <- function(id){
       uiOutput(ns("caption"))
     ),
     hr(), 
-    checkboxInput(ns("report"), "Include in report?")
+    # checkboxInput(ns("report"), "Include in report?")
+    downloadButton(ns('downloadPlot'), 'Download Plot', class = "downloadReport"),
+    downloadButton(ns('downloadRDS'), 'Download RDS', class = "downloadReport")
   )
 }
 
@@ -174,6 +176,35 @@ divergentScatter <- function(input, output, session){
   })
   
   
+  output$downloadPlot <- downloadHandler(
+    filename = 'divergentScatterPlot.pdf',
+    content = function(file) {
+      # ggsave(file, gridExtra::arrangeGrob(grobs = downloadSelection()))
+      pdf(file)
+      save_old_theme <- bayesplot_theme_get()
+      color_scheme_set(visualOptions()$color)
+      bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
+      out <- plotOut(parameters = param(), chain = chain(), opacity = visualOptions()$alpha,
+                     transformations = transform(), div_color = visualOptions()$divColor,
+                     opacityDiv = visualOptions()$alphaDiv)
+      bayesplot_theme_set(save_old_theme)
+      print(out)
+      dev.off()
+    })
+  
+  
+  output$downloadRDS <- downloadHandler(
+    filename = 'divergentScatterPlot.rds',
+    content = function(file) {
+      save_old_theme <- bayesplot_theme_get()
+      color_scheme_set(visualOptions()$color)
+      bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
+      out <- plotOut(parameters = param(), chain = chain(), opacity = visualOptions()$alpha,
+                     transformations = transform(), div_color = visualOptions()$divColor,
+                     opacityDiv = visualOptions()$alphaDiv)
+      bayesplot_theme_set(save_old_theme)
+      saveRDS(out, file)
+    })  
   
   
   return(reactive({

@@ -41,7 +41,9 @@ tracePlotUI <- function(id){
       uiOutput(ns("caption"))
     ),
     hr(), 
-    checkboxInput(ns("report"), "Include in report?")
+    # checkboxInput(ns("report"), "Include in report?")
+    downloadButton(ns('downloadPlot'), 'Download Plot', class = "downloadReport"),
+    downloadButton(ns('downloadRDS'), 'Download RDS', class = "downloadReport")
   )
 }
 
@@ -132,6 +134,32 @@ tracePlot <- function(input, output, session){
   output$caption <- renderUI({
     captionOut(parameters = param())
   })
+  
+  output$downloadPlot <- downloadHandler(
+    filename = 'tracePlot.pdf',
+    content = function(file) {
+      # ggsave(file, gridExtra::arrangeGrob(grobs = downloadSelection()))
+      pdf(file)
+      save_old_theme <- bayesplot_theme_get()
+      color_scheme_set(visualOptions()$color)
+      bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
+      out <- plotOut(parameters = param(), chain = chain(), div_color = visualOptions()$divColor)
+      bayesplot_theme_set(save_old_theme)
+      print(out)
+      dev.off()
+    })
+  
+  
+  output$downloadRDS <- downloadHandler(
+    filename = 'tracePlot.rds',
+    content = function(file) {
+      save_old_theme <- bayesplot_theme_get()
+      color_scheme_set(visualOptions()$color)
+      bayesplot_theme_set(eval(parse(text = select_theme(visualOptions()$theme)))) 
+      out <- plotOut(parameters = param(), chain = chain(), div_color = visualOptions()$divColor)
+      bayesplot_theme_set(save_old_theme)
+      saveRDS(out, file)
+    })  
   
   return(reactive({
     if(include() == TRUE){
