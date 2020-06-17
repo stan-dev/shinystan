@@ -11,6 +11,7 @@
 \alias{as.shinystan,stanjm-method}
 \alias{as.shinystan,stanmvreg-method}
 \alias{as.shinystan,blavaan-method}
+\alias{as.shinystan,draws_array-method}
 \title{Create and test \code{shinystan} objects}
 \usage{
 as.shinystan(X, ...)
@@ -74,13 +75,15 @@ is.shinystan(X)
 \S4method{as.shinystan}{stanmvreg}(X, ppd = FALSE, seed = 1234, model_name = NULL, note = NULL, ...)
 
 \S4method{as.shinystan}{blavaan}(X, ...)
+
+\S4method{as.shinystan}{draws_array}(X, ...)
 }
 \arguments{
 \item{X}{For \code{as.shinystan}, an object to be converted to a
 \code{shinystan} object. See the Methods section below. For
 \code{is.shinystan}, an object to check.}
 
-\item{...}{Arguments passed to the individual methods.}
+\item{...}{Arguments to pass to the \code{as.shinystan} method for arrays.}
 
 \item{model_name}{A string giving a name for the model.}
 
@@ -186,6 +189,9 @@ taken automatically from the \code{stanfit} object.
 
 \item \code{as.shinystan,blavaan-method}: Create a \code{shinystan} object from a
 \code{blavaan} object (\pkg{\link[blavaan]{blavaan}}).
+
+\item \code{as.shinystan,draws_array-method}: Create a \code{shinystan} object from a
+\code{draws_array} object (\pkg{posterior}).
 }}
 
 \examples{

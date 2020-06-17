@@ -245,7 +245,7 @@ setMethod(
       stan_method = stan_method,
       stan_algorithm = stan_algorithm,
       summary = shinystan_monitor(X, warmup = n_warmup),
-      monitor_summary = data.frame(rstan::monitor(X, print = FALSE)),
+      monitor_summary = data.frame(rstan::monitor(X, print = FALSE, warmup = n_warmup)),
       n_chain = ncol(X),
       n_iter = nrow(X),
       n_warmup = n_warmup
@@ -490,12 +490,13 @@ setMethod(
     check_suggests("coda")
     validate_model_code(model_code)
     
+    n_warmup <- .deprecate_burnin(burnin, warmup)
     if (length(X) == 1) {
       return(
         as.shinystan(
           X = list(.mcmclist2matrix(X)),
           model_name = model_name,
-          warmup = .deprecate_burnin(burnin, warmup),
+          warmup = n_warmup,
           param_dims = param_dims,
           model_code = model_code,
           note = note,
@@ -529,11 +530,11 @@ setMethod(
       param_names = param_names,
       param_dims = .set_param_dims(param_dims, param_names),
       posterior_sample = posterior,
-      summary = shinystan_monitor(posterior, warmup = burnin),
-      monitor_summary = data.frame(rstan::monitor(posterior, print = FALSE)),
+      summary = shinystan_monitor(posterior, warmup = n_warmup),
+      monitor_summary = data.frame(rstan::monitor(posterior, print = FALSE, warmup = n_warmup)),
       n_chain = ncol(posterior),
       n_iter = nrow(posterior),
-      n_warmup = burnin,
+      n_warmup = n_warmup,
       stan_used = stan_used,
       stan_method = stan_method,
       stan_algorithm = stan_algorithm
@@ -621,7 +622,7 @@ setMethod(
       param_dims = param_dims,
       posterior_sample = posterior,
       summary = .rstan_summary(X, pars = pars),
-      monitor_summary = data.frame(rstan::monitor(posterior, print = FALSE)),
+      monitor_summary = data.frame(rstan::monitor(posterior, print = FALSE, warmup = .rstan_warmup(X))),
       sampler_params = .rstan_sampler_params(X),
       n_chain = ncol(X),
       n_iter = nrow(posterior),
@@ -1115,5 +1116,21 @@ setMethod(
     }
     
     return(sso)
+  }
+)
+
+
+# as.shinystan (draws_array) -------------------------------------------------
+setOldClass("draws_array")
+#' @describeIn as.shinystan Create a \code{shinystan} object from a
+#'   \code{draws_array} object (\pkg{posterior}).
+#'   
+#' @param ... Arguments to pass to the \code{as.shinystan} method for arrays.
+#'
+setMethod(
+  "as.shinystan",
+  signature = "draws_array",
+  definition = function(X, ...) {
+    as.shinystan(unclass(X), ...)
   }
 )
