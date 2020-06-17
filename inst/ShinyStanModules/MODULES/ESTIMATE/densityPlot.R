@@ -76,7 +76,7 @@ densityPlot <- function(input, output, session){
     #             if(length(parameters) > 1) {"</i> and <i>"}, 
     #             if(length(parameters) > 1) {parameters[length(parameters)]},"</i>", "."
     #             ))
-    HTML(paste0(if(length(parameters) == 1) {"This is a density plot."} else {"These are density plots."}))
+    HTML(paste0(if(length(parameters) == 1) {"This is a posterior density plot."} else {"These are posterior density plots."}))
   }
   output$caption <- renderUI({
     captionOut(parameters = param())

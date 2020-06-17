@@ -77,7 +77,7 @@ histogramPlot <- function(input, output, session){
     #             if(length(parameters) > 1) {"</i> and <i>"}, 
     #             if(length(parameters) > 1) {parameters[length(parameters)]},"</i>", "."
     # ))
-    HTML(paste0(if(length(parameters) == 1) {"This is a histogram plot."} else {"These are histogram plots."}))
+    HTML(paste0(if(length(parameters) == 1) {"This is a histogram of a posterior distribution."} else {"These are histograms of posterior distributions."}))
   }
   
   output$caption <- renderUI({

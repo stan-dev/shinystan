@@ -93,9 +93,9 @@ areasPlot <- function(input, output, session){
     #                                                             tolower(visualOptions()$point_est), ".")}
     # ))
     HTML(paste0("This is an area plot. The outer edges denote the ", 
-                visualOptions()$outer_ci, "% credibility interval.",
-                " The inner edges denote the ", visualOptions()$inner_ci, "% credibility interval.", 
-                if(visualOptions()$point_est != "None") {paste0(" The point estimate denotes the posterior ",
+                visualOptions()$outer_ci, "% posterior uncertainty interval (credible interval).",
+                " The inner edges denote the ", visualOptions()$inner_ci, "% interval.", 
+                if(visualOptions()$point_est != "None") {paste0(" The point estimate is the posterior ",
                                                                 tolower(visualOptions()$point_est), ".")}))
   }
   
