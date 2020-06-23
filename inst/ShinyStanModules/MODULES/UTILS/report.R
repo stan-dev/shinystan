@@ -49,12 +49,9 @@ reportUI <- function(id) {
     fluidRow(
       align="center",
       br(), br(),
-      wellPanel(id = "selectVariableTab",
-                br(), br(),
-                # downloadButton(ns('downloadPlot'), 'Download Plots', class = "downloadReport"),
-                downloadButton(ns("downloadPDFreport"), "Download Report", class = "downloadReport"),
-                # downloadButton(ns('downloadRDS'), 'Download RDS', class = "downloadReport"))
-      )
+      # downloadButton(ns('downloadPlot'), 'Download Plots', class = "downloadReport"),
+      downloadButton(ns("downloadPDFreport"), "Download Report", class = "downloadReport"),
+      # downloadButton(ns('downloadRDS'), 'Download RDS', class = "downloadReport"))
     )
   )
 }
@@ -101,10 +98,9 @@ report <- function(input, output, session, ggplotsList, reportType, ...) {
         ifelse(reportType == "diagnose", 
                file.show("reports/generate_report_diagnostics.Rmd"),
                file.show("reports/generate_report_estimates.Rmd"))
-               
+        
       } else {
         
-        print(pars())
         shinystan::generate_report(sso = shinystan:::.sso_env$.SHINYSTAN_OBJECT,
                                    n_param = nParam(),
                                    pars = pars(),
