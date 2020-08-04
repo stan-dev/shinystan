@@ -107,7 +107,9 @@ generate_report <- function (sso, n_param = 3, pars = NULL, output_format = "htm
     
     if(n_param == "all") n_param <- length(selected_parameters)
     if(n_param > length(selected_parameters)) n_param <- length(selected_parameters)
-    sso <- drop_parameters(sso, pars = selected_parameters[-c(1:n_param)])
+    if(n_param != length(selected_parameters)){
+      sso <- drop_parameters(sso, pars = selected_parameters[-c(1:n_param)])
+    }
   } else {
     selected_parameters <- sso@param_names[order(sso@summary[, "n_eff"])] 
     selected_parameters <- selected_parameters[-which(selected_parameters == "log-posterior")]
