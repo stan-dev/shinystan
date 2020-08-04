@@ -2,7 +2,7 @@ language: r
 r:
   - release
   - devel
-cache: packages
+# cache: packages
 
 r_github_packages:
   - jimhester/covr

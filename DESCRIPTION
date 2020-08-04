@@ -51,10 +51,10 @@ Imports:
     utils,
     xtable,
     xts (>= 0.9-7)
+    rmarkdown (>= 0.8.1),
 Suggests:
     coda,
     knitr (>= 1.9),
-    rmarkdown (>= 0.8.1),
     rstanarm (>= 2.17.4),
     testthat
 LazyData: true
