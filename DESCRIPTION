@@ -38,7 +38,7 @@ Imports:
     ggplot2 (>= 2.1.1),
     gridExtra,
     gtools,
-    markdown (>= 1.1),
+    markdown (>= 0.7.4),
     methods,
     reshape2,
     rlang (>= 0.3.0),
@@ -50,8 +50,8 @@ Imports:
     threejs (>= 0.2.1),
     utils,
     xtable,
-    xts (>= 0.12-0)
-    rmarkdown (>= 2.2),
+    xts (>= 0.9-7)
+    rmarkdown (>= 0.8.1),
 Suggests:
     coda,
     knitr (>= 1.9),
