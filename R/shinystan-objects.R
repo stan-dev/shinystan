@@ -713,11 +713,11 @@ setMethod(
 .rstan_max_treedepth <- function(x) {
   cntrl <- .stan_args(x, "control")
   if (is.null(cntrl)) {
-    max_td <- 11
+    max_td <- 10
   } else {
     max_td <- cntrl$max_treedepth
     if (is.null(max_td))
-      max_td <- 11
+      max_td <- 10
   }
   max_td
 }
