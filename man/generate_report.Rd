@@ -39,7 +39,8 @@ A report is generated and the path where it is stored is printed.
 The report displays either diagnostics information or estimation results.
 By default the report informs you about the worst parameters in 
 your model, based on effective sample size. You can choose specific 
-parameters using the \code{pars} argument.
+parameters using the \code{pars} argument. The report will be saved in your 
+current working directory.
 }
 \examples{
 \dontrun{
