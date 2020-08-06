@@ -50,11 +50,16 @@ Imports:
     xtable,
     xts (>= 0.9-7)
 Suggests:
+    cmdstanr (>= 0.1.0),
     coda,
     knitr (>= 1.9),
+    posterior (>= 0.1.0), 
     rmarkdown (>= 0.8.1),
     rstanarm (>= 2.17.4),
     testthat
+Additional_repositories:
+    https://mc-stan.org/r-packages/
 LazyData: true
+Encoding: UTF-8
 VignetteBuilder: knitr
-RoxygenNote: 6.0.1
+RoxygenNote: 7.1.1

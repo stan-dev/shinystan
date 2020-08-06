@@ -5,8 +5,11 @@
 \alias{eight_schools}
 \title{'ShinyStan' demo}
 \usage{
-launch_shinystan_demo(demo_name = "eight_schools",
-  rstudio = getOption("shinystan.rstudio"), ...)
+launch_shinystan_demo(
+  demo_name = "eight_schools",
+  rstudio = getOption("shinystan.rstudio"),
+  ...
+)
 }
 \arguments{
 \item{demo_name}{The name of the demo. Currently \code{"eight_schools"} is 

@@ -867,3 +867,51 @@ setMethod(
   
   pp_check_plots
 }
+
+
+# as.shinystan (CmdStanMCMC) -----------------------------------------------
+setOldClass("CmdStanMCMC")
+#' @describeIn as.shinystan Create a \code{shinystan} object from a 
+#'   \code{CmdStanMCMC} object (\pkg{cmdstanr}).
+#' 
+setMethod(
+  "as.shinystan",
+  signature = "CmdStanMCMC",
+  definition = function(X,
+                        pars = NULL,
+                        model_name = NULL,
+                        note = NULL,
+                        ...) {
+    check_suggests("cmdstanr")
+    if (is.null(model_name)) {
+      model_name <- X$runset$model_name()
+    }
+    
+    if (X$metadata()$save_warmup == 0) {
+      draws <- unclass(X$draws(pars))
+      sampler_diagnostics <- X$sampler_diagnostics()
+      n_warmup <- 0
+    } else {
+      draws <- unclass(X$draws(pars, inc_warmup = TRUE))
+      sampler_diagnostics <- X$sampler_diagnostics(inc_warmup = TRUE)
+      n_warmup <- X$metadata()$iter_warmup
+    }
+    
+    sampler_params <- list()
+    for (j in seq_len(dim(sampler_diagnostics)[2])) {
+      sampler_params[[j]] <- posterior::as_draws_matrix(sampler_diagnostics[, j ,])
+    }
+    
+    as.shinystan(
+      draws,
+      model_name = model_name,
+      warmup = n_warmup,
+      param_dims = X$metadata()$stan_variable_dims,
+      model_code = NULL,
+      note = note,
+      sampler_params = sampler_params, 
+      algorithm = "NUTS",
+      max_treedepth = fit$metadata()$max_treedepth
+    )
+  }
+)

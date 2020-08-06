@@ -185,6 +185,21 @@ test_that("as.shinystan 'pars' argument works with rstan example", {
 })
 
 
+test_that("as.shinystan works with CmdStanMCMC objects", {
+  skip_on_cran()
+  skip_if_not_installed("cmdstanr")
+  fit <- try(cmdstanr::cmdstanr_example("schools", save_warmup = TRUE, iter_warmup = 500, chains = 2))
+  if (!inherits(fit, "try-error")) {
+    sso <- as.shinystan(fit)
+    expect_s4_class(sso, "shinystan")
+    expect_equal(sso@model_name, "schools")
+    expect_equal(sso@param_names, c("log-posterior", "mu", "tau", paste0("theta[", 1:8, "]")))
+    expect_equal(sso@n_chain, 2)
+    expect_equal(sso@n_warmup, 500)
+  }
+})
+
+
 # update_sso ---------------------------------------------------------------
 context("Updating shinystan objects")
 test_that("update_sso errors and messages are correct", {
@@ -200,3 +215,4 @@ test_that("update_sso errors and messages are correct", {
   expect_error(update_sso(sso3), 
                regexp = "was created using a more recent version of shinystan")
 })
+
