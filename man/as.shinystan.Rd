@@ -24,7 +24,6 @@ is.shinystan(X)
   X,
   model_name = "unnamed model",
   warmup = 0,
-  burnin = 0,
   param_dims = list(),
   model_code = NULL,
   note = NULL,
@@ -41,7 +40,6 @@ is.shinystan(X)
   X,
   model_name = "unnamed model",
   warmup = 0,
-  burnin = 0,
   param_dims = list(),
   model_code = NULL,
   note = NULL,
@@ -57,7 +55,6 @@ is.shinystan(X)
   X,
   model_name = "unnamed model",
   warmup = 0,
-  burnin = 0,
   param_dims = list(),
   model_code = NULL,
   note = NULL,
@@ -95,9 +92,6 @@ is.shinystan(X)
 
 \item{warmup}{The number of iterations to treat as warmup. Should be
 \code{0} if warmup iterations are not included in \code{X}.}
-
-\item{burnin}{Deprecated. Use \code{warmup} instead. The \code{burnin}
-argument will be removed in a future release.}
 
 \item{param_dims}{Rarely used and never necessary. A named list giving the
 dimensions for all parameters. For scalar parameters use \code{0} as the
@@ -204,7 +198,7 @@ taken automatically from the \code{stanfit} object.
 \code{stanmvreg} object (\pkg{\link[rstanarm]{rstanarm}}).
 
 \item \code{as.shinystan,blavaan-method}: Create a \code{shinystan} object from a
-\code{blavaan} object (\pkg{\link[blavaan]{blavaan}}).
+\code{blavaan} object (\pkg{blavaan}).
 
 \item \code{as.shinystan,draws_array-method}: Create a \code{shinystan} object from a
 \code{draws_array} object (\pkg{posterior}).

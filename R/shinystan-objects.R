@@ -144,8 +144,6 @@ is.shinystan <- function(X) inherits(X, "shinystan")
 #'   corresponding to iterations, chains, and parameters, in that order.
 #'
 #' @param model_name A string giving a name for the model.
-#' @param burnin Deprecated. Use \code{warmup} instead. The \code{burnin}
-#'   argument will be removed in a future release.
 #' @param warmup The number of iterations to treat as warmup. Should be
 #'   \code{0} if warmup iterations are not included in \code{X}.
 #' @param param_dims Rarely used and never necessary. A named list giving the
@@ -203,7 +201,7 @@ setMethod(
   signature = "array",
   definition = function(X,
                         model_name = "unnamed model",
-                        warmup = 0, burnin = 0,
+                        warmup = 0,
                         param_dims = list(),
                         model_code = NULL,
                         note = NULL,
@@ -235,7 +233,8 @@ setMethod(
       stan_algorithm = stan_algorithm
     )
 
-    n_warmup <- .deprecate_burnin(burnin, warmup)
+    n_warmup <- warmup
+    
     if(is.null(summary)){
       summary <- shinystan_monitor(X, warmup = n_warmup)
     } else {
@@ -287,25 +286,6 @@ setMethod(
   }
 )
 
-# FIXME: remove this when 'burnin' arg is removed
-.deprecate_burnin <- function(burnin = 0, warmup = 0) {
-  if (warmup == 0) {
-    if (burnin == 0) {
-      return(0)
-    } else {
-      warning("The 'burnin' argument is deprecated and will be removed ",
-              "in a future release. Use the 'warmup' argument instead.",
-              call. = FALSE)
-      return(burnin)
-    }
-  } else if (burnin == 0) {
-    return(warmup)
-  } else {
-    stop("'burnin' and 'warmup' can't both be specified. ",
-         "'burnin' is deprecated. Please use 'warmup' instead.",
-         call. = FALSE)
-  }
-}
 
 .validate_sampler_params <-
   function(x,
@@ -400,7 +380,7 @@ setMethod(
   signature = "list",
   definition = function(X,
                         model_name = "unnamed model",
-                        warmup = 0, burnin = 0,
+                        warmup = 0, 
                         param_dims = list(),
                         model_code = NULL,
                         note = NULL,
@@ -463,7 +443,7 @@ setMethod(
     as.shinystan(
       out,
       model_name = model_name,
-      warmup = .deprecate_burnin(burnin, warmup),
+      warmup = warmup,
       param_dims = param_dims,
       model_code = model_code,
       note = note,
@@ -488,7 +468,7 @@ setMethod(
   signature = "mcmc.list",
   definition = function(X,
                         model_name = "unnamed model",
-                        warmup = 0, burnin = 0,
+                        warmup = 0, 
                         param_dims = list(),
                         model_code = NULL,
                         note = NULL,
@@ -500,7 +480,7 @@ setMethod(
     check_suggests("coda")
     validate_model_code(model_code)
 
-    n_warmup <- .deprecate_burnin(burnin, warmup)
+    n_warmup <- warmup
     if (length(X) == 1) {
       return(
         as.shinystan(
@@ -1096,7 +1076,7 @@ setMethod(
 # as.shinystan (blavaan) -------------------------------------------------
 setOldClass("blavaan")
 #' @describeIn as.shinystan Create a \code{shinystan} object from a
-#'   \code{blavaan} object (\pkg{\link[blavaan]{blavaan}}).
+#'   \code{blavaan} object (\pkg{blavaan}).
 #'
 #' @examples
 #' \dontrun{
@@ -1187,7 +1167,7 @@ setMethod(
       model_code = NULL,
       note = note,
       sampler_params = sampler_params,
-      max_treedepth = fit$metadata()$max_treedepth, 
+      max_treedepth = X$metadata()$max_treedepth, 
       stan_used = TRUE, 
       stan_method = "sampling",
       stan_algorithm = "NUTS"
