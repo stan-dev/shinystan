@@ -25,7 +25,7 @@ launch_shinystan(object, ...)
 }
 \arguments{
 \item{object}{The object to use. For the default method this can be an object
-of class \code{"shinystan"}, \code{"stanfit"}, \code{"stanreg"}, 
+of class \code{"shinystan"}, \code{"stanfit"}, \code{"stanreg"},
 \code{"mcmc.list"} or \code{"blavaan"}. To use
 other types of objects first create a shinystan object using
 \code{\link{as.shinystan}}.}
@@ -33,7 +33,7 @@ other types of objects first create a shinystan object using
 \item{...}{Optional arguments passed to \code{\link[shiny]{runApp}}.}
 
 \item{rstudio}{Only relevant for 'RStudio' users. The default (\code{FALSE})
-is to launch the app in the user's default web browser rather than the 
+is to launch the app in the user's default web browser rather than the
 pop-up Viewer provided by 'RStudio'. Users can change the default to
 \code{TRUE} by setting the global option \code{options(shinystan.rstudio =
 TRUE)}.}
@@ -47,7 +47,7 @@ FALSE)}.}
 Defaults to \code{FALSE}.}
 }
 \value{
-The \code{launch_shinystan} function is used for the side effect of 
+The \code{launch_shinystan} function is used for the side effect of
   starting the 'ShinyStan' app, but it also returns a \code{shinystan}
   object, an instance of S4 class \code{"shinystan"}.
 }
@@ -69,8 +69,8 @@ launch_shinystan(sso)
 sso <- launch_shinystan(sso)
 
 # Launch shinystan but save any changes made to sso while running the app
-# in a new shinystan object sso2. sso will remained unchanged. 
-sso2 <- launch_shinystan(sso) 
+# in a new shinystan object sso2. sso will remained unchanged.
+sso2 <- launch_shinystan(sso)
 
 #######################################
 # Example 2: 'sf' is a stanfit object
@@ -83,7 +83,7 @@ launch_shinystan(sf)
 sf_sso <- launch_shinystan(sf)
 
 # Now sf_sso is a shinystan object and so Example 1 (above) applies when
-# using sf_sso. 
+# using sf_sso.
 
 #######################################
 # Example 3: 'fit' is an mcmc.list, array or list of matrices

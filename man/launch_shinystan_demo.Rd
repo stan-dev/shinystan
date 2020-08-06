@@ -13,16 +13,16 @@ launch_shinystan_demo(
 )
 }
 \arguments{
-\item{demo_name}{The name of the demo. Currently \code{"eight_schools"} is 
+\item{demo_name}{The name of the demo. Currently \code{"eight_schools"} is
 the only option, but additional demos may be available in future releases.
 \describe{
-\item{\code{eight_schools}}{Hierarchical meta-analysis model. See 
- \emph{Meta Analysis} chapter of the 'Stan' manual 
+\item{\code{eight_schools}}{Hierarchical meta-analysis model. See
+ \emph{Meta Analysis} chapter of the 'Stan' manual
  \url{http://mc-stan.org/users/documentation/}.}
 }}
 
 \item{rstudio}{Only relevant for 'RStudio' users. The default (\code{FALSE})
-is to launch the app in the user's default web browser rather than the 
+is to launch the app in the user's default web browser rather than the
 pop-up Viewer provided by 'RStudio'. Users can change the default to
 \code{TRUE} by setting the global option \code{options(shinystan.rstudio =
 TRUE)}.}
@@ -43,9 +43,9 @@ An S4 shinystan object.
 \examples{
 \dontrun{
 # launch demo but don't save a shinystan object
-launch_shinystan_demo() 
+launch_shinystan_demo()
 
-# launch demo and save the shinystan object for the demo 
+# launch demo and save the shinystan object for the demo
 sso_demo <- launch_shinystan_demo()
 }
 

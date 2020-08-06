@@ -12,6 +12,7 @@
 \alias{as.shinystan,stanmvreg-method}
 \alias{as.shinystan,blavaan-method}
 \alias{as.shinystan,draws_array-method}
+\alias{as.shinystan,CmdStanMCMC-method}
 \title{Create and test \code{shinystan} objects}
 \usage{
 as.shinystan(X, ...)
@@ -77,6 +78,8 @@ is.shinystan(X)
 \S4method{as.shinystan}{blavaan}(X, ...)
 
 \S4method{as.shinystan}{draws_array}(X, ...)
+
+\S4method{as.shinystan}{CmdStanMCMC}(X, pars = NULL, model_name = NULL, note = NULL, ...)
 }
 \arguments{
 \item{X}{For \code{as.shinystan}, an object to be converted to a
@@ -93,56 +96,56 @@ is.shinystan(X)
 \item{burnin}{Deprecated. Use \code{warmup} instead. The \code{burnin}
 argument will be removed in a future release.}
 
-\item{param_dims}{Rarely used and never necessary. A named list giving the 
-dimensions for all parameters. For scalar parameters use \code{0} as the 
+\item{param_dims}{Rarely used and never necessary. A named list giving the
+dimensions for all parameters. For scalar parameters use \code{0} as the
 dimension. See Examples.}
 
 \item{model_code}{Optionally, a character string with the code used to run
 the model. This can also be added to your \code{shinystan} object later
-using the \code{\link[shinystan]{model_code}} function. See 
+using the \code{\link[shinystan]{model_code}} function. See
 \code{\link[shinystan]{model_code}} for additional formatting instructions.
-After launching the app the code will be viewable in the \strong{Model 
+After launching the app the code will be viewable in the \strong{Model
 Code} tab. For \code{stanfit} (\pkg{rstan}) and \code{stanreg}
 (\pkg{rstanarm}) objects the model code is automatically retrieved from the
 object.}
 
-\item{note}{Optionally, text to display on the \strong{Notepad} page in the 
+\item{note}{Optionally, text to display on the \strong{Notepad} page in the
 'ShinyStan' GUI (stored in \code{user_model_info} slot of the
 \code{shinystan} object).}
 
-\item{sampler_params, stan_used, stan_method, stan_algorithm, max_treedepth, summary}{Rarely used and never necessary. 
-If using the \code{as.shinystan} method for arrays or lists, 
-these arguments can be used to manually provide information that is 
-automatically retrieved from a stanfit object when using the 
-\code{as.shinystan} method for stanfit objects. If specified, 
+\item{sampler_params, stan_used, stan_method, stan_algorithm, max_treedepth, summary}{Rarely used and never necessary.
+If using the \code{as.shinystan} method for arrays or lists,
+these arguments can be used to manually provide information that is
+automatically retrieved from a stanfit object when using the
+\code{as.shinystan} method for stanfit objects. If specified,
 \code{sampler_params} must have the same structure as an object returned by
-\code{\link[rstan]{get_sampler_params}} (\pkg{rstan}), which is a list of 
+\code{\link[rstan]{get_sampler_params}} (\pkg{rstan}), which is a list of
 matrices, with one matrix per chain. \code{stan_used}, is a logical indicator
-whether or not stan was used which defaults to \code{FALSE} for the array 
+whether or not stan was used which defaults to \code{FALSE} for the array
 and list methods. \code{stan_method}, is specified, indicates
-which stan method is used, options are \code{"sampling"} or 
-\code{"variational"}. \code{stan_algorithm}, if specified, must 
-be either \code{"NUTS"} or \code{"HMC"} (static HMC). 
-If \code{stan_algorithm} is \code{"NUTS"} then \code{max_treedepth} 
-(an integer indicating the maximum allowed treedepth when the 
+which stan method is used, options are \code{"sampling"} or
+\code{"variational"}. \code{stan_algorithm}, if specified, must
+be either \code{"NUTS"} or \code{"HMC"} (static HMC).
+If \code{stan_algorithm} is \code{"NUTS"} then \code{max_treedepth}
+(an integer indicating the maximum allowed treedepth when the
 model was fit) must also be provided. \code{summary} is the monitor
-output from the \code{monitor} function from \pkg{rstan} which if provided 
+output from the \code{monitor} function from \pkg{rstan} which if provided
 skips internal calculations of this object.}
 
-\item{pars}{For stanfit objects (\pkg{rstan}), an optional character vector 
+\item{pars}{For stanfit objects (\pkg{rstan}), an optional character vector
 specifying which parameters should be included in the \code{shinystan}
 object.}
 
 \item{ppd}{For \code{stanmvreg} objects (\pkg{rstanarm}).
 \code{ppd} is currently unavailable for this type of object.}
 
-\item{seed}{Passed to \code{\link[rstanarm]{pp_check}} (\pkg{rstanarm}) if 
+\item{seed}{Passed to \code{\link[rstanarm]{pp_check}} (\pkg{rstanarm}) if
 \code{ppd} is \code{TRUE}.}
 }
 \value{
 \code{as.shinystan} returns a \code{shinystan} object, which is an
   instance of S4 class \code{"shinystan"}.
-  
+
   \code{is.shinystan} returns \code{TRUE} if the tested object is a
   \code{shinystan} object and \code{FALSE} otherwise.
 }
@@ -155,7 +158,7 @@ The \code{as.shinystan} function creates \code{shinystan}
   arrays, lists of matrices, \code{stanfit} objects (\pkg{rstan}),
   \code{stanreg} objects (\pkg{rstanarm}), and \code{mcmc.list} objects
   (\pkg{coda}).
-  
+
   \code{is.shinystan} tests if an object is a \code{shinystan} object.
 }
 \section{Functions}{
@@ -170,7 +173,7 @@ should contain the simulations for an individual chain and all of the
 matrices should have the same number of iterations (rows) and parameters
 (columns). Parameters should have the same names and be in the same order.
 
-\item \code{as.shinystan,mcmc.list-method}: Create a \code{shinystan} object from an 
+\item \code{as.shinystan,mcmc.list-method}: Create a \code{shinystan} object from an
 \code{mcmc.list} object (\pkg{coda}).
 
 \item \code{as.shinystan,stanfit-method}: Create a \code{shinystan} object from a
@@ -192,16 +195,18 @@ taken automatically from the \code{stanfit} object.
 
 \item \code{as.shinystan,draws_array-method}: Create a \code{shinystan} object from a
 \code{draws_array} object (\pkg{posterior}).
+
+\item \code{as.shinystan,CmdStanMCMC-method}: Create a \code{shinystan} object from a
+\code{CmdStanMCMC} object (\pkg{cmdstanr}).
 }}
 
 \examples{
- 
 \dontrun{
 sso <- as.shinystan(X, ...) # replace ... with optional arguments or omit it
 launch_shinystan(sso)
 }
 
-\dontrun{   
+\dontrun{
 ########################
 ### list of matrices ###
 ########################
@@ -216,8 +221,8 @@ launch_shinystan(sso)
 # note: in order to use param_dims we need to rename 'beta1' and 'beta2'
 # to 'beta[1]' and 'beta[2]'
 colnames(chain1) <- colnames(chain2) <- c(paste0("beta[",1:2,"]"), "sigma")
-sso2 <- as.shinystan(list(chain1, chain2), 
-                     model_name = "Example", warmup = 0, 
+sso2 <- as.shinystan(list(chain1, chain2),
+                     model_name = "Example", warmup = 0,
                      param_dims = list(beta = 2, sigma = 0))
 launch_shinystan(sso2)
 }
@@ -253,7 +258,7 @@ f1 <- stan_jm(formulaLong = logBili ~ year + (1 | id),
               time_var = "year",
               # this next line is only to keep the example small in size!
               chains = 1, cores = 1, seed = 12345, iter = 1000)
-              
+
 sso  <- as.shinystan(f1)
 launch_shinystan(sso)
 }
@@ -266,12 +271,12 @@ library(rstanarm)
 pbcLong$ybern <- as.integer(pbcLong$logBili >= mean(pbcLong$logBili))
 f2 <- stan_mvmer(
         formula = list(
-        ybern ~ year + (1 | id), 
+        ybern ~ year + (1 | id),
         albumin ~ sex + year + (year | id)),
         data = pbcLong,
         family = list(binomial, gaussian),
         chains = 1, cores = 1, seed = 12345, iter = 1000)
-              
+
 sso  <- as.shinystan(f2)
 launch_shinystan(sso)
 }
@@ -282,10 +287,10 @@ launch_shinystan(sso)
 ######################
 library(blavaan)
 hsm <- " visual =~ x1 + x2 + x3 "
-fit <- bcfa(hsm, data=HolzingerSwineford1939, burnin=500, sample=1000, 
+fit <- bcfa(hsm, data=HolzingerSwineford1939, burnin=500, sample=1000,
             target='stanclassic', test = F,
             n.chains = 1)
-            
+
 sso  <- as.shinystan(fit)
 launch_shinystan(sso)
 }
