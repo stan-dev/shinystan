@@ -2,7 +2,7 @@ Package: shinystan
 Title: Interactive Visual and Numerical Diagnostics and Posterior Analysis for
     Bayesian Models
 Version: 3.0.0
-Date: 2018-04-29
+Date: 2020-08-06
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"), email = "jsg2201@columbia.edu"),
       person("Duco", "Veen", role = "aut", email = "ducoveen@gmail.com"),
       person(family = "Stan Development Team", role = "ctb"),

@@ -167,18 +167,28 @@ is.shinystan <- function(X) inherits(X, "shinystan")
 #'   If using the \code{as.shinystan} method for arrays or lists,
 #'   these arguments can be used to manually provide information that is
 #'   automatically retrieved from a stanfit object when using the
-#'   \code{as.shinystan} method for stanfit objects. If specified,
+#'   \code{as.shinystan} method for stanfit objects. 
+#'   
+#'   If specified,
 #'   \code{sampler_params} must have the same structure as an object returned by
 #'   \code{\link[rstan]{get_sampler_params}} (\pkg{rstan}), which is a list of
-#'   matrices, with one matrix per chain. \code{stan_used}, is a logical indicator
-#'   whether or not stan was used which defaults to \code{FALSE} for the array
-#'   and list methods. \code{stan_method}, is specified, indicates
+#'   matrices, with one matrix per chain. 
+#'   
+#'   \code{stan_used}, is a logical indicator
+#'   whether or not stan was used, which defaults to \code{FALSE} for the array
+#'   and list methods. 
+#'   
+#'   \code{stan_method}, if specified, indicates
 #'   which stan method is used, options are \code{"sampling"} or
-#'   \code{"variational"}. \code{stan_algorithm}, if specified, must
+#'   \code{"variational"}. 
+#'   
+#'   \code{stan_algorithm}, if specified, must
 #'   be either \code{"NUTS"} or \code{"HMC"} (static HMC).
 #'   If \code{stan_algorithm} is \code{"NUTS"} then \code{max_treedepth}
 #'   (an integer indicating the maximum allowed treedepth when the
-#'   model was fit) must also be provided. \code{summary} is the monitor
+#'   model was fit) must also be provided. 
+#'   
+#'   \code{summary} is the monitor
 #'   output from the \code{monitor} function from \pkg{rstan} which if provided
 #'   skips internal calculations of this object.
 #'
@@ -222,7 +232,7 @@ setMethod(
       sampler_params,
       n_chain = ncol(X),
       n_iter = nrow(X),
-      stan_algorithm = algorithm
+      stan_algorithm = stan_algorithm
     )
 
     n_warmup <- .deprecate_burnin(burnin, warmup)
@@ -700,7 +710,7 @@ setMethod(
 #Get the stan method (variatinal, sampling,optimization)
 .stan_method <- function(x) {
   if(.from_rstan_csv(x)) {
-    "sampling" #I assume there is no way to generate sample file withou sampling
+    "sampling" #I assume there is no way to generate sample file without sampling
   } else {
     .stan_args(x, "method")
   }
@@ -1177,8 +1187,10 @@ setMethod(
       model_code = NULL,
       note = note,
       sampler_params = sampler_params,
-      algorithm = "NUTS",
-      max_treedepth = fit$metadata()$max_treedepth
+      max_treedepth = fit$metadata()$max_treedepth, 
+      stan_used = TRUE, 
+      stan_method = "sampling",
+      stan_algorithm = "NUTS"
     )
   }
 )
