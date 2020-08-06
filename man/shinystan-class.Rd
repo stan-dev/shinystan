@@ -6,7 +6,7 @@
 \alias{shinystan}
 \title{S4 \code{shinystan} objects}
 \description{
-See \code{\link{as.shinystan}} for documentation on creating 
+See \code{\link{as.shinystan}} for documentation on creating
   \code{shinystan} objects and \code{\link{eight_schools}} for an example
   object.
 }
@@ -50,7 +50,7 @@ models only).}
 \item{\code{sso_version}}{(\code{"character"}) What version of shinystan was used
 to create the shinystan object.}
 
-\item{\code{misc}}{(\code{"list"}) Miscellaneous, for internal use. Will be 
+\item{\code{misc}}{(\code{"list"}) Miscellaneous, for internal use. Will be
 removed in future releases.}
 }}
 
