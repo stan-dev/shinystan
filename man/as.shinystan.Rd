@@ -13,6 +13,7 @@
 \alias{as.shinystan,blavaan-method}
 \alias{as.shinystan,draws_array-method}
 \alias{as.shinystan,CmdStanMCMC-method}
+\alias{as.shinystan,CmdStanVB-method}
 \title{Create and test \code{shinystan} objects}
 \usage{
 as.shinystan(X, ...)
@@ -80,6 +81,8 @@ is.shinystan(X)
 \S4method{as.shinystan}{draws_array}(X, ...)
 
 \S4method{as.shinystan}{CmdStanMCMC}(X, pars = NULL, model_name = NULL, note = NULL, ...)
+
+\S4method{as.shinystan}{CmdStanVB}(X, pars = NULL, model_name = NULL, note = NULL, ...)
 }
 \arguments{
 \item{X}{For \code{as.shinystan}, an object to be converted to a
@@ -208,6 +211,9 @@ taken automatically from the \code{stanfit} object.
 
 \item \code{as.shinystan,CmdStanMCMC-method}: Create a \code{shinystan} object from a
 \code{CmdStanMCMC} object (\pkg{cmdstanr}).
+
+\item \code{as.shinystan,CmdStanVB-method}: Create a \code{shinystan} object from a
+\code{CmdStanVB} object (\pkg{cmdstanr}).
 }}
 
 \examples{

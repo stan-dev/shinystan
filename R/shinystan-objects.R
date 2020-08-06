@@ -1194,3 +1194,33 @@ setMethod(
     )
   }
 )
+
+
+setOldClass("CmdStanVB")
+#' @describeIn as.shinystan Create a \code{shinystan} object from a
+#'   \code{CmdStanVB} object (\pkg{cmdstanr}).
+#'
+setMethod(
+  "as.shinystan",
+  signature = "CmdStanVB",
+  definition = function(X,
+                        pars = NULL,
+                        model_name = NULL,
+                        note = NULL,
+                        ...) {
+    check_suggests("cmdstanr")
+    if (is.null(model_name)) {
+      model_name <- X$runset$model_name()
+    }
+    
+    as.shinystan(
+      posterior::as_draws_array(X$draws(pars)),
+      model_name = model_name,
+      param_dims = X$metadata()$stan_variable_dims,
+      model_code = NULL,
+      note = note,
+      stan_used = TRUE, 
+      stan_method = "variational"
+    )
+  }
+)
