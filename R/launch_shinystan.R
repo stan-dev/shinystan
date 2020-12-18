@@ -125,15 +125,23 @@ launch_shinystan.shinystan <-
 
 #' 'ShinyStan' demo
 #'
-#' @aliases eight_schools
+#' @aliases eight_schools mt_cars_fullrank mt_cars_meanfield
 #' @export
 #' @inheritParams launch_shinystan
-#' @param demo_name The name of the demo. Currently \code{"eight_schools"} is
-#'   the only option, but additional demos may be available in future releases.
+#' @param demo_name The name of the demo. Currently \code{"eight_schools"} 
+#' is the default. A small variaty of options are currently added to test 
+#' the behavior under different algorithm specifications.
 #'   \describe{
 #'   \item{\code{eight_schools}}{Hierarchical meta-analysis model. See
 #'    \emph{Meta Analysis} chapter of the 'Stan' manual
 #'    \url{http://mc-stan.org/users/documentation/}.}
+#'   \item{\code{mt_cars_fullrank}}{Linear regression using fullrank method. See
+#'    the example in \code{stan_glm} from the \pkg{rstanarm}
+#'   }
+#'   \item{\code{mt_cars_meanfield}}{Linear regression using meanfield method. See
+#'    the example in \code{stan_glm} from the \pkg{rstanarm} and the algorithm 
+#'    documentation there for the specifics on meanfield.
+#'   }
 #'   }
 #' @return An S4 shinystan object.
 #'
@@ -153,7 +161,10 @@ launch_shinystan_demo <- function(demo_name = "eight_schools",
                                   rstudio = getOption("shinystan.rstudio", FALSE),
                                   quiet = getOption("shinystan.quiet", TRUE),
                                   ...) {
-  demo_name <- match.arg(demo_name)
+  demo_name <- match.arg(demo_name,
+                         choices = c("eight_schools", 
+                                     "mt_cars_fullrank",
+                                     "mt_cars_meanfield"))
   data(list = demo_name, package = "shinystan", envir = environment())
   invisible(launch(
     get(demo_name, inherits = FALSE),

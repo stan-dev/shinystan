@@ -3,6 +3,8 @@
 \name{launch_shinystan_demo}
 \alias{launch_shinystan_demo}
 \alias{eight_schools}
+\alias{mt_cars_fullrank}
+\alias{mt_cars_meanfield}
 \title{'ShinyStan' demo}
 \usage{
 launch_shinystan_demo(
@@ -13,13 +15,21 @@ launch_shinystan_demo(
 )
 }
 \arguments{
-\item{demo_name}{The name of the demo. Currently \code{"eight_schools"} is
-the only option, but additional demos may be available in future releases.
-\describe{
-\item{\code{eight_schools}}{Hierarchical meta-analysis model. See
- \emph{Meta Analysis} chapter of the 'Stan' manual
- \url{http://mc-stan.org/users/documentation/}.}
-}}
+\item{demo_name}{The name of the demo. Currently \code{"eight_schools"} 
+is the default. A small variaty of options are currently added to test 
+the behavior under different algorithm specifications.
+  \describe{
+  \item{\code{eight_schools}}{Hierarchical meta-analysis model. See
+   \emph{Meta Analysis} chapter of the 'Stan' manual
+   \url{http://mc-stan.org/users/documentation/}.}
+  \item{\code{mt_cars_fullrank}}{Linear regression using fullrank method. See
+   the example in \code{stan_glm} from the \pkg{rstanarm}
+  }
+  \item{\code{mt_cars_meanfield}}{Linear regression using meanfield method. See
+   the example in \code{stan_glm} from the \pkg{rstanarm} and the algorithm 
+   documentation there for the specifics on meanfield.
+  }
+  }}
 
 \item{rstudio}{Only relevant for 'RStudio' users. The default (\code{FALSE})
 is to launch the app in the user's default web browser rather than the
