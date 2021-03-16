@@ -88,6 +88,7 @@ launch_shinystan.default <-
            rstudio = getOption("shinystan.rstudio")) {
     if (!is.shinystan(object) && 
         !is.stanfit(object) && 
+        !inherits(object, "CmdStanMCMC") &&
         !is.stanreg(object)) {
       stop("object not compatible with 'launch_shinystan'. ",
            "Try converting to a shinystan object first using 'as.shinystan'.")
