@@ -135,7 +135,7 @@ launch_shinystan.shinystan <-
 #'   \describe{
 #'   \item{\code{eight_schools}}{Hierarchical meta-analysis model. See
 #'    \emph{Meta Analysis} chapter of the 'Stan' manual
-#'    \url{http://mc-stan.org/users/documentation/}.}
+#'    \url{https://mc-stan.org/users/documentation/}.}
 #'   \item{\code{mt_cars_fullrank}}{Linear regression using fullrank method. See
 #'    the example in \code{stan_glm} from the \pkg{rstanarm}
 #'   }
