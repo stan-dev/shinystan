@@ -883,6 +883,7 @@ setMethod(
                         note = NULL,
                         ...) {
     check_suggests("cmdstanr")
+    check_suggests("posterior")
     if (is.null(model_name)) {
       model_name <- X$runset$model_name()
     }

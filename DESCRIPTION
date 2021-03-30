@@ -50,10 +50,10 @@ Imports:
     xtable,
     xts (>= 0.9-7)
 Suggests:
-    cmdstanr (>= 0.1.0),
+    cmdstanr (>= 0.3.0),
     coda,
     knitr (>= 1.9),
-    posterior (>= 0.1.0), 
+    posterior (>= 0.1.3), 
     rmarkdown (>= 0.8.1),
     rstanarm (>= 2.17.4),
     testthat
