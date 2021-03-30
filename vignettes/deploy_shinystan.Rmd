@@ -17,7 +17,7 @@ Create a ShinyStan app unique to your model and host it online with RStudio's Sh
 **Signup**
 
 To deploy your app to RStudio's shinyapps.io you will need a ShinyApps account.
-If you don't already have one you can sign up at http://www.shinyapps.io/.
+If you don't already have one you can sign up at https://www.shinyapps.io/.
 
 The only limit to the number of different ShinyStan apps you can deploy is the
 limit set by RStudio for the [type of ShinyApps
@@ -80,6 +80,6 @@ deploy_shinystan(my_sso, appName = "MyModel",
 ```
 
 
-If the deployment process is successful the url for your app will be printed to the console and it should open in your web browser. You can also view your app by going to http://www.shinyapps.io and logging into your account.
+If the deployment process is successful the url for your app will be printed to the console and it should open in your web browser. You can also view your app by going to https://www.shinyapps.io and logging into your account.
 
 

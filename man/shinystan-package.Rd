@@ -68,7 +68,7 @@ higher-level interfaces to Stan that use \pkg{rstan} internally.
 
 \itemize{
  \item Web page with online documentation
-   (\url{https://mc-stan.org/shinystan})
+   (\url{https://mc-stan.org/shinystan/})
  \item Stan Forums on Discourse (\url{https://discourse.mc-stan.org})
  \item GitHub issue tracker (\url{https://github.com/stan-dev/shinystan/issues})
 }

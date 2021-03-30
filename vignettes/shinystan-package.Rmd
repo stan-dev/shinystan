@@ -15,7 +15,7 @@ vignette: >
 ## stanfit objects
 
 If `my_stanfit` is a stanfit object (the result of fitting a model with
-[**rstan**](http://mc-stan.org/)), then to launch the ShinyStan app simply use
+[**rstan**](https://mc-stan.org/)), then to launch the ShinyStan app simply use
 
 ```r
 library(shinystan)
