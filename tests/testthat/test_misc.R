@@ -10,6 +10,7 @@ test_that("options set when package loads", {
 })
 
 test_that("Can work with CSV files created by RStan", {
+  skip_if_not_installed("rstanarm")
   test_data <- data.frame(Y = rnorm(10))
   samples_tmp <- tempfile()
   fit <- rstanarm::stan_glm(Y ~ 1, data = test_data, sample_file = samples_tmp, chains = 1, iter = 10, sample_file = samples_tmp)

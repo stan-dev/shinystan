@@ -64,5 +64,5 @@ The example in the \emph{Deploying to shinyapps.io} vignette that
 
   \url{http://www.shinyapps.io/} to sign up for a free or paid 'ShinyApps'
   account and for details on how to configure your account on your local
-  system using the \pkg{\link[rsconnect]{rsconnect}} package from 'RStudio'.
+  system using the \pkg{rsconnect} package from 'RStudio'.
 }

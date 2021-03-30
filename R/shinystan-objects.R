@@ -911,7 +911,7 @@ setMethod(
       note = note,
       sampler_params = sampler_params, 
       algorithm = "NUTS",
-      max_treedepth = fit$metadata()$max_treedepth
+      max_treedepth = X$metadata()$max_treedepth
     )
   }
 )

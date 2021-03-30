@@ -4,11 +4,11 @@
 \alias{as.shinystan}
 \alias{is.shinystan}
 \alias{as.shinystan,array-method}
-\alias{as.shinystan,CmdStanMCMC-method}
 \alias{as.shinystan,list-method}
 \alias{as.shinystan,mcmc.list-method}
 \alias{as.shinystan,stanfit-method}
 \alias{as.shinystan,stanreg-method}
+\alias{as.shinystan,CmdStanMCMC-method}
 \title{Create and test \code{shinystan} objects}
 \usage{
 as.shinystan(X, ...)
@@ -28,8 +28,6 @@ is.shinystan(X)
   max_treedepth = NULL,
   ...
 )
-
-\S4method{as.shinystan}{CmdStanMCMC}(X, pars = NULL, model_name = NULL, note = NULL, ...)
 
 \S4method{as.shinystan}{list}(
   X,
@@ -59,6 +57,8 @@ is.shinystan(X)
 \S4method{as.shinystan}{stanfit}(X, pars, model_name = X@model_name, note = NULL, ...)
 
 \S4method{as.shinystan}{stanreg}(X, ppd = TRUE, seed = 1234, model_name = NULL, note = NULL, ...)
+
+\S4method{as.shinystan}{CmdStanMCMC}(X, pars = NULL, model_name = NULL, note = NULL, ...)
 }
 \arguments{
 \item{X}{For \code{as.shinystan}, an object to be converted to a
@@ -144,9 +144,6 @@ The \code{as.shinystan} function creates \code{shinystan}
 \code{\link{array}} of simulations. The array should have dimensions
 corresponding to iterations, chains, and parameters, in that order.
 
-\item \code{as.shinystan,CmdStanMCMC-method}: Create a \code{shinystan} object from a 
-\code{CmdStanMCMC} object (\pkg{cmdstanr}).
-
 \item \code{as.shinystan,list-method}: Create a \code{shinystan} object from a
 \code{\link{list}} of matrices. Each \code{\link{matrix}} (or 2-D array)
 should contain the simulations for an individual chain and all of the
@@ -163,6 +160,9 @@ taken automatically from the \code{stanfit} object.
 
 \item \code{as.shinystan,stanreg-method}: Create a \code{shinystan} object from a
 \code{stanreg} object (\pkg{\link[rstanarm]{rstanarm}}).
+
+\item \code{as.shinystan,CmdStanMCMC-method}: Create a \code{shinystan} object from a 
+\code{CmdStanMCMC} object (\pkg{cmdstanr}).
 }}
 
 \examples{
