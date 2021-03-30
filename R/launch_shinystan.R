@@ -122,7 +122,7 @@ launch_shinystan.shinystan <-
 #'   \describe{
 #'   \item{\code{eight_schools}}{Hierarchical meta-analysis model. See 
 #'    \emph{Meta Analysis} chapter of the 'Stan' manual 
-#'    \url{http://mc-stan.org/users/documentation/}.}
+#'    \url{https://mc-stan.org/users/documentation/}.}
 #'   }
 #' @return An S4 shinystan object.
 #'   
