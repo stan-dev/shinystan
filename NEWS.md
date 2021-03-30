@@ -1,3 +1,8 @@
+# shinystan 2.6.0
+
+* Moved rsconnect package from Imports to Suggests as requested by CRAN
+* Initial support for CmdStanMCMC objects from CmdStanR
+
 # shinystan 2.5.0
 
 * New website with online documentation: http://mc-stan.org/shinystan

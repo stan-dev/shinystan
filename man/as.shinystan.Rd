@@ -111,33 +111,33 @@ object.}
 \code{shinystan} object).}
 
 \item{sampler_params, stan_used, stan_method, stan_algorithm, max_treedepth, summary}{Rarely used and never necessary.
-If using the \code{as.shinystan} method for arrays or lists,
-these arguments can be used to manually provide information that is
-automatically retrieved from a stanfit object when using the
-\code{as.shinystan} method for stanfit objects. 
+  If using the \code{as.shinystan} method for arrays or lists,
+  these arguments can be used to manually provide information that is
+  automatically retrieved from a stanfit object when using the
+  \code{as.shinystan} method for stanfit objects.
 
-If specified,
-\code{sampler_params} must have the same structure as an object returned by
-\code{\link[rstan]{get_sampler_params}} (\pkg{rstan}), which is a list of
-matrices, with one matrix per chain. 
+  If specified,
+  \code{sampler_params} must have the same structure as an object returned by
+  \code{\link[rstan]{get_sampler_params}} (\pkg{rstan}), which is a list of
+  matrices, with one matrix per chain.
 
-\code{stan_used}, is a logical indicator
-whether or not stan was used, which defaults to \code{FALSE} for the array
-and list methods. 
+  \code{stan_used}, is a logical indicator
+  whether or not stan was used, which defaults to \code{FALSE} for the array
+  and list methods.
 
-\code{stan_method}, if specified, indicates
-which stan method is used, options are \code{"sampling"} or
-\code{"variational"}. 
+  \code{stan_method}, if specified, indicates
+  which stan method is used, options are \code{"sampling"} or
+  \code{"variational"}.
 
-\code{stan_algorithm}, if specified, must
-be either \code{"NUTS"} or \code{"HMC"} (static HMC).
-If \code{stan_algorithm} is \code{"NUTS"} then \code{max_treedepth}
-(an integer indicating the maximum allowed treedepth when the
-model was fit) must also be provided. 
+  \code{stan_algorithm}, if specified, must
+  be either \code{"NUTS"} or \code{"HMC"} (static HMC).
+  If \code{stan_algorithm} is \code{"NUTS"} then \code{max_treedepth}
+  (an integer indicating the maximum allowed treedepth when the
+  model was fit) must also be provided.
 
-\code{summary} is the monitor
-output from the \code{monitor} function from \pkg{rstan} which if provided
-skips internal calculations of this object.}
+  \code{summary} is the monitor
+  output from the \code{monitor} function from \pkg{rstan} which if provided
+  skips internal calculations of this object.}
 
 \item{pars}{For stanfit objects (\pkg{rstan}), an optional character vector
 specifying which parameters should be included in the \code{shinystan}

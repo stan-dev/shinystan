@@ -165,27 +165,27 @@ is.shinystan <- function(X) inherits(X, "shinystan")
 #'   If using the \code{as.shinystan} method for arrays or lists,
 #'   these arguments can be used to manually provide information that is
 #'   automatically retrieved from a stanfit object when using the
-#'   \code{as.shinystan} method for stanfit objects. 
-#'   
+#'   \code{as.shinystan} method for stanfit objects.
+#'
 #'   If specified,
 #'   \code{sampler_params} must have the same structure as an object returned by
 #'   \code{\link[rstan]{get_sampler_params}} (\pkg{rstan}), which is a list of
-#'   matrices, with one matrix per chain. 
-#'   
+#'   matrices, with one matrix per chain.
+#'
 #'   \code{stan_used}, is a logical indicator
 #'   whether or not stan was used, which defaults to \code{FALSE} for the array
-#'   and list methods. 
-#'   
+#'   and list methods.
+#'
 #'   \code{stan_method}, if specified, indicates
 #'   which stan method is used, options are \code{"sampling"} or
-#'   \code{"variational"}. 
-#'   
+#'   \code{"variational"}.
+#'
 #'   \code{stan_algorithm}, if specified, must
 #'   be either \code{"NUTS"} or \code{"HMC"} (static HMC).
 #'   If \code{stan_algorithm} is \code{"NUTS"} then \code{max_treedepth}
 #'   (an integer indicating the maximum allowed treedepth when the
-#'   model was fit) must also be provided. 
-#'   
+#'   model was fit) must also be provided.
+#'
 #'   \code{summary} is the monitor
 #'   output from the \code{monitor} function from \pkg{rstan} which if provided
 #'   skips internal calculations of this object.
@@ -234,7 +234,7 @@ setMethod(
     )
 
     n_warmup <- warmup
-    
+
     if(is.null(summary)){
       summary <- shinystan_monitor(X, warmup = n_warmup)
     } else {
@@ -380,7 +380,7 @@ setMethod(
   signature = "list",
   definition = function(X,
                         model_name = "unnamed model",
-                        warmup = 0, 
+                        warmup = 0,
                         param_dims = list(),
                         model_code = NULL,
                         note = NULL,
@@ -468,7 +468,7 @@ setMethod(
   signature = "mcmc.list",
   definition = function(X,
                         model_name = "unnamed model",
-                        warmup = 0, 
+                        warmup = 0,
                         param_dims = list(),
                         model_code = NULL,
                         note = NULL,
@@ -1167,8 +1167,8 @@ setMethod(
       model_code = NULL,
       note = note,
       sampler_params = sampler_params,
-      max_treedepth = X$metadata()$max_treedepth, 
-      stan_used = TRUE, 
+      max_treedepth = X$metadata()$max_treedepth,
+      stan_used = TRUE,
       stan_method = "sampling",
       stan_algorithm = "NUTS"
     )
@@ -1192,14 +1192,14 @@ setMethod(
     if (is.null(model_name)) {
       model_name <- X$runset$model_name()
     }
-    
+
     as.shinystan(
       posterior::as_draws_array(X$draws(pars)),
       model_name = model_name,
       param_dims = X$metadata()$stan_variable_dims,
       model_code = NULL,
       note = note,
-      stan_used = TRUE, 
+      stan_used = TRUE,
       stan_method = "variational"
     )
   }

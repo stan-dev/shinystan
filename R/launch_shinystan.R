@@ -98,6 +98,7 @@ launch_shinystan.default <-
     if (!is.shinystan(object) &&
         !is.stanfit(object) &&
         !is.stanreg(object) &&
+        !inherits(object, "CmdStanMCMC") &&
         !is.mcmclist(object) &&
         !is.blavaan(object)) {
       stop("object not compatible with 'launch_shinystan'. ",
@@ -128,8 +129,8 @@ launch_shinystan.shinystan <-
 #' @aliases eight_schools mt_cars_fullrank mt_cars_meanfield
 #' @export
 #' @inheritParams launch_shinystan
-#' @param demo_name The name of the demo. Currently \code{"eight_schools"} 
-#' is the default. A small variaty of options are currently added to test 
+#' @param demo_name The name of the demo. Currently \code{"eight_schools"}
+#' is the default. A small variaty of options are currently added to test
 #' the behavior under different algorithm specifications.
 #'   \describe{
 #'   \item{\code{eight_schools}}{Hierarchical meta-analysis model. See
@@ -139,7 +140,7 @@ launch_shinystan.shinystan <-
 #'    the example in \code{stan_glm} from the \pkg{rstanarm}
 #'   }
 #'   \item{\code{mt_cars_meanfield}}{Linear regression using meanfield method. See
-#'    the example in \code{stan_glm} from the \pkg{rstanarm} and the algorithm 
+#'    the example in \code{stan_glm} from the \pkg{rstanarm} and the algorithm
 #'    documentation there for the specifics on meanfield.
 #'   }
 #'   }
@@ -162,7 +163,7 @@ launch_shinystan_demo <- function(demo_name = "eight_schools",
                                   quiet = getOption("shinystan.quiet", TRUE),
                                   ...) {
   demo_name <- match.arg(demo_name,
-                         choices = c("eight_schools", 
+                         choices = c("eight_schools",
                                      "mt_cars_fullrank",
                                      "mt_cars_meanfield"))
   data(list = demo_name, package = "shinystan", envir = environment())

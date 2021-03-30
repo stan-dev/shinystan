@@ -4,6 +4,7 @@ LICENSE
 ^\.travis\.yml$
 ^README\.md$
 .gitignore
+.github/*
 ^cran-comments\.md$
 ^revdep$
 man-roxygen/*

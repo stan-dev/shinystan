@@ -42,7 +42,6 @@ Imports:
     methods,
     reshape2,
     rlang (>= 0.3.0),
-    rsconnect (>= 0.4.2),
     rstan (>= 2.19.2),
     stats,
     shinyjs (>= 0.6.0),
@@ -58,6 +57,7 @@ Suggests:
     knitr (>= 1.9),
     posterior (>= 0.1.0),
     rstanarm (>= 2.17.4),
+    rsconnect (>= 0.4.2),
     testthat
 Additional_repositories:
     https://mc-stan.org/r-packages/

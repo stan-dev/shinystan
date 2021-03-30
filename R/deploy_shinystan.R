@@ -48,7 +48,7 @@
 #'
 #'   \url{http://www.shinyapps.io/} to sign up for a free or paid 'ShinyApps'
 #'   account and for details on how to configure your account on your local
-#'   system using the \pkg{\link[rsconnect]{rsconnect}} package from 'RStudio'.
+#'   system using the \pkg{rsconnect} package from 'RStudio'.
 #'
 #' @examples
 #' \dontrun{
@@ -63,8 +63,6 @@
 #'
 #' deploy_shinystan(sso, appName = "my-model")
 #' }
-#'
-#' @importFrom rsconnect deployApp
 #'
 deploy_shinystan <- function(sso, appName, account = NULL, ..., deploy = TRUE) {
   sso_check(sso)
@@ -133,6 +131,9 @@ deploy_shinystan <- function(sso, appName, account = NULL, ..., deploy = TRUE) {
   if (!deploy)
     return(invisible(deployDir))
 
+  if (!requireNamespace("rsconnect", quietly = TRUE)) {
+    stop("Please install the 'rsconnect' package.", call. = FALSE)
+  }
   rsconnect::deployApp(
     appDir = deployDir,
     appName = appName,
