@@ -17,7 +17,7 @@ the only option, but additional demos may be available in future releases.
 \describe{
 \item{\code{eight_schools}}{Hierarchical meta-analysis model. See 
  \emph{Meta Analysis} chapter of the 'Stan' manual 
- \url{http://mc-stan.org/users/documentation/}.}
+ \url{https://mc-stan.org/users/documentation/}.}
 }}
 
 \item{rstudio}{Only relevant for 'RStudio' users. The default (\code{FALSE})

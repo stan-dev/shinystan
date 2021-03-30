@@ -21,14 +21,14 @@ ShinyStan app provides interactive plots and tables helpful for analyzing a
 posterior sample, with particular attention to identifying potential problems
 with the performance of the MCMC algorithm or the specification of the model.
 ShinyStan is powered by the Shiny web application framework by RStudio
-(\url{http://shiny.rstudio.com/}) and works with the output of MCMC programs
+(\url{https://shiny.rstudio.com/}) and works with the output of MCMC programs
 written in any programming language (and has extended functionality for
 models fit using the \pkg{rstan} package and the No-U-Turn sampler).
 }
 \section{ShinyStan has extended functionality for Stan models}{
 
 
-Stan (\url{http://mc-stan.org}) models can be run in \R using the
+Stan (\url{https://mc-stan.org/}) models can be run in \R using the
 \pkg{\link[rstan]{rstan}} package. Other packages like
 \pkg{\link[rstanarm]{rstanarm}} and \pkg{\link[brms]{brms}} provide
 higher-level interfaces to Stan that use \pkg{rstan} internally.
@@ -68,8 +68,8 @@ higher-level interfaces to Stan that use \pkg{rstan} internally.
 
 \itemize{
  \item Web page with online documentation
-   (\url{http://mc-stan.org/shinystan})
- \item Stan Forums on Discourse (\url{http://discourse.mc-stan.org})
+   (\url{https://mc-stan.org/shinystan})
+ \item Stan Forums on Discourse (\url{https://discourse.mc-stan.org})
  \item GitHub issue tracker (\url{https://github.com/stan-dev/shinystan/issues})
 }
 }
@@ -80,10 +80,12 @@ User-friendly Bayesian regression modeling: A tutorial with rstanarm and shinyst
 \emph{The Quantitative Methods for Psychology}. 14(2), 99--119.
 \url{https://www.tqmp.org/RegularArticles/vol14-2/p099/p099.pdf}
 
-Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., and Gelman,
-  A. (2018). Visualization in Bayesian workflow. \emph{Journal of the Royal
-  Statistical Society Series A}, accepted for publication. arXiv preprint:
-  \url{http://arxiv.org/abs/1709.01449}.
+Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and
+  Gelman, A. (2019), Visualization in Bayesian workflow.
+  *J. R. Stat. Soc. A*, 182: 389-402. doi:10.1111/rssa.12378
+  ([journal version](https://rss.onlinelibrary.wiley.com/doi/full/10.1111/rssa.12378),
+   [preprint arXiv:1709.01449](https://arxiv.org/abs/1709.01449),
+   [code on GitHub](https://github.com/jgabry/bayes-vis-paper))
 }
 \seealso{
 \code{\link{as.shinystan}} for creating \code{shinystan} objects.

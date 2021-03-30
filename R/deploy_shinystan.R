@@ -14,7 +14,7 @@
 #' Deploy a 'ShinyStan' app on the web using 'shinyapps.io' by 'RStudio'
 #'
 #' Requires a (free or paid) 'ShinyApps' account. Visit
-#' \url{http://www.shinyapps.io/} to sign up.
+#' \url{https://www.shinyapps.io/} to sign up.
 #'
 #' @export
 #' @template args-sso
@@ -46,7 +46,7 @@
 #' @seealso The example in the \emph{Deploying to shinyapps.io} vignette that
 #'   comes with this package.
 #'
-#'   \url{http://www.shinyapps.io/} to sign up for a free or paid 'ShinyApps'
+#'   \url{https://www.shinyapps.io/} to sign up for a free or paid 'ShinyApps'
 #'   account and for details on how to configure your account on your local
 #'   system using the \pkg{rsconnect} package from 'RStudio'.
 #'
