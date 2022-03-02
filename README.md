@@ -3,7 +3,6 @@
 <!-- badges: start -->
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/shinystan?color=blue)](http://cran.r-project.org/web/packages/shinystan)
 [![RStudio CRAN Mirror Downloads](http://cranlogs.r-pkg.org/badges/grand-total/shinystan?color=blue)](http://cran.rstudio.com/package=shinystan)
-[![Travis-CI Build Status](https://travis-ci.org/stan-dev/shinystan.svg?branch=master)](https://travis-ci.org/stan-dev/shinystan)
 [![Codecov](http://codecov.io/gh/stan-dev/shinystan/branch/master/graph/badge.svg)](https://codecov.io/gh/stan-dev/shinystan)
 <!-- badges: end -->
 
