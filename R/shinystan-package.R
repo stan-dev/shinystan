@@ -41,7 +41,7 @@
 #'
 #' Stan (\url{https://mc-stan.org/}) models can be run in \R using the
 #' \pkg{\link[rstan]{rstan}} package. Other packages like
-#' \pkg{\link[rstanarm]{rstanarm}} and \pkg{\link[brms]{brms}} provide
+#' \pkg{\link[rstanarm]{rstanarm}} and \pkg{brms} provide
 #' higher-level interfaces to Stan that use \pkg{rstan} internally.
 #'
 #' @section Saving and sharing:
