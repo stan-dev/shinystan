@@ -26,9 +26,7 @@ account](https://www.shinyapps.io/#pricing) you sign up for.
 **Setup**
 
 When you finish signing up for your ShinyApps account there will be instructions
-for setting up your account on your local system using `rsconnect::setAccountInfo`. 
-If you have the most recent version of **shinystan** then you will already have 
-**rsconnect** installed and you can call
+for setting up your account on your local system using `rsconnect::setAccountInfo()` (this requires first installing the **rsconnect** package)
 
 ```r
 rsconnect::setAccountInfo(name, token, secret)

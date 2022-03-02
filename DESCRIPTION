@@ -1,10 +1,11 @@
 Package: shinystan
 Title: Interactive Visual and Numerical Diagnostics and Posterior Analysis for
     Bayesian Models
-Version: 2.5.0
-Date: 2018-05-01
+Version: 2.6.0
+Date: 2022-03-02
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"),
     email = "jsg2201@columbia.edu"),
+      person("Duco", "Veen", role = "aut"),
       person(family = "Stan Development Team", role = "ctb"),
       person("Michael", "Andreae", role = "ctb"),
       person("Michael", "Betancourt", role = "ctb"),
@@ -40,7 +41,6 @@ Imports:
     markdown (>= 0.7.4),
     methods,
     reshape2,
-    rsconnect (>= 0.4.2),
     rstan (>= 2.17.1),
     stats,
     shinyjs (>= 0.6.0),
@@ -50,11 +50,12 @@ Imports:
     xtable,
     xts (>= 0.9-7)
 Suggests:
-    cmdstanr (>= 0.3.0),
+    cmdstanr (>= 0.4.0),
     coda,
     knitr (>= 1.9),
-    posterior (>= 0.1.3), 
+    posterior (>= 1.0.0), 
     rmarkdown (>= 0.8.1),
+    rsconnect (>= 0.4.2),
     rstanarm (>= 2.17.4),
     testthat
 Additional_repositories:
@@ -62,4 +63,4 @@ Additional_repositories:
 LazyData: true
 Encoding: UTF-8
 VignetteBuilder: knitr
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
