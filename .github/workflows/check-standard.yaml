@@ -38,12 +38,11 @@ jobs:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
+          extra-repositories: https://mc-stan.org/r-packages
 
       - uses: r-lib/actions/setup-r-dependencies@v1
         with:
-          extra-packages: |
-            stan-dev/cmdstanr
-            rcmdcheck
+          extra-packages: rcmdcheck
 
       - uses: r-lib/actions/check-r-package@v1
 
