@@ -41,7 +41,6 @@ Imports:
     markdown (>= 0.7.4),
     methods,
     reshape2,
-    rsconnect (>= 0.4.2),
     rstan (>= 2.17.1),
     stats,
     shinyjs (>= 0.6.0),
@@ -56,6 +55,7 @@ Suggests:
     knitr (>= 1.9),
     posterior (>= 1.0.0), 
     rmarkdown (>= 0.8.1),
+    rsconnect (>= 0.4.2),
     rstanarm (>= 2.17.4),
     testthat
 Additional_repositories:
