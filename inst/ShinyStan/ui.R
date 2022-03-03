@@ -16,7 +16,7 @@ tagList(
     id = "nav",
     position = "fixed-top",
     collapsible = TRUE,
-    theme = shinythemes::shinytheme("flatly"),
+    #theme = shinythemes::shinytheme("flatly"),
     windowTitle = "ShinyStan",
     
     
