@@ -25,7 +25,7 @@ make_param_list_with_groups_sort <- reactive({
       if (sort_j == TRUE & (LL[i] > 1)) {
         # change sorting so e.g. "beta[1,1] beta[1,2] beta[2,1] beta[2,2]"
         # instead of "beta[1,1] beta[2,1] beta[1,2] beta[2,2]"
-        ch <- gtools::mixedsort(ch)
+        ch <- stringi::stri_sort(ch, numeric = TRUE)
       }
       ch_out <- c(paste0(group,"_as_shinystan_group"), ch)
       names(ch_out) <- c(paste("ALL", group), ch)

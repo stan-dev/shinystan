@@ -37,7 +37,7 @@ Imports:
     dygraphs (>= 1.1.1.2),
     ggplot2 (>= 2.1.1),
     gridExtra,
-    gtools,
+    stringi,
     markdown (>= 0.7.4),
     methods,
     reshape2,
@@ -63,4 +63,4 @@ Additional_repositories:
 LazyData: true
 Encoding: UTF-8
 VignetteBuilder: knitr
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0

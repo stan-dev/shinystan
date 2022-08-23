@@ -97,7 +97,7 @@
 #' @importFrom shinyjs useShinyjs
 #' @importFrom DT datatable
 #' @importFrom gridExtra arrangeGrob grid.arrange
-#' @importFrom gtools mixedsort
+#' @importFrom stringi stri_sort
 #' @importFrom markdown markdownToHTML
 #' @importFrom reshape2 melt
 #' @importFrom xtable xtable print.xtable
