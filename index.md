@@ -11,7 +11,6 @@
 </div>
 
 <br> 
-<div style="text-align:center">
 <a href="man/figures/home.png">
 <img src="man/figures/home.png" style="width: 25.7%;"/>
 </a>
@@ -21,10 +20,8 @@
 <a href="man/figures/diagnose.png">
 <img src="man/figures/diagnose.png" style="width: 33.33%;"/>
 </a>
-</div>
 
 <br>
-
 
 
 ShinyStan provides immediate, informative, customizable visual and
