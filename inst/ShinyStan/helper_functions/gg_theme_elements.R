@@ -20,8 +20,8 @@ title_txt <- theme(
   plot.title = element_text(face = "bold", size = 14)
   )
 fat_axis <- theme(
-  axis.line.x = element_line(size = 3, color = axis_line_color), 
-  axis.line.y = element_line(size = 0.5, color = axis_line_color)
+  axis.line.x = element_line(linewidth = 3, color = axis_line_color), 
+  axis.line.y = element_line(linewidth = 0.5, color = axis_line_color)
   )
 no_yaxs <- theme(
   axis.line.y = element_blank(),
@@ -38,11 +38,11 @@ strip_txt <- theme(
 
 # horizontal and vertical lines -------------------------------------------
 h_lines <- theme(
-  panel.grid.major = element_line(size = 0.10, linetype = 3, color = "turquoise4"),
+  panel.grid.major = element_line(linewidth = 0.10, linetype = 3, color = "turquoise4"),
   panel.grid.major.x = element_blank()
   )
 v_lines <- theme(
-  panel.grid.major = element_line(size = 0.25, linetype = 3, color = "turquoise4"),
+  panel.grid.major = element_line(linewidth = 0.25, linetype = 3, color = "turquoise4"),
   panel.grid.major.y = element_blank()
   )
 

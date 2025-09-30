@@ -39,7 +39,7 @@
   graph <- ggplot(dat, aes(x = iterations, y = value, color = chains))
   graph <- graph + xy_labs + clrs + theme_classic() %+replace% (axis_color + axis_labs + fat_axis + h_lines + lgnd_top + lgnd_txt + strip_txt + transparent)
   if (rect != "None") graph <- graph + shading_rect
-  graph <- graph + geom_line(size = 0.35) + scale_x_continuous(limits = c(x1, x2))
+  graph <- graph + geom_line(linewidth = 0.35) + scale_x_continuous(limits = c(x1, x2))
 
   if (layout == "Grid") {
     graph <- graph + facet_wrap(~ parameters, scales = "free_y")
@@ -76,10 +76,10 @@
   graph <- ggplot(dat, aes(x = value))
 
   if (binwd == 0) {
-    graph <- graph + geom_histogram(fill = fill_color, color = line_color, size = 0.2)
+    graph <- graph + geom_histogram(fill = fill_color, color = line_color, linewidth = 0.2)
   } else {
     graph <- graph + geom_histogram(fill = fill_color, color = line_color,
-                                    binwidth = binwd, size = 0.2)
+                                    binwidth = binwd, linewidth = 0.2)
   }
   graph <- graph +
     labs(x = x_lab, y = "") +
@@ -266,7 +266,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
     graph <- ggplot(ac_dat, aes(x= lag, y = ac))
     graph <- graph +
       geom_bar(position = "identity", stat = "identity",
-               fill = base_fill, size = 0.4) +
+               fill = base_fill, linewidth = 0.4) +
       y_scale +
       ac_labs +
       ac_theme
@@ -278,7 +278,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   graph <- ggplot(ac_dat, aes(x = lag, y = ac, color = factor(chains),
                               fill = factor(chains)))
   graph <- graph +
-    geom_bar(position = "identity", stat = "identity", size = 0.4) +
+    geom_bar(position = "identity", stat = "identity", linewidth = 0.4) +
     scale_fill_manual(values = rep(base_fill, nChains)) +
     scale_color_manual(values = rep(vline_base_clr, nChains)) +
     y_scale +
@@ -372,10 +372,10 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
                    axis.ticks.y =  element_blank(),
                    axis.text= element_text(size=12),
                    axis.text.y= element_text(face = "bold"),
-                   axis.line= element_line(size = 4, color = axis_line_color),
-                   axis.line.y= element_line(size = 0.5, color = axis_line_color),
+                   axis.line= element_line(linewidth = 4, color = axis_line_color),
+                   axis.line.y= element_line(linewidth = 0.5, color = axis_line_color),
                    legend.position = "none",
-                   panel.grid.major =  element_line(size = 0.4),
+                   panel.grid.major =  element_line(linewidth = 0.4),
                    panel.grid.minor.y =  element_blank())
 
   p.all <- p.base + xlim(xlim.use) + p.name + theme_bw() + p.theme + transparent
@@ -424,18 +424,18 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
     #point estimator
     if (color_by_rhat) {
       p.point <- geom_segment(aes(x = m, xend = m, y = y, yend = y + 0.25,
-                                  color = rhat_id), size = 1.5)
+                                  color = rhat_id), linewidth = 1.5)
       p.all + p.poly + p.den + p.col + p.point + rhat_colors + rhat_lgnd
     } else {
       p.point <- geom_segment(aes(x = m, xend = m, y = y, yend = y + 0.25),
                               colour = est_color,
-                              size = 1.5)
+                              linewidth = 1.5)
       p.all + p.poly + p.den + p.col + p.point
     }
 
   } else {
     p.ci.2 <- geom_segment(aes(x = l, xend = h, y = y, yend = y),
-                           colour = fill_color, size = 2)
+                           colour = fill_color, linewidth = 2)
     if (color_by_rhat) {
       p.point <- geom_point(aes(x = m, y = y, fill = rhat_id), color = "black",
                             shape = 21, size = 4)
@@ -460,7 +460,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   my_labs <- labs(y = "", x = xlab)
   base_fill
   graph <- qplot(x = x, data = dat, color = I(vline_base_clr),
-                 fill = I(base_fill), size = I(0.2))
+                 fill = I(base_fill), linewidth = I(0.2))
   graph <- graph +
     my_labs +
     theme_classic() %+replace% (axis_color + axis_labs + fat_axis + no_yaxs + transparent)
@@ -652,7 +652,7 @@ priors <- data.frame(family = c("Normal", "t", "Cauchy", "Beta", "Exponential",
   }
   if (ellipse_lev != "None")
     graph <- graph + stat_ellipse(level = as.numeric(ellipse_lev), color = ellipse_color,
-                                  linetype = ellipse_lty, size = ellipse_lwd, alpha = ellipse_alpha)
+                                  linetype = ellipse_lty, linewidth = ellipse_lwd, alpha = ellipse_alpha)
   if (!all(dat$divergent == 0))
     graph <- graph + geom_point(data = subset(dat, divergent == 1), aes(x,y),
                                 size = pt_size + 0.5, shape = 21,

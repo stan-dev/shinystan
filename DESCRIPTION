@@ -35,7 +35,7 @@ Imports:
     colourpicker,
     DT (>= 0.2),
     dygraphs (>= 1.1.1.2),
-    ggplot2 (>= 2.1.1),
+    ggplot2 (>= 3.4.0),
     gridExtra,
     gtools,
     markdown (>= 0.7.4),
