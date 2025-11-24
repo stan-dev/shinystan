@@ -4,7 +4,7 @@ Title: Interactive Visual and Numerical Diagnostics and Posterior Analysis for
 Version: 2.6.0
 Date: 2022-03-02
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"),
-    email = "jsg2201@columbia.edu"),
+    email = "jgabry@gmail.com"),
       person("Duco", "Veen", role = "aut"),
       person(family = "Stan Development Team", role = "ctb"),
       person("Michael", "Andreae", role = "ctb"),
@@ -16,7 +16,7 @@ Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"),
       person("Daniel", "Lee", role = "ctb"),
       person("Dongying", "Song", role = "ctb"),
       person("Rob", "Trangucci", role = "ctb"))
-Maintainer: Jonah Gabry <jsg2201@columbia.edu>
+Maintainer: Jonah Gabry <jgabry@gmail.com>
 Description: A graphical user interface for interactive Markov chain Monte
     Carlo (MCMC) diagnostics and plots and tables helpful for analyzing a
     posterior sample. The interface is powered by the 'Shiny' web
@@ -59,7 +59,7 @@ Suggests:
     rstanarm (>= 2.17.4),
     testthat
 Additional_repositories:
-    https://mc-stan.org/r-packages/
+    https://stan-dev.r-universe.dev/
 LazyData: true
 Encoding: UTF-8
 VignetteBuilder: knitr
