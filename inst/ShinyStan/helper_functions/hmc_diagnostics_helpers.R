@@ -110,14 +110,14 @@ thm_no_yaxs <- thm + no_yaxs
   base <- ggplot(mdf, aes(x = value)) + 
     geom_histogram(aes_string(y="..density.."),
                    binwidth = diff(range(mdf$value))/30, fill = base_fill, 
-                   color = vline_base_clr, size = 0.2) + 
+                   color = vline_base_clr, linewidth = 0.2) + 
     labs(x = if (missing(lab)) NULL else lab, y = "") + 
     thm
   
   if (chain == 0) {
     graph <- base + 
-      geom_vline(xintercept = mean(mdf$value), color = vline_base_clr, size = .8) + 
-      geom_vline(xintercept = median(mdf$value), color = vline_base_clr, lty = 2, size = 1)
+      geom_vline(xintercept = mean(mdf$value), color = vline_base_clr, linewidth = .8) + 
+      geom_vline(xintercept = median(mdf$value), color = vline_base_clr, lty = 2, linewidth = 1)
     return(graph)
   }
   chain_data <- subset(mdf, variable == paste0("chain:",chain))
@@ -127,9 +127,9 @@ thm_no_yaxs <- thm + no_yaxs
                               aes_string(y="..density.."),
                               binwidth = diff(range(chain_data$value))/30,
                               fill = chain_fill, alpha = 0.5) +
-    geom_vline(xintercept = mean(chain_data$value), color = chain_clr, size = .8) + 
+    geom_vline(xintercept = mean(chain_data$value), color = chain_clr, linewidth = .8) + 
     geom_vline(xintercept = median(chain_data$value), 
-               color = chain_clr, lty = 2, size = 1)
+               color = chain_clr, lty = 2, linewidth = 1)
 }
 
 .treedepth_ndivergent_hist <- function(df_td, df_nd, chain = 0, divergent = c("All", 0, 1)) {
@@ -148,7 +148,7 @@ thm_no_yaxs <- thm + no_yaxs
   
   graph <- ggplot(plot_data, aes(x = factor(value)), na.rm = TRUE) + 
     geom_bar(aes(y=..count../sum(..count..)), width=1, fill = base_fill,
-             color = vline_base_clr, size = 0.2) + 
+             color = vline_base_clr, linewidth = 0.2) + 
     plot_labs + 
     plot_theme
   if (chain == 0) 
