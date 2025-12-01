@@ -46,7 +46,10 @@ articles:
       The document below explains one way to host a shinystan app online.
     contents:
       - deploy_shinystan
-      
+
+development:
+  mode: auto
+
 reference:
   - title: "Package overview"
     desc: > 

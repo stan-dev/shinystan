@@ -4,7 +4,6 @@ on:
   # build dev site on merged pushes
   push:
     branches: [main, master]
-  pull_request:
   # build full site on releases
   release:
     types: [published]
@@ -34,7 +33,7 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::pkgdown, local::., any::withr, stan-dev/pkgdown-config
+          extra-packages: any::pkgdown, local::., any::withr, stan-dev/pkgdown-config, stan-dev/cmdstanr
 
       - name: Build site
         run: |
