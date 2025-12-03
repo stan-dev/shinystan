@@ -41,7 +41,8 @@ jobs:
             c("NOT_CRAN" = "true"), # this should already be set by setup-r@v2? keeping because vignettes don't build otherwise
             pkgdown::build_site_github_pages(
               lazy = FALSE, # change to TRUE if runner times out.
-              run_dont_run = TRUE,
+              run_dont_run = FALSE, # shinystan is interactive so hangs
+              examples = FALSE,
               new_process = TRUE
             )
           )
