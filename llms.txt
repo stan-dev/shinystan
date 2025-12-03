@@ -1,0 +1,171 @@
+# ShinyStan
+
+ShinyStan provides immediate, informative, customizable visual and
+numerical summaries of model parameters and convergence diagnostics for
+MCMC simulations. The ShinyStan interface is coded primarily in R using
+the [Shiny](http://shiny.rstudio.com) web application framework and is
+available via the **shinystan** R package.
+
+### Resources
+
+- [mc-stan.org/shinystan](http://mc-stan.org/shinystan) (Website with
+  online documentation)
+- [Ask a question](http://discourse.mc-stan.org) (Stan Forums on
+  Discourse)
+- [Open an issue](https://github.com/stan-dev/shinystan/issues) (GitHub
+  issues for bug reports, feature requests)
+
+### Installation
+
+- Install the latest release from CRAN:
+
+``` r
+install.packages("shinystan")
+```
+
+- Install the development version from GitHub (requires
+  [devtools](https://github.com/r-lib/devtools) package):
+
+``` r
+if (!require("devtools")) {
+  install.packages("devtools")
+}
+devtools::install_github("stan-dev/shinystan", build_vignettes = TRUE)
+```
+
+### Demo
+
+After installing run
+
+``` r
+library("shinystan")
+launch_shinystan_demo()
+```
+
+### Screenshots
+
+![](https://github.com/stan-dev/shinystan/blob/master/images/home.png)![](https://github.com/stan-dev/shinystan/blob/master/images/explore.png)![](https://github.com/stan-dev/shinystan/blob/master/images/diagnose.png)
+
+### About ShinyStan
+
+Applied Bayesian data analysis is primarily implemented through the MCMC
+algorithms offered by various software packages. When analyzing a
+posterior sample obtained by one of these algorithms the first step is
+to check for signs that the chains have converged to the target
+distribution and also for signs that the algorithm might require tuning
+or might be ill-suited for the given model. There may also be
+theoretical problems or practical inefficiencies with the specification
+of the model.
+
+ShinyStan provides interactive plots and tables helpful for analyzing a
+posterior sample, with particular attention to identifying potential
+problems with the performance of the MCMC algorithm or the specification
+of the model. ShinyStan is powered by RStudio’s Shiny web application
+framework and works with the output of MCMC programs written in any
+programming language (and has extended functionality for models fit
+using [RStan](http://mc-stan.org/interfaces/rstan.md) and the No-U-Turn
+sampler).
+
+#### Saving and deploying (sharing)
+
+The **shinystan** package allows you to store the basic components of an
+entire project (code, posterior samples, graphs, tables, notes) in a
+single object. Users can save many of the plots as ggplot2 objects for
+further customization and easy integration in reports or post-processing
+for publication.
+
+**shinystan** also provides the `deploy_shinystan` function, which lets
+you easily deploy your own ShinyStan apps online using RStudio’s
+[ShinyApps](https://www.shinyapps.io) service for any of your models.
+Each of your apps (each of your models) will have a unique url and is
+compatible with Safari, Firefox, Chrome, and most other browsers.
+
+### Licensing
+
+The **shinystan** R package and ShinyStan interface are open source
+licensed under the GNU Public License, version 3 (GPLv3).
+
+# Package index
+
+## Package overview
+
+Details about the shinystan R package.
+
+- [`shinystan-package`](https://mc-stan.org/shinystan/reference/shinystan-package.md)
+  :
+
+  shinystan R package ('ShinyStan' graphical user interface)
+
+## Launching the app
+
+Functions for launching the app using a particular model or launching a
+demo of the app.
+
+- [`launch_shinystan()`](https://mc-stan.org/shinystan/reference/launch_shinystan.md)
+  : Launch the 'ShinyStan' app
+- [`launch_shinystan_demo()`](https://mc-stan.org/shinystan/reference/launch_shinystan_demo.md)
+  : 'ShinyStan' demo
+
+## shinystan objects
+
+Functions for creating, examining, and modifying shinystan objects.
+
+- [`as.shinystan()`](https://mc-stan.org/shinystan/reference/as.shinystan.md)
+  [`is.shinystan()`](https://mc-stan.org/shinystan/reference/as.shinystan.md)
+  :
+
+  Create and test `shinystan` objects
+
+- [`shinystan-class`](https://mc-stan.org/shinystan/reference/shinystan-class.md)
+  [`shinystan`](https://mc-stan.org/shinystan/reference/shinystan-class.md)
+  :
+
+  S4 `shinystan` objects
+
+- [`sso_info()`](https://mc-stan.org/shinystan/reference/shinystan-metadata.md)
+  [`model_code()`](https://mc-stan.org/shinystan/reference/shinystan-metadata.md)
+  [`notes()`](https://mc-stan.org/shinystan/reference/shinystan-metadata.md)
+  [`model_name()`](https://mc-stan.org/shinystan/reference/shinystan-metadata.md)
+  :
+
+  View or change metadata associated with a `shinystan` object
+
+- [`retrieve()`](https://mc-stan.org/shinystan/reference/retrieve.md) :
+  Get summary statistics from shinystan object
+
+- [`drop_parameters()`](https://mc-stan.org/shinystan/reference/drop_parameters.md)
+  :
+
+  Drop parameters from a `shinystan` object
+
+- [`update_sso()`](https://mc-stan.org/shinystan/reference/update_sso.md)
+  : Update an object created by the previous version of shinystan
+
+- [`generate_quantity()`](https://mc-stan.org/shinystan/reference/generate_quantity.md)
+  : Add new quantity to shinystan object
+
+## Deploying apps
+
+Functions for deploying shinystan apps on shinyapps.io.
+
+- [`deploy_shinystan()`](https://mc-stan.org/shinystan/reference/deploy_shinystan.md)
+  : Deploy a 'ShinyStan' app on the web using 'shinyapps.io' by
+  'RStudio'
+
+# Articles
+
+### Getting Started
+
+The best way to get started is to play around with the demo by running
+launch_shinystan_demo(). The document below provides additional
+information about some of the R functions in the package.
+
+- [Getting
+  Started](https://mc-stan.org/shinystan/articles/shinystan-package.md):
+
+### Hosting your App
+
+The document below explains one way to host a shinystan app online.
+
+- [Deploying to
+  shinyapps.io](https://mc-stan.org/shinystan/articles/deploy_shinystan.md):
