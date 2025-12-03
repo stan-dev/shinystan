@@ -1,0 +1,23 @@
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://mc-stan.org/shinystan/dev/LICENSE-text.html</loc></url>
+<url><loc>https://mc-stan.org/shinystan/dev/articles/deploy_shinystan.html</loc></url>
+<url><loc>https://mc-stan.org/shinystan/dev/articles/index.html</loc></url>
+<url><loc>https://mc-stan.org/shinystan/dev/articles/shinystan-package.html</loc></url>
+<url><loc>https://mc-stan.org/shinystan/dev/authors.html</loc></url>
+<url><loc>https://mc-stan.org/shinystan/dev/index.html</loc></url>
+<url><loc>https://mc-stan.org/shinystan/dev/news/index.html</loc></url>
+<url><loc>https://mc-stan.org/shinystan/dev/reference/as.shinystan.html</loc></url>
+<url><loc>https://mc-stan.org/shinystan/dev/reference/deploy_shinystan.html</loc></url>
+<url><loc>https://mc-stan.org/shinystan/dev/reference/drop_parameters.html</loc></url>
+<url><loc>https://mc-stan.org/shinystan/dev/reference/generate_quantity.html</loc></url>
+<url><loc>https://mc-stan.org/shinystan/dev/reference/index.html</loc></url>
+<url><loc>https://mc-stan.org/shinystan/dev/reference/launch_shinystan.html</loc></url>
+<url><loc>https://mc-stan.org/shinystan/dev/reference/launch_shinystan_demo.html</loc></url>
+<url><loc>https://mc-stan.org/shinystan/dev/reference/rename_model.html</loc></url>
+<url><loc>https://mc-stan.org/shinystan/dev/reference/retrieve.html</loc></url>
+<url><loc>https://mc-stan.org/shinystan/dev/reference/shinystan-class.html</loc></url>
+<url><loc>https://mc-stan.org/shinystan/dev/reference/shinystan-metadata.html</loc></url>
+<url><loc>https://mc-stan.org/shinystan/dev/reference/shinystan-package.html</loc></url>
+<url><loc>https://mc-stan.org/shinystan/dev/reference/update_sso.html</loc></url>
+</urlset>
+
