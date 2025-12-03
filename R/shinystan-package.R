@@ -17,7 +17,7 @@
 #'
 #' @description
 #' \if{html}{
-#'   \figure{logo.png}{options: width="50" alt="mc-stan.org"}
+#'   \figure{logo.svg}{options: width="50" alt="mc-stan.org"}
 #'   \emph{Stan Development Team}
 #' }
 #'
