@@ -10,7 +10,6 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, see <http://www.gnu.org/licenses/>.
 
-
 #' \pkg{shinystan} R package ('ShinyStan' graphical user interface)
 #'
 #' @docType package
@@ -18,7 +17,7 @@
 #'
 #' @description
 #' \if{html}{
-#'   \figure{stanlogo.png}{options: width="50" alt="mc-stan.org"}
+#'   \figure{logo.png}{options: width="50" alt="mc-stan.org"}
 #'   \emph{Stan Development Team}
 #' }
 #'
@@ -54,7 +53,7 @@
 #'   publication.
 #'
 #'   The \code{\link{deploy_shinystan}} function lets you easily deploy your own
-#'   ShinyStan apps online for any of your models using the shinyapps.io 
+#'   ShinyStan apps online for any of your models using the shinyapps.io
 #'   service from 'RStudio'. Each of your apps (each of your models) will have a
 #'   unique url and will be compatible with most web browsers.
 #'
@@ -79,7 +78,7 @@
 #' @template seealso-as.shinystan
 #' @template seealso-demo
 #' @template seealso-launch
-#' 
+#'
 #' @template reference-muth
 #' @template reference-bayesvis
 #'

@@ -1,4 +1,4 @@
-# ShinyStan <img src="man/figures/stanlogo.png" align="right" width="120" />
+# ShinyStan <img src="man/figures/logo.png" align="right" width="120" />
 
 <!-- badges: start -->
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/shinystan?color=blue)](http://cran.r-project.org/web/packages/shinystan)
