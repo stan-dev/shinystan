@@ -50,9 +50,6 @@ articles:
     contents:
       - deploy_shinystan
 
-development:
-  mode: auto
-
 reference:
   - title: "Package overview"
     desc: > 
