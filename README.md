@@ -46,7 +46,7 @@ launch_shinystan_demo()
 
 ### Screenshots
 
-<img src=https://github.com/stan-dev/shinystan/blob/master/images/home.png width=19% /><img src=https://github.com/stan-dev/shinystan/blob/master/images/explore.png width=24.5% /><img src=https://github.com/stan-dev/shinystan/blob/master/images/diagnose.png width=24.5% />
+<img src=https://github.com/stan-dev/shinystan/raw/master/images/home.png width=19% /><img src=https://github.com/stan-dev/shinystan/raw/master/images/explore.png width=24.5% /><img src=https://github.com/stan-dev/shinystan/raw/master/images/diagnose.png width=24.5% />
 
 ### About ShinyStan
 
