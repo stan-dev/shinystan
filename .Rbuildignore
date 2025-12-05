@@ -10,3 +10,4 @@ LICENSE
 man-roxygen/*
 images/*
 ^\.github$
+^pkgdown$
