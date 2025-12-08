@@ -1,1 +1,0 @@
-n_eff (ESS) is an estimate of the effective number of independent draws from the posterior distribution of the estimand of interest. Because the draws within a chain are not independent if there is autocorrelation, the effective sample size will be smaller than the total number of iterations. See the Glossary page for more details.
