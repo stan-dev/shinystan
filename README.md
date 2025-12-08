@@ -1,4 +1,4 @@
-# ShinyStan <img src="man/figures/stanlogo.png" align="right" width="120" />
+# ShinyStan <img src="man/figures/logo.svg" align="right" width="120" />
 
 <!-- badges: start -->
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/shinystan?color=blue)](http://cran.r-project.org/web/packages/shinystan)
@@ -46,7 +46,7 @@ launch_shinystan_demo()
 
 ### Screenshots
 
-<img src=https://github.com/stan-dev/shinystan/blob/master/images/home.png width=19% /><img src=https://github.com/stan-dev/shinystan/blob/master/images/explore.png width=24.5% /><img src=https://github.com/stan-dev/shinystan/blob/master/images/diagnose.png width=24.5% />
+<img src=https://github.com/stan-dev/shinystan/raw/master/images/home.png width=19% /><img src=https://github.com/stan-dev/shinystan/raw/master/images/explore.png width=24.5% /><img src=https://github.com/stan-dev/shinystan/raw/master/images/diagnose.png width=24.5% />
 
 ### About ShinyStan
 

@@ -1,0 +1,80 @@
+url: https://mc-stan.org/shinystan
+
+destination: "."
+
+development:
+  mode: auto
+
+template:
+  package: pkgdownconfig
+
+navbar:
+  title: "shinystan"
+
+  structure:
+    left: [home, vignettes, functions, news, pkgs, stan]
+    right: [search, bluesky, forum, github, lightswitch]
+
+  components:
+    pkgs:
+      text: Other Packages
+      menu:
+        - text: bayesplot
+          href: https://mc-stan.org/bayesplot
+        - text: cmdstanr
+          href: https://mc-stan.org/cmdstanr
+        - text: "loo"
+          href: https://mc-stan.org/loo
+        - text: posterior
+          href: https://mc-stan.org/posterior
+        - text: projpred
+          href: https://mc-stan.org/projpred
+        - text: rstan
+          href: https://mc-stan.org/rstan
+        - text: rstanarm
+          href: https://mc-stan.org/rstanarm
+        - text: rstantools
+          href: https://mc-stan.org/rstantools
+
+articles:
+  - title: "Getting Started"
+    desc: >
+      The best way to get started is to play around with the demo by running 
+      launch_shinystan_demo(). The document below provides additional 
+      information about some of the R functions in the package. 
+    contents:
+      - shinystan-package
+  - title: "Hosting your App"
+    desc: >
+      The document below explains one way to host a shinystan app online.
+    contents:
+      - deploy_shinystan
+
+reference:
+  - title: "Package overview"
+    desc: > 
+      Details about the shinystan R package.
+    contents: 
+      - shinystan-package
+  - title: "Launching the app"
+    desc: >
+      Functions for launching the app using a particular model or launching a demo of the app.
+    contents:
+      - launch_shinystan
+      - launch_shinystan_demo
+  - title: "shinystan objects"
+    desc: >
+      Functions for creating, examining, and modifying shinystan objects.
+    contents:
+      - as.shinystan
+      - shinystan-class
+      - shinystan-metadata
+      - retrieve
+      - drop_parameters
+      - update_sso
+      - generate_quantity
+  - title: "Deploying apps"
+    desc: >
+      Functions for deploying shinystan apps on shinyapps.io.
+    contents:
+      - deploy_shinystan
