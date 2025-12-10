@@ -204,6 +204,8 @@ test_that("as.shinystan works with CmdStanMCMC objects", {
     expect_equal(sso@param_names, c("log-posterior", "mu", "tau", paste0("theta[", 1:8, "]")))
     expect_equal(sso@n_chain, 2)
     expect_equal(sso@n_warmup, 500)
+    
+    expect_no_error(sso2 <- as.shinystan(cmdstanr::as_cmdstan_fit(fit$output_files())))
   }
 })
 

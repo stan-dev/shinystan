@@ -36,7 +36,7 @@ logo_and_name <- function() {
     ),
     div(
       style = "margin-top: 25px",
-      img(src = "stan_logo.svg", class = "stan-logo"),
+      img(src = "stan_logo.png", class = "stan-logo"),
       div(id = "shinystan-title", "ShinyStan")
     )
   )
