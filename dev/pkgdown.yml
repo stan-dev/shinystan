@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   deploy_shinystan: deploy_shinystan.html
   shinystan-package: shinystan-package.html
-last_built: 2025-12-11T18:01Z
+last_built: 2025-12-11T18:11Z
 urls:
   reference: https://mc-stan.org/shinystan/reference
   article: https://mc-stan.org/shinystan/articles
