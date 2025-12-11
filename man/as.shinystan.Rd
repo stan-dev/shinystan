@@ -9,6 +9,7 @@
 \alias{as.shinystan,stanfit-method}
 \alias{as.shinystan,stanreg-method}
 \alias{as.shinystan,CmdStanMCMC-method}
+\alias{as.shinystan,CmdStanMCMC_CSV-method}
 \title{Create and test \code{shinystan} objects}
 \usage{
 as.shinystan(X, ...)
@@ -59,6 +60,8 @@ is.shinystan(X)
 \S4method{as.shinystan}{stanreg}(X, ppd = TRUE, seed = 1234, model_name = NULL, note = NULL, ...)
 
 \S4method{as.shinystan}{CmdStanMCMC}(X, pars = NULL, model_name = NULL, note = NULL, ...)
+
+\S4method{as.shinystan}{CmdStanMCMC_CSV}(X, pars = NULL, model_name = NULL, note = NULL, ...)
 }
 \arguments{
 \item{X}{For \code{as.shinystan}, an object to be converted to a
@@ -140,31 +143,35 @@ The \code{as.shinystan} function creates \code{shinystan}
 }
 \section{Functions}{
 \itemize{
-\item \code{as.shinystan,array-method}: Create a \code{shinystan} object from a 3-D
+\item \code{as.shinystan(array)}: Create a \code{shinystan} object from a 3-D
 \code{\link{array}} of simulations. The array should have dimensions
 corresponding to iterations, chains, and parameters, in that order.
 
-\item \code{as.shinystan,list-method}: Create a \code{shinystan} object from a
+\item \code{as.shinystan(list)}: Create a \code{shinystan} object from a
 \code{\link{list}} of matrices. Each \code{\link{matrix}} (or 2-D array)
 should contain the simulations for an individual chain and all of the
 matrices should have the same number of iterations (rows) and parameters
 (columns). Parameters should have the same names and be in the same order.
 
-\item \code{as.shinystan,mcmc.list-method}: Create a \code{shinystan} object from an 
+\item \code{as.shinystan(mcmc.list)}: Create a \code{shinystan} object from an 
 \code{mcmc.list} object (\pkg{coda}).
 
-\item \code{as.shinystan,stanfit-method}: Create a \code{shinystan} object from a
+\item \code{as.shinystan(stanfit)}: Create a \code{shinystan} object from a
 \code{stanfit} object (\pkg{\link[rstan]{rstan}}). Fewer optional arguments
 are available for this method because all important information can be
 taken automatically from the \code{stanfit} object.
 
-\item \code{as.shinystan,stanreg-method}: Create a \code{shinystan} object from a
+\item \code{as.shinystan(stanreg)}: Create a \code{shinystan} object from a
 \code{stanreg} object (\pkg{\link[rstanarm]{rstanarm}}).
 
-\item \code{as.shinystan,CmdStanMCMC-method}: Create a \code{shinystan} object from a 
+\item \code{as.shinystan(CmdStanMCMC)}: Create a \code{shinystan} object from a 
 \code{CmdStanMCMC} object (\pkg{cmdstanr}).
-}}
 
+\item \code{as.shinystan(CmdStanMCMC_CSV)}: Create a \code{shinystan} object from a
+\code{CmdStanMCMC_CSV} object created using
+\code{cmdstanr::as_cmdstan_fit()} (\pkg{cmdstanr}).
+
+}}
 \examples{
  
 \dontrun{

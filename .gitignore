@@ -11,3 +11,23 @@ cran-comments.md
 
 revdep/
 *.swf
+
+revdep/*
+CRAN-RELEASE
+CRAN-SUBMISSION
+release-prep.R
+
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+inst/doc
+
+tests/testthat/Rplots.pdf
+
+.DS_Store
+
+# vscode/positron/etc settings
+.vscode/*
+
+
