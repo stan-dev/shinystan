@@ -32,7 +32,7 @@
 #' posterior sample, with particular attention to identifying potential problems
 #' with the performance of the MCMC algorithm or the specification of the model.
 #' ShinyStan is powered by the Shiny web application framework by RStudio
-#' (\url{https://shiny.rstudio.com/}) and works with the output of MCMC programs
+#' (\url{https://shiny.posit.co/}) and works with the output of MCMC programs
 #' written in any programming language (and has extended functionality for
 #' models fit using the \pkg{rstan} package and the No-U-Turn sampler).
 #'

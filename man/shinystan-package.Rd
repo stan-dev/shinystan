@@ -21,7 +21,7 @@ ShinyStan app provides interactive plots and tables helpful for analyzing a
 posterior sample, with particular attention to identifying potential problems
 with the performance of the MCMC algorithm or the specification of the model.
 ShinyStan is powered by the Shiny web application framework by RStudio
-(\url{https://shiny.rstudio.com/}) and works with the output of MCMC programs
+(\url{https://shiny.posit.co/}) and works with the output of MCMC programs
 written in any programming language (and has extended functionality for
 models fit using the \pkg{rstan} package and the No-U-Turn sampler).
 }
@@ -45,7 +45,7 @@ higher-level interfaces to Stan that use \pkg{rstan} internally.
   publication.
 
   The \code{\link{deploy_shinystan}} function lets you easily deploy your own
-  ShinyStan apps online for any of your models using the shinyapps.io 
+  ShinyStan apps online for any of your models using the shinyapps.io
   service from 'RStudio'. Each of your apps (each of your models) will have a
   unique url and will be compatible with most web browsers.
 }
@@ -94,4 +94,36 @@ Gabry, J. , Simpson, D. , Vehtari, A. , Betancourt, M. and
 
 \code{\link{launch_shinystan}} to launch the 'ShinyStan' interface 
   using a particular \code{shinystan} object.
+
+Useful links:
+\itemize{
+  \item \url{https://mc-stan.org/shinystan/}
+  \item \url{https://discourse.mc-stan.org}
+  \item Report bugs at \url{https://github.com/stan-dev/shinystan/issues/}
+}
+
+}
+\author{
+\strong{Maintainer}: Jonah Gabry \email{jgabry@gmail.com}
+
+Authors:
+\itemize{
+  \item Duco Veen
+}
+
+Other contributors:
+\itemize{
+  \item  Stan Development Team [contributor]
+  \item Michael Andreae [contributor]
+  \item Michael Betancourt [contributor]
+  \item Bob Carpenter [contributor]
+  \item Yuanjun Gao [contributor]
+  \item Andrew Gelman [contributor]
+  \item Ben Goodrich [contributor]
+  \item Daniel Lee [contributor]
+  \item Dongying Song [contributor]
+  \item Rob Trangucci [contributor]
+  \item Visruth Srimath Kandali [contributor]
+}
+
 }
