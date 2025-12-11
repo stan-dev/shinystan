@@ -68,6 +68,9 @@ as.shinystan(X, ppd = TRUE, seed = 1234, model_name = NULL, note = NULL, ...)
 
 # S4 method for class 'CmdStanMCMC'
 as.shinystan(X, pars = NULL, model_name = NULL, note = NULL, ...)
+
+# S4 method for class 'CmdStanMCMC_CSV'
+as.shinystan(X, pars = NULL, model_name = NULL, note = NULL, ...)
 ```
 
 ## Arguments
@@ -163,12 +166,12 @@ object and `FALSE` otherwise.
 
 ## Functions
 
-- `as.shinystan,array-method`: Create a `shinystan` object from a 3-D
+- `as.shinystan(array)`: Create a `shinystan` object from a 3-D
   [`array`](https://rdrr.io/r/base/array.html) of simulations. The array
   should have dimensions corresponding to iterations, chains, and
   parameters, in that order.
 
-- `as.shinystan,list-method`: Create a `shinystan` object from a
+- `as.shinystan(list)`: Create a `shinystan` object from a
   [`list`](https://rdrr.io/r/base/list.html) of matrices. Each
   [`matrix`](https://rdrr.io/r/base/matrix.html) (or 2-D array) should
   contain the simulations for an individual chain and all of the
@@ -176,21 +179,26 @@ object and `FALSE` otherwise.
   parameters (columns). Parameters should have the same names and be in
   the same order.
 
-- `as.shinystan,mcmc.list-method`: Create a `shinystan` object from an
+- `as.shinystan(mcmc.list)`: Create a `shinystan` object from an
   `mcmc.list` object (coda).
 
-- `as.shinystan,stanfit-method`: Create a `shinystan` object from a
-  `stanfit` object
-  ([rstan](https://mc-stan.org/rstan/reference/rstan.html)). Fewer
-  optional arguments are available for this method because all important
-  information can be taken automatically from the `stanfit` object.
+- `as.shinystan(stanfit)`: Create a `shinystan` object from a `stanfit`
+  object ([rstan](https://mc-stan.org/rstan/reference/rstan.html)).
+  Fewer optional arguments are available for this method because all
+  important information can be taken automatically from the `stanfit`
+  object.
 
-- `as.shinystan,stanreg-method`: Create a `shinystan` object from a
-  `stanreg` object
+- `as.shinystan(stanreg)`: Create a `shinystan` object from a `stanreg`
+  object
   ([rstanarm](https://mc-stan.org/rstanarm/reference/rstanarm-package.html)).
 
-- `as.shinystan,CmdStanMCMC-method`: Create a `shinystan` object from a
+- `as.shinystan(CmdStanMCMC)`: Create a `shinystan` object from a
   `CmdStanMCMC` object (cmdstanr).
+
+- `as.shinystan(CmdStanMCMC_CSV)`: Create a `shinystan` object from a
+  `CmdStanMCMC_CSV` object created using
+  [`cmdstanr::as_cmdstan_fit()`](https://mc-stan.org/cmdstanr/reference/read_cmdstan_csv.html)
+  (cmdstanr).
 
 ## See also
 
