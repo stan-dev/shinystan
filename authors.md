@@ -26,19 +26,21 @@
 
 - **Rob Trangucci**. Contributor.
 
+- **Visruth Srimath Kandali**. Contributor.
+
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/stan-dev/shinystan/blob/new-pkgdown-theme/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/stan-dev/shinystan/blob/v2.7.0/DESCRIPTION)
 
 Gabry J, Veen D (2025). *shinystan: Interactive Visual and Numerical
 Diagnostics and Posterior Analysis for Bayesian Models*. R package
-version 2.6.0, <https://mc-stan.org/shinystan/>.
+version 2.7.0, <https://mc-stan.org/shinystan/>.
 
     @Manual{,
       title = {shinystan: Interactive Visual and Numerical Diagnostics and Posterior Analysis for Bayesian Models},
       author = {Jonah Gabry and Duco Veen},
       year = {2025},
-      note = {R package version 2.6.0},
+      note = {R package version 2.7.0},
       url = {https://mc-stan.org/shinystan/},
     }

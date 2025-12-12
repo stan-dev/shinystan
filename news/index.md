@@ -1,5 +1,24 @@
 # Changelog
 
+## shinystan 2.7.0
+
+CRAN release: 2025-12-12
+
+- [`as.shinystan()`](https://mc-stan.org/shinystan/reference/as.shinystan.md)
+  compatibility with
+  [`cmdstanr::as_cmdstan_fit()`](https://mc-stan.org/cmdstanr/reference/read_cmdstan_csv.html)
+  by [@jgabry](https://github.com/jgabry) in
+  <https://github.com/stan-dev/shinystan/pull/207>
+- Change `size` to `linewidth` (except for geom_point and element_text)
+  by [@jgabry](https://github.com/jgabry) in
+  <https://github.com/stan-dev/shinystan/pull/205>
+- Added pkgdown workflow and new theme by
+  [@VisruthSK](https://github.com/VisruthSK) in
+  <https://github.com/stan-dev/shinystan/pull/206>
+- Added logo to be displayed in r-universe by
+  [@avehtari](https://github.com/avehtari) in
+  <https://github.com/stan-dev/shinystan/pull/201>
+
 ## shinystan 2.6.0
 
 CRAN release: 2022-03-02

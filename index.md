@@ -44,7 +44,7 @@ launch_shinystan_demo()
 
 ### Screenshots
 
-![](https://github.com/stan-dev/shinystan/blob/master/images/home.png)![](https://github.com/stan-dev/shinystan/blob/master/images/explore.png)![](https://github.com/stan-dev/shinystan/blob/master/images/diagnose.png)
+![](https://github.com/stan-dev/shinystan/raw/master/images/home.png)![](https://github.com/stan-dev/shinystan/raw/master/images/explore.png)![](https://github.com/stan-dev/shinystan/raw/master/images/diagnose.png)
 
 ### About ShinyStan
 
