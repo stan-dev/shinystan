@@ -1,3 +1,5 @@
+# shinystan (development version)
+
 # shinystan 2.7.0 
 
 * `as.shinystan()` compatibility with `cmdstanr::as_cmdstan_fit()` by @jgabry in https://github.com/stan-dev/shinystan/pull/207
