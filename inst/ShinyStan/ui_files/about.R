@@ -5,7 +5,7 @@ div(
   a(
     style = "font-size: 16px;",
     strong("Stan Development Team"),
-    href = "http://mc-stan.org/team/"
+    href = "http://mc-stan.org/"
   ),
   br(),
   a(
@@ -37,11 +37,8 @@ div(
   br(),
   h6("Logo"),
   helpText(
-    style = "font-size: 12px;",
-    a(
-      href = "http://mc-stan.org/team/", 
-      "Michael Betancourt"
-    )
+    style = "font-size: 12px;", 
+    "Michael Betancourt"
   ),
   br(),
   h6("Shiny"),

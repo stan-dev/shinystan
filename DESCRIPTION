@@ -1,8 +1,8 @@
 Package: shinystan
 Title: Interactive Visual and Numerical Diagnostics and Posterior Analysis for
     Bayesian Models
-Version: 2.6.0.9000
-Date: 2022-03-02
+Version: 2.7.0
+Date: 2025-12-11
 Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"),
     email = "jgabry@gmail.com"),
       person("Duco", "Veen", role = "aut"),
@@ -15,7 +15,8 @@ Authors@R: c(person("Jonah", "Gabry", role = c("aut", "cre"),
       person("Ben", "Goodrich", role = "ctb"),
       person("Daniel", "Lee", role = "ctb"),
       person("Dongying", "Song", role = "ctb"),
-      person("Rob", "Trangucci", role = "ctb"))
+      person("Rob", "Trangucci", role = "ctb"), 
+      person("Visruth", "Srimath Kandali", role = "ctb"))
 Maintainer: Jonah Gabry <jgabry@gmail.com>
 Description: A graphical user interface for interactive Markov chain Monte
     Carlo (MCMC) diagnostics and plots and tables helpful for analyzing a
@@ -50,7 +51,7 @@ Imports:
     xtable,
     xts (>= 0.9-7)
 Suggests:
-    cmdstanr (>= 0.4.0),
+    cmdstanr (>= 0.9.0),
     coda,
     knitr (>= 1.9),
     posterior (>= 1.0.0), 

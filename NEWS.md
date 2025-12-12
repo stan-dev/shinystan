@@ -1,3 +1,10 @@
+# shinystan 2.7.0 
+
+* `as.shinystan()` compatibility with `cmdstanr::as_cmdstan_fit()` by @jgabry in https://github.com/stan-dev/shinystan/pull/207
+* Change `size` to `linewidth` (except for geom_point and element_text) by @jgabry in https://github.com/stan-dev/shinystan/pull/205
+* Added pkgdown workflow and new theme by @VisruthSK in https://github.com/stan-dev/shinystan/pull/206
+* Added logo to be displayed in r-universe by @avehtari in https://github.com/stan-dev/shinystan/pull/201
+
 # shinystan 2.6.0
 
 * Initial support for CmdStanMCMC objects from CmdStanR
