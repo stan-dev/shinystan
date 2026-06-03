@@ -27,6 +27,7 @@ instructions for setting up your account on your local system using
 (this requires first installing the **rsconnect** package)
 
 ``` r
+
 rsconnect::setAccountInfo(name, token, secret)
 ```
 
@@ -47,6 +48,7 @@ For the example below assume that
 To deploy the app use the command
 
 ``` r
+
 deploy_shinystan(my_sso, appName = "MyModel", account = "username")
 ```
 
@@ -57,6 +59,7 @@ then the `account` argument is required. If you only have a single
 account then you can omit `account`
 
 ``` r
+
 deploy_shinystan(my_sso, appName = "MyModel")
 ```
 
@@ -68,6 +71,7 @@ ShinyStan’s graphical posterior predictive checks then you can also
 specify the optional `ppcheck_data` argument
 
 ``` r
+
 deploy_shinystan(my_sso, appName = "MyModel", 
                  ppcheck_data = y)
 ```
@@ -84,6 +88,7 @@ select. If this parameter/quantity containing the posterior predictive
 replications is named `yRep` then you would use
 
 ``` r
+
 deploy_shinystan(my_sso, appName = "MyModel", 
                  ppcheck_data = y, ppcheck_yrep = "yRep")
 ```

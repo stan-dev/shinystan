@@ -33,14 +33,14 @@
 Source:
 [`DESCRIPTION`](https://github.com/stan-dev/shinystan/blob/master/DESCRIPTION)
 
-Gabry J, Veen D (2025). *shinystan: Interactive Visual and Numerical
+Gabry J, Veen D (2026). *shinystan: Interactive Visual and Numerical
 Diagnostics and Posterior Analysis for Bayesian Models*. R package
 version 2.7.0.9000, <https://mc-stan.org/shinystan/>.
 
     @Manual{,
       title = {shinystan: Interactive Visual and Numerical Diagnostics and Posterior Analysis for Bayesian Models},
       author = {Jonah Gabry and Duco Veen},
-      year = {2025},
+      year = {2026},
       note = {R package version 2.7.0.9000},
       url = {https://mc-stan.org/shinystan/},
     }

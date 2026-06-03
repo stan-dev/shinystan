@@ -9,6 +9,7 @@ If `my_stanfit` is a stanfit object (the result of fitting a model with
 simply use
 
 ``` r
+
 library(shinystan)
 my_sso <- launch_shinystan(my_stanfit)
 ```
@@ -17,6 +18,7 @@ and ShinyStan will launch. Here `my_sso` is the name you want to use for
 the shinystan object that will be returned. If you simply run
 
 ``` r
+
 launch_shinystan(my_stanfit)
 ```
 
@@ -44,6 +46,7 @@ If you have an `mcmc.list` object called `my_mcmc` then you can use the
 that can then be used with `launch_shinystan`:
 
 ``` r
+
 my_sso <- launch_shinystan(as.shinystan(my_mcmc, model_name = "my_model"))
 ```
 
@@ -52,6 +55,7 @@ warmup iterations, you should add the `warmup` argument when you call
 `as.shinystan`:
 
 ``` r
+
 my_sso <- launch_shinystan(as.shinystan(my_mcmc, model_name = "my_model", warmup = 100))
 ```
 
@@ -76,6 +80,7 @@ rows and parameters as columns) you can combine them in a list to pass
 to `as.shinystan`
 
 ``` r
+
 # Generate some fake data
 chain1 <- cbind(beta1 = rnorm(100), beta2 = rnorm(100), sigma = rexp(100))
 chain2 <- cbind(beta1 = rnorm(100), beta2 = rnorm(100), sigma = rexp(100))
@@ -96,6 +101,7 @@ object and two of the parameters are `alpha` and `beta`. We could add a
 parameter `gamma` that is the inverse logit of `beta` using the code
 
 ``` r
+
 inv_logit <- function(x) 1/(1 + exp(-x))
 sso <- generate_quantity(sso, fun = inv_logit, param1 = "beta", new_name = "gamma")
 ```
@@ -110,6 +116,7 @@ variables. For example, we can add a parameter `delta` to `sso` that is
 the squared difference of `alpha` and `beta` like this
 
 ``` r
+
 sso <- generate_quantity(sso, fun = function(x,y) (x-y)^2,
                        param1 = "alpha", param2 = "beta", new_name = "delta")
 ```
@@ -139,6 +146,7 @@ to your shinystan object. To add that code you can simply include it as
 the `code` argument to the `model_code` function
 
 ``` r
+
 my_code <- "
  model {
   for (i in 1:length(Y)) {
@@ -164,6 +172,7 @@ object. For an existing shinystan object you can use the `model_name`
 function like this:
 
 ``` r
+
 sso <- model_name(sso, "new_model_name")
 ```
 
