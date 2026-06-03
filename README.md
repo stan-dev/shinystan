@@ -84,3 +84,7 @@ and is compatible with Safari, Firefox, Chrome, and most other browsers.
 
 The **shinystan** R package and ShinyStan interface are open source licensed under
 the GNU Public License, version 3 (GPLv3).
+
+### Contributing
+Contributions are welcome. 
+All contributions must follow the [Stan AI Contribution Policy](https://github.com/stan-dev/stan/wiki/AI-Contribution-Policy).
