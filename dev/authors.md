@@ -31,7 +31,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/stan-dev/shinystan/blob/master/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/stan-dev/shinystan/blob/update-pkgdown-navbar/DESCRIPTION)
 
 Gabry J, Veen D (2026). *shinystan: Interactive Visual and Numerical
 Diagnostics and Posterior Analysis for Bayesian Models*. R package
